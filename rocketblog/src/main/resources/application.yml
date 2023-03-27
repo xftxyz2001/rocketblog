@@ -1,0 +1,19 @@
+spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true # 开启页面表单的Rest功能
+
+  datasource:
+    # 配置数据源类型
+    type: com.zaxxer.hikari.HikariDataSource
+    # 配置连接数据库信息
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/rocketblog?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+    
+mybatis:
+  mapper-locations: classpath:com/xftxyz/rocketblog/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
