@@ -1,5 +1,7 @@
 package com.xftxyz.rocketblog.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,11 +40,15 @@ public class UserController {
     // }
     // 注册
     @PostMapping("/register")
-    public String register(HttpSession session, @RequestBody String name,
-            @RequestBody String password, @RequestBody String email,
-            @RequestBody String vertify) {
+    public String register(@RequestBody Map<String, Object> requestBody, HttpSession session) {
+        String name = (String) requestBody.get("name");
+        String password = (String) requestBody.get("password");
+        String email = (String) requestBody.get("email");
+        String vertify = (String) requestBody.get("vertify");
         // 获取用户输入的验证码
         // String acode = session.getAttribute("code").toString();
+        // 输出一下接收到的参数
+        log.info("name:" + name + ",password:" + password + ",email:" + email + ",vertify:" + vertify);
         String acode = (String) session.getAttribute("code");
         log.info("Session中的验证码：" + acode + "，用户输入的验证码：" + vertify);
         if (acode == null || !acode.equals(vertify)) {
@@ -55,8 +61,10 @@ public class UserController {
 
     // 登录
     @PostMapping("/login")
-    public String login(@RequestBody String email, @RequestBody String password,
+    public String login(@RequestBody Map<String, Object> requestBody,
             HttpSession session) {
+        String email = (String) requestBody.get("email");
+        String password = (String) requestBody.get("password");
         User user = userService.login(email, password);
         if (user == null) {
             return "用户名或密码错误";
