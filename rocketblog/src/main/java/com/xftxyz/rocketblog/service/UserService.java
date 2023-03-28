@@ -24,4 +24,8 @@ public interface UserService {
 
     public List<User> getUserByEmail(String email);
 
+    public String register(String name, String password, String email);
+
+    public User login(String email, String password);
+
 }

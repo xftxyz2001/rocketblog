@@ -11,8 +11,6 @@ import com.xftxyz.rocketblog.pojo.BlogExample;
 import com.xftxyz.rocketblog.pojo.BlogExample.Criteria;
 import com.xftxyz.rocketblog.service.BlogService;
 
-import lombok.extern.java.Log;
-
 @Service
 public class BlogServiceImpl implements BlogService {
 

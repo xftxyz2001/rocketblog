@@ -12,7 +12,22 @@ spring:
     url: jdbc:mysql://localhost:3306/rocketblog?characterEncoding=utf-8&useSSL=false
     username: root
     password: 123456
-    
+
+  mail:
+    host: smtp.qq.com
+    username: 1346802467@qq.com
+    password: dbprfzvxxpxsgjbg
+    default-encoding: UTF-8
+    protocol: smtp
+    # smtp的指定端口 使用465要将protocol改为smtps
+    port: 587
+    # 设置开启ssl
+    properties:
+      mail:
+        stmp:
+          ssl:
+            enable: true
+
 mybatis:
   mapper-locations: classpath:com/xftxyz/rocketblog/mapper/*.xml
   configuration:
