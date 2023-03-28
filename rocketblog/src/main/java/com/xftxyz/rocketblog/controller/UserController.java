@@ -1,15 +1,12 @@
 package com.xftxyz.rocketblog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.EmailService;
@@ -42,7 +39,9 @@ public class UserController {
     @PostMapping("/register")
     public String register(HttpSession session, String name, String password, String email, String vertify) {
         // 获取用户输入的验证码
-        String acode = session.getAttribute("code").toString();
+        // String acode = session.getAttribute("code").toString();
+        String acode = (String) session.getAttribute("code");
+        log.info("Session中的验证码：" + acode + "，用户输入的验证码：" + vertify);
         if (acode == null || !acode.equals(vertify)) {
             return "验证码错误";
         }
@@ -70,7 +69,7 @@ public class UserController {
         // 将验证码存放到Session中
         session.setAttribute("code", code);
         // 发送邮件
-        // log.info(email + "的验证码为：" + code);
+        log.info(email + "的验证码为：" + code);
         emailService.sendSimpleMail(email, "火箭博客验证码", "您的验证码为：" + code);
         return "success";
     }
