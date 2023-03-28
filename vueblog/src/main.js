@@ -10,7 +10,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import '@/assets/icons/iconfont.css'
 import '@/assets/icons/iconfont.js';
 
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 const app = createApp(App)
 app.use(router)
