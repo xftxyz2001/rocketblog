@@ -3,7 +3,6 @@ package com.xftxyz.rocketblog.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +14,9 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.EmailService;
 import com.xftxyz.rocketblog.service.UserService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,9 +50,11 @@ public class UserController {
         // 获取用户输入的验证码
         // String acode = session.getAttribute("code").toString();
         // 输出一下接收到的参数
-        log.info("name:" + name + ",password:" + password + ",email:" + email + ",vertify:" + vertify);
-        String acode = (String) session.getAttribute("code");
-        log.info("Session中的验证码：" + acode + "，用户输入的验证码：" + vertify);
+        // log.info("name:" + name + ",password:" + password + ",email:" + email +
+        // ",vertify:" + vertify);
+        // log.info(session.getId());
+        String acode = (String) session.getServletContext().getAttribute("code");
+        log.info("Application中的验证码：" + acode + "，用户输入的验证码：" + vertify);
         if (acode == null || !acode.equals(vertify)) {
             return "验证码错误";
         }
@@ -78,8 +82,9 @@ public class UserController {
     public String code(HttpSession session, @PathVariable("email") String email) {
         // 随机生成六位数验证码
         String code = "" + (int) ((Math.random() * 9 + 1) * 100000);
-        // 将验证码存放到Session中
-        session.setAttribute("code", code);
+        // session.setAttribute("code", code);
+        session.getServletContext().setAttribute("code", code);
+
         // 发送邮件
         log.info(email + "的验证码为：" + code);
         emailService.sendSimpleMail(email, "火箭博客验证码", "您的验证码为：" + code);
