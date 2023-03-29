@@ -86,10 +86,10 @@
             class="demo-rich-conent"
             style="display: flex; gap: 16px; flex-direction: column"
           >
-            <div>
+            <div style="text-align: center">
               <p
                 class="demo-rich-content__name"
-                style="margin: 0; font-weight: 500"
+                style="margin: 0; font-weight: 700; font-size: 20px"
               >
                 {{ userinfo.username }}
               </p>
@@ -140,10 +140,6 @@
               ><span class="iconfont" style="margin-right: 5px">&#xe60d;</span
               >退出登录</el-button
             >
-            <p class="demo-rich-content__desc" style="margin: 0">
-              Element Plus, a Vue 3 based component library for developers,
-              designers and product managers
-            </p>
           </div>
         </template>
       </el-popover>
