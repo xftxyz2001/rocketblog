@@ -10,6 +10,8 @@ public enum ResultCode {
     // 用户名或密码错误
     USERNAME_OR_PASSWORD_ERROR("402", "用户名或密码错误"),
 
+    // 用户未登录
+    USER_NOT_LOGIN("403", "用户未登录"),
     // 服务器错误
     SERVER_ERROR("500", "服务器错误");
 

@@ -65,12 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String register(String name, String password, String email) {
-        // UserExample exName = new UserExample();
-        // exName.createCriteria().andUsernameEqualTo(name);
-        // List<User> userList = userMapper.selectByExample(exName);
-        // if (userList.size() > 0) {
-        // return "用户名已存在";
-        // }
+
         UserExample exEmail = new UserExample();
         exEmail.createCriteria().andEmailEqualTo(email);
         long countEmail = userMapper.countByExample(exEmail);
