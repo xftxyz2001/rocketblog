@@ -15,25 +15,25 @@
         top: 10px;
       "
     >
-      <router-link to="/user/front/home/allconcern"
+      <router-link :to="{ name: 'allconcern' }"
         ><el-menu-item index="1" style="border-top: 1px #c8c9cc solid">
           <span class="iconfont" style="margin-right: 5px">&#xe8bc;</span>
           <span>全部关注</span>
         </el-menu-item></router-link
       >
-      <router-link to="/user/front/home/mostlike">
+      <router-link :to="{ name: 'mostlike' }">
         <el-menu-item index="2">
           <span class="iconfont" style="margin-right: 5px">&#xe60f;</span>
           <span>点赞最多</span>
         </el-menu-item></router-link
       >
-      <router-link to="/user/front/home/latest">
+      <router-link :to="{ name: 'latest' }">
         <el-menu-item index="3">
           <span class="iconfont" style="margin-right: 5px">&#xe61e;</span>
           <span>最新发布</span>
         </el-menu-item>
       </router-link>
-      <router-link to="/user/front/home/friend">
+      <router-link :to="{ name: 'friend' }">
         <el-menu-item index="4">
           <span class="iconfont" style="margin-right: 5px">&#xe601;</span>
           <span>好友发布</span>

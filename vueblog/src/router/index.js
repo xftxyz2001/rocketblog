@@ -46,7 +46,7 @@ const routes = [
       {
         path: '',
         name: '',
-        redirect: 'user/front'
+        redirect: { name: 'allconcern' }
       },
       {
         path: 'front',
@@ -56,7 +56,7 @@ const routes = [
           {
             path: '',
             name: '',
-            redirect: 'user/front/home'
+            redirect: { name: 'allconcern' }
           },
           {
             path: 'home',
@@ -66,7 +66,7 @@ const routes = [
               {
                 path: '',
                 name: '',
-                redirect: 'user/front/home/allconcern'
+                redirect: { name: 'allconcern' }
               },
               {
                 path: 'allconcern',
@@ -108,7 +108,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
 

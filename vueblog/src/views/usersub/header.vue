@@ -32,13 +32,13 @@
         "
       />
     </div>
-    <router-link to="/user/front/home"
+    <router-link :to="{ name: 'home' }"
       ><el-menu-item index="1" style="padding: 0 40px; margin-left: 60px"
         ><el-icon><HomeFilled /></el-icon>首页</el-menu-item
       ></router-link
     >
 
-    <router-link to="/user/front/hot">
+    <router-link :to="{ name: 'hot' }">
       <el-menu-item index="2" style="padding: 0 40px"
         ><span class="iconfont" style="margin-right: 5px">&#xe602;</span
         >热门</el-menu-item
@@ -77,7 +77,7 @@
         <template #reference>
           <el-avatar
             :size="32"
-            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+            :src="userinfo.avatar"
             @mouseenter="getuserinfo"
           />
         </template>
@@ -428,6 +428,7 @@ const Submitloginform = (formEl) => {
               });
               loginVisible.value = false;
               loginsuccess.value = true;
+              userinfo.value = res.data.data;
             } else if (res.data.code == "402") {
               console.log(res.code);
               console.log(1);
