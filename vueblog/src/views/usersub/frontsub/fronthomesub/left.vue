@@ -17,7 +17,7 @@
     >
       <router-link to="/user/front/home/allconcern"
         ><el-menu-item index="1" style="border-top: 1px #c8c9cc solid">
-          <i class="iconfont icon-fires" style="margin-right: 5px" />
+          <span class="iconfont" style="margin-right: 5px">&#xe8bc;</span>
           <span>全部关注</span>
         </el-menu-item></router-link
       >
@@ -35,7 +35,7 @@
       </router-link>
       <router-link to="/user/front/home/friend">
         <el-menu-item index="4">
-          <span class="iconfont" style="margin-right: 5px">&#xf0226;</span>
+          <span class="iconfont" style="margin-right: 5px">&#xe601;</span>
           <span>好友发布</span>
         </el-menu-item>
       </router-link>

@@ -37,8 +37,10 @@
         ><el-icon><HomeFilled /></el-icon>首页</el-menu-item
       ></router-link
     >
+
     <router-link to="/user/front/hot">
       <el-menu-item index="2" style="padding: 0 40px"
+        ><span class="iconfont" style="margin-right: 5px">&#xe602;</span
         >热门</el-menu-item
       ></router-link
     >
@@ -60,8 +62,96 @@
         ><el-icon><CirclePlus /></el-icon>发布日志</el-menu-item
       >
     </el-sub-menu>
+    <!-- 登陆成功图标 -->
+    <div v-if="loginsuccess" style="padding-top: 12px">
+      <!-- <el-avatar
+        :size="32"
+        class="mr-3"
+        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        style=""
+      /> -->
+      <el-popover
+        :width="250"
+        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
+      >
+        <template #reference>
+          <el-avatar
+            :size="32"
+            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+            @mouseenter="getuserinfo"
+          />
+        </template>
+        <template #default>
+          <div
+            class="demo-rich-conent"
+            style="display: flex; gap: 16px; flex-direction: column"
+          >
+            <div>
+              <p
+                class="demo-rich-content__name"
+                style="margin: 0; font-weight: 500"
+              >
+                {{ userinfo.username }}
+              </p>
+              <!-- <p
+                class="demo-rich-content__mention"
+                style="margin: 0; font-size: 14px; color: var(--el-color-info)"
+              >
+                @element-plus
+              </p> -->
+            </div>
+            <el-row gutter="4" justify="center">
+              <el-button link
+                ><el-col>
+                  <div class="grid-content ep-bg-purple" />
+                  <el-col
+                    ><el-row justify="center"><h3>关注</h3></el-row>
+                    <el-row justify="center" style="margin-top: -25px"
+                      ><h5>{{ userinfo.followings }}</h5></el-row
+                    >
+                  </el-col>
+                </el-col></el-button
+              >
+
+              <el-button link
+                ><el-col>
+                  <div class="grid-content ep-bg-purple" />
+                  <el-col
+                    ><el-row justify="center"><h3>粉丝</h3></el-row>
+                    <el-row justify="center" style="margin-top: -25px"
+                      ><h5>{{ userinfo.followers }}</h5></el-row
+                    >
+                  </el-col>
+                </el-col></el-button
+              >
+              <el-button link
+                ><el-col>
+                  <div class="grid-content ep-bg-purple" />
+                  <el-col
+                    ><el-row justify="center"><h3>博客</h3></el-row>
+                    <el-row justify="center" style="margin-top: -25px"
+                      ><h5>{{ userinfo.blogs }}</h5></el-row
+                    >
+                  </el-col>
+                </el-col></el-button
+              >
+            </el-row>
+            <el-button text style="margin-top: -20px" @click="logout"
+              ><span class="iconfont" style="margin-right: 5px">&#xe60d;</span
+              >退出登录</el-button
+            >
+            <p class="demo-rich-content__desc" style="margin: 0">
+              Element Plus, a Vue 3 based component library for developers,
+              designers and product managers
+            </p>
+          </div>
+        </template>
+      </el-popover>
+      <!-- margin: 12px 5px 0px 20px; -->
+      <!-- margin: 0px 5px 10px 5px; -->
+    </div>
     <!-- 登录按钮 -->
-    <div v-if="true" style="padding-top: 12px">
+    <div v-else style="padding-top: 12px">
       <el-button round @click="loginbutton(loginformRef)">登录</el-button>
       <!-- <el-button link style="color: #fff">注册</el-button> -->
     </div>
@@ -95,6 +185,7 @@
             autocomplete="off"
             placeholder="密码"
             prefix-icon="Key"
+            type="password"
           />
         </el-form-item>
       </el-form>
@@ -105,7 +196,7 @@
         >
           <el-button
             type="primary"
-            @click="Submitloginform"
+            @click="Submitloginform(loginformRef)"
             style="width: 360px; display: block"
           >
             登录
@@ -209,18 +300,7 @@
         </span>
       </template>
     </el-dialog>
-    <!-- 登陆成功图标 -->
-    <div v-if="false" style="padding-top: 12px">
-      <el-avatar
-        :size="32"
-        class="mr-3"
-        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        style="margin: 0px 2px 0px 0px; vertical-align: middle"
-      />
-      <!-- margin: 12px 5px 0px 20px; -->
-      <!-- margin: 0px 5px 10px 5px; -->
-      <span class="text-large font-600 mr-3" style="color: #fff"> Title </span>
-    </div>
+
     <span class="text-large font-600 mr-3" style="margin: 19px 5px 0px 35px">
       <el-icon style="color: #fff"><Star /></el-icon
       ><span
@@ -238,6 +318,15 @@
 <script setup >
 import { ElMessage } from "element-plus";
 import { FormInstance, FormRules } from "element-plus";
+const userinfo = ref({
+  followers: "",
+  followings: "",
+  blogs: "",
+  avatar: "",
+  username: "",
+});
+
+const loginsuccess = ref(false);
 const loginVisible = ref(false);
 const registerVisible = ref(false);
 const registerformRef = ref(null);
@@ -335,13 +424,17 @@ const Submitloginform = (formEl) => {
           .post("http://8.130.81.23:8080/user/login", logindata)
           .then((res) => {
             //登陆成功
-            if (res.code == "200") {
+
+            if (res.data.code == "200") {
               ElMessage({
                 message: "登录成功！",
                 type: "success",
               });
               loginVisible.value = false;
-            } else if (res.code == "402") {
+              loginsuccess.value = true;
+            } else if (res.data.code == "402") {
+              console.log(res.code);
+              console.log(1);
               ElMessage.error("用户名或密码错误！");
             }
           });
@@ -427,6 +520,16 @@ function getverify(formE1) {
       );
     }
   }
+}
+function logout() {
+  axios.get("http://8.130.81.23:8080/user/logout").then((res) => {
+    loginsuccess.value = false;
+  });
+}
+function getuserinfo() {
+  axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+    userinfo.value = res.data.data;
+  });
 }
 </script>
 <script >
