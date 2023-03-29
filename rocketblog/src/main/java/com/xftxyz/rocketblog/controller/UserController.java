@@ -1,5 +1,6 @@
 package com.xftxyz.rocketblog.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,14 +88,17 @@ public class UserController {
             // return "用户名或密码错误";
             return Result.fail(ResultCode.USERNAME_OR_PASSWORD_ERROR);
         }
-        log.info("userid:" + user.getUserid() + ",username:" + user.getUsername() + ",email:" + user.getEmail() +
-                ",avatar:" + user.getAvatar() + ",phone:" + user.getPhone());
+        // log.info("userid:" + user.getUserid() + ",username:" + user.getUsername() +
+        // ",email:" + user.getEmail() +
+        // ",avatar:" + user.getAvatar() + ",phone:" + user.getPhone());
 
         session.setAttribute("user", user);
         String username = user.getUsername();
         String avatar = user.getAvatar();
-        Map<String, Object> map = Map.of("username", username, "avatar", avatar);
-        log.info("map" + map.toString());
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", username);
+        map.put("avatar", avatar);
+        // log.info("map" + map.toString());
         return Result.success(map);
     }
 
