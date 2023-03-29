@@ -79,7 +79,7 @@
           margin: -30px 0 20px 0;
         "
       ></div>
-      <el-form :model="loginform" ref="loginformRef">
+      <el-form :model="loginform" :rules="loginrules" ref="loginformRef">
         <el-form-item :label-width="formLabelWidth" prop="email">
           <el-input
             v-model="loginform.email"
@@ -105,7 +105,7 @@
         >
           <el-button
             type="primary"
-            @click="loginformSubmit"
+            @click="Submitloginform"
             style="width: 360px; display: block"
           >
             登录
@@ -135,7 +135,11 @@
           margin: -30px 0 20px 0;
         "
       ></div>
-      <el-form :model="registerform" :rules="rules" ref="registerformRef">
+      <el-form
+        :model="registerform"
+        :rules="registerrules"
+        ref="registerformRef"
+      >
         <el-form-item :label-width="formLabelWidth" prop="name">
           <el-input
             v-model="registerform.name"
@@ -270,7 +274,11 @@ const validatePass2 = (rule, value, callback) => {
     callback();
   }
 };
-const rules = reactive({
+const loginrules = reactive({
+  email: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
+  password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+});
+const registerrules = reactive({
   password: [
     { validator: validatePass, trigger: "blur" },
     {
@@ -314,42 +322,72 @@ const registerform = reactive({
   password: "",
   vertify: "",
 });
-const submitregisterForm = (formEl) => {
+const Submitloginform = (formEl) => {
   if (!formEl) return;
-  formEl.validate((valid) => {
-    if (valid) {
-      if (registerform.vertify == "") {
-        ElMessage({
-          message: "请输入验证码",
-          type: "warning",
-        });
-      } else {
-        var registerdata = {
-          name: registerform.name,
-          email: registerform.email,
-          password: registerform.password,
-          vertify: registerform.vertify,
+  else {
+    formEl.validate((valid) => {
+      if (valid) {
+        var logindata = {
+          email: loginform.email.trim(),
+          password: loginform.password.trim(),
         };
-
         axios
-          .post("http://8.130.81.23:8080/user/register", registerdata, true)
+          .post("http://8.130.81.23:8080/user/login", logindata)
           .then((res) => {
-            if (res.data == "验证码错误") {
-              ElMessage.error("验证码错误！");
-            } else {
+            //登陆成功
+            if (res.code == "200") {
               ElMessage({
-                message: "注册成功！",
+                message: "登录成功！",
                 type: "success",
               });
-              changetologin(loginformRef);
+              loginVisible.value = false;
+            } else if (res.code == "402") {
+              ElMessage.error("用户名或密码错误！");
             }
           });
+      } else {
+        return false;
       }
-    } else {
-      console.log("error submit!");
-      return false;
-    }
-  });
+    });
+  }
+};
+const submitregisterForm = (formEl) => {
+  if (!formEl) return;
+  else {
+    formEl.validate((valid) => {
+      if (valid) {
+        if (registerform.vertify.trim() == "") {
+          ElMessage({
+            message: "请输入验证码",
+            type: "warning",
+          });
+        } else {
+          var registerdata = {
+            name: registerform.name.trim(),
+            email: registerform.email.trim(),
+            password: registerform.password.trim(),
+            vertify: registerform.vertify.trim(),
+          };
+
+          axios
+            .post("http://8.130.81.23:8080/user/register", registerdata)
+            .then((res) => {
+              if (res.data == "验证码错误") {
+                ElMessage.error("验证码错误！");
+              } else {
+                ElMessage({
+                  message: "注册成功！",
+                  type: "success",
+                });
+                changetologin(loginformRef);
+              }
+            });
+        }
+      } else {
+        return false;
+      }
+    });
+  }
 };
 const loginbutton = (formE1) => {
   loginVisible.value = "true";
