@@ -38,20 +38,36 @@ const routes = [
 
   },
   {
+
     path: '/user',
     name: 'user',
     component: user,
     children: [
+      {
+        path: '',
+        name: '',
+        redirect: 'user/front'
+      },
       {
         path: 'front',
         name: 'front',
         component: front,
         children: [
           {
+            path: '',
+            name: '',
+            redirect: 'user/front/home'
+          },
+          {
             path: 'home',
             name: 'home',
             component: fronthomebody,
             children: [
+              {
+                path: '',
+                name: '',
+                redirect: 'user/front/home/allconcern'
+              },
               {
                 path: 'allconcern',
                 name: 'allconcern',
@@ -83,7 +99,12 @@ const routes = [
       }
     ]
   }
-
+  ,
+  {
+    path: '',
+    name: '',
+    redirect: 'user'
+  }
 ]
 
 const router = createRouter({
