@@ -1,5 +1,4 @@
 <template>
-  <h1>火箭博客</h1>
   <el-menu
     :default-active="activeIndex"
     class="el-menu-demo"
@@ -336,7 +335,7 @@ const submitregisterForm = (formEl) => {
         axios
           .post("http://8.130.81.23:8080/user/register", registerdata, true)
           .then((res) => {
-            console.log(res);
+            consolo.log(res);
           });
       }
     } else {
