@@ -334,7 +334,15 @@ const submitregisterForm = (formEl) => {
         axios
           .post("http://8.130.81.23:8080/user/register", registerdata, true)
           .then((res) => {
-            console.log(res);
+            if (res.data == "验证码错误") {
+              ElMessage.error("验证码错误！");
+            } else {
+              ElMessage({
+                message: "注册成功！",
+                type: "success",
+              });
+              changetologin(loginformRef);
+            }
           });
       }
     } else {
