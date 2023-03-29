@@ -351,39 +351,41 @@ const Submitloginform = (formEl) => {
 };
 const submitregisterForm = (formEl) => {
   if (!formEl) return;
-  formEl.validate((valid) => {
-    if (valid) {
-      if (registerform.vertify.trim() == "") {
-        ElMessage({
-          message: "请输入验证码",
-          type: "warning",
-        });
-      } else {
-        var registerdata = {
-          name: registerform.name.trim(),
-          email: registerform.email.trim(),
-          password: registerform.password.trim(),
-          vertify: registerform.vertify.trim(),
-        };
-
-        axios
-          .post("http://8.130.81.23:8080/user/register", registerdata)
-          .then((res) => {
-            if (res.data == "验证码错误") {
-              ElMessage.error("验证码错误！");
-            } else {
-              ElMessage({
-                message: "注册成功！",
-                type: "success",
-              });
-              changetologin(loginformRef);
-            }
+  else {
+    formEl.validate((valid) => {
+      if (valid) {
+        if (registerform.vertify.trim() == "") {
+          ElMessage({
+            message: "请输入验证码",
+            type: "warning",
           });
+        } else {
+          var registerdata = {
+            name: registerform.name.trim(),
+            email: registerform.email.trim(),
+            password: registerform.password.trim(),
+            vertify: registerform.vertify.trim(),
+          };
+
+          axios
+            .post("http://8.130.81.23:8080/user/register", registerdata)
+            .then((res) => {
+              if (res.data == "验证码错误") {
+                ElMessage.error("验证码错误！");
+              } else {
+                ElMessage({
+                  message: "注册成功！",
+                  type: "success",
+                });
+                changetologin(loginformRef);
+              }
+            });
+        }
+      } else {
+        return false;
       }
-    } else {
-      return false;
-    }
-  });
+    });
+  }
 };
 const loginbutton = (formE1) => {
   loginVisible.value = "true";
