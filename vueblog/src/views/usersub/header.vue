@@ -1,4 +1,5 @@
 <template>
+  <h1>ershrdfgf</h1>
   <el-menu
     :default-active="activeIndex"
     class="el-menu-demo"
@@ -330,7 +331,7 @@ const submitregisterForm = (formEl) => {
           password: registerform.password,
           vertify: registerform.vertify,
         };
-        
+
         console.log(axios.defaults.withCredentials);
         axios
           .post("http://8.130.81.23:8080/user/register", registerdata, true)
