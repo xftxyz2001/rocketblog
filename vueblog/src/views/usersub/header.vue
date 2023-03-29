@@ -324,30 +324,32 @@ const registerform = reactive({
 });
 const Submitloginform = (formEl) => {
   if (!formEl) return;
-  formEl.validate((valid) => {
-    if (valid) {
-      var logindata = {
-        email: loginform.email.trim(),
-        password: loginform.password.trim(),
-      };
-      axios
-        .post("http://8.130.81.23:8080/user/login", logindata)
-        .then((res) => {
-          //登陆成功
-          if (res.code == "200") {
-            ElMessage({
-              message: "登录成功！",
-              type: "success",
-            });
-            loginVisible.value = false;
-          } else if (res.code == "402") {
-            ElMessage.error("用户名或密码错误！");
-          }
-        });
-    } else {
-      return false;
-    }
-  });
+  else {
+    formEl.validate((valid) => {
+      if (valid) {
+        var logindata = {
+          email: loginform.email.trim(),
+          password: loginform.password.trim(),
+        };
+        axios
+          .post("http://8.130.81.23:8080/user/login", logindata)
+          .then((res) => {
+            //登陆成功
+            if (res.code == "200") {
+              ElMessage({
+                message: "登录成功！",
+                type: "success",
+              });
+              loginVisible.value = false;
+            } else if (res.code == "402") {
+              ElMessage.error("用户名或密码错误！");
+            }
+          });
+      } else {
+        return false;
+      }
+    });
+  }
 };
 const submitregisterForm = (formEl) => {
   if (!formEl) return;
