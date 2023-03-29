@@ -1,12 +1,18 @@
 package com.xftxyz.rocketblog.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xftxyz.rocketblog.mapper.BlogMapper;
+import com.xftxyz.rocketblog.mapper.FollowMapper;
 import com.xftxyz.rocketblog.mapper.UserMapper;
+import com.xftxyz.rocketblog.pojo.BlogExample;
+import com.xftxyz.rocketblog.pojo.FollowExample;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserExample;
 import com.xftxyz.rocketblog.service.UserService;
@@ -16,6 +22,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    FollowMapper followMapper;
+
+    @Autowired
+    BlogMapper blogMapper;
 
     @Override
     public List<User> getUsers() {
@@ -94,6 +106,36 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         return null;
+    }
+
+    @Override
+    public Map<String, Object> getUserInfo(User user) {
+        // 用户名、头像
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("username", user.getUsername());
+        userInfo.put("avatar", user.getAvatar());
+
+        // 关注: userid_following -> userid_followed
+
+        // 关注数: followings
+        FollowExample exFollowings = new FollowExample();
+        exFollowings.createCriteria().andUseridFollowingEqualTo(user.getUserid());
+        long followings = followMapper.countByExample(exFollowings);
+        userInfo.put("followings", followings);
+
+        // 粉丝数: followers
+        FollowExample exFollowers = new FollowExample();
+        exFollowers.createCriteria().andUseridFollowedEqualTo(user.getUserid());
+        long followers = followMapper.countByExample(exFollowers);
+        userInfo.put("followers", followers);
+
+        // 文章数: blogs
+        BlogExample exBlogs = new BlogExample();
+        exBlogs.createCriteria().andUseridEqualTo(user.getUserid());
+        long blogs = blogMapper.countByExample(exBlogs);
+        userInfo.put("blogs", blogs);
+
+        return userInfo;
     }
 
 }

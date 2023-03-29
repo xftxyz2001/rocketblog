@@ -77,9 +77,19 @@ public class UserController {
         session.setAttribute("user", user);
         Map<String, Object> map = new HashMap<>();
         map.put("username", user.getUsername());
-        map.put("email", user.getEmail());
         map.put("avatar", user.getAvatar());
         return Result.success(map);
+    }
+
+    // 获取用户信息
+    @GetMapping("/info")
+    public Result<Map<String, Object>> info(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        Map<String, Object> userInfo = userService.getUserInfo(user);
+        return Result.success(userInfo);
     }
 
     // 登出
@@ -87,16 +97,6 @@ public class UserController {
     public Result<Object> logout(HttpSession session) {
         session.invalidate();
         return Result.success();
-    }
-
-    // 获取用户信息
-    @GetMapping("/info")
-    public Result<User> info(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
-        return Result.success(user);
     }
 
 }
