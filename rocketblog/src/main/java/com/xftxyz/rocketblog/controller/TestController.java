@@ -21,13 +21,13 @@ public class TestController {
 
     @Autowired
     UserService userService;
-    
+
     @PostMapping("/register")
     public String register(@RequestParam("name") String name,
-                           @RequestParam("password") String password,
-                            @RequestParam("email") String email,
-                            // @RequestParam("vertify") String vertify,
-     HttpSession session) {
+            @RequestParam("password") String password,
+            @RequestParam("email") String email,
+            // @RequestParam("vertify") String vertify,
+            HttpSession session) {
         // String name = (String) requestBody.get("name");
         // String password = (String) requestBody.get("password");
         // String email = (String) requestBody.get("email");
@@ -38,13 +38,14 @@ public class TestController {
         // log.info("name:" + name + ",password:" + password + ",email:" + email +
         // ",vertify:" + vertify);
         // log.info(session.getId());
-        String acode = (String) session.getServletContext().getAttribute("code");
-        log.info("Application中的验证码：" + acode);
+        // String acode = (String) session.getServletContext().getAttribute("code");
+        // log.info("Application中的验证码：" + acode);
         // if (acode == null || !acode.equals(vertify)) {
-        //     return "验证码错误";
+        // return "验证码错误";
         // }
         // 注册
-        String register = userService.register(name, password, email);
-        return register;
+        // String register = userService.register(name, password, email);
+        // return register;
+        return "success";
     }
 }

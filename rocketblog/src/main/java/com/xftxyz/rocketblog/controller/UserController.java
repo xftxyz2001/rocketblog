@@ -48,13 +48,13 @@ public class UserController {
         String email = (String) requestBody.get("email");
         String vertify = (String) requestBody.get("vertify");
         // 获取用户输入的验证码
-        // String acode = session.getAttribute("code").toString();
+        String acode = (String) session.getAttribute("code");
         // 输出一下接收到的参数
         // log.info("name:" + name + ",password:" + password + ",email:" + email +
         // ",vertify:" + vertify);
         // log.info(session.getId());
-        String acode = (String) session.getServletContext().getAttribute("code");
-        log.info("Application中的验证码：" + acode + "，用户输入的验证码：" + vertify);
+        // String acode = (String) session.getServletContext().getAttribute("code");
+        log.info("Session中的验证码：" + acode + "，用户输入的验证码：" + vertify);
         if (acode == null || !acode.equals(vertify)) {
             return "验证码错误";
         }
@@ -82,8 +82,8 @@ public class UserController {
     public String code(HttpSession session, @PathVariable("email") String email) {
         // 随机生成六位数验证码
         String code = "" + (int) ((Math.random() * 9 + 1) * 100000);
-        // session.setAttribute("code", code);
-        session.getServletContext().setAttribute("code", code);
+        session.setAttribute("code", code);
+        // session.getServletContext().setAttribute("code", code);
 
         // 发送邮件
         log.info(email + "的验证码为：" + code);
