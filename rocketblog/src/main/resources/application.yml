@@ -16,7 +16,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 1346802467@qq.com
-    password: dbprfzvxxpxsgjbg
+    password: uzhblohhwmvwhfib
     default-encoding: UTF-8
     protocol: smtp
     # smtp的指定端口 使用465要将protocol改为smtps
