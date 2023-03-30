@@ -26,7 +26,7 @@
           contentType="html"
           theme="snow"
         />
-        <el-button @click="submit"></el-button>
+        <el-button @click="submit">（测试发布）</el-button>
       </el-main>
     </el-container>
   </div>
@@ -65,6 +65,7 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import router from "@/router";
+import axios from "axios";
 export default {
   components: { QuillEditor },
   props: ["model"],
@@ -120,7 +121,9 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.content);
+      axios.post("/blog/publish", { blogContent: this.content }).then((res) => {
+        console.log(res);
+      });
     },
   },
 };
