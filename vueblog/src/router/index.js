@@ -11,6 +11,7 @@ import FrontHomeAllConcernMiddle from '@/views/usersub/frontsub/fronthomesub/mid
 import FrontHomeFriendMiddle from "@/views/usersub/frontsub/fronthomesub/middle/friendmiddle.vue";
 import FrontHomeLatestMiddle from "@/views/usersub/frontsub/fronthomesub/middle/latestmiddle.vue";
 import FrontHomeMostLikeMiddle from "@/views/usersub/frontsub/fronthomesub/middle/mostlikemiddle.vue";
+import EditBlog from "@/views/usersub/editblog"
 const routes = [
 
   {
@@ -47,6 +48,11 @@ const routes = [
         path: '',
         name: '',
         redirect: { name: 'allconcern' }
+      },
+      {
+        path: 'editblog',
+        name: 'editblog',
+        component: EditBlog
       },
       {
         path: 'front',

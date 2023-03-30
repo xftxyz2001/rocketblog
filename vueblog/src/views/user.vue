@@ -4,9 +4,15 @@
 
 <script>
 import { Search } from "@element-plus/icons-vue";
-export default {
+import EditBlog from "@/views/usersub/editblog.vue";
+
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "user",
-};
+  components: {
+    EditBlog,
+  },
+});
 </script>
 
 <style scoped>
