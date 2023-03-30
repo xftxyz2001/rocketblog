@@ -32,36 +32,32 @@
         "
       />
     </div>
-    <router-link :to="{ name: 'home' }"
-      ><el-menu-item index="1" style="padding: 0 40px; margin-left: 60px"
+    <router-link :to="{ name: 'allconcern' }"
+      ><el-menu-item index="1" style="padding: 0 30px; margin-left: 20px"
         ><el-icon><HomeFilled /></el-icon>首页</el-menu-item
       ></router-link
     >
 
     <router-link :to="{ name: 'hot' }">
-      <el-menu-item index="2" style="padding: 0 40px"
+      <el-menu-item index="2" style="padding: 0 30px"
         ><span class="iconfont" style="margin-right: 5px">&#xe602;</span
         >热门</el-menu-item
       ></router-link
     >
 
-    <el-menu-item index="3" style="padding: 0 40px"
+    <el-menu-item index="3" style="padding: 0 30px"
       ><el-icon><ChatDotRound /></el-icon>消息</el-menu-item
     >
-    <el-menu-item index="4" style="padding: 0 40px"
+    <el-menu-item index="4" style="padding: 0 30px"
       ><el-icon><UserFilled /></el-icon>主页</el-menu-item
     >
-    <el-sub-menu index="5" style="padding: 0 25px">
-      <template #title
-        ><el-icon><Plus /></el-icon>发布</template
-      >
-      <el-menu-item index="5-1"
-        ><el-icon><CirclePlus /></el-icon>发布专题</el-menu-item
-      >
-      <el-menu-item index="5-2"
-        ><el-icon><CirclePlus /></el-icon>发布日志</el-menu-item
-      >
-    </el-sub-menu>
+    <el-menu-item
+      index="5"
+      style="padding: 0 30px; margin-right: 70px"
+      @click="editbutton"
+      ><el-icon><Plus /></el-icon>发布</el-menu-item
+    >
+
     <!-- 登陆成功图标 -->
     <div v-if="loginsuccess" style="padding-top: 12px">
       <!-- <el-avatar
@@ -312,6 +308,8 @@
   </el-menu>
 </template>
 <script setup >
+import { useRouter } from "vue-router";
+
 import { ElMessage } from "element-plus";
 import { FormInstance, FormRules } from "element-plus";
 const userinfo = ref({
@@ -321,7 +319,7 @@ const userinfo = ref({
   avatar: "",
   username: "",
 });
-
+const router = useRouter();
 const loginsuccess = ref(false);
 const loginVisible = ref(false);
 const registerVisible = ref(false);
@@ -527,6 +525,10 @@ function getuserinfo() {
   axios.get("http://8.130.81.23:8080/user/info").then((res) => {
     userinfo.value = res.data.data;
   });
+}
+function editbutton() {
+  router.push({ name: "editblog" });
+  // window.open({ name: "editblog" }, "_blank");
 }
 </script>
 <script >
