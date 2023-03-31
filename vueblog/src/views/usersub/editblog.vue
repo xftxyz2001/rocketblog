@@ -1,14 +1,10 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header
-        ><el-page-header @back="back">
+      <el-header><el-page-header @back="back">
           <template #content>
-            <el-avatar
-              :size="32"
-              class="mr-3"
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-            />
+            <el-avatar :size="32" class="mr-3"
+              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
           </template>
           <template #extra>
             <div class="flex items-center">
@@ -16,22 +12,16 @@
               <el-button type="primary" class="ml-2">发布</el-button>
             </div>
           </template>
-        </el-page-header></el-header
-      >
+        </el-page-header></el-header>
 
       <el-main>
-        <QuillEditor
-          v-model:content="content"
-          :options="editorOption"
-          contentType="html"
-          theme="snow"
-        />
+        <QuillEditor v-model:content="content" :options="editorOption" contentType="html" theme="snow" />
         <el-button @click="submit">（测试发布）</el-button>
       </el-main>
     </el-container>
   </div>
 </template>
- <script setup>
+<script setup>
 import { ref } from "vue";
 function back() {
   router.push({ name: "allconcern" });
@@ -122,7 +112,12 @@ export default {
   methods: {
     submit() {
       axios.post("/blog/publish", { blogContent: this.content }).then((res) => {
-        console.log(res);
+        if (res.data.code == "200") {
+          ElMessage({
+            message: "发布成功",
+            type: "success",
+          });
+        }
       });
     },
   },

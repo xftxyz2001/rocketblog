@@ -96,16 +96,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String email, String password) {
         UserExample exEmail = new UserExample();
-        exEmail.createCriteria().andEmailEqualTo(email);
+        exEmail.createCriteria().andEmailEqualTo(email).andPasswordEqualTo(password);
         List<User> userList = userMapper.selectByExample(exEmail);
-        if (userList.size() == 0) {
+        if (userList.size() < 1) {
             return null;
         }
         User user = userList.get(0);
-        if (user.getPassword().equals(password)) {
-            return user;
-        }
-        return null;
+        // 更新最后登录时间
+        user.setLastLogin(new Date());
+        userMapper.updateByPrimaryKey(user);
+        return user;
     }
 
     @Override
