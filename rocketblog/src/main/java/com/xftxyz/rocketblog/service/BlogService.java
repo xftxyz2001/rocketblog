@@ -33,4 +33,8 @@ public interface BlogService {
 
     public int deleteComment(Long commentId);
 
+    public List<Blog> getHotBlogs();
+
+    public List<Blog> getNewBlogs();
+
 }

@@ -138,4 +138,17 @@ public class BlogServiceImpl implements BlogService {
         return delete;
     }
 
+    @Override
+    public List<Blog> getHotBlogs() {
+        return null;
+    }
+
+    @Override
+    public List<Blog> getNewBlogs() {
+        BlogExample exBlog = new BlogExample();
+        exBlog.setOrderByClause("update_time desc");
+        List<Blog> blogList = blogMapper.selectByExampleWithBLOBs(exBlog);
+        return blogList;
+    }
+
 }

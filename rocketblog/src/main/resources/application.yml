@@ -32,3 +32,6 @@ mybatis:
   mapper-locations: classpath:com/xftxyz/rocketblog/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+pagehelper:
+  helper-dialect: mysql

@@ -1,5 +1,7 @@
 package com.xftxyz.rocketblog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.User;
@@ -40,8 +44,28 @@ public class BlogController {
         // 日志：用户{}发布了博客{}
         log.info("用户{}发布了博客{}", user.getUsername(), blog.getBlogTitle());
         int insert = blogService.addBlog(blog);
+
         return Result.success(insert);
     }
+
+    // 热门博客，分页返回
+    @GetMapping("/hot")
+    public Result<PageInfo<Blog>> hot(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Blog> hotBlogs = blogService.getHotBlogs();
+        PageInfo<Blog> pageInfo = new PageInfo<>(hotBlogs);
+        return Result.success(pageInfo);
+    }
+
+    // 最新发布，分页返回
+    @GetMapping("/new")
+    public Result<PageInfo<Blog>> newBlog(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Blog> newBlogs = blogService.getNewBlogs();
+        PageInfo<Blog> pageInfo = new PageInfo<>(newBlogs);
+        return Result.success(pageInfo);
+    }
+
     // 获取
     // 修改
     // 删除
@@ -112,6 +136,5 @@ public class BlogController {
         int delete = blogService.deleteComment(commentId);
         return Result.success(delete);
     }
-
 
 }
