@@ -20,6 +20,31 @@
       >
 
       <el-main>
+        <el-row style="margin-bottom: 10px"
+          ><sapn style="font-weight: 700; font-size: 20px; margin-right: 20px"
+            >标题</sapn
+          >
+          <el-input style="width: 15%"></el-input
+        ></el-row>
+        <el-row style="margin-bottom: 10px"
+          >封面图片（可选）
+          <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            multiple
+            :limit="3"
+            :on-exceed="handleExceed"
+            :file-list="fileList"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div class="el-upload__tip" style="margin-left: 5px">
+              只能上传jpg/png文件，且不超过500kb
+            </div>
+          </el-upload></el-row
+        >
         <QuillEditor
           v-model:content="content"
           :options="editorOption"
@@ -33,6 +58,7 @@
 </template>
  <script setup>
 import { ref } from "vue";
+
 function back() {
   router.push({ name: "allconcern" });
 }
@@ -53,7 +79,7 @@ const toolbarOptions = [
   [{ align: [] }], // 对齐方式
   ["clean"], // 清除文本格式
   // ["link", "image", "video"], // 链接、图片、视频
-  ["link", "image"], // 链接、图片、视频
+  ["image"], // 链接、图片、视频
 ];
 
 import { QuillEditor, Quill } from "@vueup/vue-quill";
@@ -96,22 +122,22 @@ export default {
               image: function (value) {
                 QuillWatch.emit(this.quill.id);
               },
-              link: function (value) {
-                if (value) {
-                  var href = prompt("请输入链接地址：");
-                  this.quill.format("link", href);
-                } else {
-                  this.quill.format("link", false);
-                }
-              },
-              video: function (value) {
-                if (value) {
-                  var href = prompt("请输入视频链接：");
-                  this.quill.format("video", href);
-                } else {
-                  this.quill.format("video", false);
-                }
-              },
+              // link: function (value) {
+              //   if (value) {
+              //     var href = prompt("请输入链接地址：");
+              //     this.quill.format("link", href);
+              //   } else {
+              //     this.quill.format("link", false);
+              //   }
+              // },
+              // video: function (value) {
+              //   if (value) {
+              //     var href = prompt("请输入视频链接：");
+              //     this.quill.format("video", href);
+              //   } else {
+              //     this.quill.format("video", false);
+              //   }
+              // },
             },
           },
         },
@@ -121,6 +147,22 @@ export default {
   methods: {
     submit() {
       console.log(this.content);
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
     },
   },
 };
