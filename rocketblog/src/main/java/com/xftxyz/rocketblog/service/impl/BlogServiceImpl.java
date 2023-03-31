@@ -1,5 +1,6 @@
 package com.xftxyz.rocketblog.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,8 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public int addBlog(Blog blog) {
+        blog.setCreateTime(new Date());
+        blog.setUpdateTime(new Date());
         int insert = blogMapper.insert(blog);
         return insert;
     }
