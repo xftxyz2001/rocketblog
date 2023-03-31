@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.service;
 import java.util.List;
 
 import com.xftxyz.rocketblog.pojo.Blog;
+import com.xftxyz.rocketblog.pojo.Comment;
 
 public interface BlogService {
     // 返回所有博客
@@ -19,5 +20,17 @@ public interface BlogService {
 
     // 修改博客
     public int updateBlog(Blog blog);
+
+    public int collect(Long userid, Long blogId);
+
+    public int cancelCollect(Long userid, Long blogId);
+
+    public int like(Long userid, Long blogId);
+
+    public int cancelLike(Long userid, Long blogId);
+
+    public int addComment(Comment comment);
+
+    public int deleteComment(Long commentId);
 
 }

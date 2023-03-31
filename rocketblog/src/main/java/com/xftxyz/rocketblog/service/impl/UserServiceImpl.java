@@ -12,6 +12,7 @@ import com.xftxyz.rocketblog.mapper.BlogMapper;
 import com.xftxyz.rocketblog.mapper.FollowMapper;
 import com.xftxyz.rocketblog.mapper.UserMapper;
 import com.xftxyz.rocketblog.pojo.BlogExample;
+import com.xftxyz.rocketblog.pojo.Follow;
 import com.xftxyz.rocketblog.pojo.FollowExample;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserExample;
@@ -136,6 +137,40 @@ public class UserServiceImpl implements UserService {
         userInfo.put("blogs", blogs);
 
         return userInfo;
+    }
+
+    @Override
+    public void follow(Long userFollowing, Long userFollowed) {
+        Follow follow = new Follow();
+        follow.setUseridFollowing(userFollowing);
+        follow.setUseridFollowed(userFollowed);
+        follow.setCreatetime(new Date());
+        followMapper.insert(follow);
+    }
+
+    @Override
+    public void cancelFollow(Long userFollowing, Long userFollowed) {
+        FollowExample exFollow = new FollowExample();
+        exFollow.createCriteria().andUseridFollowingEqualTo(userFollowing).andUseridFollowedEqualTo(userFollowed);
+        followMapper.deleteByExample(exFollow);
+    }
+
+    @Override
+    public Map<String, Object> getFollowings(Long userid) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFollowings'");
+    }
+
+    @Override
+    public Map<String, Object> getFollowers(Long userid) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFollowers'");
+    }
+
+    @Override
+    public void chat(Long fromUserid, Long toUserid, String content) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'chat'");
     }
 
 }

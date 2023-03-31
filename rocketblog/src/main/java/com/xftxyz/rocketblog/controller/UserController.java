@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -98,5 +99,67 @@ public class UserController {
         session.invalidate();
         return Result.success();
     }
+
+    // 关注
+    @GetMapping("/follow/{userid}")
+    public Result<Object> follow(HttpSession session, @PathVariable("userid") Long userid) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        userService.follow(user.getUserid(), userid);
+        return Result.success();
+    }
+
+    // 取消关注
+    @DeleteMapping("/follow/{userid}")
+    public Result<Object> cancelFollow(HttpSession session, @PathVariable("userid") Long userid) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        userService.cancelFollow(user.getUserid(), userid);
+        return Result.success();
+    }
+
+    // 获取用户关注列表
+    @GetMapping("/followings")
+    public Result<Map<String, Object>> followings(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        // TODO: 分页
+        Map<String, Object> followings = userService.getFollowings(user.getUserid());
+        return Result.success(followings);
+    }
+
+    // 获取用户粉丝列表
+    @GetMapping("/followers")
+    public Result<Map<String, Object>> followers(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        // TODO: 分页
+        Map<String, Object> followers = userService.getFollowers(user.getUserid());
+        return Result.success(followers);
+    }
+
+    // 发送消息
+    @PostMapping("/chat")
+    public Result<Object> chat(HttpSession session, @RequestBody Map<String, Object> requestBody) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        Long toUserid = Long.parseLong((String) requestBody.get("to"));
+        String content = (String) requestBody.get("content");
+        userService.chat(user.getUserid(), toUserid, content);
+        return Result.success();
+    }
+
+
+
 
 }

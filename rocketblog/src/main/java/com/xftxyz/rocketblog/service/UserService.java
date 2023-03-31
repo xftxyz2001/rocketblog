@@ -32,4 +32,14 @@ public interface UserService {
     // 获取用户信息
     public Map<String, Object> getUserInfo(User user);
 
+    public void follow(Long userFollowing, Long userFollowed);
+
+    public void cancelFollow(Long userFollowing, Long userFollowed);
+
+    public Map<String, Object> getFollowings(Long userid);
+
+    public Map<String, Object> getFollowers(Long userid);
+
+    public void chat(Long fromUserid, Long toUserid, String content);
+
 }
