@@ -13,7 +13,9 @@
           <template #extra>
             <div class="flex items-center">
               <el-button>保存</el-button>
-              <el-button type="primary" class="ml-2">发布</el-button>
+              <el-button type="primary" class="ml-2" @click="submit"
+                >发布</el-button
+              >
             </div>
           </template>
         </el-page-header></el-header
@@ -24,7 +26,7 @@
           ><sapn style="font-weight: 700; font-size: 20px; margin-right: 20px"
             >标题</sapn
           >
-          <el-input style="width: 15%"></el-input
+          <el-input style="width: 15%" v-model="blogTitle"></el-input
         ></el-row>
         <el-row style="margin-bottom: 10px"
           >封面图片（可选）
@@ -51,7 +53,6 @@
           contentType="html"
           theme="snow"
         />
-        <el-button @click="submit"></el-button>
       </el-main>
     </el-container>
   </div>
@@ -91,11 +92,13 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import router from "@/router";
+import axios from "axios";
 export default {
   components: { QuillEditor },
   props: ["model"],
   data() {
     return {
+      blogTitle: "",
       content: "",
       editorOption: {
         theme: "snow",
@@ -146,7 +149,9 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.content);
+      var blogdata = { blogTitle: this.blogTitle, blogContent: this.content };
+
+      axios.post("http://8.130.81.23:8080/blog/publish", blogdata);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
