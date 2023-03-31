@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xftxyz.rocketblog.mapper.BlogMapper;
+import com.xftxyz.rocketblog.mapper.BlogWithUserMapper;
 import com.xftxyz.rocketblog.mapper.BookmarkMapper;
 import com.xftxyz.rocketblog.mapper.CommentMapper;
 import com.xftxyz.rocketblog.mapper.LikeMapper;
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogExample;
+import com.xftxyz.rocketblog.pojo.BlogWithUser;
+import com.xftxyz.rocketblog.pojo.BlogWithUserExample;
 import com.xftxyz.rocketblog.pojo.BlogExample.Criteria;
 import com.xftxyz.rocketblog.pojo.Bookmark;
 import com.xftxyz.rocketblog.pojo.BookmarkExample;
@@ -25,6 +28,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     BlogMapper blogMapper;
+
+    @Autowired
+    BlogWithUserMapper blogWithUserMapper;
 
     @Autowired
     BookmarkMapper bookmarkMapper;
@@ -144,10 +150,10 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<Blog> getNewBlogs() {
-        BlogExample exBlog = new BlogExample();
+    public List<BlogWithUser> getNewBlogs() {
+        BlogWithUserExample exBlog = new BlogWithUserExample();
         exBlog.setOrderByClause("update_time desc");
-        List<Blog> blogList = blogMapper.selectByExampleWithBLOBs(exBlog);
+        List<BlogWithUser> blogList = blogWithUserMapper.selectByExampleWithBLOBs(exBlog);
         return blogList;
     }
 

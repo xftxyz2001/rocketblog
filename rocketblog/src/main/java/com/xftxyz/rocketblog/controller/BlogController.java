@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.pojo.Blog;
+import com.xftxyz.rocketblog.pojo.BlogWithUser;
 import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.result.Result;
@@ -59,10 +60,10 @@ public class BlogController {
 
     // 最新发布，分页返回
     @GetMapping("/new")
-    public Result<PageInfo<Blog>> newBlog(int pageNum, int pageSize) {
+    public Result<PageInfo<BlogWithUser>> newBlog(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Blog> newBlogs = blogService.getNewBlogs();
-        PageInfo<Blog> pageInfo = new PageInfo<>(newBlogs);
+        List<BlogWithUser> newBlogs = blogService.getNewBlogs();
+        PageInfo<BlogWithUser> pageInfo = new PageInfo<>(newBlogs);
         return Result.success(pageInfo);
     }
 

@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.service;
 import java.util.List;
 
 import com.xftxyz.rocketblog.pojo.Blog;
+import com.xftxyz.rocketblog.pojo.BlogWithUser;
 import com.xftxyz.rocketblog.pojo.Comment;
 
 public interface BlogService {
@@ -35,6 +36,6 @@ public interface BlogService {
 
     public List<Blog> getHotBlogs();
 
-    public List<Blog> getNewBlogs();
+    public List<BlogWithUser> getNewBlogs();
 
 }

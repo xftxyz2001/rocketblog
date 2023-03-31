@@ -43,8 +43,8 @@
         <table tableName="t_chat" domainObjectName="Chat" />
         <table tableName="t_comment" domainObjectName="Comment" />
         <table tableName="t_follow" domainObjectName="Follow" />
-        <table tableName="t_like" domainObjectName="Like" />
-        
+        <table tableName="t_like" domainObjectName="Like" />        
+        <table tableName="v_blogwithuser" domainObjectName="BlogWithUser" />
         <!-- <table tableName="t_dept" domainObjectName="Dept" /> -->
     </context>
 </generatorConfiguration>
