@@ -1,7 +1,5 @@
 <template>
-  <!-- 所有关注日志展示 -->
-  hot最新
-  <el-card v-for="o in 4" :key="o" class="box-card">
+  <el-card v-for="blog in latestdata" :key="blog.id" class="box-card">
     <template #header>
       <div class="card-header">
         <div>
@@ -19,42 +17,54 @@
               margin: -3px 5px 3px 5px;
             "
           >
-            返回的title
+            {{ blog.blogTitle }}
           </span>
         </div>
 
-        <el-button class="button" text style="color: #24acf2"
+        <!-- <el-button
+          class="button"
+          text
+          style="color: #24acf2"
+          @click="followthis"
           ><el-icon style="margin: 0 2px 1.5px 0"><Plus /></el-icon
           >关注</el-button
-        >
+        > -->
       </div>
-      <span style="font-size: 5px; margin-left: 5px">作者：</span>
+      <span style="font-size: 5px; margin-left: 5px"
+        >作者：{{ blog.username }}</span
+      >
     </template>
 
-    <div>
-      <label style="margin-right: 16px">Switch Loading</label>
-      <el-switch v-model="loading" />
-    </div>
     <el-skeleton style="width: 100%" :loading="loading" animated>
       <template #default>
-        <div style="padding: 14px">
+        <div style="padding: 14px; cursor: pointer">
           <el-row>
             <el-col :span="6"
               ><div class="grid-content ep-bg-purple" />
-              返回的封面图片</el-col
+              图片</el-col
             >
             <el-col :span="12"
               ><div class="grid-content ep-bg-purple-light" />
-              <div style="width: 100%">返回的数据</div></el-col
+              <div style="width: 100%">{{ blog.blogContent }}</div></el-col
             >
           </el-row>
         </div>
         <div class="bottom card-header">
-          <div class="time" style="font-size: 10px">返回的时间</div>
-          <div>
-            <span class="iconfont" style="margin-right: 10px">&#xe600;</span>
-            <span class="iconfont" style="margin-right: 5px">&#xe603;</span>
-          </div>
+          <div class="time" style="font-size: 10px">{{ blog.updateTime }}</div>
+          <!-- <div>
+            <span
+              class="iconfont"
+              style="margin-right: 10px; cursor: pointer"
+              @click="likethis"
+              >&#xe600;</span
+            >
+            <span
+              class="iconfont"
+              style="margin-right: 5px; cursor: pointer"
+              @click="collectthis"
+              >&#xe603;</span
+            >
+          </div> -->
         </div>
       </template>
     </el-skeleton>
@@ -62,10 +72,40 @@
 </template>
 
 <script setup>
+import axios from "axios";
+import { getCurrentInstance } from "vue";
 import { ref } from "vue";
-
-const loading = ref(true);
+const latestdata = ref([]);
+// import bus from "@/utils/bus";
+axios
+  .get("http://8.130.81.23:8080/blog/new?pageNum=1&pageSize=5")
+  .then((res) => {
+    latestdata.value = res.data.data.list;
+  });
+const loading = ref(false);
 const currentDate = new Date().toDateString();
+const { Bus } = getCurrentInstance().appContext.config.globalProperties;
+// function followthis() {
+//   if (localStorage.getItem("token")) {
+//     //关注
+//   } else {
+//     Bus.emit("followneedlogin", {});
+//   }
+// }
+// function likethis() {
+//   if (localStorage.getItem("token")) {
+//     //点赞
+//   } else {
+//     Bus.emit("likeneedlogin", {});
+//   }
+// }
+// function collectthis() {
+//   if (localStorage.getItem("token")) {
+//     //收藏
+//   } else {
+//     Bus.emit("collectneedlogin", {});
+//   }
+// }
 </script>
 <script>
 export default {};
