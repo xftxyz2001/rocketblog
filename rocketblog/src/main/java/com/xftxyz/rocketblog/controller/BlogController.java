@@ -51,10 +51,37 @@ public class BlogController {
 
     // 热门博客，分页返回
     @GetMapping("/hot")
-    public Result<PageInfo<Blog>> hot(int pageNum, int pageSize) {
+    public Result<PageInfo<BlogWithUser>> hot(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Blog> hotBlogs = blogService.getHotBlogs();
-        PageInfo<Blog> pageInfo = new PageInfo<>(hotBlogs);
+        List<BlogWithUser> hotBlogs = blogService.getHotBlogs();
+        PageInfo<BlogWithUser> pageInfo = new PageInfo<>(hotBlogs);
+        return Result.success(pageInfo);
+    }
+
+    // 点赞最多
+    @GetMapping("/hot/like")
+    public Result<PageInfo<BlogWithUser>> hotLike(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<BlogWithUser> hotBlogs = blogService.getMostLikeBlogs();
+        PageInfo<BlogWithUser> pageInfo = new PageInfo<>(hotBlogs);
+        return Result.success(pageInfo);
+    }
+
+    // 收藏最多
+    @GetMapping("/hot/collect")
+    public Result<PageInfo<BlogWithUser>> hotCollect(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<BlogWithUser> hotBlogs = blogService.getMostCollectBlogs();
+        PageInfo<BlogWithUser> pageInfo = new PageInfo<>(hotBlogs);
+        return Result.success(pageInfo);
+    }
+
+    // 评论最多
+    @GetMapping("/hot/comment")
+    public Result<PageInfo<BlogWithUser>> hotComment(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<BlogWithUser> hotBlogs = blogService.getMostCommentBlogs();
+        PageInfo<BlogWithUser> pageInfo = new PageInfo<>(hotBlogs);
         return Result.success(pageInfo);
     }
 

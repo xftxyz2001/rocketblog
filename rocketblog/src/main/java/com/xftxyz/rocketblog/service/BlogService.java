@@ -34,7 +34,17 @@ public interface BlogService {
 
     public int deleteComment(Long commentId);
 
-    public List<Blog> getHotBlogs();
+    // 获取热门博客
+    public List<BlogWithUser> getHotBlogs();
+
+    // 获取点赞最多的博客
+    public List<BlogWithUser> getMostLikeBlogs();
+
+    // 获取收藏最多的博客
+    public List<BlogWithUser> getMostCollectBlogs();
+
+    // 获取评论最多的博客
+    public List<BlogWithUser> getMostCommentBlogs();
 
     public List<BlogWithUser> getNewBlogs();
 

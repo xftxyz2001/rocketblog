@@ -145,8 +145,27 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<Blog> getHotBlogs() {
-        return null;
+    public List<BlogWithUser> getHotBlogs() {
+        List<BlogWithUser> hotBlogs = blogWithUserMapper.selectHotBlogs();
+        return hotBlogs;
+    }
+
+    @Override
+    public List<BlogWithUser> getMostLikeBlogs() {
+        List<BlogWithUser> mostLikeBlogs = blogWithUserMapper.selectMostLikeBlogs();
+        return mostLikeBlogs;
+    }
+
+    @Override
+    public List<BlogWithUser> getMostCollectBlogs() {
+        List<BlogWithUser> mostCollectBlogs = blogWithUserMapper.selectMostCollectBlogs();
+        return mostCollectBlogs;
+    }
+
+    @Override
+    public List<BlogWithUser> getMostCommentBlogs() {
+        List<BlogWithUser> mostCommentBlogs = blogWithUserMapper.selectMostCommentBlogs();
+        return mostCommentBlogs;
     }
 
     @Override
