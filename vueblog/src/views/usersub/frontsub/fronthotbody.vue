@@ -2,11 +2,11 @@
   <el-row :gutter="20">
     <el-col :span="4"> <div class="grid-content ep-bg-purple" /></el-col>
     <el-col :span="4"
-      >222222222
+      ><Left></Left>
       <div class="grid-content ep-bg-purple"
     /></el-col>
     <el-col :span="10"
-      >5213
+      ><router-view></router-view>
       <div class="grid-content ep-bg-purple"
     /></el-col>
     <el-col :span="4"
@@ -20,9 +20,14 @@
 <script>
 import { defineComponent } from "vue";
 import { Search } from "@element-plus/icons-vue";
+import Left from "@/views/usersub/frontsub/fronthotsub/left.vue";
 export default defineComponent({
   name: "FrontHotBody",
+  components: {
+    Left,
+  },
 });
+
 import { ref } from "vue";
 </script>
 

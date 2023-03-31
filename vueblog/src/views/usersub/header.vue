@@ -32,31 +32,40 @@
         "
       />
     </div>
-    <router-link :to="{ name: 'allconcern' }"
-      ><el-menu-item index="1" style="padding: 0 30px; margin-left: 20px"
+    <div>
+      <el-menu-item
+        index="1"
+        style="padding: 0 30px; margin-left: 20px"
+        @click="tohome"
         ><el-icon><HomeFilled /></el-icon>首页</el-menu-item
-      ></router-link
-    >
+      >
+    </div>
 
-    <router-link :to="{ name: 'hot' }">
+    <router-link :to="{ name: 'hotlatest' }">
       <el-menu-item index="2" style="padding: 0 30px"
         ><span class="iconfont" style="margin-right: 5px">&#xe602;</span
         >热门</el-menu-item
       ></router-link
     >
+    <div>
+      <el-menu-item index="3" style="padding: 0 30px" @click="tomessage"
+        ><el-icon><ChatDotRound /></el-icon>消息</el-menu-item
+      >
+    </div>
 
-    <el-menu-item index="3" style="padding: 0 30px"
-      ><el-icon><ChatDotRound /></el-icon>消息</el-menu-item
-    >
-    <el-menu-item index="4" style="padding: 0 30px"
-      ><el-icon><UserFilled /></el-icon>主页</el-menu-item
-    >
-    <el-menu-item
-      index="5"
-      style="padding: 0 30px; margin-right: 70px"
-      @click="editbutton"
-      ><el-icon><Plus /></el-icon>发布</el-menu-item
-    >
+    <div>
+      <el-menu-item index="4" style="padding: 0 30px" @click="toperson"
+        ><el-icon><UserFilled /></el-icon>主页</el-menu-item
+      >
+    </div>
+    <div>
+      <el-menu-item
+        index="5"
+        style="padding: 0 30px; margin-right: 70px"
+        @click="editbutton"
+        ><el-icon><Plus /></el-icon>发布</el-menu-item
+      >
+    </div>
 
     <!-- 登陆成功图标 -->
     <div v-if="loginsuccess" style="padding-top: 12px">
@@ -325,6 +334,18 @@ const loginVisible = ref(false);
 const registerVisible = ref(false);
 const registerformRef = ref(null);
 const loginformRef = ref(null);
+//判断用户是否已登陆
+if (localStorage.getItem("token")) {
+  axios
+    .post("http://8.130.81.23:8080/user/login", {
+      email: localStorage.getItem("token.email"),
+      password: localStorage.getItem("token.password"),
+    })
+    .then(() => {
+      getuserinfo();
+      loginsuccess.value = true;
+    });
+}
 const validatePass = (rule, value, callback) => {
   if (value === "") {
     callback(new Error("请输入密码！"));
@@ -427,10 +448,16 @@ const Submitloginform = (formEl) => {
               loginVisible.value = false;
               loginsuccess.value = true;
               userinfo.value = res.data.data;
+              localStorage.setItem("token", "user" + res.data.data.email);
+              localStorage.setItem("token.email", logindata.email);
+              localStorage.setItem("token.password", logindata.password);
             } else if (res.data.code == "402") {
               console.log(res.code);
               console.log(1);
               ElMessage.error("用户名或密码错误！");
+              localStorage.removeItem("token");
+              localStorage.removeItem("token.email");
+              localStorage.removeItem("token.password");
             }
           });
       } else {
@@ -519,6 +546,7 @@ function getverify(formE1) {
 function logout() {
   axios.get("http://8.130.81.23:8080/user/logout").then((res) => {
     loginsuccess.value = false;
+    localStorage.removeItem("token");
   });
 }
 function getuserinfo() {
@@ -527,8 +555,24 @@ function getuserinfo() {
   });
 }
 function editbutton() {
-  router.push({ name: "editblog" });
+  console.log(1);
+  if (localStorage.getItem("token")) {
+    console.log(localStorage.getItem("token"));
+    router.push({ name: "editblog" });
+  } else loginVisible.value = "true";
   // window.open({ name: "editblog" }, "_blank");
+}
+function tohome() {
+  if (localStorage.getItem("token")) router.push({ name: "allconcern" });
+  else loginVisible.value = "true";
+}
+function tomessage() {
+  if (localStorage.getItem("token")) router.push({ name: "message" });
+  else loginVisible.value = "true";
+}
+function toperson() {
+  if (localStorage.getItem("token")) router.push({ name: "person" });
+  else loginVisible.value = "true";
 }
 </script>
 <script >
@@ -552,5 +596,18 @@ import axios from "axios";
   padding-top: 10px;
   text-align: center;
   box-sizing: border-box;
+}
+.router-link-active {
+  text-decoration: none;
+  color: #ffe78f;
+}
+a {
+  text-decoration: none;
+  color: #ffe78f;
+}
+
+.el-menu--horizontal > .el-menu-item.is-active {
+  border-bottom: 0;
+  color: #fff !important;
 }
 </style>
