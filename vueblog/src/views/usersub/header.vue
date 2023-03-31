@@ -318,9 +318,10 @@
 </template>
 <script setup >
 import { useRouter } from "vue-router";
-
+// import bus from "@/utils/bus";
 import { ElMessage } from "element-plus";
 import { FormInstance, FormRules } from "element-plus";
+import { getCurrentInstance } from "vue";
 const userinfo = ref({
   followers: "",
   followings: "",
@@ -574,10 +575,20 @@ function toperson() {
   if (localStorage.getItem("token")) router.push({ name: "person" });
   else loginVisible.value = "true";
 }
+const { Bus } = getCurrentInstance().appContext.config.globalProperties;
+Bus.on("followneedlogin", () => {
+  loginVisible.value = true;
+});
+Bus.on("likeneedlogin", () => {
+  loginVisible.value = true;
+});
+Bus.on("collectneedlogin", () => {
+  loginVisible.value = true;
+});
 </script>
 <script >
 import { FormInstance, FormRules } from "element-plus";
-import { defineComponent, reactive } from "vue";
+import { defineComponent, getCurrentInstance, reactive } from "vue";
 import { Search } from "@element-plus/icons-vue";
 export default defineComponent({
   name: "Header",
