@@ -1,25 +1,36 @@
 <template>
-  <el-header><el-page-header @back="back">
-      <template #content> </template> </el-page-header></el-header>
+  <el-header
+    ><el-page-header @back="back">
+      <template #content> </template> </el-page-header
+  ></el-header>
   <el-row>
     <el-col :span="5">
       <div class="grid-content ep-bg-purple" />
       <el-card class="box-card" style="width: 100%">
         <template #header>
           <div class="card-header">
-            <div>
-              <img :src="userdata.avatar" alt="" /><span>{{
-                userdata.username
-              }}</span>
+            <div style="margin-bottom: 20px">
+              <div
+                style="
+                  overflow: hidden;
+                  width: 30px;
+                  display: inline-block;
+                  vertical-align: bottom;
+                  border-radius: 15px;
+                "
+              >
+                <img :src="userdata.avatar" alt="" style="width: 30px" />
+              </div>
+              <span style="font-size: 5px">{{ userdata.username }}</span>
             </div>
-            <el-button class="button" text>Operation button</el-button>
           </div>
           <el-row :gutter="15" style="width: 100%; text-align: center">
             <el-col :span="8">
               <div class="grid-content ep-bg-purple" />
               关注
             </el-col>
-            <el-col :span="8">粉丝
+            <el-col :span="8"
+              >粉丝
               <div class="grid-content ep-bg-purple" />
             </el-col>
             <el-col :span="8">
@@ -32,7 +43,8 @@
               <div class="grid-content ep-bg-purple" />
               {{ userdata.followings }}
             </el-col>
-            <el-col :span="8">{{ userdata.followers }}
+            <el-col :span="8"
+              >{{ userdata.followers }}
               <div class="grid-content ep-bg-purple" />
             </el-col>
             <el-col :span="8">
@@ -84,16 +96,44 @@
         <div>{{ blogdata.blogContent }}</div>
         <el-divider border-style="dashed" />
         <el-row :gutter="10" style="width: 100%; text-align: center">
-          <el-col :span="7">
+          <el-col v-if="blogdata.like" :span="7">
             <div class="grid-content ep-bg-purple" />
-            <span class="iconfont" style="margin-right: 10px; cursor: pointer" @click="likethis">&#xe600;</span>点赞 {{
-              blogdata.likeCount }}
+            <span
+              class="iconfont"
+              style="margin-right: 10px; cursor: pointer"
+              @click="dontlikethis"
+              >&#xe60f;</span
+            >点赞 {{ blogdata.likeCount }}
           </el-col>
-          <el-col :span="7">
-            <span class="iconfont" style="margin-right: 5px; cursor: pointer" @click="collectthis">&#xe603;</span>收藏 {{
-              blogdata.bookmarkCount }}
+          <el-col v-else :span="7">
+            <div class="grid-content ep-bg-purple" />
+            <span
+              class="iconfont"
+              style="margin-right: 10px; cursor: pointer; color: black"
+              @click="likethis"
+              >&#xe600;</span
+            >点赞{{ blogdata.likeCount }}
+          </el-col>
+          <el-col v-if="blogdata.collect" :span="7">
+            <span
+              class="iconfont"
+              style="margin-right: 5px; cursor: pointer"
+              @click="dontcollectthis"
+              >&#xe630;</span
+            >收藏 {{ blogdata.bookmarkCount }}
             <div class="grid-content ep-bg-purple" />
           </el-col>
+          <el-col v-else :span="7">
+            <span
+              class="iconfont"
+              style="margin-right: 5px; cursor: pointer"
+              @click="collectthis"
+            >
+              &#xe603; </span
+            >收藏 {{ blogdata.bookmarkCount }}
+            <div class="grid-content ep-bg-purple" />
+          </el-col>
+
           <el-col :span="9">
             <div class="grid-content ep-bg-purple" />
             评论 {{ blogdata.commentCount }}
@@ -133,42 +173,82 @@ const blogdata = ref({
   commentCount: "",
   bookmarkCount: "",
   blogContent: "",
+  like: "",
+  collect: "",
 });
 const comments = ref([]);
 
 console.log(route.params);
 
-axios.get("http://8.130.81.23:8080/user/info/" + route.params.userid).then((res) => {
-  userdata.value = res.data.data;
-});
+axios
+  .get("http://8.130.81.23:8080/user/info/" + route.params.userid)
+  .then((res) => {
+    userdata.value = res.data.data;
+  });
 
-axios.get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid).then((res) => {
-  blogdata.value = res.data.data;
-});
+axios
+  .get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid)
+  .then((res) => {
+    blogdata.value = res.data.data;
+  });
 
-axios.get("http://8.130.81.23:8080/blog/comment/" + route.params.blogid).then((res) => {
-  comments.value = res.data.data;
-});
+axios
+  .get("http://8.130.81.23:8080/blog/comment/" + route.params.blogid)
+  .then((res) => {
+    comments.value = res.data.data;
+  });
 
 function likethis() {
+  blogdata.value.like = true;
+
   if (localStorage.getItem("token")) {
-    axios.get("http://8.130.81.23:8080/blog/like/" + route.params.blogid).then((res) => {
-      blogdata.value.likeCount = res.data.data;
-    });
+    axios
+      .get("http://8.130.81.23:8080/blog/like/" + route.params.blogid)
+      .then((res) => {
+        blogdata.value.likeCount = res.data.data;
+      });
   } else {
     Bus.emit("likeneedlogin", {});
   }
 }
 function collectthis() {
+  blogdata.value.collect = true;
   if (localStorage.getItem("token")) {
-    axios.get("http://8.130.81.23:8080/blog/collect/" + route.params.blogid).then((res) => {
-      blogdata.value.likeCount = res.data.data;
-    });
+    axios
+      .get("http://8.130.81.23:8080/blog/collect/" + route.params.blogid)
+      .then((res) => {
+        blogdata.value.bookmarkCount = res.data.data;
+      });
   } else {
     Bus.emit("collectneedlogin", {});
   }
 }
+function dontcollectthis() {
+  blogdata.value.collect = false;
+  console.log(blogdata.value.collect);
+  if (localStorage.getItem("token")) {
+    axios
+      .delete("http://8.130.81.23:8080/blog/collect/" + route.params.blogid)
+      .then((res) => {
+        blogdata.value.bookmarkCount = res.data.data;
+      });
+  } else {
+    Bus.emit("collectneedlogin", {});
+  }
+}
+function dontlikethis() {
+  blogdata.value.like = false;
 
+  if (localStorage.getItem("token")) {
+    axios
+      .delete("http://8.130.81.23:8080/blog/like/" + route.params.blogid)
+      .then((res) => {
+        blogdata.value.likeCount = res.data.data;
+      });
+  } else {
+    Bus.emit("likeneedlogin", {});
+  }
+}
 // Bus.on("clickblog", (data) => {
 //   console.log(data.userid);
 //   axios.get("http://8.130.81.23:8080/user/info/" + data.userid).then((res) => {

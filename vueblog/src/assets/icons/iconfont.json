@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2418255",
+      "name": "收藏",
+      "font_class": "shoucang1",
+      "unicode": "e670",
+      "unicode_decimal": 58992
+    },
+    {
+      "icon_id": "1125602",
+      "name": "收藏",
+      "font_class": "shoucang",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "9568051",
+      "name": "点赞",
+      "font_class": "dianzan",
+      "unicode": "e647",
+      "unicode_decimal": 58951
+    },
+    {
       "icon_id": "200845",
       "name": "3.1收藏",
       "font_class": "31shoucang",
