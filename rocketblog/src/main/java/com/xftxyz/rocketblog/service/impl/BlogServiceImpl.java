@@ -259,11 +259,22 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogDetail getBlogDetail(Long blogId) {
+    public BlogDetail getBlogDetail(Long blogId, User user) {
         BlogDetailExample exBlogDetail = new BlogDetailExample();
         exBlogDetail.createCriteria().andBlogIdEqualTo(blogId);
         List<BlogDetail> selectByExample = blogDetailMapper.selectByExampleWithBLOBs(exBlogDetail);
         BlogDetail blogDetail = selectByExample.get(0);
+        if (user != null) {
+            LikeExample exLike = new LikeExample();
+            exLike.createCriteria().andBlogIdEqualTo(blogId).andUseridEqualTo(user.getUserid());
+            long likeCount = likeMapper.countByExample(exLike);
+            blogDetail.setLike(likeCount > 0);
+            BookmarkExample exBookmark = new BookmarkExample();
+            exBookmark.createCriteria().andBlogIdEqualTo(blogId).andUseridEqualTo(user.getUserid());
+            long bookmarkCount = bookmarkMapper.countByExample(exBookmark);
+            blogDetail.setCollect(bookmarkCount > 0);
+        }
+
         return blogDetail;
     }
 
@@ -273,6 +284,15 @@ public class BlogServiceImpl implements BlogService {
         exComment.createCriteria().andBlogIdEqualTo(blogId);
         List<VComment> comments = vcommentMapper.selectByExample(exComment);
         return comments;
+    }
+
+    @Override
+    public BlogInfo getBlogInfo(Long blogId, User user) {
+        BlogInfoExample exBlog = new BlogInfoExample();
+        exBlog.createCriteria().andBlogIdEqualTo(blogId);
+        List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
+        blogEx(blogList, user == null ? null : user.getUserid());
+        return blogList.get(0);
     }
 
 }

@@ -57,8 +57,10 @@ public interface BlogService {
 
     public List<BlogInfo> getFollowsBlogs(Long userid);
 
-    public BlogDetail getBlogDetail(Long blogId);
+    public BlogDetail getBlogDetail(Long blogId, User user);
 
     public List<VComment> getCommentsByBlogId(Long blogId);
+
+    public BlogInfo getBlogInfo(Long blogId, User user);
 
 }

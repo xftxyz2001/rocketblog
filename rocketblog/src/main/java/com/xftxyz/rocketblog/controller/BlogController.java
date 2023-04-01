@@ -115,10 +115,19 @@ public class BlogController {
         return Result.success(pageInfo);
     }
 
+    // 获取博客信息
+    @GetMapping("/info/{blogId}")
+    public Result<BlogInfo> info(@PathVariable("blogId") Long blogId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        BlogInfo blogInfo = blogService.getBlogInfo(blogId, user);
+        return Result.success(blogInfo);
+    }
+
     // 获取博客详情
     @GetMapping("/detail/{blogId}")
-    public Result<BlogDetail> detail(@PathVariable("blogId") Long blogId) {
-        BlogDetail blog = blogService.getBlogDetail(blogId);
+    public Result<BlogDetail> detail(@PathVariable("blogId") Long blogId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        BlogDetail blog = blogService.getBlogDetail(blogId, user);
         return Result.success(blog);
     }
 
