@@ -130,7 +130,7 @@ const userdata = ref({
 const blogdata = ref({});
 Bus.on("clickblog", (data) => {
   //data.userid data.blogid 发送请求获取信息
-
+  console.log(data.userid);
   axios.get("http://8.130.81.23:8080/user/info/" + data.userid).then((res) => {
     userdata.value = res.data.data;
     // console.log(userdata.value);
