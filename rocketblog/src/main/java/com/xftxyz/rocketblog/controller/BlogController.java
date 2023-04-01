@@ -19,6 +19,7 @@ import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogInfo;
 import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.User;
+import com.xftxyz.rocketblog.pojo.VComment;
 import com.xftxyz.rocketblog.result.Result;
 import com.xftxyz.rocketblog.result.ResultCode;
 import com.xftxyz.rocketblog.service.BlogService;
@@ -53,45 +54,50 @@ public class BlogController {
 
     // 热门博客，分页返回
     @GetMapping("/hot")
-    public Result<PageInfo<BlogInfo>> hot(int pageNum, int pageSize) {
+    public Result<PageInfo<BlogInfo>> hot(int pageNum, int pageSize, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
-        List<BlogInfo> hotBlogs = blogService.getHotBlogs();
+        List<BlogInfo> hotBlogs = blogService.getHotBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
         return Result.success(pageInfo);
     }
 
     // 点赞最多
     @GetMapping("/hot/like")
-    public Result<PageInfo<BlogInfo>> hotLike(int pageNum, int pageSize) {
+    public Result<PageInfo<BlogInfo>> hotLike(int pageNum, int pageSize, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
-        List<BlogInfo> hotBlogs = blogService.getMostLikeBlogs();
+        List<BlogInfo> hotBlogs = blogService.getMostLikeBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
         return Result.success(pageInfo);
     }
 
     // 收藏最多
     @GetMapping("/hot/collect")
-    public Result<PageInfo<BlogInfo>> hotCollect(int pageNum, int pageSize) {
+    public Result<PageInfo<BlogInfo>> hotCollect(int pageNum, int pageSize, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
-        List<BlogInfo> hotBlogs = blogService.getMostCollectBlogs();
+        List<BlogInfo> hotBlogs = blogService.getMostCollectBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
         return Result.success(pageInfo);
     }
 
     // 评论最多
     @GetMapping("/hot/comment")
-    public Result<PageInfo<BlogInfo>> hotComment(int pageNum, int pageSize) {
+    public Result<PageInfo<BlogInfo>> hotComment(int pageNum, int pageSize, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
-        List<BlogInfo> hotBlogs = blogService.getMostCommentBlogs();
+        List<BlogInfo> hotBlogs = blogService.getMostCommentBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
         return Result.success(pageInfo);
     }
 
     // 最新发布，分页返回
     @GetMapping("/new")
-    public Result<PageInfo<BlogInfo>> newBlog(int pageNum, int pageSize) {
+    public Result<PageInfo<BlogInfo>> newBlog(int pageNum, int pageSize, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
-        List<BlogInfo> newBlogs = blogService.getNewBlogs();
+        List<BlogInfo> newBlogs = blogService.getNewBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(newBlogs);
         return Result.success(pageInfo);
     }
@@ -127,7 +133,7 @@ public class BlogController {
         int update = blogService.updateBlog(blog);
         return Result.success(update);
     }
-    
+
     // 删除
     @DeleteMapping("/delete/{blogId}")
     public Result<Object> delete(@PathVariable("blogId") Long blogId, HttpSession session) {
@@ -233,11 +239,11 @@ public class BlogController {
     }
 
     // 获取评论
-    // @GetMapping("/comment/{blogId}")
-    // public Result<List<Comment>> getComments(@PathVariable("blogId") Long blogId)
-    // {
-    // List<Comment> comments = blogService.getComments(blogId);
-    // return Result.success(comments);
-    // }
+    @GetMapping("/comment/{blogId}")
+    public Result<List<VComment>> getComments(@PathVariable("blogId") Long blogId)
+    {
+        List<VComment> comments = blogService.getCommentsByBlogId(blogId);
+        return Result.success(comments);
+    }
 
 }

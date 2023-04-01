@@ -12,6 +12,7 @@ import com.xftxyz.rocketblog.mapper.BlogMapper;
 import com.xftxyz.rocketblog.mapper.BookmarkMapper;
 import com.xftxyz.rocketblog.mapper.CommentMapper;
 import com.xftxyz.rocketblog.mapper.LikeMapper;
+import com.xftxyz.rocketblog.mapper.VCommentMapper;
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogDetailExample;
@@ -24,6 +25,9 @@ import com.xftxyz.rocketblog.pojo.BookmarkExample;
 import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.Like;
 import com.xftxyz.rocketblog.pojo.LikeExample;
+import com.xftxyz.rocketblog.pojo.User;
+import com.xftxyz.rocketblog.pojo.VComment;
+import com.xftxyz.rocketblog.pojo.VCommentExample;
 import com.xftxyz.rocketblog.service.BlogService;
 
 @Service
@@ -46,6 +50,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     CommentMapper commentMapper;
+
+    @Autowired
+    VCommentMapper vcommentMapper;
 
     @Override
     public List<Blog> getBlogs() {
@@ -107,16 +114,28 @@ public class BlogServiceImpl implements BlogService {
         bookmark.setUserid(userid);
         bookmark.setBlogId(blogId);
         bookmark.setCreatetime(new Date());
-        int insert = bookmarkMapper.insert(bookmark);
-        return insert;
+        bookmarkMapper.insert(bookmark);
+
+        // 查询当前博客的收藏数
+        BookmarkExample exBookmark = new BookmarkExample();
+        exBookmark.createCriteria().andBlogIdEqualTo(blogId);
+        long count = bookmarkMapper.countByExample(exBookmark);
+
+        return (int) count;
     }
 
     @Override
     public int cancelCollect(Long userid, Long blogId) {
         BookmarkExample exBookmark = new BookmarkExample();
         exBookmark.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
-        int delete = bookmarkMapper.deleteByExample(exBookmark);
-        return delete;
+        bookmarkMapper.deleteByExample(exBookmark);
+
+        // 查询当前博客的收藏数
+        BookmarkExample exBookmarkNew = new BookmarkExample();
+        exBookmarkNew.createCriteria().andBlogIdEqualTo(blogId);
+        long count = bookmarkMapper.countByExample(exBookmarkNew);
+
+        return (int) count;
     }
 
     @Override
@@ -125,16 +144,28 @@ public class BlogServiceImpl implements BlogService {
         like.setUserid(userid);
         like.setBlogId(blogId);
         like.setCreatetime(new Date());
-        int insert = likeMapper.insert(like);
-        return insert;
+        likeMapper.insert(like);
+
+        // 查询当前博客的点赞数
+        LikeExample exLike = new LikeExample();
+        exLike.createCriteria().andBlogIdEqualTo(blogId);
+        long count = likeMapper.countByExample(exLike);
+
+        return (int) count;
     }
 
     @Override
     public int cancelLike(Long userid, Long blogId) {
         LikeExample exLike = new LikeExample();
         exLike.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
-        int delete = likeMapper.deleteByExample(exLike);
-        return delete;
+        likeMapper.deleteByExample(exLike);
+
+        // 查询当前博客的点赞数
+        LikeExample exLikeNew = new LikeExample();
+        exLikeNew.createCriteria().andBlogIdEqualTo(blogId);
+        long count = likeMapper.countByExample(exLikeNew);
+
+        return (int) count;
     }
 
     @Override
@@ -150,53 +181,80 @@ public class BlogServiceImpl implements BlogService {
         return delete;
     }
 
+    private int blogEx(List<BlogInfo> blogs, Long userid) {
+        if (userid == null) {
+            return 0;
+        }
+        int count = 0;
+        for (BlogInfo blog : blogs) {
+            LikeExample exLike = new LikeExample();
+            exLike.createCriteria().andBlogIdEqualTo(blog.getBlogId()).andUseridEqualTo(userid);
+            long likeCount = likeMapper.countByExample(exLike);
+            blog.setLike(likeCount > 0);
+            BookmarkExample exBookmark = new BookmarkExample();
+            exBookmark.createCriteria().andBlogIdEqualTo(blog.getBlogId()).andUseridEqualTo(userid);
+            long bookmarkCount = bookmarkMapper.countByExample(exBookmark);
+            blog.setCollect(bookmarkCount > 0);
+            count++;
+        }
+        return count;
+    }
+
     @Override
-    public List<BlogInfo> getHotBlogs() {
+    public List<BlogInfo> getHotBlogs(User user) {
         List<BlogInfo> hotBlogs = blogInfoMapper.selectHotBlogs();
+        blogEx(hotBlogs, user == null ? null : user.getUserid());
         return hotBlogs;
     }
 
     @Override
-    public List<BlogInfo> getMostLikeBlogs() {
+    public List<BlogInfo> getMostLikeBlogs(User user) {
         List<BlogInfo> mostLikeBlogs = blogInfoMapper.selectMostLikeBlogs();
+        blogEx(mostLikeBlogs, user == null ? null : user.getUserid());
         return mostLikeBlogs;
     }
 
     @Override
-    public List<BlogInfo> getMostCollectBlogs() {
+    public List<BlogInfo> getMostCollectBlogs(User user) {
         List<BlogInfo> mostCollectBlogs = blogInfoMapper.selectMostCollectBlogs();
+        blogEx(mostCollectBlogs, user == null ? null : user.getUserid());
         return mostCollectBlogs;
     }
 
     @Override
-    public List<BlogInfo> getMostCommentBlogs() {
+    public List<BlogInfo> getMostCommentBlogs(User user) {
         List<BlogInfo> mostCommentBlogs = blogInfoMapper.selectMostCommentBlogs();
+        blogEx(mostCommentBlogs, user == null ? null : user.getUserid());
         return mostCommentBlogs;
     }
 
     @Override
-    public List<BlogInfo> getNewBlogs() {
+    public List<BlogInfo> getNewBlogs(User user) {
         BlogInfoExample exBlog = new BlogInfoExample();
         exBlog.setOrderByClause("update_time desc");
         List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
+        blogEx(blogList, user == null ? null : user.getUserid());
         return blogList;
     }
 
     @Override
     public List<BlogInfo> getCollectsBlogs(Long userid) {
         List<BlogInfo> collects = blogInfoMapper.selectCollectBlogs(userid);
+        blogEx(collects, userid);
         return collects;
     }
 
     @Override
     public List<BlogInfo> getLikesBlogs(Long userid) {
         List<BlogInfo> likes = blogInfoMapper.selectLikeBlogs(userid);
+        blogEx(likes, userid);
         return likes;
     }
 
     @Override
     public List<BlogInfo> getFollowsBlogs(Long userid) {
         List<BlogInfo> followsBlogs = blogInfoMapper.selectFollowBlogs(userid);
+        blogEx(followsBlogs, userid);
         return followsBlogs;
     }
 
@@ -207,6 +265,14 @@ public class BlogServiceImpl implements BlogService {
         List<BlogDetail> selectByExample = blogDetailMapper.selectByExample(exBlogDetail);
         BlogDetail blogDetail = selectByExample.get(0);
         return blogDetail;
+    }
+
+    @Override
+    public List<VComment> getCommentsByBlogId(Long blogId) {
+        VCommentExample exComment = new VCommentExample();
+        exComment.createCriteria().andBlogIdEqualTo(blogId);
+        List<VComment> comments = vcommentMapper.selectByExample(exComment);
+        return comments;
     }
 
 }
