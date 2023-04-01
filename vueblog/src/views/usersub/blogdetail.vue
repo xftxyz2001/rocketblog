@@ -1,13 +1,7 @@
 <template>
   <el-header
     ><el-page-header @back="back">
-      <template #content>
-        <el-avatar
-          :size="32"
-          class="mr-3"
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        />
-      </template> </el-page-header
+      <template #content> </template> </el-page-header
   ></el-header>
   <el-row>
     <el-col :span="5"
@@ -15,7 +9,11 @@
       <el-card class="box-card" style="width: 100%">
         <template #header>
           <div class="card-header">
-            <div>头像 <span>昵称</span></div>
+            <div>
+              <img :src="userdata.avatar" alt="" /><span>{{
+                userdata.username
+              }}</span>
+            </div>
             <el-button class="button" text>Operation button</el-button>
           </div>
           <el-row :gutter="15" style="width: 100%; text-align: center">
@@ -35,15 +33,15 @@
           <el-row :gutter="15" style="width: 100%; text-align: center">
             <el-col :span="8"
               ><div class="grid-content ep-bg-purple" />
-              关注</el-col
+              {{ userdata.followings }}</el-col
             >
             <el-col :span="8"
-              >粉丝
+              >{{ userdata.followers }}
               <div class="grid-content ep-bg-purple" />
             </el-col>
             <el-col :span="8"
               ><div class="grid-content ep-bg-purple" />
-              收藏</el-col
+              {{ userdata.blogs }}</el-col
             >
           </el-row>
         </template>
@@ -118,11 +116,25 @@
   </el-row>
 </template>
 <script setup >
+import axios from "axios";
 import { getCurrentInstance, ref } from "vue";
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
-const userdata = ref({});
+const userdata = ref({
+  followers: "",
+  followings: "",
+  blogs: "",
+  avatar: "",
+  isFollowed: "",
+  username: "",
+});
+const blogdata = ref({});
 Bus.on("clickblog", (data) => {
   //data.userid data.blogid 发送请求获取信息
+
+  axios.get("http://8.130.81.23:8080/user/info/" + data.userid).then((res) => {
+    userdata.value = res.data.data;
+    // console.log(userdata.value);
+  });
 });
 </script>
 <script>

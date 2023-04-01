@@ -116,17 +116,16 @@ const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 // }
 function clickblog(e) {
   var userid =
-    e.target.parentElement.parentElement.parentElement.parentElement
-      .parentElement.dataset.userid;
+    e.target.parentElement.parentElement.parentElement.parentElement.dataset
+      .userid;
   var blogid =
-    e.target.parentElement.parentElement.parentElement.parentElement
-      .parentElement.dataset.blogid;
+    e.target.parentElement.parentElement.parentElement.parentElement.dataset
+      .blogid;
   router.push({ name: "blogdetail" });
   Bus.emit("clickblog", { userid: userid, blogid: blogid });
-  // console.log(
-  //     e.target.parentElement.parentElement.parentElement.parentElement
-  //       .parentElement.dataset
-  //   );
+ // console.log(
+  //  e.target.parentElement.parentElement.parentElement.parentElement.dataset
+//  );
 }
 </script>
 <script>
