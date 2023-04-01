@@ -96,9 +96,9 @@ public class UserController {
     @GetMapping("/info/{userid}")
     public Result<Map<String, Object>> info(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
+        // if (user == null) {
+        //     return Result.fail(ResultCode.USER_NOT_LOGIN);
+        // }
         Map<String, Object> userInfo = userService.getUserInfo(user, userid);
         return Result.success(userInfo);
     }

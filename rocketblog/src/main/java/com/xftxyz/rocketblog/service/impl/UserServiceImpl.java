@@ -140,7 +140,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> getUserInfo(User user, Long userid) {
+    public Map<String, Object> getUserInfo(User me, Long userid) {
+        User user = userMapper.selectByPrimaryKey(userid);
         // 用户名、头像
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("username", user.getUsername());
@@ -167,10 +168,16 @@ public class UserServiceImpl implements UserService {
         userInfo.put("blogs", blogs);
 
         // 是否关注: isFollowed
-        FollowExample exIsFollowed = new FollowExample();
-        exIsFollowed.createCriteria().andUseridFollowingEqualTo(userid).andUseridFollowedEqualTo(user.getUserid());
-        long isFollowed = followMapper.countByExample(exIsFollowed);
-        userInfo.put("isFollowed", isFollowed > 0);
+        if (me == null) {
+            userInfo.put("isFollowed", false);
+
+        } else {
+            FollowExample exIsFollowed = new FollowExample();
+            exIsFollowed.createCriteria().andUseridFollowingEqualTo(me.getUserid()).andUseridFollowedEqualTo(userid);
+            long isFollowed = followMapper.countByExample(exIsFollowed);
+            userInfo.put("isFollowed", isFollowed > 0);
+
+        }
 
         return userInfo;
     }
