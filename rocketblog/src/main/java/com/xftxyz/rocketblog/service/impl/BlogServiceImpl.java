@@ -262,7 +262,7 @@ public class BlogServiceImpl implements BlogService {
     public BlogDetail getBlogDetail(Long blogId) {
         BlogDetailExample exBlogDetail = new BlogDetailExample();
         exBlogDetail.createCriteria().andBlogIdEqualTo(blogId);
-        List<BlogDetail> selectByExample = blogDetailMapper.selectByExample(exBlogDetail);
+        List<BlogDetail> selectByExample = blogDetailMapper.selectByExampleWithBLOBs(exBlogDetail);
         BlogDetail blogDetail = selectByExample.get(0);
         return blogDetail;
     }

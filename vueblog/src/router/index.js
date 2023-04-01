@@ -60,7 +60,7 @@ const routes = [
         component: EditBlog
       },
       {
-        path: 'blogdetail',
+        path: 'blogdetail/:userid/:blogid',
         name: 'blogdetail',
         component: blogdetail
       },
