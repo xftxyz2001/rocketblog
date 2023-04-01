@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
@@ -54,7 +55,8 @@ public class BlogController {
 
     // 热门博客，分页返回
     @GetMapping("/hot")
-    public Result<PageInfo<BlogInfo>> hot(int pageNum, int pageSize, HttpSession session) {
+    public Result<PageInfo<BlogInfo>> hot(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getHotBlogs(user);
@@ -64,7 +66,8 @@ public class BlogController {
 
     // 点赞最多
     @GetMapping("/hot/like")
-    public Result<PageInfo<BlogInfo>> hotLike(int pageNum, int pageSize, HttpSession session) {
+    public Result<PageInfo<BlogInfo>> hotLike(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostLikeBlogs(user);
@@ -74,7 +77,8 @@ public class BlogController {
 
     // 收藏最多
     @GetMapping("/hot/collect")
-    public Result<PageInfo<BlogInfo>> hotCollect(int pageNum, int pageSize, HttpSession session) {
+    public Result<PageInfo<BlogInfo>> hotCollect(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCollectBlogs(user);
@@ -84,7 +88,8 @@ public class BlogController {
 
     // 评论最多
     @GetMapping("/hot/comment")
-    public Result<PageInfo<BlogInfo>> hotComment(int pageNum, int pageSize, HttpSession session) {
+    public Result<PageInfo<BlogInfo>> hotComment(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCommentBlogs(user);
@@ -94,7 +99,8 @@ public class BlogController {
 
     // 最新发布，分页返回
     @GetMapping("/new")
-    public Result<PageInfo<BlogInfo>> newBlog(int pageNum, int pageSize, HttpSession session) {
+    public Result<PageInfo<BlogInfo>> newBlog(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> newBlogs = blogService.getNewBlogs(user);
@@ -104,7 +110,8 @@ public class BlogController {
 
     // 获取我关注的人的博客
     @GetMapping("/follows")
-    public Result<PageInfo<BlogInfo>> getFollows(int pageNum, int pageSize, HttpSession session) {
+    public Result<PageInfo<BlogInfo>> getFollows(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
@@ -178,7 +185,8 @@ public class BlogController {
 
     // 获取收藏的博客
     @GetMapping("/collects")
-    public Result<PageInfo<BlogInfo>> getCollects(int pageNum, int pageSize, HttpSession session) {
+    public Result<PageInfo<BlogInfo>> getCollects(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
@@ -213,7 +221,8 @@ public class BlogController {
 
     // 获取点赞的博客
     @GetMapping("/likes")
-    public Result<PageInfo<BlogInfo>> getLikes(int pageNum, int pageSize, HttpSession session) {
+    public Result<PageInfo<BlogInfo>> getLikes(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
@@ -247,10 +256,10 @@ public class BlogController {
         return Result.success(delete);
     }
 
-    // 获取评论
+    // 获取评论，分页，默认第一页，每页5条
     @GetMapping("/comment/{blogId}")
-    public Result<List<VComment>> getComments(@PathVariable("blogId") Long blogId)
-    {
+    public Result<List<VComment>> getComments(@PathVariable("blogId") Long blogId,
+            @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5") int pageSize) {
         List<VComment> comments = blogService.getCommentsByBlogId(blogId);
         return Result.success(comments);
     }
