@@ -6,16 +6,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xftxyz.rocketblog.mapper.BlogDetailMapper;
+import com.xftxyz.rocketblog.mapper.BlogInfoMapper;
 import com.xftxyz.rocketblog.mapper.BlogMapper;
-import com.xftxyz.rocketblog.mapper.BlogWithUserMapper;
 import com.xftxyz.rocketblog.mapper.BookmarkMapper;
 import com.xftxyz.rocketblog.mapper.CommentMapper;
 import com.xftxyz.rocketblog.mapper.LikeMapper;
 import com.xftxyz.rocketblog.pojo.Blog;
+import com.xftxyz.rocketblog.pojo.BlogDetail;
+import com.xftxyz.rocketblog.pojo.BlogDetailExample;
 import com.xftxyz.rocketblog.pojo.BlogExample;
-import com.xftxyz.rocketblog.pojo.BlogWithUser;
-import com.xftxyz.rocketblog.pojo.BlogWithUserExample;
 import com.xftxyz.rocketblog.pojo.BlogExample.Criteria;
+import com.xftxyz.rocketblog.pojo.BlogInfo;
+import com.xftxyz.rocketblog.pojo.BlogInfoExample;
 import com.xftxyz.rocketblog.pojo.Bookmark;
 import com.xftxyz.rocketblog.pojo.BookmarkExample;
 import com.xftxyz.rocketblog.pojo.Comment;
@@ -30,7 +33,10 @@ public class BlogServiceImpl implements BlogService {
     BlogMapper blogMapper;
 
     @Autowired
-    BlogWithUserMapper blogWithUserMapper;
+    BlogInfoMapper blogInfoMapper;
+
+    @Autowired
+    BlogDetailMapper blogDetailMapper;
 
     @Autowired
     BookmarkMapper bookmarkMapper;
@@ -145,35 +151,62 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogWithUser> getHotBlogs() {
-        List<BlogWithUser> hotBlogs = blogWithUserMapper.selectHotBlogs();
+    public List<BlogInfo> getHotBlogs() {
+        List<BlogInfo> hotBlogs = blogInfoMapper.selectHotBlogs();
         return hotBlogs;
     }
 
     @Override
-    public List<BlogWithUser> getMostLikeBlogs() {
-        List<BlogWithUser> mostLikeBlogs = blogWithUserMapper.selectMostLikeBlogs();
+    public List<BlogInfo> getMostLikeBlogs() {
+        List<BlogInfo> mostLikeBlogs = blogInfoMapper.selectMostLikeBlogs();
         return mostLikeBlogs;
     }
 
     @Override
-    public List<BlogWithUser> getMostCollectBlogs() {
-        List<BlogWithUser> mostCollectBlogs = blogWithUserMapper.selectMostCollectBlogs();
+    public List<BlogInfo> getMostCollectBlogs() {
+        List<BlogInfo> mostCollectBlogs = blogInfoMapper.selectMostCollectBlogs();
         return mostCollectBlogs;
     }
 
     @Override
-    public List<BlogWithUser> getMostCommentBlogs() {
-        List<BlogWithUser> mostCommentBlogs = blogWithUserMapper.selectMostCommentBlogs();
+    public List<BlogInfo> getMostCommentBlogs() {
+        List<BlogInfo> mostCommentBlogs = blogInfoMapper.selectMostCommentBlogs();
         return mostCommentBlogs;
     }
 
     @Override
-    public List<BlogWithUser> getNewBlogs() {
-        BlogWithUserExample exBlog = new BlogWithUserExample();
+    public List<BlogInfo> getNewBlogs() {
+        BlogInfoExample exBlog = new BlogInfoExample();
         exBlog.setOrderByClause("update_time desc");
-        List<BlogWithUser> blogList = blogWithUserMapper.selectByExampleWithBLOBs(exBlog);
+        List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
         return blogList;
+    }
+
+    @Override
+    public List<BlogInfo> getCollectsBlogs(Long userid) {
+        List<BlogInfo> collects = blogInfoMapper.selectCollectBlogs(userid);
+        return collects;
+    }
+
+    @Override
+    public List<BlogInfo> getLikesBlogs(Long userid) {
+        List<BlogInfo> likes = blogInfoMapper.selectLikeBlogs(userid);
+        return likes;
+    }
+
+    @Override
+    public List<BlogInfo> getFollowsBlogs(Long userid) {
+        List<BlogInfo> followsBlogs = blogInfoMapper.selectFollowBlogs(userid);
+        return followsBlogs;
+    }
+
+    @Override
+    public BlogDetail getBlogDetail(Long blogId) {
+        BlogDetailExample exBlogDetail = new BlogDetailExample();
+        exBlogDetail.createCriteria().andBlogIdEqualTo(blogId);
+        List<BlogDetail> selectByExample = blogDetailMapper.selectByExample(exBlogDetail);
+        BlogDetail blogDetail = selectByExample.get(0);
+        return blogDetail;
     }
 
 }

@@ -11,7 +11,7 @@
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <!-- 数据库的连接信息 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/myblog?serverTimezone=UTC"
+                        connectionURL="jdbc:mysql://8.130.81.23:3306/rocketblog?serverTimezone=UTC"
                         userId="root"
                         password="123456"></jdbcConnection>
         <!-- javaBean的生成策略-->
@@ -30,21 +30,9 @@
         <!-- 逆向分析的表 -->
         <!-- tableName设置为*号，可以对应所有表，此时不写domainObjectName -->
         <!-- domainObjectName属性指定生成出来的实体类的类名 -->
-        <!-- t_blog
-        t_bookmark
-        t_chat
-        t_comment
-        t_follow
-        t_like
-        t_user -->
-        <table tableName="t_user" domainObjectName="User" />
-        <table tableName="t_blog" domainObjectName="Blog" />
-        <table tableName="t_bookmark" domainObjectName="Bookmark" />
-        <table tableName="t_chat" domainObjectName="Chat" />
-        <table tableName="t_comment" domainObjectName="Comment" />
-        <table tableName="t_follow" domainObjectName="Follow" />
-        <table tableName="t_like" domainObjectName="Like" />        
-        <table tableName="v_blogwithuser" domainObjectName="BlogWithUser" />
-        <!-- <table tableName="t_dept" domainObjectName="Dept" /> -->
+        <table tableName="v_bloginfo" domainObjectName="BlogInfo" />
+        <table tableName="v_blogdetail" domainObjectName="BlogDetail" />
+        <table tableName="v_comment" domainObjectName="VComment" />
+
     </context>
 </generatorConfiguration>

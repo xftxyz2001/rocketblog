@@ -140,6 +140,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map<String, Object> getUserInfo(User user, Long userid) {
+        // 用户名、头像
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("username", user.getUsername());
+        userInfo.put("avatar", user.getAvatar());
+
+        // 关注: userid_following -> userid_followed
+
+        // 关注数: followings
+        FollowExample exFollowings = new FollowExample();
+        exFollowings.createCriteria().andUseridFollowingEqualTo(user.getUserid());
+        long followings = followMapper.countByExample(exFollowings);
+        userInfo.put("followings", followings);
+
+        // 粉丝数: followers
+        FollowExample exFollowers = new FollowExample();
+        exFollowers.createCriteria().andUseridFollowedEqualTo(user.getUserid());
+        long followers = followMapper.countByExample(exFollowers);
+        userInfo.put("followers", followers);
+
+        // 文章数: blogs
+        BlogExample exBlogs = new BlogExample();
+        exBlogs.createCriteria().andUseridEqualTo(user.getUserid());
+        long blogs = blogMapper.countByExample(exBlogs);
+        userInfo.put("blogs", blogs);
+
+        // 是否关注: isFollowed
+        FollowExample exIsFollowed = new FollowExample();
+        exIsFollowed.createCriteria().andUseridFollowingEqualTo(userid).andUseridFollowedEqualTo(user.getUserid());
+        long isFollowed = followMapper.countByExample(exIsFollowed);
+        userInfo.put("isFollowed", isFollowed > 0);
+
+        return userInfo;
+    }
+
+    @Override
     public void follow(Long userFollowing, Long userFollowed) {
         Follow follow = new Follow();
         follow.setUseridFollowing(userFollowing);

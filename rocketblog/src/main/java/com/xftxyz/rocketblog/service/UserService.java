@@ -31,6 +31,7 @@ public interface UserService {
 
     // 获取用户信息
     public Map<String, Object> getUserInfo(User user);
+    public Map<String, Object> getUserInfo(User user, Long userid);
 
     public void follow(Long userFollowing, Long userFollowed);
 
@@ -41,5 +42,6 @@ public interface UserService {
     public Map<String, Object> getFollowers(Long userid);
 
     public void chat(Long fromUserid, Long toUserid, String content);
+
 
 }

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,21 +52,21 @@ public class AdminController {
         user.setUserRegisterTime(new Date());
         user.setLastLogin(new Date());
         int insert = userService.addUser(user);
-        log.info("/user -> addUser()");
+        log.info("/user -> addUser():{}", insert);
         return "OK";
     }
 
     @PutMapping("/user")
     public String updateUser(@RequestBody User user) {
         int update = userService.updateUser(user);
-        log.info("/user -> updateUser()");
+        log.info("/user -> updateUser():{}", update);
         return "OK";
     }
 
     @DeleteMapping("/user/{id}")
     public String deleteUser(@PathVariable("id") int id) {
         int delete = userService.deleteUser((long) id);
-        log.info("/user/{" + id + "} -> deleteUser()");
+        log.info("/user/{" + id + "} -> deleteUser():{}", delete);
         return "OK";
     }
 
@@ -98,8 +97,8 @@ public class AdminController {
         List<Blog> blogs = blogService.getBlogs(blog);
         log.info("/search/blog -> getBlogs()");
         // for (Blog blog2 : blogs) {
-        //     System.out.println(blog2.getBlogTitle());
-        //     System.out.println(blog2.getBlogContent());
+        // System.out.println(blog2.getBlogTitle());
+        // System.out.println(blog2.getBlogContent());
         // }
         return blogs;
     }
@@ -109,7 +108,7 @@ public class AdminController {
         blog.setCreateTime(new Date());
         blog.setUpdateTime(new Date());
         int insert = blogService.addBlog(blog);
-        log.info("/blog -> addBlog()");
+        log.info("/blog -> addBlog():{}", insert);
         return "OK";
     }
 
@@ -117,37 +116,15 @@ public class AdminController {
     public String updateBlog(@RequestBody Blog blog) {
         blog.setUpdateTime(new Date());
         int update = blogService.updateBlog(blog);
-        log.info("/blog -> updateBlog()");
+        log.info("/blog -> updateBlog():{}", update);
         return "OK";
     }
 
     @DeleteMapping("/blog/{id}")
     public String deleteBlog(@PathVariable("id") int id) {
         int delete = blogService.deleteBlog((long) id);
-        log.info("/blog/{" + id + "} -> deleteBlog()");
+        log.info("/blog/{" + id + "} -> deleteBlog():{}", delete);
         return "OK";
     }
-
-    // @GetMapping("/test")
-    // public String test() {
-    // User user = new User();
-    // // 随机为属性赋值
-    // user.setUsername("usernamexxx");
-    // user.setPassword("passwordxxx");
-    // user.setUserSex("0");
-    // user.setEmail("5618646541@qq.com");
-    // user.setPhone("12345678942");
-    // userService.addUser(user);
-    // return "OK";
-    // }
-    // 登录
-    // @PostMapping("/login")
-    // public String login(@RequestBody User user) {
-    //     User user1 = userService.login(user);
-    //     if (user1 != null) {
-    //         return "OK";
-    //     }
-    //     return "FAIL";
-    // }
 
 }

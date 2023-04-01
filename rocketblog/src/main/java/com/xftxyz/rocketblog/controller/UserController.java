@@ -93,6 +93,16 @@ public class UserController {
         return Result.success(userInfo);
     }
 
+    @GetMapping("/info/{userid}")
+    public Result<Map<String, Object>> info(HttpSession session, @PathVariable("userid") Long userid) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        Map<String, Object> userInfo = userService.getUserInfo(user, userid);
+        return Result.success(userInfo);
+    }
+
     // 登出
     @GetMapping("/logout")
     public Result<Object> logout(HttpSession session) {
@@ -158,8 +168,5 @@ public class UserController {
         userService.chat(user.getUserid(), toUserid, content);
         return Result.success();
     }
-
-
-
 
 }
