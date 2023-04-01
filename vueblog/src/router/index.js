@@ -16,6 +16,7 @@ import HotLatestMiddle from "@/views/usersub/frontsub/fronthotsub/middle/hotlate
 import HotMostLikeMiddle from "@/views/usersub/frontsub/fronthotsub/middle/hotmostlikemiddle"
 import frontmessage from '@/views/usersub/frontsub/frontmessage'
 import frontperson from '@/views/usersub/frontsub/frontperson'
+import blogdetail from '@/views/usersub/blogdetail'
 const routes = [
 
   {
@@ -57,6 +58,11 @@ const routes = [
         path: 'editblog',
         name: 'editblog',
         component: EditBlog
+      },
+      {
+        path: 'blogdetail',
+        name: 'blogdetail',
+        component: blogdetail
       },
       {
         path: 'front',

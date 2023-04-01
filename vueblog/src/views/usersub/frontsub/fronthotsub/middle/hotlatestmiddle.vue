@@ -1,5 +1,11 @@
 <template>
-  <el-card v-for="blog in latestdata" :key="blog.id" class="box-card">
+  <el-card
+    v-for="blog in latestdata"
+    :key="blog.blogId"
+    :data-blogid="blog.blogId"
+    :data-userid="blog.userid"
+    class="box-card"
+  >
     <template #header>
       <div class="card-header">
         <div>
@@ -37,7 +43,7 @@
 
     <el-skeleton style="width: 100%" :loading="loading" animated>
       <template #default>
-        <div style="padding: 14px; cursor: pointer">
+        <div style="padding: 14px; cursor: pointer" @click="clickblog($event)">
           <el-row>
             <el-col :span="6"
               ><div class="grid-content ep-bg-purple" />
@@ -72,6 +78,8 @@
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
+const router = useRouter();
 import axios from "axios";
 import { getCurrentInstance } from "vue";
 import { ref } from "vue";
@@ -106,6 +114,20 @@ const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 //     Bus.emit("collectneedlogin", {});
 //   }
 // }
+function clickblog(e) {
+  var userid =
+    e.target.parentElement.parentElement.parentElement.parentElement
+      .parentElement.dataset.userid;
+  var blogid =
+    e.target.parentElement.parentElement.parentElement.parentElement
+      .parentElement.dataset.blogid;
+  router.push({ name: "blogdetail" });
+  Bus.emit("clickblog", { userid: userid, blogid: blogid });
+  // console.log(
+  //     e.target.parentElement.parentElement.parentElement.parentElement
+  //       .parentElement.dataset
+  //   );
+}
 </script>
 <script>
 export default {};
