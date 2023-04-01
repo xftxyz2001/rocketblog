@@ -52,10 +52,11 @@ public class Result<T> implements Serializable {
         return result;
     }
 
-    public static <T> Result<T> fail(String code, String msg) {
+    public static <T> Result<T> custom(String msg, T data) {
         Result<T> result = new Result<T>();
-        result.setCode(code);
+        result.setCode(ResultCode.CUSTOM.getCode());
         result.setMsg(msg);
+        result.setData(data);
         return result;
     }
 }

@@ -13,7 +13,8 @@ public enum ResultCode {
     // 用户未登录
     USER_NOT_LOGIN("403", "用户未登录"),
     // 服务器错误
-    SERVER_ERROR("500", "服务器错误");
+    SERVER_ERROR("500", "服务器错误"),
+    CUSTOM("999", "自定义内容");
 
     private String code;
     private String msg;

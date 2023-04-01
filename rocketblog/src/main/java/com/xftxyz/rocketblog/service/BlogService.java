@@ -1,6 +1,7 @@
 package com.xftxyz.rocketblog.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
@@ -25,13 +26,13 @@ public interface BlogService {
     // 修改博客
     public int updateBlog(Blog blog);
 
-    public int collect(Long userid, Long blogId);
+    public Map<String, Object> collect(Long userid, Long blogId);
 
-    public int cancelCollect(Long userid, Long blogId);
+    public Map<String, Object> cancelCollect(Long userid, Long blogId);
 
-    public int like(Long userid, Long blogId);
+    public Map<String, Object> like(Long userid, Long blogId);
 
-    public int cancelLike(Long userid, Long blogId);
+    public Map<String, Object> cancelLike(Long userid, Long blogId);
 
     public int addComment(Comment comment);
 

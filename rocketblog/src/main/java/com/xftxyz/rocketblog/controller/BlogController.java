@@ -1,6 +1,7 @@
 package com.xftxyz.rocketblog.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -168,8 +169,8 @@ public class BlogController {
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        int collect = blogService.collect(user.getUserid(), blogId);
-        return Result.success(collect);
+        Map<String, Object> collect = blogService.collect(user.getUserid(), blogId);
+        return Result.custom((String) collect.get("msg"), collect.get("count"));
     }
 
     // 取消收藏
@@ -179,8 +180,8 @@ public class BlogController {
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        int cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
-        return Result.success(cancelCollect);
+        Map<String, Object> cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
+        return Result.custom((String) cancelCollect.get("msg"), cancelCollect.get("count"));
     }
 
     // 获取收藏的博客
@@ -204,8 +205,8 @@ public class BlogController {
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        int like = blogService.like(user.getUserid(), blogId);
-        return Result.success(like);
+        Map<String, Object> like = blogService.like(user.getUserid(), blogId);
+        return Result.custom((String) like.get("msg"), like.get("count"));
     }
 
     // 取消点赞
@@ -215,8 +216,8 @@ public class BlogController {
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        int cancelLike = blogService.cancelLike(user.getUserid(), blogId);
-        return Result.success(cancelLike);
+        Map<String, Object> cancelLike = blogService.cancelLike(user.getUserid(), blogId);
+        return Result.custom((String) cancelLike.get("msg"), cancelLike.get("count"));
     }
 
     // 获取点赞的博客
