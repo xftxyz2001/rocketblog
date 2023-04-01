@@ -6,6 +6,8 @@ import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogInfo;
 import com.xftxyz.rocketblog.pojo.Comment;
+import com.xftxyz.rocketblog.pojo.User;
+import com.xftxyz.rocketblog.pojo.VComment;
 
 public interface BlogService {
     // 返回所有博客
@@ -36,18 +38,18 @@ public interface BlogService {
     public int deleteComment(Long commentId);
 
     // 获取热门博客
-    public List<BlogInfo> getHotBlogs();
+    public List<BlogInfo> getHotBlogs(User user);
 
     // 获取点赞最多的博客
-    public List<BlogInfo> getMostLikeBlogs();
+    public List<BlogInfo> getMostLikeBlogs(User user);
 
     // 获取收藏最多的博客
-    public List<BlogInfo> getMostCollectBlogs();
+    public List<BlogInfo> getMostCollectBlogs(User user);
 
     // 获取评论最多的博客
-    public List<BlogInfo> getMostCommentBlogs();
+    public List<BlogInfo> getMostCommentBlogs(User user);
 
-    public List<BlogInfo> getNewBlogs();
+    public List<BlogInfo> getNewBlogs(User user);
 
     public List<BlogInfo> getCollectsBlogs(Long userid);
 
@@ -56,5 +58,7 @@ public interface BlogService {
     public List<BlogInfo> getFollowsBlogs(Long userid);
 
     public BlogDetail getBlogDetail(Long blogId);
+
+    public List<VComment> getCommentsByBlogId(Long blogId);
 
 }
