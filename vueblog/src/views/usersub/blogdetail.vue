@@ -260,19 +260,8 @@ function commentthis() {
             type: "success",
           });
 
-          console.log(comments.value);
-          var mycomment = {};
-          axios.get("http://8.130.81.23:8080/user/info").then((res) => {
-            mycomment = res.data.data;
-            comments.value.unshift({
-              avator: mycomment.avator,
-              commentContent: commenttext.value,
-              username: mycomment.username,
-              createtime: mycomment.createtime,
-            });
-          });
+          comments.value.unshift(res.data.data);
 
-          console.log(comments.value);
           commenttext.value = "";
         }
       });
