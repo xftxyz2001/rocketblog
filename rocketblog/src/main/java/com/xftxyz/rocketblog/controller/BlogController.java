@@ -236,14 +236,18 @@ public class BlogController {
 
     // 评论
     @PostMapping("/comment")
-    public Result<Object> comment(@RequestBody Comment comment, HttpSession session) {
+    public Result<VComment> comment(@RequestBody Comment comment, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
         comment.setUserid(user.getUserid());
         int insert = blogService.addComment(comment);
-        return Result.success(insert);
+        if (insert < 1) {
+            return Result.custom("评论失败", null);
+        }
+        VComment commentDetail = blogService.getCommentDetail(comment);
+        return Result.success(commentDetail);
     }
 
     // 删除评论

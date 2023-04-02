@@ -1,9 +1,11 @@
 package com.xftxyz.rocketblog.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.CommentExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface CommentMapper {
     /**

@@ -117,7 +117,7 @@ public class BlogServiceImpl implements BlogService {
         BookmarkExample exBookmarkCheck = new BookmarkExample();
         exBookmarkCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
         long countCheck = bookmarkMapper.countByExample(exBookmarkCheck);
-        
+
         if (countCheck < 1) {
             Bookmark bookmark = new Bookmark();
             bookmark.setUserid(userid);
@@ -334,6 +334,21 @@ public class BlogServiceImpl implements BlogService {
         List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
         blogEx(blogList, user == null ? null : user.getUserid());
         return blogList.get(0);
+    }
+
+    @Override
+    public VComment getCommentDetail(Comment comment) {
+        // 使用VCommentMapper查出刚刚插入的评论
+        VCommentExample exComment = new VCommentExample();
+        exComment.createCriteria().andBlogIdEqualTo(comment.getBlogId()).andUseridEqualTo(comment.getUserid());
+        exComment.setOrderByClause("createtime desc");
+        List<VComment> comments = vcommentMapper.selectByExample(exComment);
+        if (comments.size() < 1) {
+            return null;
+        }
+        VComment vComment = comments.get(0);
+        return vComment;
+
     }
 
 }

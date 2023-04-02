@@ -64,4 +64,6 @@ public interface BlogService {
 
     public BlogInfo getBlogInfo(Long blogId, User user);
 
+    public VComment getCommentDetail(Comment comment);
+
 }
