@@ -48,6 +48,9 @@ public interface UserService {
     public long getFollowerCount(Long userid);
     public List<UserBase> getFollowers(Long userid);
 
+    // 获取用户发布的博客数
+    public long getBlogCount(Long userid);
+
     public int chat(Long fromUserid, Long toUserid, String content);
 
     public List<VChat> getChats(Long userid);
@@ -56,6 +59,5 @@ public interface UserService {
 
     // QQ邮箱默认头像
     public String defaultAvatar(String email);
-
 
 }

@@ -23,6 +23,7 @@ import com.xftxyz.rocketblog.pojo.UserExample;
 import com.xftxyz.rocketblog.pojo.VChat;
 import com.xftxyz.rocketblog.pojo.VChatExample;
 import com.xftxyz.rocketblog.service.UserService;
+import com.xftxyz.rocketblog.status.BlogStatus;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -125,76 +126,42 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    // 查询一个用户的关注数
-
-    @Override
-    public Map<String, Object> getUserInfo(User user) {
+    // 创建userInfo
+    private Map<String, Object> createUserInfo(User user) {
         // 用户名、头像
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("username", user.getUsername());
         userInfo.put("avatar", user.getAvatar());
-
+        
         // 关注: userid_following -> userid_followed
-
         // 关注数: followings
-        FollowExample exFollowings = new FollowExample();
-        exFollowings.createCriteria().andUseridFollowingEqualTo(user.getUserid());
-        long followings = followMapper.countByExample(exFollowings);
-        userInfo.put("followings", followings);
+        userInfo.put("followings", getFollowingCount(user.getUserid()));
 
         // 粉丝数: followers
-        FollowExample exFollowers = new FollowExample();
-        exFollowers.createCriteria().andUseridFollowedEqualTo(user.getUserid());
-        long followers = followMapper.countByExample(exFollowers);
-        userInfo.put("followers", followers);
+        userInfo.put("followers", getFollowerCount(user.getUserid()));
 
         // 文章数: blogs
-        BlogExample exBlogs = new BlogExample();
-        exBlogs.createCriteria().andUseridEqualTo(user.getUserid());
-        long blogs = blogMapper.countByExample(exBlogs);
-        userInfo.put("blogs", blogs);
+        userInfo.put("blogs", getBlogCount(user.getUserid()));
+        return userInfo;
+    }
 
+    @Override
+    public Map<String, Object> getUserInfo(User user) {
+        Map<String, Object> userInfo = createUserInfo(user);
         return userInfo;
     }
 
     @Override
     public Map<String, Object> getUserInfo(User me, Long userid) {
-        User user = userMapper.selectByPrimaryKey(userid);
-        // 用户名、头像
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("username", user.getUsername());
-        userInfo.put("avatar", user.getAvatar());
-
-        // 关注: userid_following -> userid_followed
-
-        // 关注数: followings
-        FollowExample exFollowings = new FollowExample();
-        exFollowings.createCriteria().andUseridFollowingEqualTo(user.getUserid());
-        long followings = followMapper.countByExample(exFollowings);
-        userInfo.put("followings", followings);
-
-        // 粉丝数: followers
-        FollowExample exFollowers = new FollowExample();
-        exFollowers.createCriteria().andUseridFollowedEqualTo(user.getUserid());
-        long followers = followMapper.countByExample(exFollowers);
-        userInfo.put("followers", followers);
-
-        // 文章数: blogs
-        BlogExample exBlogs = new BlogExample();
-        exBlogs.createCriteria().andUseridEqualTo(user.getUserid());
-        long blogs = blogMapper.countByExample(exBlogs);
-        userInfo.put("blogs", blogs);
-
+        Map<String, Object> userInfo = createUserInfo(getUser(userid));
         // 是否关注: isFollowed
         if (me == null) {
             userInfo.put("isFollowed", false);
-
         } else {
             FollowExample exIsFollowed = new FollowExample();
             exIsFollowed.createCriteria().andUseridFollowingEqualTo(me.getUserid()).andUseridFollowedEqualTo(userid);
             long isFollowed = followMapper.countByExample(exIsFollowed);
             userInfo.put("isFollowed", isFollowed > 0);
-
         }
 
         return userInfo;
@@ -305,6 +272,15 @@ public class UserServiceImpl implements UserService {
         exFollowers.createCriteria().andUseridFollowedEqualTo(userid);
         long followers = followMapper.countByExample(exFollowers);
         return followers;
+    }
+
+    // 文章数
+    @Override
+    public long getBlogCount(Long userid) {
+        BlogExample exBlogs = new BlogExample();
+        exBlogs.createCriteria().andUseridEqualTo(userid).andBlogStatusEqualTo(BlogStatus.PUBLISH);
+        long blogs = blogMapper.countByExample(exBlogs);
+        return blogs;
     }
 
     // 关注列表
