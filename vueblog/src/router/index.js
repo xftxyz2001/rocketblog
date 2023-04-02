@@ -17,6 +17,12 @@ import HotMostLikeMiddle from "@/views/usersub/frontsub/fronthotsub/middle/hotmo
 import frontmessage from '@/views/usersub/frontsub/frontmessage'
 import frontperson from '@/views/usersub/frontsub/frontperson'
 import blogdetail from '@/views/usersub/blogdetail'
+import personuserinfo from "@/views/usersub/frontsub/frontpersonsub/userinfo"
+import personaccount from "@/views/usersub/frontsub/frontpersonsub/account"
+import personblog from "@/views/usersub/frontsub/frontpersonsub/blog"
+import personcollect from "@/views/usersub/frontsub/frontpersonsub/collect"
+import personfensi from "@/views/usersub/frontsub/frontpersonsub/fensi"
+import personguanzhu from "@/views/usersub/frontsub/frontpersonsub/guanzhu"
 const routes = [
 
   {
@@ -136,6 +142,40 @@ const routes = [
             path: 'person',
             name: 'person',
             component: frontperson,
+            children: [{
+              path: '',
+              name: '',
+              redirect: { name: 'personuserinfo' }
+            },
+            {
+              path: 'personuserinfo',
+              name: 'personuserinfo',
+              component: personuserinfo,
+            },
+            {
+              path: 'personguanzhu ',
+              name: 'personguanzhu ',
+              component: personguanzhu
+            }, {
+              path: 'personfensi',
+              name: 'personfensi',
+              component: personfensi
+            }, {
+              path: "personcollect",
+              name: 'personcollect',
+              component: personcollect
+            },
+            {
+              path: "personblog",
+              name: 'personblog',
+              component: personblog
+            },
+            {
+              path: "personaccount",
+              name: 'personaccount',
+              component: personaccount
+            }
+            ]
           }
         ]
       }

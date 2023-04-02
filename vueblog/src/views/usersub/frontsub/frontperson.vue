@@ -112,7 +112,7 @@
                       @close="handleClose"
                       style="--el-menu-border-color: #fff"
                     >
-                      <router-link :to="{ name: 'hotlatest' }"
+                      <router-link :to="{ name: 'personuserinfo' }"
                         ><el-menu-item
                           index="1"
                           style="border-top: 1px #c8c9cc solid"
@@ -123,7 +123,7 @@
                           <span>个人资料</span>
                         </el-menu-item></router-link
                       >
-                      <router-link :to="{ name: 'hotmostlike' }">
+                      <router-link :to="{ name: 'personaccount' }">
                         <el-menu-item index="2">
                           <span class="iconfont" style="margin-right: 5px"
                             >&#xe60f;</span
@@ -131,32 +131,32 @@
                           <span>账号管理</span>
                         </el-menu-item></router-link
                       >
-                      <router-link :to="{ name: 'hotmostlike' }">
-                        <el-menu-item index="2">
+                      <router-link :to="{ name: 'personblog' }">
+                        <el-menu-item index="3">
                           <span class="iconfont" style="margin-right: 5px"
                             >&#xe60f;</span
                           >
                           <span>博客</span>
                         </el-menu-item></router-link
                       >
-                      <router-link :to="{ name: 'hotmostlike' }">
-                        <el-menu-item index="2">
+                      <router-link :to="{ name: 'personguanzhu ' }">
+                        <el-menu-item index="4">
                           <span class="iconfont" style="margin-right: 5px"
                             >&#xe60f;</span
                           >
                           <span>关注</span>
                         </el-menu-item></router-link
                       >
-                      <router-link :to="{ name: 'hotmostlike' }">
-                        <el-menu-item index="2">
+                      <router-link :to="{ name: 'personfensi' }">
+                        <el-menu-item index="5">
                           <span class="iconfont" style="margin-right: 5px"
                             >&#xe60f;</span
                           >
                           <span>粉丝</span>
                         </el-menu-item></router-link
                       >
-                      <router-link :to="{ name: 'hotmostlike' }">
-                        <el-menu-item index="2">
+                      <router-link :to="{ name: 'personcollect' }">
+                        <el-menu-item index="6">
                           <span class="iconfont" style="margin-right: 5px"
                             >&#xe60f;</span
                           >
@@ -165,11 +165,10 @@
                       >
                     </el-menu>
                   </div>
-                  <el-main>main</el-main>
+                  <el-main><router-view></router-view></el-main>
                 </el-container>
-              </el-container>
-            </div></el-col
-          >
+              </el-container></div
+          ></el-col>
           <el-col :span="1"
             ><div class="grid-content ep-bg-purple"
           /></el-col> </el-row
