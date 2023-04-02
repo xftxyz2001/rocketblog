@@ -145,6 +145,55 @@ public class UserController {
         return Result.success();
     }
 
+    // 修改邮箱
+    @PostMapping("/update/email")
+    public Result<Object> updateEmail(@RequestBody Map<String, Object> requestBody,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+
+        // 获取参数
+        String email = (String) requestBody.get("email");
+        String vertify = (String) requestBody.get("vertify");
+        // 获取用户输入的验证码
+        String acode = (String) session.getAttribute("code");
+
+        if (acode == null || !acode.equals(vertify)) {
+            return Result.fail(ResultCode.CAPTCHA_ERROR);
+        }
+        // 更新邮箱
+        user.setEmail(email);
+        userService.updateUser(user);
+        session.setAttribute("user", user);
+        return Result.success();
+    }
+
+    // 修改密码
+    @PostMapping("/update/password")
+    public Result<Object> updatePassword(@RequestBody Map<String, Object> requestBody,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+
+        // 获取参数
+        String password = (String) requestBody.get("password");
+        String newPassword = (String) requestBody.get("newPassword");
+
+        // 如果原密码不正确
+        if (!user.getPassword().equals(password)) {
+            return Result.fail(ResultCode.PASSWORD_ERROR);
+        }
+        // 更新密码
+        user.setPassword(newPassword);
+        userService.updateUser(user);
+        session.setAttribute("user", user);
+        return Result.success();
+    }
+
     @GetMapping("/info/{userid}")
     public Result<Map<String, Object>> info(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
@@ -171,6 +220,19 @@ public class UserController {
         }
         userService.deleteUser(user.getUserid());
         session.invalidate();
+        return Result.success();
+    }
+
+    // 忘记密码
+    @PostMapping("/forget/{email}")
+    public Result<Object> forget(@PathVariable("email") String email) {
+        User user = userService.getUserByEmail(email);
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_EXIST);
+        }
+        // 发送邮件：用户的密码
+        String content = "您的密码是：" + user.getPassword();
+        emailService.sendSimpleMail(email, "找回密码", content);
         return Result.success();
     }
 

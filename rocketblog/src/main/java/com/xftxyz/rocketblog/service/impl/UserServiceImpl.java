@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserByName(String name) {
+    public List<User> getUsersLikeName(String name) {
         UserExample exName = new UserExample();
         exName.createCriteria().andUsernameLike("%" + name + "%");
         List<User> userList = userMapper.selectByExample(exName);
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserByEmail(String email) {
+    public List<User> getUsersLikeEmail(String email) {
         UserExample exEmail = new UserExample();
         exEmail.createCriteria().andEmailLike("%" + email + "%");
         List<User> userList = userMapper.selectByExample(exEmail);
@@ -332,6 +332,17 @@ public class UserServiceImpl implements UserService {
         String qqNumber = email.substring(0, index);
         String avatar = "https://q1.qlogo.cn/g?b=qq&nk=" + qqNumber + "&src_uin=www.jlwz.cn&s=0";
         return avatar;
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        UserExample exUser = new UserExample();
+        exUser.createCriteria().andEmailEqualTo(email);
+        List<User> users = userMapper.selectByExample(exUser);
+        if (users.size() > 0) {
+            return users.get(0);
+        }
+        return null;
     }
 
 }

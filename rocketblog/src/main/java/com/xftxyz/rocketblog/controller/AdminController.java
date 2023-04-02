@@ -72,14 +72,14 @@ public class AdminController {
 
     @GetMapping("/search/username/{name}")
     public List<User> getUserByName(@PathVariable("name") String name) {
-        List<User> userList = userService.getUserByName(name);
+        List<User> userList = userService.getUsersLikeName(name);
         log.info("/search/username/{" + name + "} -> getUserByName()");
         return userList;
     }
 
     @GetMapping("/search/email/{email}")
     public List<User> getUserByEmail(@PathVariable("email") String email) {
-        List<User> userList = userService.getUserByEmail(email);
+        List<User> userList = userService.getUsersLikeEmail(email);
         log.info("/search/email/{" + email + "} -> getUserByEmail()");
         return userList;
     }

@@ -23,9 +23,10 @@ public interface UserService {
     // 更新用户
     public int updateUser(User user);
 
-    public List<User> getUserByName(String name);
+    public List<User> getUsersLikeName(String name);
+    public List<User> getUsersLikeEmail(String email);
 
-    public List<User> getUserByEmail(String email);
+    public User getUserByEmail(String email);
 
     public String register(String name, String password, String email);
 
