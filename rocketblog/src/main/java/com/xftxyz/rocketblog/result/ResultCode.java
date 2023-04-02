@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.result;
 
 public enum ResultCode {
+    // 非法操作
+    ILLEGAL_OPERATION("100", "非法操作"),
     // 成功
     SUCCESS("200", "成功"),
     // 验证码错误

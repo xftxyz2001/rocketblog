@@ -24,7 +24,9 @@ public interface BlogService {
     public int deleteBlog(Long blogId);
 
     // 修改博客
-    public int updateBlog(Blog blog);
+    public int updateBlog(Blog blog);// 管理员
+
+    public int updateBlog(Blog blog, User user);
 
     public Map<String, Object> collect(Long userid, Long blogId);
 
@@ -67,5 +69,11 @@ public interface BlogService {
     public VComment getCommentDetail(Comment comment);
 
     public List<BlogInfo> getMyBlogs(Long userid);
+
+    public List<BlogInfo> searchBlogs(String keyword, User user);
+
+    public int publish(Blog blog, User user);
+
+    public List<BlogInfo> getDraftBlogs(User user);
 
 }

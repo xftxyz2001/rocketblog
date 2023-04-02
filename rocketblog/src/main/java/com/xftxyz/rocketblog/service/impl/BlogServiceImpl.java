@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.xftxyz.rocketblog.mapper.BlogDetailMapper;
 import com.xftxyz.rocketblog.mapper.BlogInfoMapper;
@@ -31,6 +32,7 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.VComment;
 import com.xftxyz.rocketblog.pojo.VCommentExample;
 import com.xftxyz.rocketblog.service.BlogService;
+import com.xftxyz.rocketblog.status.BlogStatus;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -92,7 +94,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public int addBlog(Blog blog) {
+        // 设置创建时间
         blog.setCreateTime(new Date());
+        // 设置更新时间
         blog.setUpdateTime(new Date());
         int insert = blogMapper.insert(blog);
         return insert;
@@ -108,6 +112,17 @@ public class BlogServiceImpl implements BlogService {
     public int updateBlog(Blog blog) {
         int update = blogMapper.updateByPrimaryKey(blog);
         return update;
+    }
+
+    @Override
+    public int updateBlog(Blog blog, User user) {
+        // 是不是自己的博客？
+        if (blog.getUserid() != user.getUserid()) {
+            return -1;
+        }
+        // 设置更新时间
+        blog.setUpdateTime(new Date());
+        return updateBlog(blog);
     }
 
     @Override
@@ -360,6 +375,56 @@ public class BlogServiceImpl implements BlogService {
         exBlog.setOrderByClause("update_time desc");
         List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
         blogEx(blogList, userid);
+        return blogList;
+    }
+
+    @Override
+    public List<BlogInfo> searchBlogs(String keyword, User user) {
+        BlogInfoExample exBlog = new BlogInfoExample();
+        // blogTitle or username
+        exBlog.createCriteria().andBlogTitleLike("%" + keyword + "%");
+        exBlog.or().andUsernameLike("%" + keyword + "%");
+
+        List<BlogInfo> searchBlogs = blogInfoMapper.selectByExample(exBlog);
+        blogEx(searchBlogs, user == null ? null : user.getUserid());
+        return searchBlogs;
+    }
+
+    @Override
+    public int publish(Blog blog, User user) {
+        // 博客内容为空
+        // if (!StringUtils.hasLength(blog.getBlogContent())) {
+        // return -1;
+        // }
+
+        blog.setUserid(user.getUserid());
+        if (blog.getBlogTitle() == null || blog.getBlogTitle().equals("")) {
+            blog.setBlogTitle("无标题");
+        }
+        // 如果不是草稿
+        if (blog.getBlogStatus() != BlogStatus.DRAFT) {
+            // 设置属性为发布
+            blog.setBlogStatus(BlogStatus.PUBLISH);
+        }
+        // 如果没有设置coverImage
+        if (!StringUtils.hasLength(blog.getCoverImage())) {
+            // StringUtils.hasText()和StringUtils.hasLength()的区别
+            // hasText()方法判断字符串是否有内容，有内容返回true，没有内容返回false
+            // hasLength()方法判断字符串是否有长度，有长度返回true，没有长度返回false
+            blog.setCoverImage(user.getAvatar());
+        }
+        // 添加
+        int addBlog = addBlog(blog);
+        return addBlog;
+    }
+
+    @Override
+    public List<BlogInfo> getDraftBlogs(User user) {
+        BlogInfoExample exBlog = new BlogInfoExample();
+        exBlog.createCriteria().andUseridEqualTo(user.getUserid()).andBlogStatusEqualTo(BlogStatus.DRAFT);
+        exBlog.setOrderByClause("update_time desc");
+        List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
+        blogEx(blogList, user.getUserid());
         return blogList;
     }
 

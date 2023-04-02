@@ -27,14 +27,24 @@ import com.xftxyz.rocketblog.result.ResultCode;
 import com.xftxyz.rocketblog.service.BlogService;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/blog")
 public class BlogController {
     @Autowired
     BlogService blogService;
+
+    // 搜索博客
+    @GetMapping("/search")
+    public Result<PageInfo<BlogInfo>> search(@RequestParam("keyword") String keyword,
+            @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5") int pageSize,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        PageHelper.startPage(pageNum, pageSize);
+        List<BlogInfo> blogs = blogService.searchBlogs(keyword, user);
+        PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
+        return Result.success(pageInfo);
+    }
 
     @PostMapping("/publish")
     public Result<Object> publish(@RequestBody Blog blog, HttpSession session) {
@@ -42,16 +52,21 @@ public class BlogController {
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        blog.setUserid(user.getUserid());
-        blog.setBlogStatus(0);
-        if (blog.getBlogTitle() == null || blog.getBlogTitle().equals("")) {
-            blog.setBlogTitle("无标题");
-        }
-        // 日志：用户{}发布了博客{}
-        log.info("用户{}发布了博客{}", user.getUsername(), blog.getBlogTitle());
-        int insert = blogService.addBlog(blog);
-
+        int insert = blogService.publish(blog, user);
         return Result.success(insert);
+    }
+
+    @GetMapping("/draft")
+    public Result<PageInfo<BlogInfo>> draft(@RequestParam(defaultValue = "1") int pageNum,
+    @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<BlogInfo> draftBlogs = blogService.getDraftBlogs(user);
+        PageInfo<BlogInfo> pageInfo = new PageInfo<>(draftBlogs);
+        return Result.success(pageInfo);
     }
 
     // 热门博客，分页返回
@@ -147,7 +162,10 @@ public class BlogController {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
         // blog.setUserid(user.getUserid());
-        int update = blogService.updateBlog(blog);
+        int update = blogService.updateBlog(blog, user);
+        if (update < 0) {
+            return Result.fail(ResultCode.ILLEGAL_OPERATION);
+        }
         return Result.success(update);
     }
 
