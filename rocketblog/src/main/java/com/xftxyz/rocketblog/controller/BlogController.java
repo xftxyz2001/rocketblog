@@ -162,6 +162,20 @@ public class BlogController {
         return Result.success(delete);
     }
 
+    // 我发布的博客
+    @GetMapping("/my")
+    public Result<PageInfo<BlogInfo>> my(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<BlogInfo> myBlogs = blogService.getMyBlogs(user.getUserid());
+        PageInfo<BlogInfo> pageInfo = new PageInfo<>(myBlogs);
+        return Result.success(pageInfo);
+    }
+
     // 收藏
     @GetMapping("/collect/{blogId}")
     public Result<Object> collect(@PathVariable("blogId") Long blogId, HttpSession session) {

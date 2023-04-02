@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -99,14 +100,48 @@ public class UserController {
         return Result.success(userInfo);
     }
 
-    // 修改用户信息
-    @PostMapping("/update")
-    public Result<Object> update(@RequestBody User user, HttpSession session) {
-        User u = (User) session.getAttribute("user");
-        if (u == null) {
+    // 获取用户详细信息
+    @GetMapping("/info/detail")
+    public Result<User> infoDetail(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
+        // User userDetail = userService.getUser(user.getUserid());
+        user.setPassword(null);
+        log.info(((User) session.getAttribute("user")).getPassword());
+        return Result.success(user);
+    }
+
+    // 修改用户信息
+    @PostMapping("/update")
+    public Result<Object> update(@RequestBody Map<String, Object> requestBody, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+
+        // 获取参数
+        String username = (String) requestBody.get("username");
+        String userSex = (String) requestBody.get("userSex");
+        String phone = (String) requestBody.get("phone");
+        String avatar = (String) requestBody.get("avatar");
+
+        // 更新用户信息
+        if (StringUtils.hasLength(username)) {
+            user.setUsername(username);
+        }
+        if (StringUtils.hasLength(userSex)) {
+            user.setUserSex(userSex);
+        }
+        if (StringUtils.hasLength(phone)) {
+            user.setPhone(phone);
+        }
+        if (StringUtils.hasLength(avatar)) {
+            user.setAvatar(avatar);
+        }
         userService.updateUser(user);
+        session.setAttribute("user", user);
         return Result.success();
     }
 

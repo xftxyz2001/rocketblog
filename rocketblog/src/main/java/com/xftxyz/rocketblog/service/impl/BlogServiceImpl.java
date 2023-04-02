@@ -323,6 +323,7 @@ public class BlogServiceImpl implements BlogService {
     public List<VComment> getCommentsByBlogId(Long blogId) {
         VCommentExample exComment = new VCommentExample();
         exComment.createCriteria().andBlogIdEqualTo(blogId);
+        exComment.setOrderByClause("createtime desc");
         List<VComment> comments = vcommentMapper.selectByExample(exComment);
         return comments;
     }
@@ -342,6 +343,7 @@ public class BlogServiceImpl implements BlogService {
         VCommentExample exComment = new VCommentExample();
         exComment.createCriteria().andBlogIdEqualTo(comment.getBlogId()).andUseridEqualTo(comment.getUserid());
         exComment.setOrderByClause("createtime desc");
+        // exComment.setOrderByClause("createtime desc limit 1");
         List<VComment> comments = vcommentMapper.selectByExample(exComment);
         if (comments.size() < 1) {
             return null;
@@ -349,6 +351,16 @@ public class BlogServiceImpl implements BlogService {
         VComment vComment = comments.get(0);
         return vComment;
 
+    }
+
+    @Override
+    public List<BlogInfo> getMyBlogs(Long userid) {
+        BlogInfoExample exBlog = new BlogInfoExample();
+        exBlog.createCriteria().andUseridEqualTo(userid);
+        exBlog.setOrderByClause("update_time desc");
+        List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
+        blogEx(blogList, userid);
+        return blogList;
     }
 
 }
