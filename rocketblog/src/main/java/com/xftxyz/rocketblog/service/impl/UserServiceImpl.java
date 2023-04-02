@@ -101,6 +101,10 @@ public class UserServiceImpl implements UserService {
         user.setUsername(name);
         user.setPassword(password);
         user.setEmail(email);
+
+        // 默认头像
+        user.setAvatar(defaultAvatar(email));
+
         user.setUserRegisterTime(new Date());
         userMapper.insert(user);
         return "注册成功";
@@ -315,6 +319,19 @@ public class UserServiceImpl implements UserService {
     public List<UserBase> getFollowers(Long userid) {
         List<UserBase> followerUsers = userMapper.getFollowedUsers(userid);
         return followerUsers;
+    }
+
+    @Override
+    public String defaultAvatar(String email) {
+        // 判断是否为QQ邮箱
+        int index = email.indexOf("@qq.com");
+        if (index == -1) {
+            // 如果不是QQ邮箱，返回null
+            return null;
+        }
+        String qqNumber = email.substring(0, index);
+        String avatar = "https://q1.qlogo.cn/g?b=qq&nk=" + qqNumber + "&src_uin=www.jlwz.cn&s=0";
+        return avatar;
     }
 
 }

@@ -53,5 +53,8 @@ public interface UserService {
 
     public int deleteChat(Long chatid);
 
+    // QQ邮箱默认头像
+    public String defaultAvatar(String email);
+
 
 }

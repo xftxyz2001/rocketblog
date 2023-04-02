@@ -99,6 +99,17 @@ public class UserController {
         return Result.success(userInfo);
     }
 
+    // 修改用户信息
+    @PostMapping("/update")
+    public Result<Object> update(@RequestBody User user, HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        if (u == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        userService.updateUser(user);
+        return Result.success();
+    }
+
     @GetMapping("/info/{userid}")
     public Result<Map<String, Object>> info(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
@@ -112,6 +123,18 @@ public class UserController {
     // 登出
     @GetMapping("/logout")
     public Result<Object> logout(HttpSession session) {
+        session.invalidate();
+        return Result.success();
+    }
+
+    // 注销
+    @DeleteMapping("/delete")
+    public Result<Object> delete(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        userService.deleteUser(user.getUserid());
         session.invalidate();
         return Result.success();
     }
