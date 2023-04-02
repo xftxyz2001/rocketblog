@@ -1,5 +1,6 @@
 package com.xftxyz.rocketblog.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,13 +103,13 @@ public class UserController {
 
     // 获取用户详细信息
     @GetMapping("/info/detail")
-    public Result<User> infoDetail(HttpSession session) {
+    public Result<User> infoDetail(HttpSession session) throws ClassNotFoundException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        // User userDetail = userService.getUser(user.getUserid());
-        user.setPassword(null);
+        User userCopy = user.deepClone();
+        userCopy.setPassword(null);
         log.info(((User) session.getAttribute("user")).getPassword());
         return Result.success(user);
     }
@@ -141,7 +142,6 @@ public class UserController {
             user.setAvatar(avatar);
         }
         userService.updateUser(user);
-        session.setAttribute("user", user);
         return Result.success();
     }
 
@@ -166,7 +166,6 @@ public class UserController {
         // 更新邮箱
         user.setEmail(email);
         userService.updateUser(user);
-        session.setAttribute("user", user);
         return Result.success();
     }
 
@@ -190,7 +189,6 @@ public class UserController {
         // 更新密码
         user.setPassword(newPassword);
         userService.updateUser(user);
-        session.setAttribute("user", user);
         return Result.success();
     }
 
