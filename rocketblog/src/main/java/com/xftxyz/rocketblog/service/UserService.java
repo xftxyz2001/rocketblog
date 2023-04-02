@@ -35,14 +35,16 @@ public interface UserService {
     public Map<String, Object> getUserInfo(User user);
     public Map<String, Object> getUserInfo(User me, Long userid);
 
-    public void follow(Long userFollowing, Long userFollowed);
+    public Map<String, Object> follow(Long userFollowing, Long userFollowed);
 
-    public void cancelFollow(Long userFollowing, Long userFollowed);
+    public Map<String, Object> cancelFollow(Long userFollowing, Long userFollowed);
 
     // 获取用户关注列表
+    public long getFollowingCount(Long userid);
     public List<UserBase> getFollowings(Long userid);
 
     // 获取用户粉丝列表
+    public long getFollowerCount(Long userid);
     public List<UserBase> getFollowers(Long userid);
 
     public int chat(Long fromUserid, Long toUserid, String content);

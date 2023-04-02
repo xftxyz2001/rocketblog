@@ -123,8 +123,8 @@ public class UserController {
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        userService.follow(user.getUserid(), userid);
-        return Result.success();
+        Map<String, Object> follow = userService.follow(user.getUserid(), userid);
+        return Result.custom((String) follow.get("msg"), follow.get("followers"));
     }
 
     // 取消关注
@@ -134,8 +134,8 @@ public class UserController {
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        userService.cancelFollow(user.getUserid(), userid);
-        return Result.success();
+        Map<String, Object> follow = userService.cancelFollow(user.getUserid(), userid);
+        return Result.custom((String) follow.get("msg"), follow.get("followers"));
     }
 
     // 获取用户关注列表

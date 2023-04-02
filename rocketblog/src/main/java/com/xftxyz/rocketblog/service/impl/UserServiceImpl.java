@@ -121,6 +121,8 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    // 查询一个用户的关注数
+
     @Override
     public Map<String, Object> getUserInfo(User user) {
         // 用户名、头像
@@ -195,31 +197,66 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void follow(Long userFollowing, Long userFollowed) {
+    public Map<String, Object> follow(Long userFollowing, Long userFollowed) {
+        Map<String, Object> result = new HashMap<>();
+        // 不能对自己进行此操作
+        if (userFollowing.equals(userFollowed)) {
+            result.put("msg", "不能对自己进行此操作");
+            result.put("followers", getFollowerCount(userFollowed));
+            return result;
+        }
+
+        // 判断是否已关注
+        FollowExample exFollow = new FollowExample();
+        exFollow.createCriteria().andUseridFollowingEqualTo(userFollowing).andUseridFollowedEqualTo(userFollowed);
+        long count = followMapper.countByExample(exFollow);
+        if (count > 0) {
+            result.put("msg", "已经关注过了");
+            result.put("followers", getFollowerCount(userFollowed));
+            return result;
+        }
+
+        // 关注
         Follow follow = new Follow();
         follow.setUseridFollowing(userFollowing);
         follow.setUseridFollowed(userFollowed);
         follow.setCreatetime(new Date());
-        followMapper.insert(follow);
+        int insert = followMapper.insert(follow);
+        if (insert > 0) {
+            result.put("msg", "关注成功");
+        } else {
+            result.put("msg", "关注失败");
+        }
+        // 查询最新粉丝数量
+        long followers = getFollowerCount(userFollowed);
+        result.put("followers", followers);
+        return result;
     }
 
     @Override
-    public void cancelFollow(Long userFollowing, Long userFollowed) {
+    public Map<String, Object> cancelFollow(Long userFollowing, Long userFollowed) {
+        Map<String, Object> result = new HashMap<>();
+        // 不能对自己进行此操作
+        if (userFollowing.equals(userFollowed)) {
+            result.put("msg", "不能对自己进行此操作");
+            result.put("followers", getFollowerCount(userFollowed));
+            return result;
+        }
+
+        // 取消关注
         FollowExample exFollow = new FollowExample();
         exFollow.createCriteria().andUseridFollowingEqualTo(userFollowing).andUseridFollowedEqualTo(userFollowed);
-        followMapper.deleteByExample(exFollow);
-    }
+        int delete = followMapper.deleteByExample(exFollow);
 
-    @Override
-    public List<UserBase> getFollowings(Long userid) {
-        List<UserBase> followingUsers = userMapper.getFollowingUsers(userid);
-        return followingUsers;
-    }
-
-    @Override
-    public List<UserBase> getFollowers(Long userid) {
-        List<UserBase> followerUsers = userMapper.getFollowedUsers(userid);
-        return followerUsers;
+        if (delete > 0) {
+            result.put("msg", "取消关注成功");
+        } else {
+            result.put("msg", "没有关注过该用户");
+        }
+        // 查询最新粉丝数量
+        long followers = getFollowerCount(userFollowed);
+        result.put("followers", followers);
+        return result;
     }
 
     @Override
@@ -246,6 +283,38 @@ public class UserServiceImpl implements UserService {
     public int deleteChat(Long chatid) {
         int delete = chatMapper.deleteByPrimaryKey(chatid);
         return delete;
+    }
+
+    // 关注数
+    @Override
+    public long getFollowingCount(Long userid) {
+        FollowExample exFollowings = new FollowExample();
+        exFollowings.createCriteria().andUseridFollowingEqualTo(userid);
+        long followings = followMapper.countByExample(exFollowings);
+        return followings;
+    }
+
+    // 粉丝数
+    @Override
+    public long getFollowerCount(Long userid) {
+        FollowExample exFollowers = new FollowExample();
+        exFollowers.createCriteria().andUseridFollowedEqualTo(userid);
+        long followers = followMapper.countByExample(exFollowers);
+        return followers;
+    }
+
+    // 关注列表
+    @Override
+    public List<UserBase> getFollowings(Long userid) {
+        List<UserBase> followingUsers = userMapper.getFollowingUsers(userid);
+        return followingUsers;
+    }
+
+    // 粉丝列表
+    @Override
+    public List<UserBase> getFollowers(Long userid) {
+        List<UserBase> followerUsers = userMapper.getFollowedUsers(userid);
+        return followerUsers;
     }
 
 }
