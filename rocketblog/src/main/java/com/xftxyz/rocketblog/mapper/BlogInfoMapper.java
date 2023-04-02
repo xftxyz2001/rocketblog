@@ -15,6 +15,7 @@ public interface BlogInfoMapper {
             "LEFT JOIN t_like ON v_bloginfo.blog_id = t_like.blog_id " +
             "LEFT JOIN t_bookmark ON v_bloginfo.blog_id = t_bookmark.blog_id " +
             "LEFT JOIN t_comment ON v_bloginfo.blog_id = t_comment.blog_id " +
+            "WHERE v_bloginfo.blog_status = 1 " +
             "GROUP BY v_bloginfo.blog_id " +
             "ORDER BY COUNT( DISTINCT t_like.userid )+ COUNT( DISTINCT t_bookmark.userid )+ COUNT( DISTINCT t_comment.comment_id ) DESC")
     List<BlogInfo> selectHotBlogs();
@@ -23,6 +24,7 @@ public interface BlogInfoMapper {
     @Select("SELECT v_bloginfo.* " +
             "FROM v_bloginfo " +
             "LEFT JOIN t_like ON v_bloginfo.blog_id = t_like.blog_id " +
+            "WHERE v_bloginfo.blog_status = 1 " +
             "GROUP BY v_bloginfo.blog_id " +
             "ORDER BY COUNT( DISTINCT t_like.userid ) DESC")
     List<BlogInfo> selectMostLikeBlogs();
@@ -31,6 +33,7 @@ public interface BlogInfoMapper {
     @Select("SELECT v_bloginfo.* " +
             "FROM v_bloginfo " +
             "LEFT JOIN t_bookmark ON v_bloginfo.blog_id = t_bookmark.blog_id " +
+            "WHERE v_bloginfo.blog_status = 1 " +
             "GROUP BY v_bloginfo.blog_id " +
             "ORDER BY COUNT( DISTINCT t_bookmark.userid ) DESC")
     List<BlogInfo> selectMostCollectBlogs();
@@ -39,6 +42,7 @@ public interface BlogInfoMapper {
     @Select("SELECT v_bloginfo.* " +
             "FROM v_bloginfo " +
             "LEFT JOIN t_comment ON v_bloginfo.blog_id = t_comment.blog_id " +
+            "WHERE v_bloginfo.blog_status = 1 " +
             "GROUP BY v_bloginfo.blog_id " +
             "ORDER BY COUNT( DISTINCT t_comment.comment_id ) DESC")
     List<BlogInfo> selectMostCommentBlogs();
@@ -64,7 +68,8 @@ public interface BlogInfoMapper {
             "SELECT userid_followed " +
             "FROM t_follow " +
             "WHERE userid_following = #{userid} " +
-            ") f ON v_bloginfo.userid = f.userid_followed")
+            ") f ON v_bloginfo.userid = f.userid_followed" +
+            " WHERE v_bloginfo.blog_status = 1")
     List<BlogInfo> selectFollowBlogs(@Param("userid") Long userid);
 
     /**
