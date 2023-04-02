@@ -1,6 +1,7 @@
 package com.xftxyz.rocketblog.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.pojo.User;
+import com.xftxyz.rocketblog.pojo.UserBase;
+import com.xftxyz.rocketblog.pojo.VChat;
 import com.xftxyz.rocketblog.result.Result;
 import com.xftxyz.rocketblog.result.ResultCode;
 import com.xftxyz.rocketblog.service.EmailService;
@@ -97,7 +103,7 @@ public class UserController {
     public Result<Map<String, Object>> info(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
         // if (user == null) {
-        //     return Result.fail(ResultCode.USER_NOT_LOGIN);
+        // return Result.fail(ResultCode.USER_NOT_LOGIN);
         // }
         Map<String, Object> userInfo = userService.getUserInfo(user, userid);
         return Result.success(userInfo);
@@ -134,26 +140,30 @@ public class UserController {
 
     // 获取用户关注列表
     @GetMapping("/followings")
-    public Result<Map<String, Object>> followings(HttpSession session) {
+    public Result<PageInfo<UserBase>> followings(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        // TODO: 分页
-        Map<String, Object> followings = userService.getFollowings(user.getUserid());
-        return Result.success(followings);
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserBase> followings = userService.getFollowings(user.getUserid());
+        PageInfo<UserBase> pageInfo = new PageInfo<>(followings);
+        return Result.success(pageInfo);
     }
 
     // 获取用户粉丝列表
     @GetMapping("/followers")
-    public Result<Map<String, Object>> followers(HttpSession session) {
+    public Result<PageInfo<UserBase>> followers(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        // TODO: 分页
-        Map<String, Object> followers = userService.getFollowers(user.getUserid());
-        return Result.success(followers);
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserBase> followers = userService.getFollowers(user.getUserid());
+        PageInfo<UserBase> pageInfo = new PageInfo<>(followers);
+        return Result.success(pageInfo);
     }
 
     // 发送消息
@@ -165,8 +175,33 @@ public class UserController {
         }
         Long toUserid = Long.parseLong((String) requestBody.get("to"));
         String content = (String) requestBody.get("content");
-        userService.chat(user.getUserid(), toUserid, content);
-        return Result.success();
+        int chat = userService.chat(user.getUserid(), toUserid, content);
+        return Result.success(chat);
+    }
+
+    // 获取消息列表
+    @GetMapping("/chats")
+    public Result<Object> chats(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<VChat> chats = userService.getChats(user.getUserid());
+        PageInfo<VChat> pageInfo = new PageInfo<>(chats);
+        return Result.success(pageInfo);
+    }
+
+    // 删除消息
+    @DeleteMapping("/chat/{chatid}")
+    public Result<Object> deleteChat(HttpSession session, @PathVariable("chatid") Long chatid) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        int deleteChat = userService.deleteChat(chatid);
+        return Result.success(deleteChat);
     }
 
 }

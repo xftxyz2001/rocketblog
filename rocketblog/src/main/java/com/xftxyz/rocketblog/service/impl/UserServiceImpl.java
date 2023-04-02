@@ -9,13 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xftxyz.rocketblog.mapper.BlogMapper;
+import com.xftxyz.rocketblog.mapper.ChatMapper;
 import com.xftxyz.rocketblog.mapper.FollowMapper;
 import com.xftxyz.rocketblog.mapper.UserMapper;
+import com.xftxyz.rocketblog.mapper.VChatMapper;
 import com.xftxyz.rocketblog.pojo.BlogExample;
+import com.xftxyz.rocketblog.pojo.Chat;
 import com.xftxyz.rocketblog.pojo.Follow;
 import com.xftxyz.rocketblog.pojo.FollowExample;
 import com.xftxyz.rocketblog.pojo.User;
+import com.xftxyz.rocketblog.pojo.UserBase;
 import com.xftxyz.rocketblog.pojo.UserExample;
+import com.xftxyz.rocketblog.pojo.VChat;
+import com.xftxyz.rocketblog.pojo.VChatExample;
 import com.xftxyz.rocketblog.service.UserService;
 
 @Service
@@ -29,6 +35,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     BlogMapper blogMapper;
+
+    @Autowired
+    ChatMapper chatMapper;
+
+    @Autowired
+    VChatMapper vChatMapper;
 
     @Override
     public List<User> getUsers() {
@@ -199,21 +211,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> getFollowings(Long userid) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFollowings'");
+    public List<UserBase> getFollowings(Long userid) {
+        List<UserBase> followingUsers = userMapper.getFollowingUsers(userid);
+        return followingUsers;
     }
 
     @Override
-    public Map<String, Object> getFollowers(Long userid) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFollowers'");
+    public List<UserBase> getFollowers(Long userid) {
+        List<UserBase> followerUsers = userMapper.getFollowedUsers(userid);
+        return followerUsers;
     }
 
     @Override
-    public void chat(Long fromUserid, Long toUserid, String content) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'chat'");
+    public int chat(Long fromUserid, Long toUserid, String content) {
+        Chat chat = new Chat();
+        chat.setUseridFrom(fromUserid);
+        chat.setUseridTo(toUserid);
+        chat.setMessageContent(content);
+        chat.setCreatetime(new Date());
+        int insert = chatMapper.insert(chat);
+        return insert;
+    }
+
+    @Override
+    public List<VChat> getChats(Long userid) {
+        VChatExample exChats = new VChatExample();
+        exChats.createCriteria().andUseridFromEqualTo(userid);
+        exChats.setOrderByClause("createtime desc");
+        List<VChat> chats = vChatMapper.selectByExample(exChats);
+        return chats;
+    }
+
+    @Override
+    public int deleteChat(Long chatid) {
+        int delete = chatMapper.deleteByPrimaryKey(chatid);
+        return delete;
     }
 
 }

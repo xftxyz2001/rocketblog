@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.xftxyz.rocketblog.pojo.User;
+import com.xftxyz.rocketblog.pojo.UserBase;
+import com.xftxyz.rocketblog.pojo.VChat;
 
 public interface UserService {
     // 获取用户列表
@@ -37,11 +39,17 @@ public interface UserService {
 
     public void cancelFollow(Long userFollowing, Long userFollowed);
 
-    public Map<String, Object> getFollowings(Long userid);
+    // 获取用户关注列表
+    public List<UserBase> getFollowings(Long userid);
 
-    public Map<String, Object> getFollowers(Long userid);
+    // 获取用户粉丝列表
+    public List<UserBase> getFollowers(Long userid);
 
-    public void chat(Long fromUserid, Long toUserid, String content);
+    public int chat(Long fromUserid, Long toUserid, String content);
+
+    public List<VChat> getChats(Long userid);
+
+    public int deleteChat(Long chatid);
 
 
 }
