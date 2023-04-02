@@ -23,22 +23,22 @@
       >
       <router-link :to="{ name: 'mostlike' }">
         <el-menu-item index="2">
-          <span class="iconfont" style="margin-right: 5px">&#xe60f;</span>
-          <span>点赞最多</span>
+          <span class="iconfont" style="margin-right: 5px">&#xe670;</span>
+          <span>收藏最多</span>
         </el-menu-item></router-link
       >
       <router-link :to="{ name: 'latest' }">
         <el-menu-item index="3">
           <span class="iconfont" style="margin-right: 5px">&#xe61e;</span>
-          <span>最新发布</span>
+          <span>评论最多</span>
         </el-menu-item>
       </router-link>
-      <router-link :to="{ name: 'friend' }">
+      <!-- <router-link :to="{ name: 'friend' }">
         <el-menu-item index="4">
           <span class="iconfont" style="margin-right: 5px">&#xe601;</span>
           <span>好友发布</span>
         </el-menu-item>
-      </router-link>
+      </router-link> -->
     </el-menu>
   </div>
 </template>

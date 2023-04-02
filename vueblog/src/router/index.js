@@ -52,7 +52,7 @@ const routes = [
       {
         path: '',
         name: '',
-        redirect: { name: 'allconcern' }
+        redirect: { name: 'hotlatest' }
       },
       {
         path: 'editblog',
@@ -72,7 +72,7 @@ const routes = [
           {
             path: '',
             name: '',
-            redirect: { name: 'allconcern' }
+            redirect: { name: 'hotlatest' }
           },
           {
             path: 'home',
@@ -82,7 +82,7 @@ const routes = [
               {
                 path: '',
                 name: '',
-                redirect: { name: 'allconcern' }
+                redirect: { name: 'hotlatest' }
               },
               {
                 path: 'allconcern',

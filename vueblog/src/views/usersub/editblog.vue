@@ -82,7 +82,7 @@ const toolbarOptions = [
   // ["link", "image", "video"], // 链接、图片、视频
   ["image"], // 链接、图片、视频
 ];
-
+import { ElMessage } from "element-plus";
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import { container, ImageExtend, QuillWatch } from "quill-image-extend-module";
 import quillTool from "@/utils/quillTool";
@@ -151,7 +151,17 @@ export default {
     submit() {
       var blogdata = { blogTitle: this.blogTitle, blogContent: this.content };
 
-      axios.post("http://8.130.81.23:8080/blog/publish", blogdata);
+      axios
+        .post("http://8.130.81.23:8080/blog/publish", blogdata)
+        .then((res) => {
+          ElMessage({
+            showClose: true,
+            message: "发表成功",
+            type: "success",
+          });
+          this.blogTitle = "";
+          this.content = "";
+        });
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

@@ -548,6 +548,8 @@ function logout() {
   axios.get("http://8.130.81.23:8080/user/logout").then((res) => {
     loginsuccess.value = false;
     localStorage.removeItem("token");
+    localStorage.removeItem("token.email");
+    localStorage.removeItem("token.password");
   });
 }
 function getuserinfo() {
@@ -565,25 +567,48 @@ function editbutton() {
 }
 function tohome() {
   if (localStorage.getItem("token")) router.push({ name: "allconcern" });
-  else loginVisible.value = "true";
+  else {
+    loginVisible.value = "true";
+    loginform.email = "";
+    loginform.password = "";
+  }
 }
 function tomessage() {
   if (localStorage.getItem("token")) router.push({ name: "message" });
-  else loginVisible.value = "true";
+  else {
+    loginVisible.value = "true";
+    loginform.email = "";
+    loginform.password = "";
+  }
 }
 function toperson() {
   if (localStorage.getItem("token")) router.push({ name: "person" });
-  else loginVisible.value = "true";
+  else {
+    loginVisible.value = "true";
+    loginform.email = "";
+    loginform.password = "";
+  }
 }
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 Bus.on("followneedlogin", () => {
   loginVisible.value = true;
+  loginform.email = "";
+  loginform.password = "";
 });
 Bus.on("likeneedlogin", () => {
   loginVisible.value = true;
+  loginform.email = "";
+  loginform.password = "";
 });
 Bus.on("collectneedlogin", () => {
   loginVisible.value = true;
+  loginform.email = "";
+  loginform.password = "";
+});
+Bus.on("commentneedlogin", () => {
+  loginVisible.value = true;
+  loginform.email = "";
+  loginform.password = "";
 });
 </script>
 <script >
