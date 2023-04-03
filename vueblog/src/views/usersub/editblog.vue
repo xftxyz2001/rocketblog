@@ -32,13 +32,14 @@
           >封面图片（可选）
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="http://8.130.81.23:8080/images/upload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
             multiple
-            :limit="3"
+            :limit="1"
             :on-exceed="handleExceed"
+            :on-success="handleAvatarSuccess"
             :file-list="fileList"
           >
             <el-button size="small" type="primary">点击上传</el-button>
@@ -100,18 +101,20 @@ export default {
     return {
       blogTitle: "",
       content: "",
+      coverImage: "",
       editorOption: {
         theme: "snow",
         placeholder: "请输入",
         modules: {
           ImageExtend: {
-            name: "file_name", // 参数名
-            action: "", // 服务器地址，如果为空则采用base64插入图片
+            name: "file", // 参数名
+            action: "http://8.130.81.23:8080/images/upload", // 服务器地址，如果为空则采用base64插入图片
             headers: (xhr) => {
               // 设置请求头参数（选填）
             },
             response: (res) => {
-              return res.data.url;
+              console.log(res);
+              return "http://8.130.81.23:8080"+res.data;
             },
 
             size: 8, // 图片不能超过8M
@@ -149,7 +152,7 @@ export default {
   },
   methods: {
     submit() {
-      var blogdata = { blogTitle: this.blogTitle, blogContent: this.content };
+      var blogdata = {coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
 
       axios
         .post("http://8.130.81.23:8080/blog/publish", blogdata)
@@ -171,13 +174,17 @@ export default {
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
           files.length + fileList.length
         } 个文件`
       );
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    handleAvatarSuccess(res) {
+      console.log(res);
+      this.coverImage = res.data;
     },
   },
 };

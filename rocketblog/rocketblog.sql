@@ -864,6 +864,7 @@ INSERT INTO `t_user` VALUES (122, '日向秀樹', 'hideki-hinata@angelbeats.key'
 INSERT INTO `t_user` VALUES (123, '直井文人', 'ayato-naoi@angelbeats.key', '1', 'ayato-naoi@angelbeats.key', '12345678901', 'https://kaginado.com/wordpress/wp-content/uploads/2022/03/13102120/1eb3b16bd7c0d27d6ec8c0ffbbba1000.png', 1, '2021-12-29 00:00:00', '2021-12-29 00:00:00');
 INSERT INTO `t_user` VALUES (124, 'ユイ', 'yui@angelbeats.key', '0', 'yui@angelbeats.key', '12345678901', 'https://kaginado.com/wordpress/wp-content/uploads/2022/03/13102227/329df80c7aa719861f18c2c7a6ab861c.png', 0, '2021-12-29 00:00:00', '2021-12-29 00:00:00');
 INSERT INTO `t_user` VALUES (125, '测试', '123', '1', '123', '12345678910', 'https://q1.qlogo.cn/g?b=qq&nk=1346802467&src_uin=www.jlwz.cn&s=0', 0, '2023-04-03 14:08:29', '2023-03-29 17:50:46');
+INSERT INTO `t_user` VALUES (126, 'tieke', 'Clx12345@', NULL, '3366438434@qq.com', NULL, 'https://q1.qlogo.cn/g?b=qq&nk=3366438434&src_uin=www.jlwz.cn&s=0', 0, '2023-04-03 15:38:30', '2023-04-03 15:37:53');
 
 -- ----------------------------
 -- View structure for v_blogdetail

@@ -52,7 +52,7 @@
           <el-row>
             <el-col :span="6">
               <div class="grid-content ep-bg-purple" />
-              图片
+              <img :src="blog.coverImage" alt="" style="width: 100px; height: 100px"/>
             </el-col>
             <el-col :span="12">
               <div class="grid-content ep-bg-purple-light" />
