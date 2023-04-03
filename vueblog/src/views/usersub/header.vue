@@ -106,7 +106,7 @@
               </p> -->
             </div>
             <el-row gutter="4" justify="center">
-              <el-button link
+              <el-button link @click="router.push({ name: 'personguanzhu' })"
                 ><el-col>
                   <div class="grid-content ep-bg-purple" />
                   <el-col
@@ -118,7 +118,7 @@
                 </el-col></el-button
               >
 
-              <el-button link
+              <el-button link @click="router.push({ name: 'personfensi' })"
                 ><el-col>
                   <div class="grid-content ep-bg-purple" />
                   <el-col
@@ -129,7 +129,7 @@
                   </el-col>
                 </el-col></el-button
               >
-              <el-button link
+              <el-button link @click="router.push({ name: 'personblog' })"
                 ><el-col>
                   <div class="grid-content ep-bg-purple" />
                   <el-col
@@ -303,16 +303,8 @@
     </el-dialog>
 
     <span class="text-large font-600 mr-3" style="margin: 19px 5px 0px 35px">
-      <el-icon style="color: #fff"><Star /></el-icon
-      ><a href="https://github.com/xftxyz2001/rocketblog/issues/new"
-        style="
-          position: absolute;
-          display: inline-block;
-          margin: -3px 0 0 4px;
-          color: #fff;
-        "
-        >反馈</a
-      >
+      <el-icon style="color: #fff"><Star /></el-icon>
+      <a href="https://github.com/xftxyz2001/rocketblog/issues/new" style="position: absolute;display: inline-block;margin: -3px 0 0 4px;color: #fff;">反馈</a>
     </span>
   </el-menu>
 </template>

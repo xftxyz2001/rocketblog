@@ -7,7 +7,7 @@
             <el-avatar
               :size="32"
               class="mr-3"
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+              :src="userdata.avatar"
             />
           </template>
           <template #extra>
@@ -26,7 +26,7 @@
           ><sapn style="font-weight: 700; font-size: 20px; margin-right: 20px"
             >标题</sapn
           >
-          <el-input style="width: 15%" v-model="blogTitle"></el-input
+          <el-input style="width: 60%" v-model="blogTitle"></el-input
         ></el-row>
         <el-row style="margin-bottom: 10px"
           >封面图片（可选）
@@ -59,7 +59,12 @@
   </div>
 </template>
  <script setup>
+// import axios from "axios";
 import { ref } from "vue";
+const userdata = ref({});
+axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+  userdata.value = res.data.data;
+});
 
 function back() {
   router.push({ name: "allconcern" });

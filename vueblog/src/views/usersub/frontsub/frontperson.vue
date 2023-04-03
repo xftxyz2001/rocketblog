@@ -48,7 +48,7 @@
                             >昵称：{{ userdata.username }}</el-row
                           >
                           <el-row gutter="20" justify="left">
-                            <el-button link
+                            <el-button link @click="router.push({ name: 'personguanzhu' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -64,7 +64,7 @@
                               </el-col></el-button
                             >
 
-                            <el-button link
+                            <el-button link @click="router.push({ name: 'personfensi' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -79,7 +79,7 @@
                                 </el-col>
                               </el-col></el-button
                             >
-                            <el-button link
+                            <el-button link @click="router.push({ name: 'personblog' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -184,6 +184,8 @@
 //         "username": "测试"
 import axios from "axios";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const userdata = ref({});
 axios.get("http://8.130.81.23:8080/user/info").then((res) => {
   userdata.value = res.data.data;
