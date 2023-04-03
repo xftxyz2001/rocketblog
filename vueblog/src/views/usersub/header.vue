@@ -304,14 +304,14 @@
 
     <span class="text-large font-600 mr-3" style="margin: 19px 5px 0px 35px">
       <el-icon style="color: #fff"><Star /></el-icon
-      ><span
+      ><a href="https://github.com/xftxyz2001/rocketblog/issues/new"
         style="
           position: absolute;
           display: inline-block;
           margin: -3px 0 0 4px;
           color: #fff;
         "
-        >收藏</span
+        >反馈</a
       >
     </span>
   </el-menu>

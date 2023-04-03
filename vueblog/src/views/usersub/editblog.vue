@@ -12,7 +12,7 @@
           </template>
           <template #extra>
             <div class="flex items-center">
-              <el-button>保存</el-button>
+              <el-button @click="save">保存</el-button>
               <el-button type="primary" class="ml-2" @click="submit"
                 >发布</el-button
               >
@@ -151,6 +151,22 @@ export default {
     };
   },
   methods: {
+    save() {
+      var blogdata = {blogStatus:0, coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
+
+      axios
+        .post("http://8.130.81.23:8080/blog/publish", blogdata)
+        .then((res) => {
+          ElMessage({
+            showClose: true,
+            message: "保存成功",
+            type: "success",
+          });
+          this.blogTitle = "";
+          this.content = "";
+          router.push({name:"hotlatest"});
+        });
+    },
     submit() {
       var blogdata = {coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
 
@@ -164,6 +180,7 @@ export default {
           });
           this.blogTitle = "";
           this.content = "";
+          router.push({name:"hotlatest"});
         });
     },
     handleRemove(file, fileList) {

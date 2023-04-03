@@ -8,15 +8,7 @@
         <template #header>
           <div class="card-header">
             <div style="margin-bottom: 20px">
-              <div
-                style="
-                  overflow: hidden;
-                  width: 30px;
-                  display: inline-block;
-                  vertical-align: bottom;
-                  border-radius: 15px;
-                "
-              >
+              <div style="overflow: hidden;width: 30px;display: inline-block;vertical-align: bottom;border-radius: 15px;">
                 <img :src="userdata.avatar" alt="" style="width: 30px" />
               </div>
               <span style="font-size: 5px">{{ userdata.username }}</span>
@@ -64,6 +56,20 @@
               >
               <el-button v-else type="primary" @click="followthis"
                 >关注</el-button
+              >
+            </el-col>
+          </el-row>
+        </div>
+        <div v-else>
+          <el-row :gutter="100">
+            <el-col :span="10" :offset="2">
+              <div class="grid-content ep-bg-purple" />
+              <el-button>修改</el-button>
+            </el-col>
+            <el-col :span="10">
+              <div class="grid-content ep-bg-purple-light" />
+              <el-button @click="deletethis"
+                >删除</el-button
               >
             </el-col>
           </el-row>
@@ -186,12 +192,13 @@
   </el-row>
 </template>
 <script setup >
-import { ElMessage } from "element-plus";
 import axios from "axios";
+import { ElMessage } from "element-plus";
 import { getCurrentInstance, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 const route = useRoute();
+const router = useRouter();
 const commenttext = ref("");
 const userdata = ref({
   followers: "",
@@ -345,6 +352,25 @@ function dontlikethis() {
       .then((res) => {
         blogdata.value.like = false;
         blogdata.value.likeCount = res.data.data;
+      });
+  } else {
+    Bus.emit("likeneedlogin", {});
+  }
+}
+// 删除博客
+function deletethis() {
+  if (localStorage.getItem("token")) {
+    axios
+      .delete("http://8.130.81.23:8080/blog/delete/" + route.params.blogid)
+      .then((res) => {
+        if (res.data.code == "200") {
+          ElMessage({
+            showClose: true,
+            message: "删除成功",
+            type: "success",
+          });
+          router.push({name:"hotlatest"});
+        }
       });
   } else {
     Bus.emit("likeneedlogin", {});
