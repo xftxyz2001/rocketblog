@@ -59,7 +59,7 @@
             </el-col>
             <el-col :span="10">
               <div class="grid-content ep-bg-purple-light" />
-              <el-button v-if="userdata.isFollowed" @click="dontfollowthis"
+              <el-button v-if="userdata.followed" @click="dontfollowthis"
                 >已关注</el-button
               >
               <el-button v-else type="primary" @click="followthis"
@@ -198,7 +198,7 @@ const userdata = ref({
   followings: "",
   blogs: "",
   avatar: "",
-  isFollowed: "",
+  followed: "",
   username: "",
 });
 const blogdata = ref({
@@ -284,7 +284,7 @@ function dontfollowthis() {
     axios
       .delete("http://8.130.81.23:8080/user/follow/" + route.params.userid)
       .then((res) => {
-        userdata.value.isFollowed = false;
+        userdata.value.followed = false;
       });
   } else {
     Bus.emit("likeneedlogin", {});
@@ -295,7 +295,7 @@ function followthis() {
     axios
       .get("http://8.130.81.23:8080/user/follow/" + route.params.userid)
       .then((res) => {
-        userdata.value.isFollowed = true;
+        userdata.value.followed = true;
       });
   } else {
     Bus.emit("likeneedlogin", {});
