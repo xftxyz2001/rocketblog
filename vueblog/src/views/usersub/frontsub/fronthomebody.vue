@@ -1,37 +1,57 @@
 <template>
   <el-row :gutter="20">
-    <el-col :span="4"> <div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="4" style="position: relative"
-      ><FrontHomeLeft></FrontHomeLeft>
+    <el-col :span="4">
+      <div class="grid-content ep-bg-purple" />
+    </el-col>
+    <el-col :span="4" style="position: relative">
+      <FrontHomeLeft></FrontHomeLeft>
 
-      <div class="grid-content ep-bg-purple"
-    /></el-col>
+      <div class="grid-content ep-bg-purple" />
+    </el-col>
     <el-col :span="10">
       <!-- 轮播图 -->
       <el-carousel indicator-position="outside" style="margin-top: 15px">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3 text="2xl" justify="center">{{ item }}</h3>
+        <el-carousel-item class="carousel-item" v-for="blog in hotblogs">
+          <img class="carousel-img" :src="blog.coverImage" alt="" srcset="" @click="clickImg(blog)" />
+          <h3>{{ blog.blogTitle }}</h3>
         </el-carousel-item>
       </el-carousel>
       <router-view></router-view>
-      <div class="grid-content ep-bg-purple"
-    /></el-col>
-    <el-col :span="4"
-      >1235
-      <div class="grid-content ep-bg-purple"
-    /></el-col>
-    <el-col :span="4"> <div class="grid-content ep-bg-purple" /></el-col>
+      <div class="grid-content ep-bg-purple" />
+    </el-col>
+    <el-col :span="4">1235
+      <div class="grid-content ep-bg-purple" />
+    </el-col>
+    <el-col :span="4">
+      <div class="grid-content ep-bg-purple" />
+    </el-col>
   </el-row>
 </template>
 
+<script setup>
+import router from "@/router";
+import axios from "axios";
+import { ref } from "vue";
+const hotblogs = ref([]);
+
+axios
+  .get("http://8.130.81.23:8080/blog/hot")
+  .then((res) => {
+    hotblogs.value = res.data.data.list;
+  });
+
+function clickImg(blog) {
+  router.push({ name: "blogdetail", params: { userid: blog.userid, blogid: blog.blogId } });
+}
+</script>
+
 <script>
-import { defineComponent } from "vue";
-import { Search } from "@element-plus/icons-vue";
 import FrontHomeLeft from "@/views/usersub/frontsub/fronthomesub/left.vue";
 import FrontHomeAllConcernMiddle from "@/views/usersub/frontsub/fronthomesub/middle/allconcernmiddle.vue";
 import FrontHomeFriendMiddle from "@/views/usersub/frontsub/fronthomesub/middle/friendmiddle.vue";
 import FrontHomeLatestMiddle from "@/views/usersub/frontsub/fronthomesub/middle/latestmiddle.vue";
 import FrontHomeMostLikeMiddle from "@/views/usersub/frontsub/fronthomesub/middle/mostlikemiddle.vue";
+import { defineComponent } from "vue";
 export default defineComponent({
   name: "FrontHomeBody",
   components: {
@@ -42,7 +62,6 @@ export default defineComponent({
     FrontHomeMostLikeMiddle,
   },
 });
-import { ref } from "vue";
 </script>
 
 <style scoped>
@@ -77,5 +96,17 @@ import { ref } from "vue";
 }
 .el-carousel__container {
   z-index: -100;
+}
+.carousel-item {
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-img {
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>
