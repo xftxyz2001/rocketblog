@@ -7,18 +7,31 @@
       </div>
     </template>
     <div class="text item">
-      <span style="margin-right: 20px">邮箱</span
-      ><img :src="userinfo.email" alt="" style="width: 20px; height: 20px" />
+      <span style="margin-right: 20px">邮箱</span>
+      <span style="margin-right: 20px">{{ userinfo.email }} </span
+      ><el-button link text @click="editinfo" style="color: #246fdd"
+        >编辑</el-button
+      >
     </div>
     <div class="text item">
       <span style="margin-right: 30px">密码</span
-      ><span>{{ userinfo.password }}</span>
+      ><span
+        ><el-button link text @click="editinfo" style="color: #246fdd"
+          >修改密码</el-button
+        ></span
+      >
     </div>
     <div class="text item">
       <span style="margin-right: 30px">上次登录</span>{{ userinfo.lastLogin }}
     </div>
+    <div class="text item">
+      <span style="margin-right: 30px">账户注销</span
+      ><el-button link text @click="editinfo" style="color: #246fdd"
+        >立即注销</el-button
+      >
+    </div>
   </el-card>
-  //编辑表单
+
   <el-dialog
     ref="editform"
     v-model="dialogFormVisible"
@@ -63,14 +76,14 @@ const form = ref({});
 axios.get("http://8.130.81.23:8080/user/info/detail").then((res) => {
   userinfo.value = res.data.data;
 });
-function editinfo() {
-  dialogFormVisible.value = true;
-  form.value.username = userinfo.value.username;
-  form.value.avatar = userinfo.value.avatar;
-  form.value.phone = userinfo.value.phone;
-  
-  //   修改用户信息
-}
+// function editinfo() {
+//   dialogFormVisible.value = true;
+//   form.value.username = userinfo.value.username;
+//   form.value.avatar = userinfo.value.avatar;
+//   form.value.phone = userinfo.value.phone;
+
+//   //   修改用户信息
+// }
 function formSubmit() {}
 </script>
 <script>
