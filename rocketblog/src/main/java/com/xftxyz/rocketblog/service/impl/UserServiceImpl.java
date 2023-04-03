@@ -240,6 +240,7 @@ public class UserServiceImpl implements UserService {
         chat.setUseridTo(toUserid);
         chat.setMessageContent(content);
         chat.setCreatetime(new Date());
+        chat.setRead(ReadStatus.UNREAD);
         int insert = chatMapper.insert(chat);
         return insert;
     }
@@ -388,7 +389,20 @@ public class UserServiceImpl implements UserService {
         exChats.or().andUseridFromEqualTo(userid).andUseridToEqualTo(user.getUserid()); // 对方发给我的
         exChats.setOrderByClause("createtime desc");
         List<VChat> chats = vChatMapper.selectByExample(exChats);
+        // 更新为已读
+        updateRead(chats, userid);
         return chats;
+    }
+
+    private void updateRead(List<VChat> chats, Long userid) {
+        for (VChat vchat : chats) {
+            if (vchat.getUseridFrom() == userid && vchat.getRead() == ReadStatus.UNREAD) {
+                Chat chat = new Chat();
+                chat.setChatId(vchat.getChatId());
+                chat.setRead(ReadStatus.READ);
+                chatMapper.updateByPrimaryKeySelective(chat);
+            }
+        }
     }
 
     @Override
