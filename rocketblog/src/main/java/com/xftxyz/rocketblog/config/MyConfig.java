@@ -25,14 +25,14 @@ public class MyConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 日志拦截器
+        registry.addInterceptor(new LoggingInterceptor());
+
         // 管理员拦截器
         InterceptorRegistration adminInterceptor = registry.addInterceptor(new AdminInterceptor());
         // 拦截路径 /admin
         adminInterceptor.addPathPatterns("/admin/**");
-
-        // 日志拦截器
-        registry.addInterceptor(new LoggingInterceptor());
-
+        
     }
 
 }
