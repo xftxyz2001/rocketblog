@@ -11,19 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.service.UserService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
-@RestController()
+@RestController
 @RequestMapping("/admin")
-// @CrossOrigin(origins = "*")
 public class AdminController {
 
     @Autowired
@@ -33,17 +32,17 @@ public class AdminController {
     BlogService blogService;
 
     @GetMapping("/users")
-    public List<User> getUsers() {
+    public PageInfo<User> getUsers(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<User> users = userService.getUsers();
-        log.info("/users -> getUsers()");
-        return users;
-
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        return pageInfo;
     }
 
     @GetMapping("/user/{id}")
     public User getUser(@PathVariable("id") int id) {
         User user = userService.getUser((long) id);
-        log.info("/user/{" + id + "} -> getUser()");
         return user;
     }
 
@@ -52,55 +51,57 @@ public class AdminController {
         user.setUserRegisterTime(new Date());
         user.setLastLogin(new Date());
         int insert = userService.addUser(user);
-        log.info("/user -> addUser():{}", insert);
-        return "OK";
+        return String.valueOf(insert);
     }
 
     @PutMapping("/user")
     public String updateUser(@RequestBody User user) {
         int update = userService.updateUser(user);
-        log.info("/user -> updateUser():{}", update);
-        return "OK";
+        return String.valueOf(update);
     }
 
     @DeleteMapping("/user/{id}")
     public String deleteUser(@PathVariable("id") int id) {
         int delete = userService.deleteUser((long) id);
-        log.info("/user/{" + id + "} -> deleteUser():{}", delete);
-        return "OK";
+        return String.valueOf(delete);
     }
 
     @GetMapping("/search/username/{name}")
-    public List<User> getUserByName(@PathVariable("name") String name) {
+    public PageInfo<User> getUserByName(@PathVariable("name") String name,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<User> userList = userService.getUsersLikeName(name);
-        log.info("/search/username/{" + name + "} -> getUserByName()");
-        return userList;
+        PageInfo<User> pageInfo = new PageInfo<>(userList);
+        return pageInfo;
     }
 
     @GetMapping("/search/email/{email}")
-    public List<User> getUserByEmail(@PathVariable("email") String email) {
+    public PageInfo<User> getUserByEmail(@PathVariable("email") String email,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<User> userList = userService.getUsersLikeEmail(email);
-        log.info("/search/email/{" + email + "} -> getUserByEmail()");
-        return userList;
+        PageInfo<User> pageInfo = new PageInfo<>(userList);
+        return pageInfo;
     }
 
     @GetMapping("/blogs")
-    public List<Blog> getBlogs() {
+    public PageInfo<Blog> getBlogs(@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<Blog> blogs = blogService.getBlogs();
-        log.info("/blogs -> getBlogs()");
-        return blogs;
+        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
+        return pageInfo;
     }
 
     @PostMapping("/search/blog")
-    public List<Blog> getBlogs(@RequestBody Blog blog) {
-        // System.out.println(blog.getBlogTitle());
+    public PageInfo<Blog> getBlogs(@RequestBody Blog blog, @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<Blog> blogs = blogService.getBlogs(blog);
-        log.info("/search/blog -> getBlogs()");
-        // for (Blog blog2 : blogs) {
-        // System.out.println(blog2.getBlogTitle());
-        // System.out.println(blog2.getBlogContent());
-        // }
-        return blogs;
+        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
+        return pageInfo;
     }
 
     @PostMapping("/blog")
@@ -108,23 +109,20 @@ public class AdminController {
         blog.setCreateTime(new Date());
         blog.setUpdateTime(new Date());
         int insert = blogService.addBlog(blog);
-        log.info("/blog -> addBlog():{}", insert);
-        return "OK";
+        return String.valueOf(insert);
     }
 
     @PutMapping("/blog")
     public String updateBlog(@RequestBody Blog blog) {
         blog.setUpdateTime(new Date());
         int update = blogService.updateBlog(blog);
-        log.info("/blog -> updateBlog():{}", update);
-        return "OK";
+        return String.valueOf(update);
     }
 
     @DeleteMapping("/blog/{id}")
     public String deleteBlog(@PathVariable("id") int id) {
         int delete = blogService.deleteBlog((long) id);
-        log.info("/blog/{" + id + "} -> deleteBlog():{}", delete);
-        return "OK";
+        return String.valueOf(delete);
     }
 
 }
