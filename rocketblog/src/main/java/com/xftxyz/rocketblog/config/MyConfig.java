@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.xftxyz.rocketblog.interceptor.AdminInterceptor;
+import com.xftxyz.rocketblog.interceptor.LoggingInterceptor;
 
 @Configuration
 public class MyConfig implements WebMvcConfigurer {
@@ -28,6 +29,9 @@ public class MyConfig implements WebMvcConfigurer {
         InterceptorRegistration adminInterceptor = registry.addInterceptor(new AdminInterceptor());
         // 拦截路径 /admin
         adminInterceptor.addPathPatterns("/admin/**");
+
+        // 日志拦截器
+        registry.addInterceptor(new LoggingInterceptor());
 
     }
 
