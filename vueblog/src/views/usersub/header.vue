@@ -582,7 +582,7 @@ function tomessage() {
   }
 }
 function toperson() {
-  if (localStorage.getItem("token")) router.push({ name: "person" });
+  if (localStorage.getItem("token")) router.push({ name: "personinfo" });
   else {
     loginVisible.value = "true";
     loginform.email = "";
