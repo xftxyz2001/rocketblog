@@ -33,6 +33,8 @@
         <!-- <table tableName="v_bloginfo" domainObjectName="BlogInfo" /> -->
         <!-- <table tableName="v_blogdetail" domainObjectName="BlogDetail" /> -->
         <!-- <table tableName="v_comment" domainObjectName="VComment" /> -->
+
+        <table tableName="t_chat" domainObjectName="Chat" />
         <table tableName="v_chat" domainObjectName="VChat" />
 
     </context>
