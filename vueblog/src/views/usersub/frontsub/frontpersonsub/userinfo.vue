@@ -8,7 +8,16 @@
     </template>
     <div class="text item">
       <span style="margin-right: 20px">头像</span
-      ><img :src="userinfo.avatar" alt="" style="width: 20px; height: 20px" />
+      ><img
+        :src="userinfo.avatar"
+        alt=""
+        style="
+          width: 40px;
+          height: 40px;
+          border-radius: 20px;
+          vertical-align: middle;
+        "
+      />
     </div>
     <div class="text item">
       <span style="margin-right: 30px">用户昵称</span
@@ -25,7 +34,6 @@
       >{{ userinfo.userRegisterTime }}
     </div>
   </el-card>
-  //编辑表单
   <el-dialog
     ref="editform"
     v-model="dialogFormVisible"

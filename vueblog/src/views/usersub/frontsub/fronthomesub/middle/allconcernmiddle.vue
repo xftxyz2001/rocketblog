@@ -1,5 +1,7 @@
 <template>
+  <el-empty description="快去关注你感兴趣的人吧！" v-if="isempty" />
   <el-card
+    v-else
     v-for="blog in allconcern"
     :key="blog.blogId"
     :data-blogid="blog.blogId"
@@ -87,9 +89,11 @@ import { getCurrentInstance } from "vue";
 import { ref } from "vue";
 const router = useRouter();
 const allconcern = ref([]);
+const isempty = ref(false);
 // import bus from "@/utils/bus";
 axios.get("http://8.130.81.23:8080/blog/follows").then((res) => {
   allconcern.value = res.data.data.list;
+  if (allconcern.value.length == 0) isempty.value = true;
 });
 const loading = ref(false);
 const currentDate = new Date().toDateString();
