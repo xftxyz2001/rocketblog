@@ -226,12 +226,17 @@ axios
   .get("http://8.130.81.23:8080/user/info/" + route.params.userid)
   .then((res) => {
     userdata.value = res.data.data;
+    axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+      if (userdata.value.username != res.data.data.username) {
+        isme.value = true;
+      }
+    });
   });
-axios.get("http://8.130.81.23:8080/user/info").then((res) => {
-  if (userdata.value.username == res.data.data.username) {
-    isme.value = true;
-  }
-});
+// axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+//   if (userdata.value.username == res.data.data.username) {
+//     isme.value = true;
+//   }
+// });
 
 axios
   .get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid)
