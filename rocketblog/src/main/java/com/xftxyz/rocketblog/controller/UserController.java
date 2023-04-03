@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
 import com.xftxyz.rocketblog.pojo.VChat;
@@ -297,7 +298,7 @@ public class UserController {
         return Result.success(chat);
     }
 
-    // 获取消息列表
+    // 获取所有消息
     @GetMapping("/chats")
     public Result<Object> chats(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
@@ -311,7 +312,43 @@ public class UserController {
         return Result.success(pageInfo);
     }
 
-    // 删除消息
+    // 获取会话列表
+    @GetMapping("/char/sessions")
+    public Result<Object> chatlist(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<ChatInfo> chatlist = userService.getSessionList(user);
+        PageInfo<ChatInfo> pageInfo = new PageInfo<>(chatlist);
+        return Result.success(pageInfo);
+    }
+
+    // 更新指定会话
+    @GetMapping("/chat/session/{userid}")
+    public Result<Object> chat(HttpSession session, @PathVariable("userid") Long userid) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        ChatInfo chat = userService.getSession(user, userid);
+        return Result.success(chat);
+    }
+
+    // 获取消息信息详情（对话）
+    @GetMapping("/chat/detail/{userid}")
+    public Result<Object> chatDetail(HttpSession session, @PathVariable("userid") Long userid) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        List<VChat> chatDetail = userService.getChatDetail(user, userid);
+        return Result.success(chatDetail);
+    }
+
+    // 删除单条消息
     @DeleteMapping("/chat/{chatid}")
     public Result<Object> deleteChat(HttpSession session, @PathVariable("chatid") Long chatid) {
         User user = (User) session.getAttribute("user");
@@ -320,6 +357,17 @@ public class UserController {
         }
         int deleteChat = userService.deleteChat(chatid);
         return Result.success(deleteChat);
+    }
+
+    // 删除会话
+    @DeleteMapping("/chat/session/{userid}")
+    public Result<Object> deleteSession(HttpSession session, @PathVariable("userid") Long userid) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_LOGIN);
+        }
+        int deleteSession = userService.deleteSession(user, userid);
+        return Result.success(deleteSession);
     }
 
 }

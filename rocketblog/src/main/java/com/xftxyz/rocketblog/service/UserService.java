@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.service;
 import java.util.List;
 import java.util.Map;
 
+import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
 import com.xftxyz.rocketblog.pojo.VChat;
@@ -51,13 +52,23 @@ public interface UserService {
     // 获取用户发布的博客数
     public long getBlogCount(Long userid);
 
+    // 发送消息
     public int chat(Long fromUserid, Long toUserid, String content);
 
+    // 获取消息列表
     public List<VChat> getChats(Long userid);
 
     public int deleteChat(Long chatid);
 
     // QQ邮箱默认头像
     public String defaultAvatar(String email);
+
+    public List<ChatInfo> getSessionList(User user);
+
+    public ChatInfo getSession(User user, Long userid);
+
+    public List<VChat> getChatDetail(User user, Long userid);
+
+    public int deleteSession(User user, Long userid);
 
 }
