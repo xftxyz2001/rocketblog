@@ -6,6 +6,7 @@ import java.util.Map;
 import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
+import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.pojo.VChat;
 
 public interface UserService {
@@ -34,8 +35,8 @@ public interface UserService {
     public User login(String email, String password);
 
     // 获取用户信息
-    public Map<String, Object> getUserInfo(User user);
-    public Map<String, Object> getUserInfo(User me, Long userid);
+    public UserInfo getUserInfo(User user);
+    public UserInfo getUserInfo(User me, Long userid);
 
     public Map<String, Object> follow(Long userFollowing, Long userFollowed);
 

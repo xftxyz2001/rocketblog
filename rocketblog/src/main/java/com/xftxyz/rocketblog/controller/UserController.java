@@ -21,6 +21,7 @@ import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
+import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.pojo.VChat;
 import com.xftxyz.rocketblog.result.Result;
 import com.xftxyz.rocketblog.result.ResultCode;
@@ -93,12 +94,12 @@ public class UserController {
 
     // 获取用户信息
     @GetMapping("/info")
-    public Result<Map<String, Object>> info(HttpSession session) {
+    public Result<UserInfo> info(HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
-        Map<String, Object> userInfo = userService.getUserInfo(user);
+        UserInfo userInfo = userService.getUserInfo(user);
         return Result.success(userInfo);
     }
 
@@ -110,9 +111,8 @@ public class UserController {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
         }
         User userCopy = user.deepClone();
-        userCopy.setPassword(null);
-        log.info(((User) session.getAttribute("user")).getPassword());
-        return Result.success(user);
+        userCopy.setPassword("********");
+        return Result.success(userCopy);
     }
 
     // 修改用户信息
@@ -194,12 +194,12 @@ public class UserController {
     }
 
     @GetMapping("/info/{userid}")
-    public Result<Map<String, Object>> info(HttpSession session, @PathVariable("userid") Long userid) {
+    public Result<UserInfo> info(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
         // if (user == null) {
         // return Result.fail(ResultCode.USER_NOT_LOGIN);
         // }
-        Map<String, Object> userInfo = userService.getUserInfo(user, userid);
+        UserInfo userInfo = userService.getUserInfo(user, userid);
         return Result.success(userInfo);
     }
 

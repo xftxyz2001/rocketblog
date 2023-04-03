@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.pojo.Blog;
+import com.xftxyz.rocketblog.pojo.BlogInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.service.UserService;
@@ -87,20 +88,20 @@ public class AdminController {
     }
 
     @GetMapping("/blogs")
-    public PageInfo<Blog> getBlogs(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> getBlogs(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Blog> blogs = blogService.getBlogs();
-        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
+        List<BlogInfo> blogs = blogService.getBlogs();
+        PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
         return pageInfo;
     }
 
     @PostMapping("/search/blog")
-    public PageInfo<Blog> getBlogs(@RequestBody Blog blog, @RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> getBlogs(@RequestBody BlogInfo blog, @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Blog> blogs = blogService.getBlogs(blog);
-        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
+        List<BlogInfo> blogs = blogService.getBlogs(blog);
+        PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
         return pageInfo;
     }
 

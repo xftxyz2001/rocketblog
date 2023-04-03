@@ -12,10 +12,10 @@ import com.xftxyz.rocketblog.pojo.VComment;
 
 public interface BlogService {
     // 返回所有博客
-    public List<Blog> getBlogs();
+    public List<BlogInfo> getBlogs();
 
     // 返回指定标题、内容、用户、状态的博客
-    public List<Blog> getBlogs(Blog blog);
+    public List<BlogInfo> getBlogs(BlogInfo blog);
 
     // 添加博客
     public int addBlog(Blog blog);

@@ -2,6 +2,7 @@ package com.xftxyz.rocketblog.interceptor;
 
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,10 @@ public class LoggingInterceptor implements HandlerInterceptor {
             }
         }
 
-        log.info("{}:{} <- {}", request.getMethod(), request.getRequestURL(), parms);
+        log.info("{}:{}", request.getMethod(), request.getRequestURL(), parms);
+        if (StringUtils.hasLength(parms)) {
+            log.info("{}", parms.substring(0, parms.length() - 1));
+        }
         return true;
     }
 }

@@ -19,10 +19,9 @@ import com.xftxyz.rocketblog.mapper.VCommentMapper;
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogDetailExample;
-import com.xftxyz.rocketblog.pojo.BlogExample;
-import com.xftxyz.rocketblog.pojo.BlogExample.Criteria;
 import com.xftxyz.rocketblog.pojo.BlogInfo;
 import com.xftxyz.rocketblog.pojo.BlogInfoExample;
+import com.xftxyz.rocketblog.pojo.BlogInfoExample.Criteria;
 import com.xftxyz.rocketblog.pojo.Bookmark;
 import com.xftxyz.rocketblog.pojo.BookmarkExample;
 import com.xftxyz.rocketblog.pojo.Comment;
@@ -59,36 +58,28 @@ public class BlogServiceImpl implements BlogService {
     VCommentMapper vcommentMapper;
 
     @Override
-    public List<Blog> getBlogs() {
-        // List<Blog> blogList = blogMapper.selectByExample(null);
-        List<Blog> blogList = blogMapper.selectByExampleWithBLOBs(null);
+    public List<BlogInfo> getBlogs() {
+        List<BlogInfo> blogList = blogInfoMapper.selectByExample(null);
         return blogList;
     }
 
     @Override
-    public List<Blog> getBlogs(Blog blog) {
-        BlogExample exBlog = new BlogExample();
+    public List<BlogInfo> getBlogs(BlogInfo blog) {
+        BlogInfoExample exBlog = new BlogInfoExample();
         Criteria criteria = exBlog.createCriteria();
         String blogTitle = blog.getBlogTitle();
         if (blogTitle != null && !blogTitle.equals("")) {
             criteria.andBlogTitleLike("%" + blogTitle + "%");
-            // System.out.println("blogTitle: " + blogTitle);
         }
         Long userid = blog.getUserid();
         if (userid != null) {
             criteria.andUseridEqualTo(userid);
-            // System.out.println("userid: " + userid);
         }
         Integer blogStatus = blog.getBlogStatus();
         if (blogStatus != null) {
             criteria.andBlogStatusEqualTo(blogStatus);
-            // System.out.println("blogStatus: " + blogStatus);
         }
-        // exBlog..createCriteria().andBlogTitleLike("%" + blog.getBlogTitle() + "%")
-        // .andUseridEqualTo(blog.getUserid())
-        // .andBlogStatusEqualTo(blog.getBlogStatus());
-        // List<Blog> blogList = blogMapper.selectByExample(exBlog);
-        List<Blog> blogList = blogMapper.selectByExampleWithBLOBs(exBlog);
+        List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
         return blogList;
     }
 

@@ -22,6 +22,7 @@ import com.xftxyz.rocketblog.pojo.FollowExample;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
 import com.xftxyz.rocketblog.pojo.UserExample;
+import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.pojo.VChat;
 import com.xftxyz.rocketblog.pojo.VChatExample;
 import com.xftxyz.rocketblog.service.UserService;
@@ -129,42 +130,28 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    // 创建userInfo
-    private Map<String, Object> createUserInfo(User user) {
-        // 用户名、头像
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("username", user.getUsername());
-        userInfo.put("avatar", user.getAvatar());
-
-        // 关注: userid_following -> userid_followed
-        // 关注数: followings
-        userInfo.put("followings", getFollowingCount(user.getUserid()));
-
-        // 粉丝数: followers
-        userInfo.put("followers", getFollowerCount(user.getUserid()));
-
-        // 文章数: blogs
-        userInfo.put("blogs", getBlogCount(user.getUserid()));
+    @Override
+    public UserInfo getUserInfo(User user) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(user.getUsername());
+        userInfo.setAvatar(user.getAvatar());
+        userInfo.setFollowings(getFollowingCount(user.getUserid()));
+        userInfo.setFollowers(getFollowerCount(user.getUserid()));
+        userInfo.setBlogs(getBlogCount(user.getUserid()));
         return userInfo;
     }
 
     @Override
-    public Map<String, Object> getUserInfo(User user) {
-        Map<String, Object> userInfo = createUserInfo(user);
-        return userInfo;
-    }
-
-    @Override
-    public Map<String, Object> getUserInfo(User me, Long userid) {
-        Map<String, Object> userInfo = createUserInfo(getUser(userid));
+    public UserInfo getUserInfo(User me, Long userid) {
+        UserInfo userInfo = getUserInfo(getUser(userid));
         // 是否关注: isFollowed
         if (me == null) {
-            userInfo.put("isFollowed", false);
+            userInfo.setFollowed(false);
         } else {
             FollowExample exIsFollowed = new FollowExample();
             exIsFollowed.createCriteria().andUseridFollowingEqualTo(me.getUserid()).andUseridFollowedEqualTo(userid);
             long isFollowed = followMapper.countByExample(exIsFollowed);
-            userInfo.put("isFollowed", isFollowed > 0);
+            userInfo.setFollowed(isFollowed > 0);
         }
 
         return userInfo;
