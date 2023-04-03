@@ -58,7 +58,7 @@ public class BlogController {
 
     @GetMapping("/draft")
     public Result<PageInfo<BlogInfo>> draft(@RequestParam(defaultValue = "1") int pageNum,
-    @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_LOGIN);
@@ -295,10 +295,12 @@ public class BlogController {
 
     // 获取评论，分页，默认第一页，每页5条
     @GetMapping("/comment/{blogId}")
-    public Result<List<VComment>> getComments(@PathVariable("blogId") Long blogId,
+    public Result<PageInfo<VComment>> getComments(@PathVariable("blogId") Long blogId,
             @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5") int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<VComment> comments = blogService.getCommentsByBlogId(blogId);
-        return Result.success(comments);
+        PageInfo<VComment> pageInfo = new PageInfo<>(comments);
+        return Result.success(pageInfo);
     }
 
 }
