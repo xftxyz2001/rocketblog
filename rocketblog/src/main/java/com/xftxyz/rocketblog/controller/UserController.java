@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
@@ -28,6 +29,8 @@ import com.xftxyz.rocketblog.result.ResultCode;
 import com.xftxyz.rocketblog.service.EmailService;
 import com.xftxyz.rocketblog.service.UserService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +44,20 @@ public class UserController {
 
     @Autowired
     EmailService emailService;
+
+    // 忘记密码
+    @PostMapping("/forget/{email}")
+    public Result<Object> forget(@PathVariable("email") String email) {
+        User user = userService.getUserByEmail(email);
+        if (user == null) {
+            return Result.fail(ResultCode.USER_NOT_EXIST);
+        }
+        // 发送邮件：用户的密码
+        String content = "您的密码是：" + user.getPassword();
+        emailService.sendSimpleMail(email, "找回密码", content);
+        return Result.success();
+    }
+
 
     // 获取验证码，存放到Session中，并通过邮件发送给用户
     @GetMapping("/code/{email}")
@@ -77,7 +94,7 @@ public class UserController {
     // 登录
     @PostMapping("/login")
     public Result<Map<String, Object>> login(@RequestBody Map<String, Object> requestBody,
-            HttpSession session) {
+            HttpSession session, HttpServletResponse response) {
         String email = (String) requestBody.get("email");
         String password = (String) requestBody.get("password");
         User user = userService.login(email, password);
@@ -85,31 +102,43 @@ public class UserController {
             return Result.fail(ResultCode.USERNAME_OR_PASSWORD_ERROR);
         }
 
+        // 登录成功，将用户信息存放到Session中
         session.setAttribute("user", user);
+        // 将用户信息存放到Cookie中
+        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, userService.toToken(user));
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24 * 7); // 7天
+        response.addCookie(cookie);
+
         Map<String, Object> map = new HashMap<>();
         map.put("username", user.getUsername());
         map.put("avatar", user.getAvatar());
         return Result.success(map);
     }
 
+    // 登出
+    @GetMapping("/logout")
+    public Result<Object> logout(HttpSession session, HttpServletResponse response) {
+        session.invalidate();
+        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return Result.success();
+    }
+
     // 获取用户信息
-    @GetMapping("/info")
+    @GetMapping("/i")
     public Result<UserInfo> info(HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         UserInfo userInfo = userService.getUserInfo(user);
         return Result.success(userInfo);
     }
 
     // 获取用户详细信息
-    @GetMapping("/info/detail")
+    @GetMapping("/i/detail")
     public Result<User> infoDetail(HttpSession session) throws ClassNotFoundException, IOException {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         User userCopy = user.deepClone();
         userCopy.setPassword("********");
         return Result.success(userCopy);
@@ -119,9 +148,6 @@ public class UserController {
     @PostMapping("/update")
     public Result<Object> update(@RequestBody Map<String, Object> requestBody, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
 
         // 获取参数
         String username = (String) requestBody.get("username");
@@ -151,9 +177,6 @@ public class UserController {
     public Result<Object> updateEmail(@RequestBody Map<String, Object> requestBody,
             HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
 
         // 获取参数
         String email = (String) requestBody.get("email");
@@ -175,9 +198,6 @@ public class UserController {
     public Result<Object> updatePassword(@RequestBody Map<String, Object> requestBody,
             HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
 
         // 获取参数
         String password = (String) requestBody.get("password");
@@ -196,42 +216,16 @@ public class UserController {
     @GetMapping("/info/{userid}")
     public Result<UserInfo> info(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
-        // if (user == null) {
-        // return Result.fail(ResultCode.USER_NOT_LOGIN);
-        // }
         UserInfo userInfo = userService.getUserInfo(user, userid);
         return Result.success(userInfo);
-    }
-
-    // 登出
-    @GetMapping("/logout")
-    public Result<Object> logout(HttpSession session) {
-        session.invalidate();
-        return Result.success();
     }
 
     // 注销
     @DeleteMapping("/delete")
     public Result<Object> delete(HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         userService.deleteUser(user.getUserid());
         session.invalidate();
-        return Result.success();
-    }
-
-    // 忘记密码
-    @PostMapping("/forget/{email}")
-    public Result<Object> forget(@PathVariable("email") String email) {
-        User user = userService.getUserByEmail(email);
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_EXIST);
-        }
-        // 发送邮件：用户的密码
-        String content = "您的密码是：" + user.getPassword();
-        emailService.sendSimpleMail(email, "找回密码", content);
         return Result.success();
     }
 
@@ -239,9 +233,6 @@ public class UserController {
     @GetMapping("/follow/{userid}")
     public Result<Object> follow(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         Map<String, Object> follow = userService.follow(user.getUserid(), userid);
         return Result.custom((String) follow.get("msg"), follow.get("followers"));
     }
@@ -250,9 +241,6 @@ public class UserController {
     @DeleteMapping("/follow/{userid}")
     public Result<Object> cancelFollow(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         Map<String, Object> follow = userService.cancelFollow(user.getUserid(), userid);
         return Result.custom((String) follow.get("msg"), follow.get("followers"));
     }
@@ -262,9 +250,6 @@ public class UserController {
     public Result<PageInfo<UserBase>> followings(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         PageHelper.startPage(pageNum, pageSize);
         List<UserBase> followings = userService.getFollowings(user.getUserid());
         PageInfo<UserBase> pageInfo = new PageInfo<>(followings);
@@ -276,9 +261,6 @@ public class UserController {
     public Result<PageInfo<UserBase>> followers(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         PageHelper.startPage(pageNum, pageSize);
         List<UserBase> followers = userService.getFollowers(user.getUserid());
         PageInfo<UserBase> pageInfo = new PageInfo<>(followers);
@@ -289,9 +271,6 @@ public class UserController {
     @PostMapping("/chat")
     public Result<Object> chat(HttpSession session, @RequestBody Map<String, Object> requestBody) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         Long toUserid = Long.parseLong((String) requestBody.get("to"));
         String content = (String) requestBody.get("content");
         int chat = userService.chat(user.getUserid(), toUserid, content);
@@ -303,9 +282,6 @@ public class UserController {
     public Result<Object> chats(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         PageHelper.startPage(pageNum, pageSize);
         List<VChat> chats = userService.getChats(user.getUserid());
         PageInfo<VChat> pageInfo = new PageInfo<>(chats);
@@ -317,9 +293,6 @@ public class UserController {
     public Result<Object> chatlist(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         PageHelper.startPage(pageNum, pageSize);
         List<ChatInfo> chatlist = userService.getSessionList(user);
         PageInfo<ChatInfo> pageInfo = new PageInfo<>(chatlist);
@@ -330,9 +303,6 @@ public class UserController {
     @GetMapping("/chat/session/{userid}")
     public Result<Object> chat(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         ChatInfo chat = userService.getSession(user, userid);
         return Result.success(chat);
     }
@@ -341,9 +311,6 @@ public class UserController {
     @GetMapping("/chat/detail/{userid}")
     public Result<Object> chatDetail(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         List<VChat> chatDetail = userService.getChatDetail(user, userid);
         return Result.success(chatDetail);
     }
@@ -351,10 +318,6 @@ public class UserController {
     // 删除单条消息
     @DeleteMapping("/chat/{chatid}")
     public Result<Object> deleteChat(HttpSession session, @PathVariable("chatid") Long chatid) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         int deleteChat = userService.deleteChat(chatid);
         return Result.success(deleteChat);
     }
@@ -363,9 +326,6 @@ public class UserController {
     @DeleteMapping("/chat/session/{userid}")
     public Result<Object> deleteSession(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return Result.fail(ResultCode.USER_NOT_LOGIN);
-        }
         int deleteSession = userService.deleteSession(user, userid);
         return Result.success(deleteSession);
     }

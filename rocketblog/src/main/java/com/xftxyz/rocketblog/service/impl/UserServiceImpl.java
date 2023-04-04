@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.xftxyz.rocketblog.mapper.BlogMapper;
 import com.xftxyz.rocketblog.mapper.ChatMapper;
@@ -399,6 +400,24 @@ public class UserServiceImpl implements UserService {
         exChats.or().andUseridFromEqualTo(userid).andUseridToEqualTo(user.getUserid()); // 对方发给我的
         int delete = vChatMapper.deleteByExample(exChats);
         return delete;
+    }
+
+    @Override
+    public User fromToken(String token) {
+        // 从token中提取userid和password，尝试登录
+        int index = token.indexOf("#");
+        String userid = token.substring(0, index);
+        String password = token.substring(index + 1);
+        User user = null;
+        if (StringUtils.hasLength(userid) && StringUtils.hasLength(password)) {
+            user = getUser(Long.parseLong(userid));
+        }
+        return user;
+    }
+
+    @Override
+    public String toToken(User user) {
+        return user.getUserid() + "#" + user.getPassword();
     }
 
 }

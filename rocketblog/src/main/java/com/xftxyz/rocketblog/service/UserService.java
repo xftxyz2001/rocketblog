@@ -10,6 +10,13 @@ import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.pojo.VChat;
 
 public interface UserService {
+
+    // 生成token
+    public String toToken(User user);
+
+    // 解析token
+    public User fromToken(String token);
+
     // 获取用户列表
     public List<User> getUsers();
 
@@ -26,6 +33,7 @@ public interface UserService {
     public int updateUser(User user);
 
     public List<User> getUsersLikeName(String name);
+
     public List<User> getUsersLikeEmail(String email);
 
     public User getUserByEmail(String email);
@@ -36,6 +44,7 @@ public interface UserService {
 
     // 获取用户信息
     public UserInfo getUserInfo(User user);
+
     public UserInfo getUserInfo(User me, Long userid);
 
     public Map<String, Object> follow(Long userFollowing, Long userFollowed);
@@ -44,10 +53,12 @@ public interface UserService {
 
     // 获取用户关注列表
     public long getFollowingCount(Long userid);
+
     public List<UserBase> getFollowings(Long userid);
 
     // 获取用户粉丝列表
     public long getFollowerCount(Long userid);
+
     public List<UserBase> getFollowers(Long userid);
 
     // 获取用户发布的博客数
