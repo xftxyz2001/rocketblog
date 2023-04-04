@@ -33,22 +33,12 @@ jobs:
           cd vueblog
           npm run build
 
-      - name: 清理旧文件
-        run: |
-          cd rocketblog/src/main/resources
-          rm -rf static
-
-      - name: 复制新文件
-        run: |
-          cd vueblog/dist
-          ls -la
-          cp -rf . ../../rocketblog/src/main/resources/static/
-          ls -la ../../rocketblog/src/main/resources/static/js
+      - name: 复制文件
+        run: cp -rf vueblog/dist/. ../../rocketblog/src/main/resources/static/
 
       - name: 构建Spring Boot应用程序
         run: |
           cd rocketblog
-          ls -la src/main/resources/static/js
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
