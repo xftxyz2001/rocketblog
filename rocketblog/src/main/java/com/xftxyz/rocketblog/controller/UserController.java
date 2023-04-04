@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
+import com.xftxyz.rocketblog.parameter.ChatMessageBody;
 import com.xftxyz.rocketblog.parameter.RegisterBody;
 import com.xftxyz.rocketblog.parameter.ResetPasswordBody;
 import com.xftxyz.rocketblog.pojo.ChatInfo;
@@ -91,10 +92,10 @@ public class UserController {
 
     // 登录
     @PostMapping("/login")
-    public Result<UserInfo> login(@RequestBody Map<String, Object> requestBody,
+    public Result<UserInfo> login(@RequestBody RegisterBody registerBody,
             HttpSession session, HttpServletResponse response) {
-        String email = (String) requestBody.get("email");
-        String password = (String) requestBody.get("password");
+        String email = registerBody.getEmail();
+        String password = registerBody.getPassword();
         User user = userService.login(email, password);
         if (user == null) {
             return Result.fail(ResultCode.USERNAME_OR_PASSWORD_ERROR);
@@ -272,10 +273,10 @@ public class UserController {
 
     // 发送消息
     @PostMapping("/chat")
-    public Result<Object> sendMessage(HttpSession session, @RequestBody Map<String, Object> requestBody) {
+    public Result<Object> sendMessage(HttpSession session, @RequestBody ChatMessageBody chatMessage) {
         User user = (User) Utils.currentUser(session);
-        Long toUserid = Long.parseLong((String) requestBody.get("to"));
-        String content = (String) requestBody.get("content");
+        Long toUserid = chatMessage.getTo();
+        String content = chatMessage.getContent();
         int chat = userService.chat(user.getUserid(), toUserid, content);
         return Result.success(chat);
     }
