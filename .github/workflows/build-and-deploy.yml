@@ -36,7 +36,6 @@ jobs:
       - name: 清理旧文件
         run: |
           cd rocketblog/src/main/resources
-          ls -la static/js
           rm -rf static
 
       - name: 复制新文件
