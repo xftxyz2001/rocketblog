@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: 构建和部署
 
 on:
   push:
@@ -9,47 +9,47 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: 签出代码
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
+      - name: 设置 Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
-      - name: Setup Java
+      - name: 设置 Java
         uses: actions/setup-java@v2
         with:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Install dependencies
+      - name: 安装依赖项
         run: |
           cd vueblog
           npm install
 
-      - name: Build Vue.js app
+      - name: 构建 Vue.js 应用程序
         run: |
           cd vueblog
           npm run build
 
-      - name: Build Spring Boot app
+      - name: 清理旧文件
+        run: |
+          cd rocketblog/src/main/resources
+          rm -rf static
+
+      - name: 复制新文件
+        run: |
+          cd vueblog/dist
+          cp -R . ../../rocketblog/src/main/resources/static/
+
+      - name: 构建Spring Boot应用程序
         run: |
           cd rocketblog
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
-      - name: Clean up old files
-        run: |
-          cd rocketblog/src/main/resources
-          rm -rf static
-
-      - name: Copy new files
-        run: |
-          cd vueblog/dist
-          cp -R . ../../rocketblog/src/main/resources/static/
-
-      - name: Deploy to server
+      - name: 部署到服务器
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -58,7 +58,7 @@ jobs:
           source: "./rocketblog/target/rocketblog-0.0.1-SNAPSHOT.jar,./start.sh"
           target: /root/
 
-      - name: Start application on server
+      - name: 在服务器上启动应用程序
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
