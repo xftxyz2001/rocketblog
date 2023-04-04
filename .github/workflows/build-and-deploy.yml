@@ -42,10 +42,12 @@ jobs:
         run: |
           cd vueblog/dist
           cp -R . ../../rocketblog/src/main/resources/static/
+          ls ../../rocketblog/src/main/resources/static/
 
       - name: 构建Spring Boot应用程序
         run: |
           cd rocketblog
+          ls src/main/resources/static/
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
