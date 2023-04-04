@@ -1,0 +1,55 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Install Maven Wrapper
+        run: |
+          cd ../rocketblog
+          ./mvnw -N io.takari:maven:wrapper
+
+      - name: Build and copy files
+        run: |
+          cd vueblog
+          npm install
+          npm run build
+          cd ../rocketblog
+          ./mvnw clean package -DskipTests
+          rm -rf src/main/resources/static
+          cp -R ../vueblog/dist/* src/main/resources/static/
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ./target/rocketblog-0.0.1-SNAPSHOT.jar
+          target: /root/
+
+      - name: Start application on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: ./start.sh
