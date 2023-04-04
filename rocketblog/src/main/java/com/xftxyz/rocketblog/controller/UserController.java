@@ -1,7 +1,6 @@
 package com.xftxyz.rocketblog.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +57,6 @@ public class UserController {
         return Result.success();
     }
 
-
     // 获取验证码，存放到Session中，并通过邮件发送给用户
     @GetMapping("/code/{email}")
     public Result<Object> code(HttpSession session, @PathVariable("email") String email) {
@@ -93,7 +91,7 @@ public class UserController {
 
     // 登录
     @PostMapping("/login")
-    public Result<Map<String, Object>> login(@RequestBody Map<String, Object> requestBody,
+    public Result<UserInfo> login(@RequestBody Map<String, Object> requestBody,
             HttpSession session, HttpServletResponse response) {
         String email = (String) requestBody.get("email");
         String password = (String) requestBody.get("password");
@@ -103,17 +101,14 @@ public class UserController {
         }
 
         // 登录成功，将用户信息存放到Session中
-        session.setAttribute("user", user);
+        session.setAttribute(EnvironmentVariables.SESSION_USER, user);
         // 将用户信息存放到Cookie中
         Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, userService.toToken(user));
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 7); // 7天
         response.addCookie(cookie);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("username", user.getUsername());
-        map.put("avatar", user.getAvatar());
-        return Result.success(map);
+        UserInfo userInfo = userService.getUserInfo(user);
+        return Result.success(userInfo);
     }
 
     // 登出
@@ -127,16 +122,8 @@ public class UserController {
         return Result.success();
     }
 
-    // 获取用户信息
-    @GetMapping("/i")
-    public Result<UserInfo> info(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        UserInfo userInfo = userService.getUserInfo(user);
-        return Result.success(userInfo);
-    }
-
     // 获取用户详细信息
-    @GetMapping("/i/detail")
+    @GetMapping("/info/detail")
     public Result<User> infoDetail(HttpSession session) throws ClassNotFoundException, IOException {
         User user = (User) session.getAttribute("user");
         User userCopy = user.deepClone();
@@ -214,9 +201,13 @@ public class UserController {
     }
 
     @GetMapping("/info/{userid}")
-    public Result<UserInfo> info(HttpSession session, @PathVariable("userid") Long userid) {
+    public Result<UserInfo> info(HttpSession session, @PathVariable(name = "userid", required = false) Long userid) {
         User user = (User) session.getAttribute("user");
-        UserInfo userInfo = userService.getUserInfo(user, userid);
+        UserInfo userInfo = null;
+        if (userid == null) {
+            userInfo = userService.getUserInfo(user);
+        }
+        userInfo = userService.getUserInfo(user, userid);
         return Result.success(userInfo);
     }
 

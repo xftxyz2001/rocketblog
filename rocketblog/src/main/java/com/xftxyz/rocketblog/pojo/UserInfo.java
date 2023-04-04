@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.pojo;
 
 public class UserInfo {
+    // id
+    private long userid;
     // username
     private String username;
     // avatar
@@ -60,6 +62,14 @@ public class UserInfo {
 
     public void setFollowed(boolean isFollowed) {
         this.isFollowed = isFollowed;
+    }
+
+    public long getUserid() {
+        return userid;
+    }
+
+    public void setUserid(long userid) {
+        this.userid = userid;
     }
 
 }

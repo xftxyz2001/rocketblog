@@ -134,6 +134,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo getUserInfo(User user) {
         UserInfo userInfo = new UserInfo();
+        userInfo.setUserid(user.getUserid());
         userInfo.setUsername(user.getUsername());
         userInfo.setAvatar(user.getAvatar());
         userInfo.setFollowings(getFollowingCount(user.getUserid()));
