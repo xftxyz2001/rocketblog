@@ -201,8 +201,8 @@ public class UserController {
         return Result.success();
     }
 
-    @GetMapping("/info/{userid}")
-    public Result<UserInfo> info(HttpSession session, @PathVariable(name = "userid", required = false) Long userid) {
+    @GetMapping(value = {"/info/{userid}", "/info"})
+    public Result<UserInfo> info(HttpSession session, @PathVariable(value = "userid", required = false) Long userid) {
         User user = (User) Utils.currentUser(session);
         UserInfo userInfo = null;
         if (userid == null) {
