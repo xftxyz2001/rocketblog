@@ -10,4 +10,18 @@ public interface EnvironmentVariables {
     int CODE_LENGTH = 6;
     // SESSION中验证码的key
     String SESSION_CODE = "code";
+
+    // 验证码邮件主题
+    String EMAIL_CODE_SUBJECT = "火箭博客验证码";
+    // 验证码邮件内容
+    String EMAIL_CODE_CONTENT = "您的验证码为：";
+
+    // 找回密码邮件主题
+    String EMAIL_FORGET_SUBJECT = "火箭博客找回密码";
+    // 找回密码邮件内容
+    String EMAIL_FORGET_CONTENT = "您的密码是：";
+
+    // 密码掩码
+    String PASSWORD_MASK = "********";
+
 }

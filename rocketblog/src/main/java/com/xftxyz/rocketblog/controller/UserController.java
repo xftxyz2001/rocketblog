@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
+import com.xftxyz.rocketblog.parameter.RegisterBody;
+import com.xftxyz.rocketblog.parameter.ResetPasswordBody;
 import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
@@ -32,9 +34,7 @@ import com.xftxyz.rocketblog.util.Utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -47,41 +47,40 @@ public class UserController {
 
     // 忘记密码
     @PostMapping("/forget/{email}")
-    public Result<Object> forget(@PathVariable("email") String email) {
+    public Result<Object> forgetPassword(@PathVariable("email") String email) {
         User user = userService.getUserByEmail(email);
         if (user == null) {
             return Result.fail(ResultCode.USER_NOT_EXIST);
         }
         // 发送邮件：用户的密码
-        String content = "您的密码是：" + user.getPassword();
-        emailService.sendSimpleMail(email, "找回密码", content);
+        String content = EnvironmentVariables.EMAIL_FORGET_CONTENT + user.getPassword();
+        emailService.sendSimpleMail(email, EnvironmentVariables.EMAIL_FORGET_SUBJECT, content);
         return Result.success();
     }
 
     // 获取验证码，存放到Session中，并通过邮件发送给用户
     @GetMapping("/code/{email}")
-    public Result<Object> code(HttpSession session, @PathVariable("email") String email) {
+    public Result<Object> getVerificationCode(HttpSession session, @PathVariable("email") String email) {
         // 随机生成六位数验证码
         String code = Utils.getRandomString(EnvironmentVariables.CODE_LENGTH);
         session.setAttribute(EnvironmentVariables.SESSION_CODE, code);
 
         // 发送邮件
-        log.info(session.getId() + ":" + email + ":" + code);
-        emailService.sendSimpleMail(email, "火箭博客验证码", "您正在注册火箭博客，您的验证码为：" + code);
+        String content = EnvironmentVariables.EMAIL_CODE_CONTENT + code;
+        emailService.sendSimpleMail(email, EnvironmentVariables.EMAIL_CODE_SUBJECT, content);
         return Result.success();
     }
 
     // 注册
     @PostMapping("/register")
-    public String register(@RequestBody Map<String, Object> requestBody, HttpSession session) {
-        String name = (String) requestBody.get("name");
-        String password = (String) requestBody.get("password");
-        String email = (String) requestBody.get("email");
-        String vertify = (String) requestBody.get("vertify");
+    public String register(@RequestBody RegisterBody registerBody, HttpSession session) {
+        String name = registerBody.getName();
+        String password = registerBody.getPassword();
+        String email = registerBody.getEmail();
+        String vertify = registerBody.getVertify();
         // 获取用户输入的验证码
         String acode = (String) session.getAttribute(EnvironmentVariables.SESSION_CODE);
 
-        log.info(session.getId() + ":" + acode + ":" + vertify + ":" + name + ":" + password + ":" + email);
         if (acode == null || !acode.equals(vertify)) {
             return "验证码错误";
         }
@@ -125,23 +124,30 @@ public class UserController {
 
     // 获取用户详细信息
     @GetMapping("/info/detail")
-    public Result<User> infoDetail(HttpSession session) throws ClassNotFoundException, IOException {
+    public Result<User> getMyUserDetails(HttpSession session) throws ClassNotFoundException, IOException {
         User user = (User) Utils.currentUser(session);
         User userCopy = user.deepClone();
-        userCopy.setPassword("********");
+        userCopy.setPassword(EnvironmentVariables.PASSWORD_MASK);
         return Result.success(userCopy);
     }
 
     // 修改用户信息
     @PostMapping("/update")
-    public Result<Object> update(@RequestBody Map<String, Object> requestBody, HttpSession session) {
+    public Result<Object> updateUserInfo(@RequestBody User newUserData, HttpSession session) {
         User user = (User) Utils.currentUser(session);
 
+        updateAssign(user, newUserData);
+        userService.updateUser(user);
+        return Result.success();
+    }
+
+    // 为要更改的用户信息赋值
+    private void updateAssign(User user, User newUserData) {
         // 获取参数
-        String username = (String) requestBody.get("username");
-        String userSex = (String) requestBody.get("userSex");
-        String phone = (String) requestBody.get("phone");
-        String avatar = (String) requestBody.get("avatar");
+        String username = newUserData.getUsername();
+        String userSex = newUserData.getUserSex();
+        String phone = newUserData.getPhone();
+        String avatar = newUserData.getAvatar();
 
         // 更新用户信息
         if (StringUtils.hasLength(username)) {
@@ -156,19 +162,17 @@ public class UserController {
         if (StringUtils.hasLength(avatar)) {
             user.setAvatar(avatar);
         }
-        userService.updateUser(user);
-        return Result.success();
     }
 
     // 修改邮箱
     @PostMapping("/update/email")
-    public Result<Object> updateEmail(@RequestBody Map<String, Object> requestBody,
+    public Result<Object> updateEmail(@RequestBody RegisterBody registerBody,
             HttpSession session) {
         User user = (User) Utils.currentUser(session);
 
         // 获取参数
-        String email = (String) requestBody.get("email");
-        String vertify = (String) requestBody.get("vertify");
+        String email = registerBody.getEmail();
+        String vertify = registerBody.getVertify();
         // 获取用户输入的验证码
         String acode = (String) session.getAttribute(EnvironmentVariables.SESSION_CODE);
 
@@ -183,13 +187,13 @@ public class UserController {
 
     // 修改密码
     @PostMapping("/update/password")
-    public Result<Object> updatePassword(@RequestBody Map<String, Object> requestBody,
+    public Result<Object> updatePassword(@RequestBody ResetPasswordBody resetPasswordBody,
             HttpSession session) {
         User user = (User) Utils.currentUser(session);
 
         // 获取参数
-        String password = (String) requestBody.get("password");
-        String newPassword = (String) requestBody.get("newPassword");
+        String password = resetPasswordBody.getPassword();
+        String newPassword = resetPasswordBody.getNewPassword();
 
         // 如果原密码不正确
         if (!user.getPassword().equals(password)) {
@@ -201,8 +205,15 @@ public class UserController {
         return Result.success();
     }
 
-    @GetMapping(value = {"/info/{userid}", "/info"})
-    public Result<UserInfo> info(HttpSession session, @PathVariable(value = "userid", required = false) Long userid) {
+    @GetMapping("/info")
+    public Result<UserInfo> getMyUserInfo(HttpSession session) {
+        User user = (User) Utils.currentUser(session);
+        UserInfo userInfo = userService.getUserInfo(user);
+        return Result.success(userInfo);
+    }
+
+    @GetMapping("/info/{userid}")
+    public Result<UserInfo> getUserInformation(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) Utils.currentUser(session);
         UserInfo userInfo = null;
         if (userid == null) {
@@ -214,7 +225,7 @@ public class UserController {
 
     // 注销
     @DeleteMapping("/delete")
-    public Result<Object> delete(HttpSession session) {
+    public Result<Object> deleteUser(HttpSession session) {
         User user = (User) Utils.currentUser(session);
         userService.deleteUser(user.getUserid());
         session.invalidate();
@@ -261,7 +272,7 @@ public class UserController {
 
     // 发送消息
     @PostMapping("/chat")
-    public Result<Object> chat(HttpSession session, @RequestBody Map<String, Object> requestBody) {
+    public Result<Object> sendMessage(HttpSession session, @RequestBody Map<String, Object> requestBody) {
         User user = (User) Utils.currentUser(session);
         Long toUserid = Long.parseLong((String) requestBody.get("to"));
         String content = (String) requestBody.get("content");
@@ -271,7 +282,7 @@ public class UserController {
 
     // 获取所有消息
     @GetMapping("/chats")
-    public Result<Object> chats(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
+    public Result<Object> getAllMessages(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
@@ -282,7 +293,7 @@ public class UserController {
 
     // 获取会话列表
     @GetMapping("/char/sessions")
-    public Result<Object> chatlist(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
+    public Result<Object> getChatSessionList(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
@@ -293,7 +304,7 @@ public class UserController {
 
     // 更新指定会话
     @GetMapping("/chat/session/{userid}")
-    public Result<Object> chat(HttpSession session, @PathVariable("userid") Long userid) {
+    public Result<Object> updateChatSession(HttpSession session, @PathVariable("userid") Long userid) {
         User user = (User) Utils.currentUser(session);
         ChatInfo chat = userService.getSession(user, userid);
         return Result.success(chat);
