@@ -34,7 +34,7 @@ jobs:
           npm run build
 
       - name: 复制文件
-        run: cp -rf vueblog/dist/. ../../rocketblog/src/main/resources/static/
+        run: cp -rf vueblog/dist/. rocketblog/src/main/resources/static/
 
       - name: 构建Spring Boot应用程序
         run: |
