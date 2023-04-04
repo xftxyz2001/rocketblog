@@ -9,4 +9,4 @@ else
 fi
 
 nohup /usr/local/java/jdk-17.0.6/bin/java -jar rocketblog-0.0.1-SNAPSHOT.jar >> rocketblog.log &
-tail -f rocketblog.log
+# tail -f rocketblog.log
