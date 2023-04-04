@@ -23,20 +23,45 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Install Maven Wrapper
-        run: |
-          cd ../rocketblog
-          ./mvnw -N io.takari:maven:wrapper
+      - name: Setup Maven
+        uses: yuzhiyongcn/setup-maven@v1.0.0
+        with:
+          maven-version: '3.8.7'
 
-      - name: Build and copy files
+      - name: Install dependencies
         run: |
           cd vueblog
+          pwd
+          ls
           npm install
+
+      - name: Build Vue.js app
+        run: |
+          cd vueblog
+          pwd
+          ls
           npm run build
-          cd ../rocketblog
+
+      - name: Build Spring Boot app
+        run: |
+          cd rocketblog
+          pwd
+          ls
           ./mvnw clean package -DskipTests
-          rm -rf src/main/resources/static
-          cp -R ../vueblog/dist/* src/main/resources/static/
+
+      - name: Clean up old files
+        run: |
+          cd rocketblog/src/main/resources
+          pwd
+          ls
+          rm -rf static
+
+      - name: Copy new files
+        run: |
+          cd vueblog/dist
+          pwd
+          ls
+          cp -R . ../../rocketblog/src/main/resources/static/
 
       - name: Deploy to server
         uses: appleboy/scp-action@master
@@ -44,7 +69,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ./target/rocketblog-0.0.1-SNAPSHOT.jar
+          source: ./rocketblog/target/rocketblog-0.0.1-SNAPSHOT.jar
           target: /root/
 
       - name: Start application on server
