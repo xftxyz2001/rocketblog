@@ -25,6 +25,7 @@ import com.xftxyz.rocketblog.pojo.VComment;
 import com.xftxyz.rocketblog.result.Result;
 import com.xftxyz.rocketblog.result.ResultCode;
 import com.xftxyz.rocketblog.service.BlogService;
+import com.xftxyz.rocketblog.util.Utils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -39,7 +40,7 @@ public class BlogController {
     public Result<PageInfo<BlogInfo>> search(@RequestParam("keyword") String keyword,
             @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5") int pageSize,
             HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> blogs = blogService.searchBlogs(keyword, user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
@@ -48,7 +49,7 @@ public class BlogController {
 
     @PostMapping("/publish")
     public Result<Object> publish(@RequestBody Blog blog, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         int insert = blogService.publish(blog, user);
         return Result.success(insert);
     }
@@ -56,7 +57,7 @@ public class BlogController {
     @GetMapping("/draft")
     public Result<PageInfo<BlogInfo>> draft(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> draftBlogs = blogService.getDraftBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(draftBlogs);
@@ -67,7 +68,7 @@ public class BlogController {
     @GetMapping("/hot")
     public Result<PageInfo<BlogInfo>> hot(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getHotBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
@@ -78,7 +79,7 @@ public class BlogController {
     @GetMapping("/hot/like")
     public Result<PageInfo<BlogInfo>> hotLike(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostLikeBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
@@ -89,7 +90,7 @@ public class BlogController {
     @GetMapping("/hot/collect")
     public Result<PageInfo<BlogInfo>> hotCollect(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCollectBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
@@ -100,7 +101,7 @@ public class BlogController {
     @GetMapping("/hot/comment")
     public Result<PageInfo<BlogInfo>> hotComment(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCommentBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
@@ -111,7 +112,7 @@ public class BlogController {
     @GetMapping("/new")
     public Result<PageInfo<BlogInfo>> newBlog(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> newBlogs = blogService.getNewBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(newBlogs);
@@ -122,7 +123,7 @@ public class BlogController {
     @GetMapping("/follows")
     public Result<PageInfo<BlogInfo>> getFollows(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> follows = blogService.getFollowsBlogs(user.getUserid());
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(follows);
@@ -132,7 +133,7 @@ public class BlogController {
     // 获取博客信息
     @GetMapping("/info/{blogId}")
     public Result<BlogInfo> info(@PathVariable("blogId") Long blogId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         BlogInfo blogInfo = blogService.getBlogInfo(blogId, user);
         return Result.success(blogInfo);
     }
@@ -140,7 +141,7 @@ public class BlogController {
     // 获取博客详情
     @GetMapping("/detail/{blogId}")
     public Result<BlogDetail> detail(@PathVariable("blogId") Long blogId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         BlogDetail blog = blogService.getBlogDetail(blogId, user);
         return Result.success(blog);
     }
@@ -148,7 +149,7 @@ public class BlogController {
     // 修改
     @PutMapping("/update")
     public Result<Object> update(@RequestBody Blog blog, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         // blog.setUserid(user.getUserid());
         int update = blogService.updateBlog(blog, user);
         if (update < 0) {
@@ -168,7 +169,7 @@ public class BlogController {
     @GetMapping("/my")
     public Result<PageInfo<BlogInfo>> my(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> myBlogs = blogService.getMyBlogs(user.getUserid());
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(myBlogs);
@@ -178,7 +179,7 @@ public class BlogController {
     // 收藏
     @GetMapping("/collect/{blogId}")
     public Result<Object> collect(@PathVariable("blogId") Long blogId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         Map<String, Object> collect = blogService.collect(user.getUserid(), blogId);
         return Result.custom((String) collect.get("msg"), collect.get("count"));
     }
@@ -186,7 +187,7 @@ public class BlogController {
     // 取消收藏
     @DeleteMapping("/collect/{blogId}")
     public Result<Object> cancelCollect(@PathVariable("blogId") Long blogId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         Map<String, Object> cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
         return Result.custom((String) cancelCollect.get("msg"), cancelCollect.get("count"));
     }
@@ -195,7 +196,7 @@ public class BlogController {
     @GetMapping("/collects")
     public Result<PageInfo<BlogInfo>> getCollects(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> collects = blogService.getCollectsBlogs(user.getUserid());
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(collects);
@@ -205,7 +206,7 @@ public class BlogController {
     // 点赞
     @GetMapping("/like/{blogId}")
     public Result<Object> like(@PathVariable("blogId") Long blogId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         Map<String, Object> like = blogService.like(user.getUserid(), blogId);
         return Result.custom((String) like.get("msg"), like.get("count"));
     }
@@ -213,7 +214,7 @@ public class BlogController {
     // 取消点赞
     @DeleteMapping("/like/{blogId}")
     public Result<Object> cancelLike(@PathVariable("blogId") Long blogId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         Map<String, Object> cancelLike = blogService.cancelLike(user.getUserid(), blogId);
         return Result.custom((String) cancelLike.get("msg"), cancelLike.get("count"));
     }
@@ -222,7 +223,7 @@ public class BlogController {
     @GetMapping("/likes")
     public Result<PageInfo<BlogInfo>> getLikes(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> likes = blogService.getLikesBlogs(user.getUserid());
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(likes);
@@ -232,7 +233,7 @@ public class BlogController {
     // 评论
     @PostMapping("/comment")
     public Result<VComment> comment(@RequestBody Comment comment, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+        User user = (User) Utils.currentUser(session);
         comment.setUserid(user.getUserid());
         int insert = blogService.addComment(comment);
         if (insert < 1) {

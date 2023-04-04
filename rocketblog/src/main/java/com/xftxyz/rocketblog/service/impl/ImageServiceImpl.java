@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.UUID;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -15,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xftxyz.rocketblog.service.ImageService;
+import com.xftxyz.rocketblog.util.Utils;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -25,7 +25,7 @@ public class ImageServiceImpl implements ImageService {
         // 后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         // UUID
-        String uuid = UUID.randomUUID().toString();
+        String uuid = Utils.getUUID();
         fileName = uuid + suffixName;
         Path uploadPath = Paths.get(uploadDirectory);
         if (!Files.exists(uploadPath)) {
