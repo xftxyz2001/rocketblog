@@ -36,18 +36,20 @@ jobs:
       - name: 清理旧文件
         run: |
           cd rocketblog/src/main/resources
+          ls -la static/js
           rm -rf static
 
       - name: 复制新文件
         run: |
           cd vueblog/dist
-          cp -R . ../../rocketblog/src/main/resources/static/
-          ls ../../rocketblog/src/main/resources/static/
+          ls -la
+          cp -rf . ../../rocketblog/src/main/resources/static/
+          ls -la ../../rocketblog/src/main/resources/static/js
 
       - name: 构建Spring Boot应用程序
         run: |
           cd rocketblog
-          ls src/main/resources/static/
+          ls -la src/main/resources/static/js
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
