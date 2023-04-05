@@ -1,0 +1,2 @@
+All your data was backed up. You need to email us at rambler+1qoqo@onionmail.org to recover your data. More info: http://bit.ly/ramsmusram CHECK YOUR SPAM FOLDER! If you dont answer we will reach the General Data Protection Regulation, GDPR,
+and notify them that you store user data in an unsafe open form. Under the rules of the law, you face a heavy fine or arrest. We will leak and expose all your data and in 48hs delete it forever from our server.

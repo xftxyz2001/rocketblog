@@ -11,7 +11,7 @@
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <!-- 数据库的连接信息 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://8.130.81.23:3306/rocketblog?serverTimezone=UTC"
+                        connectionURL="jdbc:mysql://localhost:3306/rocketblog?serverTimezone=UTC"
                         userId="root"
                         password="123456"></jdbcConnection>
         <!-- javaBean的生成策略-->
