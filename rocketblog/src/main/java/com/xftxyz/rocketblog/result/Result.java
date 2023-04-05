@@ -1,62 +1,64 @@
 package com.xftxyz.rocketblog.result;
 
-import java.io.Serializable;
+public class Result<T> {
+    private Integer code; // code: 状态码
+    private String message; // message: 接口调用的提示信息
+    private T data; // data: 返回数据
 
-import lombok.Data;
+    public Result() {
+    }
 
-@Data
-public class Result<T> implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 返回编码
-     */
-    private String code;
-
-    /**
-     * 编码描述
-     */
-    private String msg;
+    public Result(Integer code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
     /**
-     * 业务数据
-     */
-    private T data;
-
-    /**
-     * 返回成功结果对象
-     *
-     * @param data
+     * 成功返回结果
      * @param <T>
+     * @param data 返回的数据
      * @return
      */
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<T>();
-        result.setCode(ResultCode.SUCCESS.getCode());
-        result.setMsg(ResultCode.SUCCESS.getMsg());
+        result.setCode(ResultMessageEnum.SUCCESS.getCode());
+        result.setMessage(ResultMessageEnum.SUCCESS.getMessage());
         result.setData(data);
         return result;
     }
-
-    public static <T> Result<T> success() {
-        Result<T> result = new Result<T>();
-        result.setCode(ResultCode.SUCCESS.getCode());
-        result.setMsg(ResultCode.SUCCESS.getMsg());
-        return result;
+    
+    /**
+     * 失败返回失败信息
+     * @param <T>
+     * @param code 错误码
+     * @param message 错误信息
+     * @return
+     */
+    public static Result<Object> error(Integer code, String message) {
+        return new Result<>(code, message);
     }
 
-    public static <T> Result<T> fail(ResultCode resultCodes) {
-        Result<T> result = new Result<T>();
-        result.setCode(resultCodes.getCode());
-        result.setMsg(resultCodes.getMsg());
-        return result;
+    public Integer getCode() {
+        return code;
     }
 
-    public static <T> Result<T> custom(String msg, T data) {
-        Result<T> result = new Result<T>();
-        result.setCode(ResultCode.CUSTOM.getCode());
-        result.setMsg(msg);
-        result.setData(data);
-        return result;
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

@@ -1,7 +1,6 @@
 package com.xftxyz.rocketblog.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
@@ -38,7 +37,7 @@ public interface UserService {
 
     public User getUserByEmail(String email);
 
-    public String register(String name, String password, String email);
+    public void register(String name, String password, String email);
 
     public User login(String email, String password);
 
@@ -47,9 +46,9 @@ public interface UserService {
 
     public UserInfo getUserInfo(User me, Long userid);
 
-    public Map<String, Object> follow(Long userFollowing, Long userFollowed);
+    public Long follow(Long userFollowing, Long userFollowed);
 
-    public Map<String, Object> cancelFollow(Long userFollowing, Long userFollowed);
+    public Long cancelFollow(Long userFollowing, Long userFollowed);
 
     // 获取用户关注列表
     public long getFollowingCount(Long userid);

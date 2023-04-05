@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
+import com.xftxyz.rocketblog.exception.user.EmailExistException;
+import com.xftxyz.rocketblog.exception.user.SelfOperationException;
 import com.xftxyz.rocketblog.mapper.BlogMapper;
 import com.xftxyz.rocketblog.mapper.ChatMapper;
 import com.xftxyz.rocketblog.mapper.FollowMapper;
@@ -95,13 +98,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String register(String name, String password, String email) {
+    public void register(String name, String password, String email) {
 
         UserExample exEmail = new UserExample();
         exEmail.createCriteria().andEmailEqualTo(email);
         long countEmail = userMapper.countByExample(exEmail);
         if (countEmail > 0) {
-            return "邮箱已存在";
+            throw new EmailExistException();
         }
         User user = new User();
         user.setUsername(name);
@@ -113,7 +116,6 @@ public class UserServiceImpl implements UserService {
 
         user.setUserRegisterTime(new Date());
         userMapper.insert(user);
-        return "注册成功";
     }
 
     @Override
@@ -160,13 +162,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> follow(Long userFollowing, Long userFollowed) {
-        Map<String, Object> result = new HashMap<>();
+    public Long follow(Long userFollowing, Long userFollowed) {
         // 不能对自己进行此操作
         if (userFollowing.equals(userFollowed)) {
-            result.put("msg", "不能对自己进行此操作");
-            result.put("followers", getFollowerCount(userFollowed));
-            return result;
+            throw new SelfOperationException();
         }
 
         // 判断是否已关注
@@ -174,9 +173,7 @@ public class UserServiceImpl implements UserService {
         exFollow.createCriteria().andUseridFollowingEqualTo(userFollowing).andUseridFollowedEqualTo(userFollowed);
         long count = followMapper.countByExample(exFollow);
         if (count > 0) {
-            result.put("msg", "已经关注过了");
-            result.put("followers", getFollowerCount(userFollowed));
-            return result;
+            throw new AlreadyDoneException("已关注过该用户");
         }
 
         // 关注
@@ -184,42 +181,26 @@ public class UserServiceImpl implements UserService {
         follow.setUseridFollowing(userFollowing);
         follow.setUseridFollowed(userFollowed);
         follow.setCreatetime(new Date());
-        int insert = followMapper.insert(follow);
-        if (insert > 0) {
-            result.put("msg", "关注成功");
-        } else {
-            result.put("msg", "关注失败");
-        }
+        followMapper.insert(follow);
         // 查询最新粉丝数量
         long followers = getFollowerCount(userFollowed);
-        result.put("followers", followers);
-        return result;
+        return followers;
     }
 
     @Override
-    public Map<String, Object> cancelFollow(Long userFollowing, Long userFollowed) {
-        Map<String, Object> result = new HashMap<>();
+    public Long cancelFollow(Long userFollowing, Long userFollowed) {
         // 不能对自己进行此操作
         if (userFollowing.equals(userFollowed)) {
-            result.put("msg", "不能对自己进行此操作");
-            result.put("followers", getFollowerCount(userFollowed));
-            return result;
+            throw new SelfOperationException();
         }
 
         // 取消关注
         FollowExample exFollow = new FollowExample();
         exFollow.createCriteria().andUseridFollowingEqualTo(userFollowing).andUseridFollowedEqualTo(userFollowed);
-        int delete = followMapper.deleteByExample(exFollow);
-
-        if (delete > 0) {
-            result.put("msg", "取消关注成功");
-        } else {
-            result.put("msg", "没有关注过该用户");
-        }
+        followMapper.deleteByExample(exFollow);
         // 查询最新粉丝数量
         long followers = getFollowerCount(userFollowed);
-        result.put("followers", followers);
-        return result;
+        return followers;
     }
 
     @Override

@@ -1,14 +1,13 @@
 package com.xftxyz.rocketblog.service.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.mapper.BlogDetailMapper;
 import com.xftxyz.rocketblog.mapper.BlogInfoMapper;
 import com.xftxyz.rocketblog.mapper.BlogMapper;
@@ -117,34 +116,29 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Map<String, Object> collect(Long userid, Long blogId) {
-        Map<String, Object> map = new HashMap<>();
+    public long collect(Long userid, Long blogId) {
         // 查询用户是否已经收藏过该博客
         BookmarkExample exBookmarkCheck = new BookmarkExample();
         exBookmarkCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
         long countCheck = bookmarkMapper.countByExample(exBookmarkCheck);
-
-        if (countCheck < 1) {
-            Bookmark bookmark = new Bookmark();
-            bookmark.setUserid(userid);
-            bookmark.setBlogId(blogId);
-            bookmark.setCreatetime(new Date());
-            bookmarkMapper.insert(bookmark);
+        if (countCheck > 0) {
+            throw new AlreadyDoneException("已收藏过该博客");
         }
+        Bookmark bookmark = new Bookmark();
+        bookmark.setUserid(userid);
+        bookmark.setBlogId(blogId);
+        bookmark.setCreatetime(new Date());
+        bookmarkMapper.insert(bookmark);
 
         // 查询当前博客的收藏数
         BookmarkExample exBookmark = new BookmarkExample();
         exBookmark.createCriteria().andBlogIdEqualTo(blogId);
         long count = bookmarkMapper.countByExample(exBookmark);
-
-        map.put("msg", countCheck < 1 ? "收藏成功" : "已收藏过该博客");
-        map.put("count", count);
-        return map;
+        return count;
     }
 
     @Override
-    public Map<String, Object> cancelCollect(Long userid, Long blogId) {
-        Map<String, Object> map = new HashMap<>();
+    public long cancelCollect(Long userid, Long blogId) {
         // 查询用户是否已经收藏过该博客
         BookmarkExample exBookmarkCheck = new BookmarkExample();
         exBookmarkCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
@@ -160,41 +154,34 @@ public class BlogServiceImpl implements BlogService {
         BookmarkExample exBookmarkNew = new BookmarkExample();
         exBookmarkNew.createCriteria().andBlogIdEqualTo(blogId);
         long count = bookmarkMapper.countByExample(exBookmarkNew);
-
-        map.put("msg", countCheck > 0 ? "取消收藏成功" : "未收藏过该博客");
-        map.put("count", count);
-        return map;
+        return count;
     }
 
     @Override
-    public Map<String, Object> like(Long userid, Long blogId) {
-        Map<String, Object> map = new HashMap<>();
+    public long like(Long userid, Long blogId) {
         // 查询用户是否已经点赞过该博客
         LikeExample exLikeCheck = new LikeExample();
         exLikeCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
         long countCheck = likeMapper.countByExample(exLikeCheck);
 
-        if (countCheck < 1) {
-            Like like = new Like();
-            like.setUserid(userid);
-            like.setBlogId(blogId);
-            like.setCreatetime(new Date());
-            likeMapper.insert(like);
+        if (countCheck > 0) {
+            throw new AlreadyDoneException("已点赞过该博客");
         }
+        Like like = new Like();
+        like.setUserid(userid);
+        like.setBlogId(blogId);
+        like.setCreatetime(new Date());
+        likeMapper.insert(like);
 
         // 查询当前博客的点赞数
         LikeExample exLike = new LikeExample();
         exLike.createCriteria().andBlogIdEqualTo(blogId);
         long count = likeMapper.countByExample(exLike);
-
-        map.put("msg", countCheck < 1 ? "点赞成功" : "已点赞过该博客");
-        map.put("count", count);
-        return map;
+        return count;
     }
 
     @Override
-    public Map<String, Object> cancelLike(Long userid, Long blogId) {
-        Map<String, Object> map = new HashMap<>();
+    public long cancelLike(Long userid, Long blogId) {
         // 查询用户是否已经点赞过该博客
         LikeExample exLikeCheck = new LikeExample();
         exLikeCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
@@ -209,10 +196,7 @@ public class BlogServiceImpl implements BlogService {
         LikeExample exLikeNew = new LikeExample();
         exLikeNew.createCriteria().andBlogIdEqualTo(blogId);
         long count = likeMapper.countByExample(exLikeNew);
-
-        map.put("msg", countCheck > 0 ? "取消点赞成功" : "未点赞过该博客");
-        map.put("count", count);
-        return map;
+        return count;
     }
 
     @Override

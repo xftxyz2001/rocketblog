@@ -15,14 +15,14 @@ public class TestController {
     @Autowired
     UserService userService;
 
-    /**
-     * Divide by zero.
-     *
-     * @param num the number
-     * @return the result
-     */
+    // 除零
     @GetMapping("/by0")
     public Double by0(@RequestParam("num") Double num) {
         return num / 0;
+    }
+
+    // 空返回
+    @GetMapping("/null")
+    public void nullReturn() {
     }
 }

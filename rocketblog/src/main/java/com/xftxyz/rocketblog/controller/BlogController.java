@@ -1,7 +1,6 @@
 package com.xftxyz.rocketblog.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +21,6 @@ import com.xftxyz.rocketblog.pojo.BlogInfo;
 import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.VComment;
-import com.xftxyz.rocketblog.result.Result;
-import com.xftxyz.rocketblog.result.ResultCode;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.util.Utils;
 
@@ -37,227 +34,221 @@ public class BlogController {
 
     // 搜索博客
     @GetMapping("/search")
-    public Result<PageInfo<BlogInfo>> search(@RequestParam("keyword") String keyword,
+    public PageInfo<BlogInfo> search(@RequestParam("keyword") String keyword,
             @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5") int pageSize,
             HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> blogs = blogService.searchBlogs(keyword, user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     @PostMapping("/publish")
-    public Result<Object> publish(@RequestBody Blog blog, HttpSession session) {
+    public Object publish(@RequestBody Blog blog, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         int insert = blogService.publish(blog, user);
-        return Result.success(insert);
+        return insert;
     }
 
     @GetMapping("/draft")
-    public Result<PageInfo<BlogInfo>> draft(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> draft(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> draftBlogs = blogService.getDraftBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(draftBlogs);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 热门博客，分页返回
     @GetMapping("/hot")
-    public Result<PageInfo<BlogInfo>> hot(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> hot(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getHotBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 点赞最多
     @GetMapping("/hot/like")
-    public Result<PageInfo<BlogInfo>> hotLike(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> hotLike(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostLikeBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 收藏最多
     @GetMapping("/hot/collect")
-    public Result<PageInfo<BlogInfo>> hotCollect(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> hotCollect(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCollectBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 评论最多
     @GetMapping("/hot/comment")
-    public Result<PageInfo<BlogInfo>> hotComment(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> hotComment(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCommentBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 最新发布，分页返回
     @GetMapping("/new")
-    public Result<PageInfo<BlogInfo>> newBlog(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> newBlog(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> newBlogs = blogService.getNewBlogs(user);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(newBlogs);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 获取我关注的人的博客
     @GetMapping("/follows")
-    public Result<PageInfo<BlogInfo>> getFollows(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> getFollows(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> follows = blogService.getFollowsBlogs(user.getUserid());
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(follows);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 获取博客信息
     @GetMapping("/info/{blogId}")
-    public Result<BlogInfo> info(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public BlogInfo info(@PathVariable("blogId") Long blogId, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         BlogInfo blogInfo = blogService.getBlogInfo(blogId, user);
-        return Result.success(blogInfo);
+        return blogInfo;
     }
 
     // 获取博客详情
     @GetMapping("/detail/{blogId}")
-    public Result<BlogDetail> detail(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public BlogDetail detail(@PathVariable("blogId") Long blogId, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         BlogDetail blog = blogService.getBlogDetail(blogId, user);
-        return Result.success(blog);
+        return blog;
     }
 
     // 修改
     @PutMapping("/update")
-    public Result<Object> update(@RequestBody Blog blog, HttpSession session) {
+    public Object update(@RequestBody Blog blog, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         // blog.setUserid(user.getUserid());
         int update = blogService.updateBlog(blog, user);
-        if (update < 0) {
-            return Result.fail(ResultCode.ILLEGAL_OPERATION);
-        }
-        return Result.success(update);
+        return update;
     }
 
     // 删除
     @DeleteMapping("/delete/{blogId}")
-    public Result<Object> delete(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Object delete(@PathVariable("blogId") Long blogId, HttpSession session) {
         int delete = blogService.deleteBlog(blogId);
-        return Result.success(delete);
+        return delete;
     }
 
     // 我发布的博客
     @GetMapping("/my")
-    public Result<PageInfo<BlogInfo>> my(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> my(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> myBlogs = blogService.getMyBlogs(user.getUserid());
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(myBlogs);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 收藏
     @GetMapping("/collect/{blogId}")
-    public Result<Object> collect(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Long collect(@PathVariable("blogId") Long blogId, HttpSession session) {
         User user = (User) Utils.currentUser(session);
-        Map<String, Object> collect = blogService.collect(user.getUserid(), blogId);
-        return Result.custom((String) collect.get("msg"), collect.get("count"));
+        long collect = blogService.collect(user.getUserid(), blogId);
+        return collect;
     }
 
     // 取消收藏
     @DeleteMapping("/collect/{blogId}")
-    public Result<Object> cancelCollect(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Long cancelCollect(@PathVariable("blogId") Long blogId, HttpSession session) {
         User user = (User) Utils.currentUser(session);
-        Map<String, Object> cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
-        return Result.custom((String) cancelCollect.get("msg"), cancelCollect.get("count"));
+        long cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
+        return cancelCollect;
     }
 
     // 获取收藏的博客
     @GetMapping("/collects")
-    public Result<PageInfo<BlogInfo>> getCollects(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> getCollects(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> collects = blogService.getCollectsBlogs(user.getUserid());
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(collects);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 点赞
     @GetMapping("/like/{blogId}")
-    public Result<Object> like(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Long like(@PathVariable("blogId") Long blogId, HttpSession session) {
         User user = (User) Utils.currentUser(session);
-        Map<String, Object> like = blogService.like(user.getUserid(), blogId);
-        return Result.custom((String) like.get("msg"), like.get("count"));
+        long like = blogService.like(user.getUserid(), blogId);
+        return like;
     }
 
     // 取消点赞
     @DeleteMapping("/like/{blogId}")
-    public Result<Object> cancelLike(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Long cancelLike(@PathVariable("blogId") Long blogId, HttpSession session) {
         User user = (User) Utils.currentUser(session);
-        Map<String, Object> cancelLike = blogService.cancelLike(user.getUserid(), blogId);
-        return Result.custom((String) cancelLike.get("msg"), cancelLike.get("count"));
+        long cancelLike = blogService.cancelLike(user.getUserid(), blogId);
+        return cancelLike;
     }
 
     // 获取点赞的博客
     @GetMapping("/likes")
-    public Result<PageInfo<BlogInfo>> getLikes(@RequestParam(defaultValue = "1") int pageNum,
+    public PageInfo<BlogInfo> getLikes(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> likes = blogService.getLikesBlogs(user.getUserid());
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(likes);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
     // 评论
     @PostMapping("/comment")
-    public Result<VComment> comment(@RequestBody Comment comment, HttpSession session) {
+    public VComment comment(@RequestBody Comment comment, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         comment.setUserid(user.getUserid());
-        int insert = blogService.addComment(comment);
-        if (insert < 1) {
-            return Result.custom("评论失败", null);
-        }
+        blogService.addComment(comment);
         VComment commentDetail = blogService.getCommentDetail(comment);
-        return Result.success(commentDetail);
+        return commentDetail;
     }
 
     // 删除评论
     @DeleteMapping("/comment/{commentId}")
-    public Result<Object> deleteComment(@PathVariable("commentId") Long commentId, HttpSession session) {
+    public Object deleteComment(@PathVariable("commentId") Long commentId, HttpSession session) {
         int delete = blogService.deleteComment(commentId);
-        return Result.success(delete);
+        return delete;
     }
 
     // 获取评论，分页，默认第一页，每页5条
     @GetMapping("/comment/{blogId}")
-    public Result<PageInfo<VComment>> getComments(@PathVariable("blogId") Long blogId,
+    public PageInfo<VComment> getComments(@PathVariable("blogId") Long blogId,
             @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5") int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<VComment> comments = blogService.getCommentsByBlogId(blogId);
         PageInfo<VComment> pageInfo = new PageInfo<>(comments);
-        return Result.success(pageInfo);
+        return pageInfo;
     }
 
 }
