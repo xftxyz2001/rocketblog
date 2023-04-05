@@ -13,6 +13,17 @@ import '@/assets/icons/iconfont.css'
 import '@/assets/icons/iconfont.js';
 
 axios.defaults.withCredentials = true;
+// axios.defaults.baseURL = window.location.origin;
+/*
+axios.get("/api").then((res) => {
+  result = res.data;
+  if (result.code == 0) {
+    // result.data is the data you want
+  } else {
+    // result.message is the error message
+  }
+});
+*/
 
 
 const app = createApp(App)
