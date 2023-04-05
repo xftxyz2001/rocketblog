@@ -129,6 +129,9 @@ public class UserController {
     @GetMapping("/info/detail")
     public User getMyUserDetails(HttpSession session) throws ClassNotFoundException, IOException {
         User user = (User) Utils.currentUser(session);
+        if (user == null) {
+            throw new UserNotExistException();
+        }
         User userCopy = user.deepClone();
         userCopy.setPassword(EnvironmentVariables.PASSWORD_MASK);
         return userCopy;

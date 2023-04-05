@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.xftxyz.rocketblog.exception.image.ImageException;
 import com.xftxyz.rocketblog.service.ImageService;
 
 @RestController
@@ -26,15 +27,12 @@ public class ImageController {
     private ImageService imageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+    public String uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             String imageUrl = imageService.uploadImage(file);
-
-            return ResponseEntity.ok(imageUrl);
+            return imageUrl;
         } catch (IOException e) {
-            // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            //         .body(Result.custom("上传失败", "Failed to upload image"));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new ImageException("上传图片失败");
         }
     }
 

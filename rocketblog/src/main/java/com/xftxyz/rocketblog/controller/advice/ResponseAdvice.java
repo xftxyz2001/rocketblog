@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.controller.advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -37,8 +38,8 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
                 e.printStackTrace();
             }
         }
-        // 如果响应体已经是 Result 类型的对象，就不需要再次包装
-        if (body instanceof Result) {
+        // 如果响应体已经是 Result 类型或 ResponseEntity 类型，则不需要再进行包装
+        if (body instanceof Result || body instanceof ResponseEntity) {
             return body;
         }
         // 对响应体进行包装

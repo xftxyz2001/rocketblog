@@ -7,7 +7,7 @@ public enum ResultMessageEnum {
     FAIL(-1, "失败"),
     // 未知错误
     UNKNOWN_ERROR(-2, "未知错误"),
-    
+
     // 非法操作
     ILLEGAL_OPERATION(100, "非法操作"),
     // 成功
@@ -27,7 +27,8 @@ public enum ResultMessageEnum {
     USER_NOT_LOGIN(444, "用户未登录"),
     // 服务器错误
     SERVER_ERROR(500, "服务器错误"),
-    CUSTOM(999, "自定义内容");
+    CUSTOM(999, "自定义内容"),
+    IMAGE_ERROR(666, "图片错误");
 
     private Integer code;
     private String message;
