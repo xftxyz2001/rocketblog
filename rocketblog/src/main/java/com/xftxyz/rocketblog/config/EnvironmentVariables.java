@@ -1,6 +1,10 @@
 package com.xftxyz.rocketblog.config;
 
 public interface EnvironmentVariables {
+
+    // 上传文件的目录
+    String UPLOAD_DIRECTORY = "uploads";
+
     // COOKIE中token的key
     String COOKIE_TOKEN = "token";
     // SESSION中用户的key

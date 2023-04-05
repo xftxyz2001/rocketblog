@@ -15,9 +15,14 @@ public class TestController {
     @Autowired
     UserService userService;
 
-    // 测试除0
+    /**
+     * Divide by zero.
+     *
+     * @param num the number
+     * @return the result
+     */
     @GetMapping("/by0")
-    public String by0(@RequestParam("num") Float num) {
-        return String.valueOf(num / 0);
+    public Double by0(@RequestParam("num") Double num) {
+        return num / 0;
     }
 }

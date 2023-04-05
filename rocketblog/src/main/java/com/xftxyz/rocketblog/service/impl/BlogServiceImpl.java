@@ -374,7 +374,7 @@ public class BlogServiceImpl implements BlogService {
     public List<BlogInfo> searchBlogs(String keyword, User user) {
         BlogInfoExample exBlog = new BlogInfoExample();
         // blogTitle or username
-        exBlog.createCriteria().andBlogTitleLike("%" + keyword + "%");
+        exBlog.createCriteria().andBlogTitleLike("%" + keyword + "%").andBlogStatusEqualTo(BlogStatus.PUBLISH);
         exBlog.or().andUsernameLike("%" + keyword + "%");
 
         List<BlogInfo> searchBlogs = blogInfoMapper.selectByExample(exBlog);

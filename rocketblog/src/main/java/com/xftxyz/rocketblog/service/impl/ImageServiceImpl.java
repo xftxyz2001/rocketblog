@@ -13,12 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.service.ImageService;
 import com.xftxyz.rocketblog.util.Utils;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    private String uploadDirectory = "uploads";
+    private String uploadDirectory = EnvironmentVariables.UPLOAD_DIRECTORY;
 
     public String uploadImage(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
