@@ -1,34 +1,27 @@
 package com.xftxyz.rocketblog.result;
 
 public enum ResultMessageEnum {
+    // 未知错误
+    UNKNOWN_ERROR(-1, "未知错误"),
     // 成功
     SUCCESS(0, "成功"),
     // 失败
-    FAIL(-1, "失败"),
-    // 未知错误
-    UNKNOWN_ERROR(-2, "未知错误"),
+    FAIL(1, "失败"),
 
-    // 非法操作
-    ILLEGAL_OPERATION(100, "非法操作"),
-    // 成功
-    // 验证码错误
-    CAPTCHA_ERROR(400, "验证码错误"),
+    // 用户错误1xx
+    USER_NOT_LOGIN(100, "用户未登录"),
+    CAPTCHA_ERROR(101, "验证码错误"),
+    EMAIL_OR_PASSWORD_ERROR(102, "邮箱或密码错误"),
+    PASSWORD_ERROR(103, "密码错误"),
+    USER_NOT_EXIST(104, "用户不存在"),
+    EMAIL_EXIST(105, "邮箱已被注册"),
 
-    // 用户名已存在
-    USERNAME_EXIST(411, "用户名已存在"),
-    // 用户名不存在
-    USER_NOT_EXIST(412, "用户不存在"),
-    // 用户名或密码错误
-    USERNAME_OR_PASSWORD_ERROR(413, "用户名或密码错误"),
-    // 密码错误
-    PASSWORD_ERROR(414, "密码错误"),
+    // 博客错误2xx
+    SELF_OPERATION(200, "不能对自己进行此操作"),
+    ALREADY_DONE(201, "已经执行过该操作"),
 
-    // 用户未登录
-    USER_NOT_LOGIN(444, "用户未登录"),
-    // 服务器错误
-    SERVER_ERROR(500, "服务器错误"),
-    CUSTOM(999, "自定义内容"),
-    IMAGE_ERROR(666, "图片错误");
+    // 图片错误3xx
+    IMAGE_ERROR(300, "图片错误");
 
     private Integer code;
     private String message;

@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.controller.advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -21,6 +22,10 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+        // 不处理ResponseEntity类型的响应体，避免对响应体进行二次包装
+        if (ResponseEntity.class.isAssignableFrom(returnType.getParameterType())) {
+            return false;
+        }
         return true;
     }
 
@@ -29,7 +34,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(@Nullable Object body, MethodParameter returnType, MediaType selectedContentType,
             Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
             ServerHttpResponse response) {
-        // 当控制器方法返回一个字符串类型的响应体时，如果不对其进行处理，返回的响应体中可能会包含一些无用的引号和转义字符，导致响应体格式不符合预期
+        // 如果响应体是字符串，需要手动转换为json字符串，否则Result会被当做字符串处理
         if (body instanceof String) {
             try {
                 return objectMapper.writeValueAsString(Result.success(body));
