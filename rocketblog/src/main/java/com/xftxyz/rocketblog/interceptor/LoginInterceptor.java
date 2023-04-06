@@ -5,6 +5,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.user.NotLoginException;
+import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.UserService;
 
 import jakarta.servlet.http.Cookie;
@@ -33,9 +34,11 @@ public class LoginInterceptor implements HandlerInterceptor {
                 break;
             }
         }
-        if (token == null || userService.fromToken(token) == null) {
+        User user = userService.fromToken(token);
+        if (user == null) {
             throw new NotLoginException();
         }
+        request.getSession().setAttribute(EnvironmentVariables.SESSION_USER, user);
         return true;
 
     }

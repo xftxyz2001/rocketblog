@@ -386,20 +386,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User fromToken(String token) {
-        // 从token中提取userid和password，尝试登录
-        int index = token.indexOf("#");
-        String userid = token.substring(0, index);
-        String password = token.substring(index + 1);
-        User user = null;
-        if (StringUtils.hasLength(userid) && StringUtils.hasLength(password)) {
-            user = getUser(Long.parseLong(userid));
+        if (!StringUtils.hasLength(token)) {
+            return null;
         }
-        return user;
+        // 从token中提取email和password，尝试登录
+        int index = token.indexOf("#");
+        String email = token.substring(0, index);
+        String password = token.substring(index + 1);
+        return login(email, password);
     }
 
     @Override
     public String toToken(User user) {
-        return user.getUserid() + "#" + user.getPassword();
+        return user.getEmail() + "#" + user.getPassword();
     }
 
 }
