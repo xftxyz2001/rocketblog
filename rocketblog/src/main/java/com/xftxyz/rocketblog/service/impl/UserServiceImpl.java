@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
+import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.SelfOperationException;
 import com.xftxyz.rocketblog.mapper.BlogMapper;
 import com.xftxyz.rocketblog.mapper.ChatMapper;
@@ -124,7 +125,7 @@ public class UserServiceImpl implements UserService {
         exEmail.createCriteria().andEmailEqualTo(email).andPasswordEqualTo(password);
         List<User> userList = userMapper.selectByExample(exEmail);
         if (userList.size() < 1) {
-            return null;
+            throw new EmailOrPasswordErrorException();
         }
         User user = userList.get(0);
         // 更新最后登录时间
@@ -210,7 +211,7 @@ public class UserServiceImpl implements UserService {
         chat.setUseridTo(toUserid);
         chat.setMessageContent(content);
         chat.setCreatetime(new Date());
-        chat.setRead(ReadStatus.UNREAD);
+        chat.setReaded(ReadStatus.UNREAD);
         int insert = chatMapper.insert(chat);
         return insert;
     }
@@ -344,7 +345,7 @@ public class UserServiceImpl implements UserService {
         int count = 0;
         for (VChat chat : chats) {
             // from是别人，且未读
-            if (chat.getUseridFrom() == userid && chat.getRead() == ReadStatus.UNREAD) {
+            if (chat.getUseridFrom() == userid && chat.getReaded() == ReadStatus.UNREAD) {
                 count++;
             }
         }
@@ -366,10 +367,10 @@ public class UserServiceImpl implements UserService {
 
     private void updateRead(List<VChat> chats, Long userid) {
         for (VChat vchat : chats) {
-            if (vchat.getUseridFrom() == userid && vchat.getRead() == ReadStatus.UNREAD) {
+            if (vchat.getUseridFrom() == userid && vchat.getReaded() == ReadStatus.UNREAD) {
                 Chat chat = new Chat();
                 chat.setChatId(vchat.getChatId());
-                chat.setRead(ReadStatus.READ);
+                chat.setReaded(ReadStatus.READ);
                 chatMapper.updateByPrimaryKeySelective(chat);
             }
         }

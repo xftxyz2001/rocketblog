@@ -18,7 +18,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
-import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.parameter.ChatMessageBody;
@@ -99,10 +98,6 @@ public class UserController {
         String email = registerBody.getEmail();
         String password = registerBody.getPassword();
         User user = userService.login(email, password);
-        if (user == null) {
-            throw new EmailOrPasswordErrorException();
-        }
-
         // 登录成功，将用户信息存放到Session中
         session.setAttribute(EnvironmentVariables.SESSION_USER, user);
         // 将用户信息存放到Cookie中

@@ -213,7 +213,7 @@ CREATE TABLE `t_chat`  (
   `userid_to` bigint NOT NULL,
   `message_content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `createtime` datetime NOT NULL,
-  `read` int NOT NULL,
+  `readed` int NOT NULL,
   PRIMARY KEY (`chat_id`) USING BTREE,
   INDEX `fk_from`(`userid_from` ASC) USING BTREE,
   INDEX `fk_to`(`userid_to` ASC) USING BTREE,
@@ -888,7 +888,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_blogwithuser` AS selec
 -- View structure for v_chat
 -- ----------------------------
 DROP VIEW IF EXISTS `v_chat`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_chat` AS select `c`.`chat_id` AS `chat_id`,`c`.`userid_from` AS `userid_from`,`c`.`userid_to` AS `userid_to`,`c`.`message_content` AS `message_content`,`c`.`createtime` AS `createtime`,`u1`.`username` AS `from_username`,`u1`.`avatar` AS `from_avatar`,`u2`.`username` AS `to_username`,`u2`.`avatar` AS `to_avatar`,`c`.`read` AS `read` from ((`t_chat` `c` join `t_user` `u1` on((`c`.`userid_from` = `u1`.`userid`))) join `t_user` `u2` on((`c`.`userid_to` = `u2`.`userid`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_chat` AS select `c`.`chat_id` AS `chat_id`,`c`.`userid_from` AS `userid_from`,`c`.`userid_to` AS `userid_to`,`c`.`message_content` AS `message_content`,`c`.`createtime` AS `createtime`,`u1`.`username` AS `from_username`,`u1`.`avatar` AS `from_avatar`,`u2`.`username` AS `to_username`,`u2`.`avatar` AS `to_avatar`,`c`.`readed` AS `readed` from ((`t_chat` `c` join `t_user` `u1` on((`c`.`userid_from` = `u1`.`userid`))) join `t_user` `u2` on((`c`.`userid_to` = `u2`.`userid`)));
 
 -- ----------------------------
 -- View structure for v_comment
