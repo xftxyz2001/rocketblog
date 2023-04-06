@@ -567,7 +567,6 @@ export default defineComponent({
 });
 import { ref } from "vue";
 import axios from "axios";
-import { result } from "lodash";
 </script>
 
 <style scoped>

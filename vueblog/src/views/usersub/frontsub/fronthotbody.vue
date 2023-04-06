@@ -19,6 +19,14 @@
   </el-row>
 </template>
 
+<script setup>
+const ipsignimgsrc = ref("");
+
+axios.get("/images/ipsign").then((res) => {
+  ipsignimgsrc = res.data.data;
+});
+</script>
+
 <script>
 import Left from "@/views/usersub/frontsub/fronthotsub/left.vue";
 import axios from "axios";
@@ -28,12 +36,6 @@ export default defineComponent({
   components: {
     Left,
   },
-});
-
-const ipsignimgsrc = ref("");
-
-axios.get("/images/ipsign").then((res) => {
-  ipsignimgsrc = res.data.data;
 });
 
 </script>

@@ -294,7 +294,7 @@ public class UserController {
     }
 
     // 获取会话列表
-    @GetMapping("/char/sessions")
+    @GetMapping("/chat/sessions")
     public PageInfo<ChatInfo> getChatSessionList(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
         User user = (User) Utils.currentUser(session);
