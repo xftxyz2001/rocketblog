@@ -231,8 +231,13 @@ const registerVisible = ref(false);
 const registerformRef = ref(null);
 const loginformRef = ref(null);
 
+function checkTokenInCookie() {
+  var cookies = document.cookie;
+  return cookies.indexOf('token=') != -1;
+}
+
 // //判断用户是否已登陆
-// if (localStorage.getItem("token")) {
+// if (checkTokenInCookie()) {
 //   axios
 //     .post("/user/login", {
 //       email: localStorage.getItem("token.email"),
@@ -501,14 +506,14 @@ function getuserinfo() {
 }
 function editbutton() {
   console.log(1);
-  if (localStorage.getItem("token")) {
-    console.log(localStorage.getItem("token"));
+  if (checkTokenInCookie()) {
+    console.log(checkTokenInCookie());
     router.push({ name: "editblog" });
   } else loginVisible.value = "true";
   // window.open({ name: "editblog" }, "_blank");
 }
 function tohome() {
-  if (localStorage.getItem("token")) router.push({ name: "allconcern" });
+  if (checkTokenInCookie()) router.push({ name: "allconcern" });
   else {
     loginVisible.value = "true";
     loginform.email = "";
@@ -516,7 +521,7 @@ function tohome() {
   }
 }
 function tomessage() {
-  if (localStorage.getItem("token")) router.push({ name: "message" });
+  if (checkTokenInCookie()) router.push({ name: "message" });
   else {
     loginVisible.value = "true";
     loginform.email = "";
@@ -524,7 +529,7 @@ function tomessage() {
   }
 }
 function toperson() {
-  if (localStorage.getItem("token")) router.push({ name: "personuserinfo" });
+  if (checkTokenInCookie()) router.push({ name: "personuserinfo" });
   else {
     loginVisible.value = "true";
     loginform.email = "";

@@ -256,13 +256,19 @@ axios
   .then((res) => {
     comments.value = res.data.data;
   });
+
+function checkTokenInCookie() {
+  var cookies = document.cookie;
+  return cookies.indexOf('token=') != -1;
+}
+
 function commentthis() {
   //发布评论
   // comments.value.unshift(commenttext.value);
   // console.log(comments.value);
   // console.log(commenttext.value);
 
-  if (localStorage.getItem("token")) {
+  if (checkTokenInCookie()) {
     var commentdata = {
       blogId: route.params.blogid,
       commentContent: commenttext.value,
@@ -287,7 +293,7 @@ function commentthis() {
   }
 }
 function dontfollowthis() {
-  if (localStorage.getItem("token")) {
+  if (checkTokenInCookie()) {
     axios
       .delete("/user/follow/" + route.params.userid)
       .then((res) => {
@@ -298,7 +304,7 @@ function dontfollowthis() {
   }
 }
 function followthis() {
-  if (localStorage.getItem("token")) {
+  if (checkTokenInCookie()) {
     axios
       .get("/user/follow/" + route.params.userid)
       .then((res) => {
@@ -309,7 +315,7 @@ function followthis() {
   }
 }
 function likethis() {
-  if (localStorage.getItem("token")) {
+  if (checkTokenInCookie()) {
     axios
       .get("/blog/like/" + route.params.blogid)
       .then((res) => {
@@ -321,7 +327,7 @@ function likethis() {
   }
 }
 function collectthis() {
-  if (localStorage.getItem("token")) {
+  if (checkTokenInCookie()) {
     axios
       .get("/blog/collect/" + route.params.blogid)
       .then((res) => {
@@ -334,7 +340,7 @@ function collectthis() {
 }
 function dontcollectthis() {
   console.log(blogdata.value.collect);
-  if (localStorage.getItem("token")) {
+  if (checkTokenInCookie()) {
     axios
       .delete("/blog/collect/" + route.params.blogid)
       .then((res) => {
@@ -346,7 +352,7 @@ function dontcollectthis() {
   }
 }
 function dontlikethis() {
-  if (localStorage.getItem("token")) {
+  if (checkTokenInCookie()) {
     axios
       .delete("/blog/like/" + route.params.blogid)
       .then((res) => {
@@ -359,7 +365,7 @@ function dontlikethis() {
 }
 // 删除博客
 function deletethis() {
-  if (localStorage.getItem("token")) {
+  if (checkTokenInCookie()) {
     axios
       .delete("/blog/delete/" + route.params.blogid)
       .then((res) => {
