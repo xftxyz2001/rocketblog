@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
-import com.xftxyz.rocketblog.pojo.User;
+import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.service.UserService;
 
 import jakarta.servlet.http.Cookie;
@@ -26,11 +26,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         // 未在session中找到登录信息，尝试从cookie中获取
         Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            // 没有获取到cookie
-            // response.sendRedirect("/login");
-            return false;
-        }
         String token = null;
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(EnvironmentVariables.COOKIE_TOKEN)) {
@@ -38,14 +33,10 @@ public class LoginInterceptor implements HandlerInterceptor {
                 break;
             }
         }
-        if (token == null) {
-            // 没有获取到token
-            // response.sendRedirect("/login");
-            return false;
+        if (token == null || userService.fromToken(token) == null) {
+            throw new NotLoginException();
         }
-        User user = userService.fromToken(token);
-
-        return user != null;
+        return true;
 
     }
 }

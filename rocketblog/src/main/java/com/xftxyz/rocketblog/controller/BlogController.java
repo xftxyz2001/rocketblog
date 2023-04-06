@@ -45,7 +45,7 @@ public class BlogController {
     }
 
     @PostMapping("/publish")
-    public Object publish(@RequestBody Blog blog, HttpSession session) {
+    public Integer publish(@RequestBody Blog blog, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         int insert = blogService.publish(blog, user);
         return insert;
@@ -145,7 +145,7 @@ public class BlogController {
 
     // 修改
     @PutMapping("/update")
-    public Object update(@RequestBody Blog blog, HttpSession session) {
+    public Integer update(@RequestBody Blog blog, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         // blog.setUserid(user.getUserid());
         int update = blogService.updateBlog(blog, user);
@@ -154,7 +154,7 @@ public class BlogController {
 
     // 删除
     @DeleteMapping("/delete/{blogId}")
-    public Object delete(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Integer delete(@PathVariable("blogId") Long blogId, HttpSession session) {
         int delete = blogService.deleteBlog(blogId);
         return delete;
     }
@@ -236,7 +236,7 @@ public class BlogController {
 
     // 删除评论
     @DeleteMapping("/comment/{commentId}")
-    public Object deleteComment(@PathVariable("commentId") Long commentId, HttpSession session) {
+    public Integer deleteComment(@PathVariable("commentId") Long commentId, HttpSession session) {
         int delete = blogService.deleteComment(commentId);
         return delete;
     }

@@ -42,29 +42,26 @@ public class AdminController {
     }
 
     @GetMapping("/user/{id}")
-    public User getUser(@PathVariable("id") int id) {
-        User user = userService.getUser((long) id);
+    public User getUser(@PathVariable("id") Long id) {
+        User user = userService.getUser(id);
         return user;
     }
 
     @PostMapping("/user")
-    public String addUser(@RequestBody User user) {
+    public Integer addUser(@RequestBody User user) {
         user.setUserRegisterTime(new Date());
         user.setLastLogin(new Date());
-        int insert = userService.addUser(user);
-        return String.valueOf(insert);
+        return userService.addUser(user);
     }
 
     @PutMapping("/user")
-    public String updateUser(@RequestBody User user) {
-        int update = userService.updateUser(user);
-        return String.valueOf(update);
+    public Integer updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 
     @DeleteMapping("/user/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
-        int delete = userService.deleteUser((long) id);
-        return String.valueOf(delete);
+    public Integer deleteUser(@PathVariable("id") Long id) {
+        return userService.deleteUser(id);
     }
 
     @GetMapping("/search/username/{name}")
@@ -106,24 +103,21 @@ public class AdminController {
     }
 
     @PostMapping("/blog")
-    public String addBlog(@RequestBody Blog blog) {
+    public Integer addBlog(@RequestBody Blog blog) {
         blog.setCreateTime(new Date());
         blog.setUpdateTime(new Date());
-        int insert = blogService.addBlog(blog);
-        return String.valueOf(insert);
+        return blogService.addBlog(blog);
     }
 
     @PutMapping("/blog")
-    public String updateBlog(@RequestBody Blog blog) {
+    public Integer updateBlog(@RequestBody Blog blog) {
         blog.setUpdateTime(new Date());
-        int update = blogService.updateBlog(blog);
-        return String.valueOf(update);
+        return blogService.updateBlog(blog);
     }
 
     @DeleteMapping("/blog/{id}")
-    public String deleteBlog(@PathVariable("id") int id) {
-        int delete = blogService.deleteBlog((long) id);
-        return String.valueOf(delete);
+    public Integer deleteBlog(@PathVariable("id") Long id) {
+        return blogService.deleteBlog(id);
     }
 
 }
