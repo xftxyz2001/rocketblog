@@ -385,7 +385,7 @@ const Submitloginform = (formEl) => {
           //   localStorage.removeItem("token.email");
           //   localStorage.removeItem("token.password");
           // }
-          result = res.data;
+          var result = res.data;
           if (result.code == 0) {
             // result.data is the data you want
             ElMessage({
@@ -434,7 +434,7 @@ const submitregisterForm = (formEl) => {
             //   });
             //   changetologin(loginformRef);
             // }
-            result = res.data;
+            var result = res.data;
             if (result.code == 0) {
               // result.data is the data you want
               ElMessage({

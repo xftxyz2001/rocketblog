@@ -16,7 +16,7 @@ axios.defaults.withCredentials = true;
 axios.defaults.baseURL = window.location.origin;
 /*
 axios.get("/api").then((res) => {
-  result = res.data;
+  var result = res.data;
   if (result.code == 0) {
     // result.data is the data you want
   } else {
