@@ -58,4 +58,9 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/ipsign")
+    public String getIpSign() {
+        return imageService.getIPSign();
+    }
 }

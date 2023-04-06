@@ -11,4 +11,6 @@ public interface ImageService {
     Resource downloadImage(String id) throws IOException;
 
     byte[] getImage(String id) throws IOException;
+
+    public String getIPSign();
 }

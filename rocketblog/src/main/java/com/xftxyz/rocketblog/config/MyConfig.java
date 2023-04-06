@@ -2,7 +2,11 @@ package com.xftxyz.rocketblog.config;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -52,6 +56,22 @@ public class MyConfig implements WebMvcConfigurer {
         // 管理员拦截器 拦截路径 /admin
         registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/admin/**");
 
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(simpleFactory());
+        return restTemplate;
+    }
+    @Bean
+    public ClientHttpRequestFactory simpleFactory() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        // 响应超时时间20s
+        factory.setReadTimeout(20 * 1000);
+        // 连接超时10s
+        factory.setConnectTimeout(10 * 1000);
+        return factory;
     }
 
 }
