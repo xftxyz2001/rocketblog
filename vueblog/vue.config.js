@@ -17,7 +17,7 @@ module.exports = defineConfig({
   /*devServer: {
     proxy: {
       '/': {
-        target: 'http://8.130.81.23:8080',
+        target: '',
         changeOrigin: true,
         // ws: true,
         // pathRewrite: {

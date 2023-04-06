@@ -89,7 +89,7 @@ const router = useRouter();
 const allconcern = ref([]);
 // import bus from "@/utils/bus";
 axios
-  .get("http://8.130.81.23:8080/blog/hot/collect?pageNum=1&pageSize=5")
+  .get("/blog/hot/collect?pageNum=1&pageSize=5")
   .then((res) => {
     allconcern.value = res.data.data.list;
   });

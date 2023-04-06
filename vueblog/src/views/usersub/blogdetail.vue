@@ -230,29 +230,29 @@ const isme = ref(false);
 console.log(route.params);
 
 axios
-  .get("http://8.130.81.23:8080/user/info/" + route.params.userid)
+  .get("/user/info/" + route.params.userid)
   .then((res) => {
     userdata.value = res.data.data;
-    axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+    axios.get("/user/info").then((res) => {
       if (userdata.value.username != res.data.data.username) {
         isme.value = true;
       }
     });
   });
-// axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+// axios.get("/user/info").then((res) => {
 //   if (userdata.value.username == res.data.data.username) {
 //     isme.value = true;
 //   }
 // });
 
 axios
-  .get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid)
+  .get("/blog/detail/" + route.params.blogid)
   .then((res) => {
     blogdata.value = res.data.data;
   });
 
 axios
-  .get("http://8.130.81.23:8080/blog/comment/" + route.params.blogid)
+  .get("/blog/comment/" + route.params.blogid)
   .then((res) => {
     comments.value = res.data.data;
   });
@@ -268,9 +268,9 @@ function commentthis() {
       commentContent: commenttext.value,
     };
     axios
-      .post("http://8.130.81.23:8080/blog/comment", commentdata)
+      .post("/blog/comment", commentdata)
       .then((res) => {
-        if (res.data.code == "200") {
+        if (res.data.code == 0) {
           ElMessage({
             showClose: true,
             message: "发表成功",
@@ -289,7 +289,7 @@ function commentthis() {
 function dontfollowthis() {
   if (localStorage.getItem("token")) {
     axios
-      .delete("http://8.130.81.23:8080/user/follow/" + route.params.userid)
+      .delete("/user/follow/" + route.params.userid)
       .then((res) => {
         userdata.value.followed = false;
       });
@@ -300,7 +300,7 @@ function dontfollowthis() {
 function followthis() {
   if (localStorage.getItem("token")) {
     axios
-      .get("http://8.130.81.23:8080/user/follow/" + route.params.userid)
+      .get("/user/follow/" + route.params.userid)
       .then((res) => {
         userdata.value.followed = true;
       });
@@ -311,7 +311,7 @@ function followthis() {
 function likethis() {
   if (localStorage.getItem("token")) {
     axios
-      .get("http://8.130.81.23:8080/blog/like/" + route.params.blogid)
+      .get("/blog/like/" + route.params.blogid)
       .then((res) => {
         blogdata.value.like = true;
         blogdata.value.likeCount = res.data.data;
@@ -323,7 +323,7 @@ function likethis() {
 function collectthis() {
   if (localStorage.getItem("token")) {
     axios
-      .get("http://8.130.81.23:8080/blog/collect/" + route.params.blogid)
+      .get("/blog/collect/" + route.params.blogid)
       .then((res) => {
         blogdata.value.collect = true;
         blogdata.value.bookmarkCount = res.data.data;
@@ -336,7 +336,7 @@ function dontcollectthis() {
   console.log(blogdata.value.collect);
   if (localStorage.getItem("token")) {
     axios
-      .delete("http://8.130.81.23:8080/blog/collect/" + route.params.blogid)
+      .delete("/blog/collect/" + route.params.blogid)
       .then((res) => {
         blogdata.value.collect = false;
         blogdata.value.bookmarkCount = res.data.data;
@@ -348,7 +348,7 @@ function dontcollectthis() {
 function dontlikethis() {
   if (localStorage.getItem("token")) {
     axios
-      .delete("http://8.130.81.23:8080/blog/like/" + route.params.blogid)
+      .delete("/blog/like/" + route.params.blogid)
       .then((res) => {
         blogdata.value.like = false;
         blogdata.value.likeCount = res.data.data;
@@ -361,9 +361,9 @@ function dontlikethis() {
 function deletethis() {
   if (localStorage.getItem("token")) {
     axios
-      .delete("http://8.130.81.23:8080/blog/delete/" + route.params.blogid)
+      .delete("/blog/delete/" + route.params.blogid)
       .then((res) => {
-        if (res.data.code == "200") {
+        if (res.data.code == 0) {
           ElMessage({
             showClose: true,
             message: "删除成功",
@@ -378,7 +378,7 @@ function deletethis() {
 }
 // Bus.on("clickblog", (data) => {
 //   console.log(data.userid);
-//   axios.get("http://8.130.81.23:8080/user/info/" + data.userid).then((res) => {
+//   axios.get("/user/info/" + data.userid).then((res) => {
 //     userdata.value = res.data.data;
 //     // console.log(userdata.value);
 //   });

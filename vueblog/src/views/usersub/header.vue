@@ -330,7 +330,7 @@ const loginformRef = ref(null);
 //判断用户是否已登陆
 if (localStorage.getItem("token")) {
   axios
-    .post("http://8.130.81.23:8080/user/login", {
+    .post("/user/login", {
       email: localStorage.getItem("token.email"),
       password: localStorage.getItem("token.password"),
     })
@@ -429,11 +429,11 @@ const Submitloginform = (formEl) => {
           password: loginform.password.trim(),
         };
         axios
-          .post("http://8.130.81.23:8080/user/login", logindata)
+          .post("/user/login", logindata)
           .then((res) => {
             //登陆成功
 
-            if (res.data.code == "200") {
+            if (res.data.code == 0) {
               ElMessage({
                 message: "登录成功！",
                 type: "success",
@@ -478,7 +478,7 @@ const submitregisterForm = (formEl) => {
           };
 
           axios
-            .post("http://8.130.81.23:8080/user/register", registerdata)
+            .post("/user/register", registerdata)
             .then((res) => {
               if (res.data == "验证码错误") {
                 ElMessage.error("验证码错误！");
@@ -530,14 +530,14 @@ function getverify(formE1) {
       )
     ) {
       axios.get(
-        "http://8.130.81.23:8080/user/code/" + registerform.email,
+        "/user/code/" + registerform.email,
         true
       );
     }
   }
 }
 function logout() {
-  axios.get("http://8.130.81.23:8080/user/logout").then((res) => {
+  axios.get("/user/logout").then((res) => {
     loginsuccess.value = false;
     localStorage.removeItem("token");
     localStorage.removeItem("token.email");
@@ -545,7 +545,7 @@ function logout() {
   });
 }
 function getuserinfo() {
-  axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+  axios.get("/user/info").then((res) => {
     userinfo.value = res.data.data;
   });
 }

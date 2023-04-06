@@ -73,7 +73,7 @@ const userinfo = ref({});
 //   username: "",
 // };
 const form = ref({});
-axios.get("http://8.130.81.23:8080/user/info/detail").then((res) => {
+axios.get("/user/info/detail").then((res) => {
   userinfo.value = res.data.data;
 });
 // function editinfo() {

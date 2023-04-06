@@ -34,7 +34,7 @@ import { ref } from "vue";
 import router from "@/router";
 const isempty = ref(false);
 const collects = ref([]);
-axios.get("http://8.130.81.23:8080/blog/collects").then((res) => {
+axios.get("/blog/collects").then((res) => {
   collects.value = res.data.data.list;
   if (collects.value.length == 0) {
     isempty.value = true;

@@ -88,7 +88,7 @@ import { ref } from "vue";
 const router = useRouter();
 const mostlike = ref([]);
 // import bus from "@/utils/bus";
-axios.get("http://8.130.81.23:8080/blog/hot/like").then((res) => {
+axios.get("/blog/hot/like").then((res) => {
   mostlike.value = res.data.data.list;
 });
 const loading = ref(false);

@@ -151,7 +151,7 @@ const addFormVisible = ref(false);
 const formLabelWidth = "140px";
 const ins = getCurrentInstance();
 
-axios.get("http://8.130.81.23:8080/admin/users").then((res) => {
+axios.get("/admin/users").then((res) => {
   tableData.value = res.data;
   for (let index = 0; index < tableData.value.length; index++) {
     switch (res.data[index].userSex) {
@@ -201,7 +201,7 @@ const addform = ref({
 });
 function editclick(id) {
   dialogFormVisible.value = true;
-  axios.get("http://8.130.81.23:8080/admin/user/" + id).then((res) => {
+  axios.get("/admin/user/" + id).then((res) => {
     form.value = res.data;
     switch (res.data.userSex) {
       case "0":
@@ -217,12 +217,12 @@ function editclick(id) {
 }
 function deleteclick(id) {
   axios
-    .delete("http://8.130.81.23:8080/admin/user/" + id)
+    .delete("/admin/user/" + id)
     .then((res) => {
       console.log(res);
     })
     .then(() => {
-      axios.get("http://8.130.81.23:8080/admin/users").then((res) => {
+      axios.get("/admin/users").then((res) => {
         tableData.value = res.data;
         for (let index = 0; index < tableData.value.length; index++) {
           switch (res.data[index].userSex) {
@@ -253,8 +253,8 @@ function addformSubmit() {
   if (sub.userSex == "男") sub.userSex = "1";
   else if (sub.userSex == "女") sub.userSex = "0";
   else sub.userSex = "";
-  axios.post("http://8.130.81.23:8080/admin/user", addform.value).then(() => {
-    axios.get("http://8.130.81.23:8080/admin/users").then((res) => {
+  axios.post("/admin/user", addform.value).then(() => {
+    axios.get("/admin/users").then((res) => {
       tableData.value = res.data;
       for (let index = 0; index < tableData.value.length; index++) {
         switch (res.data[index].userSex) {
@@ -276,7 +276,7 @@ function selectByName() {
   // console.log(formInline.value.name.trim() === "");
   formInline.value.name = formInline.value.name.trim();
   if (formInline.value.name === "") {
-    axios.get("http://8.130.81.23:8080/admin/users").then((res) => {
+    axios.get("/admin/users").then((res) => {
       tableData.value = res.data;
       for (let index = 0; index < tableData.value.length; index++) {
         switch (res.data[index].userSex) {
@@ -295,7 +295,7 @@ function selectByName() {
   }
   axios
     .get(
-      "http://8.130.81.23:8080/admin/search/username/" + formInline.value.name
+      "/admin/search/username/" + formInline.value.name
     )
     .then((res) => {
       tableData.value = res.data;
@@ -316,7 +316,7 @@ function selectByName() {
 function selectByEmail() {
   formInline.value.email = formInline.value.email.trim();
   if (formInline.value.email === "") {
-    axios.get("http://8.130.81.23:8080/admin/users").then((res) => {
+    axios.get("/admin/users").then((res) => {
       tableData.value = res.data;
       for (let index = 0; index < tableData.value.length; index++) {
         switch (res.data[index].userSex) {
@@ -334,7 +334,7 @@ function selectByEmail() {
     return;
   }
   axios
-    .get("http://8.130.81.23:8080/admin/search/email/" + formInline.value.email)
+    .get("/admin/search/email/" + formInline.value.email)
     .then((res) => {
       tableData.value = res.data;
       for (let index = 0; index < tableData.value.length; index++) {
@@ -384,13 +384,13 @@ export default {
   //   const ins = getCurrentInstance();
   //   onMounted(() => {
   //     console.log("cew");
-  //     axios.get("http://8.130.81.23:8080/admin/users").then((res) => {
+  //     axios.get("/admin/users").then((res) => {
   //       console.log("cew");
   //       ins.data.tableData = res.data;
   //     });
   //     console.log("gvsre");
   //     // axios({
-  //     //   url: "http://8.130.81.23:8080/admin/users",
+  //     //   url: "/admin/users",
   //     //   method: "GET",
   //     // }).then((res) => {
   //     //   console.log(res);

@@ -13,7 +13,7 @@ import '@/assets/icons/iconfont.css'
 import '@/assets/icons/iconfont.js';
 
 axios.defaults.withCredentials = true;
-// axios.defaults.baseURL = window.location.origin;
+axios.defaults.baseURL = window.location.origin;
 /*
 axios.get("/api").then((res) => {
   result = res.data;

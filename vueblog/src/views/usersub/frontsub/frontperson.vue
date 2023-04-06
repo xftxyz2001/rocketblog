@@ -187,7 +187,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const userdata = ref({});
-axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+axios.get("/user/info").then((res) => {
   userdata.value = res.data.data;
 });
 </script>

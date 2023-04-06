@@ -91,7 +91,7 @@ const router = useRouter();
 const allconcern = ref([]);
 const isempty = ref(false);
 // import bus from "@/utils/bus";
-axios.get("http://8.130.81.23:8080/blog/follows").then((res) => {
+axios.get("/blog/follows").then((res) => {
   allconcern.value = res.data.data.list;
   if (allconcern.value.length == 0) isempty.value = true;
 });

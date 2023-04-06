@@ -35,7 +35,7 @@ import { ref } from "vue";
 const hotblogs = ref([]);
 
 axios
-  .get("http://8.130.81.23:8080/blog/hot")
+  .get("/blog/hot")
   .then((res) => {
     hotblogs.value = res.data.data.list;
   });

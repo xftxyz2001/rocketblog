@@ -88,7 +88,7 @@ import axios from "axios";
 const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
-axios.get("http://8.130.81.23:8080/admin/blogs").then((res) => {
+axios.get("/admin/blogs").then((res) => {
   tableData.value = res.data;
   for (let index = 0; index < tableData.value.length; index++) {
     console.log(res.data[index].blogStatus);
@@ -129,7 +129,7 @@ function selectBlog() {
 
   axios({
     method: "POST",
-    url: "http://8.130.81.23:8080/admin/search/blog",
+    url: "/admin/search/blog",
     Headers: { "Content-Type": "application/json" },
     data: req,
   }).then((res) => {

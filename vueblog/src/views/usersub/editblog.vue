@@ -32,7 +32,7 @@
           >封面图片（可选）
           <el-upload
             class="upload-demo"
-            action="http://8.130.81.23:8080/images/upload"
+            action="/images/upload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
@@ -62,7 +62,7 @@
 // import axios from "axios";
 import { ref } from "vue";
 const userdata = ref({});
-axios.get("http://8.130.81.23:8080/user/info").then((res) => {
+axios.get("/user/info").then((res) => {
   userdata.value = res.data.data;
 });
 
@@ -113,13 +113,13 @@ export default {
         modules: {
           ImageExtend: {
             name: "file", // 参数名
-            action: "http://8.130.81.23:8080/images/upload", // 服务器地址，如果为空则采用base64插入图片
+            action: "/images/upload", // 服务器地址，如果为空则采用base64插入图片
             headers: (xhr) => {
               // 设置请求头参数（选填）
             },
             response: (res) => {
               console.log(res);
-              return "http://8.130.81.23:8080"+res.data;
+              return ""+res.data;
             },
 
             size: 8, // 图片不能超过8M
@@ -160,7 +160,7 @@ export default {
       var blogdata = {blogStatus:0, coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
 
       axios
-        .post("http://8.130.81.23:8080/blog/publish", blogdata)
+        .post("/blog/publish", blogdata)
         .then((res) => {
           ElMessage({
             showClose: true,
@@ -176,7 +176,7 @@ export default {
       var blogdata = {coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
 
       axios
-        .post("http://8.130.81.23:8080/blog/publish", blogdata)
+        .post("/blog/publish", blogdata)
         .then((res) => {
           ElMessage({
             showClose: true,

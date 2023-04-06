@@ -31,7 +31,7 @@ import { ref } from "vue";
 import router from "@/router";
 const isempty = ref(false);
 const fensis = ref([]);
-axios.get("http://8.130.81.23:8080/user/followers").then((res) => {
+axios.get("/user/followers").then((res) => {
   fensis.value = res.data.data.list;
   if (fensis.value.length == 0) {
     isempty.value = true;

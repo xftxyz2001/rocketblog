@@ -89,7 +89,7 @@ const router = useRouter();
 const latestdata = ref([]);
 // import bus from "@/utils/bus";
 axios
-  .get("http://8.130.81.23:8080/blog/new?pageNum=1&pageSize=5")
+  .get("/blog/new?pageNum=1&pageSize=5")
   .then((res) => {
     latestdata.value = res.data.data.list;
   });
