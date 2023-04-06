@@ -7,8 +7,40 @@
     <div class="flex-grow" />
 
     <div class="demo-input-size" style="padding-top: 12px; padding-right: 12px; padding-left: 12px">
-      <el-input v-model="input1" class="w-50 m-2" placeholder="Please Input" suffix-icon="Search"
-        style="width: 230px;border-radius: 20px;overflow: hidden;--el-input-focus-border-color: none;--el-input-bg-color: #fbfaf6;" />
+      <el-autocomplete class="w-50 m-2" v-model="keyword" :fetch-suggestions="querySearch" placeholder="请输入搜索内容"
+        :trigger-on-focus="false"
+        style="width: 230px;border-radius: 20px;overflow: hidden;--el-input-focus-border-color: none;--el-input-bg-color: #fbfaf6;">
+        <template #default="{ item }">
+          <!-- "blogId": 102,
+            "blogTitle": "角色：月宮あゆ",
+            "blogSummary": "从下雪的城市来的烧鲷鱼的惯犯。据说通缉令已经下发到全国的鲷鱼烧店。口头禅是“呜呜”。",
+            "userid": 102,
+            "username": "月宮あゆ",
+            "avatar": "https://kaginado.com/wordpress/wp-content/uploads/2021/09/24123815/%E6%9C%88%E5%AE%AE%E3%81%82%E3%82%86.png",
+            "blogStatus": 1,
+            "createTime": "2021-12-29T16:00:01.000+00:00",
+            "updateTime": "2021-12-29T16:00:01.000+00:00",
+            "coverImage": "https://kaginado.com/wordpress/wp-content/uploads/2021/09/24123812/%E6%9C%88%E5%AE%AE%E3%81%82%E3%82%86-%E8%A1%A8%E6%83%85.png",
+            "likeCount": 7,
+            "commentCount": 18,
+            "bookmarkCount": 0,
+            "like": false,
+            "collect": false -->
+          <div class="demo-input-suggestion-item" @click="clickItem(item)">
+            <div class="demo-input-suggestion-item__content">
+              <div class="demo-input-suggestion-item__title">
+                <span>{{ item.blogTitle }} 作者：{{ item.username }}</span>
+              </div>
+              <div class="demo-input-suggestion-item__description">
+                <span>{{ item.blogSummary }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template #prefix>
+          <i class="el-icon-search"></i>
+        </template>
+      </el-autocomplete>
     </div>
     <div>
       <el-menu-item index="1" style="padding: 0 30px; margin-left: 20px" @click="tohome">
@@ -214,6 +246,28 @@ const loginformRef = ref(null);
 // 尝试获取用户信息
 getuserinfo();
 
+// const keyword = ref('');
+const searchResult = ref([]);
+
+async function querySearch(queryString, cb) {
+  try {
+    await axios.get('/blog/search', { params: { keyword: queryString }}).then((res) => {
+      var result = res.data;
+      if (result.code == 0) {
+        searchResult.value = result.data.list;
+        console.log(searchResult.value);
+        cb(searchResult.value);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function clickItem(blog) {
+  router.push({ name: "blogdetail", params: { userid: blog.userid, blogid: blog.blogId } });
+}
+
 const validatePass = (rule, value, callback) => {
   if (value === "") {
     callback(new Error("请输入密码！"));
@@ -402,7 +456,7 @@ const loginbutton = (formE1) => {
   else formE1.resetFields();
 };
 
-const input1 = ref("");
+const keyword = ref("");
 const changetoregister = (formE1) => {
   loginVisible.value = false;
 
@@ -508,6 +562,7 @@ export default defineComponent({
 });
 import { ref } from "vue";
 import axios from "axios";
+import { result } from "lodash";
 </script>
 
 <style scoped>
