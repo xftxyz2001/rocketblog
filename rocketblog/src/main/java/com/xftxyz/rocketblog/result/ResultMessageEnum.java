@@ -15,10 +15,12 @@ public enum ResultMessageEnum {
     PASSWORD_ERROR(103, "密码错误"),
     USER_NOT_EXIST(104, "用户不存在"),
     EMAIL_EXIST(105, "邮箱已被注册"),
+    ILLEGAL_OPERATION(106, "非法操作"),
 
     // 博客错误2xx
     SELF_OPERATION(200, "不能对自己进行此操作"),
     ALREADY_DONE(201, "已经执行过该操作"),
+    BLOG_NOT_EXIST(202, "博客不存在"),
 
     // 图片错误3xx
     IMAGE_ERROR(300, "图片错误");

@@ -88,7 +88,7 @@ public class AdminController {
     public PageInfo<BlogInfo> getBlogs(@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<BlogInfo> blogs = blogService.getBlogs();
+        List<BlogInfo> blogs = blogService.getAllBlogs();
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
         return pageInfo;
     }
@@ -97,7 +97,7 @@ public class AdminController {
     public PageInfo<BlogInfo> getBlogs(@RequestBody BlogInfo blog, @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue = "5") int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<BlogInfo> blogs = blogService.getBlogs(blog);
+        List<BlogInfo> blogs = blogService.findByExample(blog);
         PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
         return pageInfo;
     }
@@ -106,7 +106,7 @@ public class AdminController {
     public Integer addBlog(@RequestBody Blog blog) {
         blog.setCreateTime(new Date());
         blog.setUpdateTime(new Date());
-        return blogService.addBlog(blog);
+        return blogService.add(blog);
     }
 
     @PutMapping("/blog")
@@ -117,7 +117,7 @@ public class AdminController {
 
     @DeleteMapping("/blog/{id}")
     public Integer deleteBlog(@PathVariable("id") Long id) {
-        return blogService.deleteBlog(id);
+        return blogService.removeRF(id);
     }
 
 }

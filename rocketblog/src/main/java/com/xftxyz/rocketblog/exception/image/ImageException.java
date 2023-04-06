@@ -4,7 +4,8 @@ import com.xftxyz.rocketblog.exception.RocketBlogException;
 
 public class ImageException extends RocketBlogException {
 
-    private static final long serialVersionUID = 1L;
+    public ImageException() {
+    }
 
     public ImageException(String message) {
         super(message);

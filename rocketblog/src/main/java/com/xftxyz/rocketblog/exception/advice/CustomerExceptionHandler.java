@@ -3,11 +3,13 @@ package com.xftxyz.rocketblog.exception.advice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.xftxyz.rocketblog.exception.blog.BlogNotExistException;
 import com.xftxyz.rocketblog.exception.image.ImageException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
+import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
 import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.SelfOperationException;
@@ -71,6 +73,18 @@ public class CustomerExceptionHandler {
     @ExceptionHandler(ImageException.class)
     public Result<Object> handleIOException(ImageException e) {
         return Result.error(ResultMessageEnum.IMAGE_ERROR.getCode(), e.getMessage());
+    }
+
+    // 博客不存在
+    @ExceptionHandler(BlogNotExistException.class)
+    public Result<Object> handleBlogNotExistException(BlogNotExistException e) {
+        return Result.error(ResultMessageEnum.BLOG_NOT_EXIST.getCode(), e.getMessage());
+    }
+
+    // 非法操作
+    @ExceptionHandler(IllegalOperationException.class)
+    public Result<Object> handleIllegalOperationException(IllegalOperationException e) {
+        return Result.error(ResultMessageEnum.ILLEGAL_OPERATION.getCode(), e.getMessage());
     }
 
     // 未知异常

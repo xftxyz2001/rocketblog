@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.xftxyz.rocketblog.exception.blog.BlogNotExistException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
+import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
 import com.xftxyz.rocketblog.mapper.BlogDetailMapper;
 import com.xftxyz.rocketblog.mapper.BlogInfoMapper;
 import com.xftxyz.rocketblog.mapper.BlogMapper;
@@ -57,13 +59,13 @@ public class BlogServiceImpl implements BlogService {
     VCommentMapper vcommentMapper;
 
     @Override
-    public List<BlogInfo> getBlogs() {
+    public List<BlogInfo> getAllBlogs() {
         List<BlogInfo> blogList = blogInfoMapper.selectByExample(null);
         return blogList;
     }
 
     @Override
-    public List<BlogInfo> getBlogs(BlogInfo blog) {
+    public List<BlogInfo> findByExample(BlogInfo blog) {
         BlogInfoExample exBlog = new BlogInfoExample();
         Criteria criteria = exBlog.createCriteria();
         String blogTitle = blog.getBlogTitle();
@@ -83,7 +85,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int addBlog(Blog blog) {
+    public int add(Blog blog) {
         // 设置创建时间
         blog.setCreateTime(new Date());
         // 设置更新时间
@@ -93,7 +95,17 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int deleteBlog(Long blogId) {
+    public int remove(Long blogId, Long userid) {
+        // 查询博客是否存在
+        Blog blog = blogMapper.selectByPrimaryKey(blogId);
+        if (blog == null) {
+            throw new BlogNotExistException("博客" + blogId + "不存在");
+        }
+        // 是不是自己的博客？
+        if (blog.getUserid() != userid) {
+            throw new IllegalOperationException();
+        }
+        // 删除博客
         int delete = blogMapper.deleteByPrimaryKey(blogId);
         return delete;
     }
@@ -390,7 +402,7 @@ public class BlogServiceImpl implements BlogService {
             blog.setCoverImage(user.getAvatar());
         }
         // 添加
-        int addBlog = addBlog(blog);
+        int addBlog = add(blog);
         return addBlog;
     }
 
@@ -402,6 +414,12 @@ public class BlogServiceImpl implements BlogService {
         List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
         blogEx(blogList, user.getUserid());
         return blogList;
+    }
+
+    @Override
+    public int removeRF(Long blogId) {
+        int delete = blogMapper.deleteByPrimaryKey(blogId);
+        return delete;
     }
 
 }

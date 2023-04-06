@@ -30,7 +30,7 @@ export default defineComponent({
   },
 });
 
-ipsignimgsrc = ref("");
+const ipsignimgsrc = ref("");
 
 axios.get("/images/ipsign").then((res) => {
   ipsignimgsrc = res.data.data;

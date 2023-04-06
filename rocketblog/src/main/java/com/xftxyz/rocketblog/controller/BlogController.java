@@ -155,7 +155,8 @@ public class BlogController {
     // 删除
     @DeleteMapping("/delete/{blogId}")
     public Integer delete(@PathVariable("blogId") Long blogId, HttpSession session) {
-        int delete = blogService.deleteBlog(blogId);
+        User user = (User) Utils.currentUser(session);
+        int delete = blogService.remove(blogId, user.getUserid());
         return delete;
     }
 

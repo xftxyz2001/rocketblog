@@ -10,17 +10,22 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.VComment;
 
 public interface BlogService {
+    // add; remove; findById; modify; findByXXX; findXXXList
+
     // 返回所有博客
-    public List<BlogInfo> getBlogs();
+    public List<BlogInfo> getAllBlogs();
 
     // 返回指定标题、内容、用户、状态的博客
-    public List<BlogInfo> getBlogs(BlogInfo blog);
+    public List<BlogInfo> findByExample(BlogInfo blog);
 
     // 添加博客
-    public int addBlog(Blog blog);
+    public int add(Blog blog);
 
-    // 删除博客
-    public int deleteBlog(Long blogId);
+    // 删除博客（管理员）
+    public int removeRF(Long blogId);
+
+    // 删除博客（用户）
+    public int remove(Long blogId, Long userid);
 
     // 修改博客
     public int updateBlog(Blog blog);// 管理员
