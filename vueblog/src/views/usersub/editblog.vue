@@ -62,7 +62,7 @@
 // import axios from "axios";
 import { ref } from "vue";
 const userdata = ref({});
-axios.get("/user/info").then((res) => {
+axios.get("/user/i").then((res) => {
   userdata.value = res.data.data;
 });
 

@@ -499,7 +499,7 @@ function logout() {
   });
 }
 function getuserinfo() {
-  axios.get("/user/info").then((res) => {
+  axios.get("/user/i").then((res) => {
     userinfo.value = res.data.data;
     loginsuccess.value = true;
   });

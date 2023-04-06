@@ -233,13 +233,13 @@ axios
   .get("/user/info/" + route.params.userid)
   .then((res) => {
     userdata.value = res.data.data;
-    axios.get("/user/info").then((res) => {
+    axios.get("/user/i").then((res) => {
       if (userdata.value.username != res.data.data.username) {
         isme.value = true;
       }
     });
   });
-// axios.get("/user/info").then((res) => {
+// axios.get("/user/i").then((res) => {
 //   if (userdata.value.username == res.data.data.username) {
 //     isme.value = true;
 //   }

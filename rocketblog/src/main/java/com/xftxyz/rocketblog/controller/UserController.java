@@ -125,8 +125,15 @@ public class UserController {
         return "登出成功";
     }
 
+    @GetMapping("/i")
+    public UserInfo getMyUserInfo(HttpSession session) {
+        User user = (User) Utils.currentUser(session);
+        UserInfo userInfo = userService.getUserInfo(user);
+        return userInfo;
+    }
+
     // 获取用户详细信息
-    @GetMapping("/info/detail")
+    @GetMapping("/i/detail")
     public User getMyUserDetails(HttpSession session) throws ClassNotFoundException, IOException {
         User user = (User) Utils.currentUser(session);
         if (user == null) {
@@ -209,13 +216,6 @@ public class UserController {
         user.setPassword(newPassword);
         userService.updateUser(user);
         return "密码修改成功";
-    }
-
-    @GetMapping("/info")
-    public UserInfo getMyUserInfo(HttpSession session) {
-        User user = (User) Utils.currentUser(session);
-        UserInfo userInfo = userService.getUserInfo(user);
-        return userInfo;
     }
 
     @GetMapping("/info/{userid}")
