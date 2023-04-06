@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.xftxyz.rocketblog.interceptor.AdminInterceptor;
 import com.xftxyz.rocketblog.interceptor.LoggingInterceptor;
+import com.xftxyz.rocketblog.interceptor.LoginInterceptor;
 
 @Configuration
 public class MyConfig implements WebMvcConfigurer {
@@ -50,7 +51,7 @@ public class MyConfig implements WebMvcConfigurer {
                 "/blog/comment", // 获取评论
                 // 静态资源
                 "/static/**");
-        registry.addInterceptor(new LoggingInterceptor())
+        registry.addInterceptor(new LoginInterceptor())
                 .excludePathPatterns(loginExcludePathPatterns);
 
         // 管理员拦截器 拦截路径 /admin
