@@ -23,6 +23,7 @@ import personblog from "@/views/usersub/frontsub/frontpersonsub/blog"
 import personcollect from "@/views/usersub/frontsub/frontpersonsub/collect"
 import personfensi from "@/views/usersub/frontsub/frontpersonsub/fensi"
 import personguanzhu from "@/views/usersub/frontsub/frontpersonsub/guanzhu"
+import messagedetail from "@/views/usersub/frontsub/frontmessagedetail"
 const routes = [
 
   {
@@ -137,6 +138,13 @@ const routes = [
             path: 'message',
             name: 'message',
             component: frontmessage,
+            children: [
+              {
+                path: 'messagedetail/:userid',
+                name: 'messagedetail',
+                component: messagedetail
+              }
+            ]
           },
           {
             path: 'person',

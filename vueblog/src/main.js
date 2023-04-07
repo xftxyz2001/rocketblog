@@ -13,7 +13,7 @@ import '@/assets/icons/iconfont.css'
 import '@/assets/icons/iconfont.js';
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = window.location.origin;
+axios.defaults.baseURL = "http://8.130.81.23:8080";
 /*
 axios.get("/api").then((res) => {
   var result = res.data;
@@ -32,7 +32,7 @@ app.use(ElementPlus)
 app.config.globalProperties.Bus = mitt()
 app.mount('#app')
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
+  app.component(key, component)
 }
 
 
