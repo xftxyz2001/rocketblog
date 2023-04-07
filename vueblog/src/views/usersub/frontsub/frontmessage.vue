@@ -149,17 +149,18 @@ const pageInfos = ref([]);
 const msglist = ref([]);
 
 axios.get("/user/chat/sessions").then((res) => {
-  var result = res.data.data.list;
+  var result = res.data;
   if (result.code == 0) {
-    pageInfos.value = result.data.data.list;
+    pageInfos.value = result.data.list;
   } else {
     console.log(result.message);
   }
 });
 function chatdetail(userid) {
   axios.get("/user/chat/detail/" + userid).then((res) => {
-    if (res.code == 0) {
-      msglist.value.push(res.data.data.list.reverse());
+    var result = res.data;
+    if (result.code == 0) {
+      msglist.value.push(result.data.list.reverse());
       console.log(msglist.value);
     }
   });
