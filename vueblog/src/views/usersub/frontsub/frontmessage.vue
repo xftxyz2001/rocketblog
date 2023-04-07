@@ -13,7 +13,7 @@
           :key="pageInfo.userid"
           class="text item messagelist"
         >
-          <el-row @click="chatdetail(100)" style="cursor: pointer"
+          <el-row @click="chatdetail(pageInfo.userid)" style="cursor: pointer"
             ><el-col :span="5"
               ><img
                 :src="pageInfo.avatar"
@@ -46,9 +46,14 @@
 </template>
 
 <script setup>
+import axios from "axios";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 // const myuserid = ref(105);
-const pageInfos = ref([{}]);
+const pageInfos = ref([]);
 // const msglist = ref([]);
+
+const router = useRouter();
 
 axios.get("/user/chat/sessions").then((res) => {
   var result = res.data;
@@ -74,9 +79,6 @@ function chatdetail(userid) {
 </script>
 
 <script>
-import axios from "axios";
-import { ref } from "vue";
-import router from "@/router";
 export default {};
 </script>
 

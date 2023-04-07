@@ -97,16 +97,21 @@
 <script setup >
 import axios from "axios";
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+
 const route = useRoute();
 const myuserid = ref(null);
 const msglist = ref([]);
+console.log(1);
 axios.get("/user/i").then((res) => {
-  let result = res.data;
+  console.log(2);
+  var result = res.data;
   if (result.code == 0) {
     myuserid.value = res.data.userid;
+    console.log(3);
     axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
-      let result = res.data;
+      console.log(4);
+      var result = res.data;
       if (result.code == 0) {
         msglist.value.push(result.data.list.reverse());
         console.log(msglist.value);
