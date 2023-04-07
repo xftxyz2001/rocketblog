@@ -102,9 +102,8 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 const myuserid = ref(null);
 const msglist = ref([]);
-console.log(1);
+
 axios.get("/user/i").then((res) => {
-  console.log(2);
   var result = res.data;
   if (result.code == 0) {
     myuserid.value = res.data.userid;
@@ -113,7 +112,11 @@ axios.get("/user/i").then((res) => {
       console.log(4);
       var result = res.data;
       if (result.code == 0) {
-        msglist.value.push(result.data.list.reverse());
+        var resultdata = result.data.list.reverse();
+        for (let index = 0; index < resultdata.length; index++) {
+          msglist.value.push(resultdata[index]);
+        }
+        // msglist.value = result.data.list.reverse();
         console.log(msglist.value);
       }
     });
