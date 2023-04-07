@@ -29,6 +29,11 @@ public class MyConfig implements WebMvcConfigurer {
 
     }
 
+    @Bean
+    LoginInterceptor loginInterceptor() {
+        return new LoginInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 日志拦截器
@@ -51,7 +56,7 @@ public class MyConfig implements WebMvcConfigurer {
                 "/blog/comment", // 获取评论
                 // 静态资源
                 "/static/**");
-        registry.addInterceptor(new LoginInterceptor())
+        registry.addInterceptor(loginInterceptor())
                 .excludePathPatterns(loginExcludePathPatterns);
 
         // 管理员拦截器 拦截路径 /admin
@@ -60,13 +65,14 @@ public class MyConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public RestTemplate restTemplate() {
+    RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(simpleFactory());
         return restTemplate;
     }
+
     @Bean
-    public ClientHttpRequestFactory simpleFactory() {
+    ClientHttpRequestFactory simpleFactory() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         // 响应超时时间20s
         factory.setReadTimeout(20 * 1000);
