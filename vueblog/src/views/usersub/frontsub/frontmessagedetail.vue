@@ -97,6 +97,8 @@
 <script setup >
 import axios from "axios";
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
 const myuserid = ref(null);
 const msglist = ref([]);
 axios.get("/user/i").then((res) => {
