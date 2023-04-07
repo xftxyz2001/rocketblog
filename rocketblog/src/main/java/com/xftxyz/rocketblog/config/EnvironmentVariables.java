@@ -52,7 +52,7 @@ public interface EnvironmentVariables {
                     "爆裂吧，现实！粉碎吧，精神！Vanishment This World!",
                     "爆ぜろリアル！弾けろシナプス！パニッシュメント・ディス・ワールド!"));
             // 進撃の巨人
-            put("titan", List.of());
+            put("titan", List.of("666"));
             // 縁の空
             put("yosuga", List.of("In solitude, where we are least alone."));
             // 我妻由乃
