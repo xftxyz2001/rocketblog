@@ -106,7 +106,7 @@ const msglist = ref([]);
 axios.get("/user/i").then((res) => {
   var result = res.data;
   if (result.code == 0) {
-    myuserid.value = res.data.userid;
+    myuserid.value = result.data.userid;
     console.log(3);
     axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
       console.log(4);
@@ -128,4 +128,21 @@ export default {};
 </script>
 
 <style>
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.box-card {
+  width: 100%;
+}
 </style>
