@@ -44,17 +44,17 @@ public class MyConfig implements WebMvcConfigurer {
                 // 用户相关
                 "/user/register", // 注册
                 "/user/login", // 登录
-                "/user/code", // 获取验证码
-                "/user/forget", // 忘记密码
-                "/user/info", // 获取用户信息（用户名、头像、关注数、粉丝数、文章数）
+                "/user/code/*", // 获取验证码
+                "/user/forget/*", // 忘记密码
+                "/user/info/*", // 获取用户信息（用户名、头像、关注数、粉丝数、文章数）
                 // 博客相关
-                "/blog/info", // 获取博客信息
-                "/blog/detail", // 获取博客详情
+                "/blog/info/*", // 获取博客信息
+                "/blog/detail/*", // 获取博客详情
                 "/blog/search", // 搜索博客
                 "/blog/new", // 获取最新博客
                 "/blog/hot", // 获取热门博客
                 "/blog/hot/*", // 获取热门博客（某一方面的）
-                "/blog/comment", // 获取评论
+                "/blog/comment/*", // 获取评论
                 // 图片上传和访问
                 "/images/**",
                 // 静态资源

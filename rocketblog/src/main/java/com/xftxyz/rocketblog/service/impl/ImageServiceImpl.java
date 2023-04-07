@@ -84,8 +84,8 @@ public class ImageServiceImpl implements ImageService {
         int listSize = list.size();
 
         String diyWords = null;
-        if (listSize > 1) {
-            int listIndex = Utils.random.nextInt();
+        if (listSize > 0) {
+            int listIndex = Utils.random.nextInt(listSize);
             diyWords = list.get(listIndex);
         } else {
             @SuppressWarnings("rawtypes")
