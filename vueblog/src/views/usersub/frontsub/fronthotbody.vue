@@ -16,7 +16,7 @@
         :src="ipsignimgsrc"
         alt=""
         srcset=""
-        style="position: fixed; width: 25%"
+        style="position: fixed; width: 23%"
       />
       <div class="grid-content ep-bg-purple" />
     </el-col>
