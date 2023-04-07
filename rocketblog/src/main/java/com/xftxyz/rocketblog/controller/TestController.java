@@ -35,7 +35,7 @@ public class TestController {
     @GetMapping("/chat/{to}/{msg}")
     public String testSendMessage(@PathVariable("to") Long toUserid, @PathVariable("msg") String content,
             HttpSession session) {
-        User user = (User) Utils.currentUser(session);
+        User user = Utils.currentUser(session);
         userService.chat(user.getUserid(), toUserid, content);
         return "消息发送成功";
     }
