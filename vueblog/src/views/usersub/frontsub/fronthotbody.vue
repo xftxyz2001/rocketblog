@@ -7,10 +7,17 @@
       <Left></Left>
       <div class="grid-content ep-bg-purple" />
     </el-col>
-    <el-col :span="10"><router-view></router-view>
+    <el-col :span="10"
+      ><router-view></router-view>
       <div class="grid-content ep-bg-purple" />
     </el-col>
-    <el-col :span="4"><img :src="ipsignimgsrc" alt="" srcset="">
+    <el-col :span="4"
+      ><img
+        :src="ipsignimgsrc"
+        alt=""
+        srcset=""
+        style="position: fixed; width: 23%"
+      />
       <div class="grid-content ep-bg-purple" />
     </el-col>
     <el-col :span="4">
@@ -37,7 +44,6 @@ export default defineComponent({
     Left,
   },
 });
-
 </script>
 
 <style scoped>
@@ -56,4 +62,5 @@ export default defineComponent({
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
-}</style>
+}
+</style>

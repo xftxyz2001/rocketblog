@@ -650,7 +650,7 @@ function logout() {
 }
 function getuserinfo() {
   axios.get("/user/i").then((res) => {
-    if (re.data.code == 0) {
+    if (res.data.code == 0) {
       userinfo.value = res.data.data;
       loginsuccess.value = true;
     } else {
@@ -675,12 +675,13 @@ function tohome() {
   }
 }
 function tomessage() {
-  if (checkTokenInCookie()) router.push({ name: "message" });
-  else {
-    loginVisible.value = "true";
-    loginform.email = "";
-    loginform.password = "";
-  }
+  // if (checkTokenInCookie()) router.push({ name: "message" });
+  // else {
+  //   loginVisible.value = "true";
+  //   loginform.email = "";
+  //   loginform.password = "";
+  // }
+  router.push({ name: "message" });
 }
 function toperson() {
   if (checkTokenInCookie()) router.push({ name: "personuserinfo" });
