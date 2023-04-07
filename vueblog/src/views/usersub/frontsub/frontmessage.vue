@@ -145,17 +145,7 @@
 
 <script setup>
 const myuserid = ref(105);
-const pageInfos = ref([
-  {
-    userid: 100,
-    username: "通晓宇宙",
-    avatar: "https://avatars.githubusercontent.com/u/22099765",
-    msgNum: 1,
-    lastMsg:
-      "川澄 舞，欢迎来到这座永不终结的梦境之中，这里有红色和白色的旋律，有寒冷和温暖的交错，有悲伤和希望的盼望。让我们一起进入这个世界，探索这个世界的秘密，发现这个世界的美好。",
-    lastTime: "2021-12-28T16:00:00.000+00:00",
-  },
-]);
+const pageInfos = ref([]);
 const msglist = ref([]);
 
 axios.get("/user/chat/sessions").then((res) => {
@@ -170,6 +160,7 @@ function chatdetail(userid) {
   axios.get("/user/chat/detail/" + userid).then((res) => {
     if (res.code == 0) {
       msglist.value.push(res.data.data.list.reverse());
+      console.log(msglist.value);
     }
   });
 }
