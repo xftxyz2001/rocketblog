@@ -47,7 +47,7 @@ public class UserController {
     EmailService emailService;
 
     // 忘记密码
-    @PostMapping("/forget/{email}")
+    @GetMapping("/forget/{email}")
     public String forgetPassword(@PathVariable("email") String email) {
         User user = userService.getUserByEmail(email);
         if (user == null) {
