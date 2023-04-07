@@ -55,11 +55,10 @@ public class MyConfig implements WebMvcConfigurer {
                 "/blog/hot", // 获取热门博客
                 "/blog/hot/*", // 获取热门博客（某一方面的）
                 "/blog/comment", // 获取评论
-                // 其他
-                "/", // 首页
-                "/images/**", // 图片上传和访问
+                // 图片上传和访问
+                "/images/**",
                 // 静态资源
-                "/static/**");
+                "/", "/css/**", "/js/**", "/img/**", "/json/**", "/fonts/**", "/*.html");
         registry.addInterceptor(loginInterceptor())
                 .excludePathPatterns(loginExcludePathPatterns);
 
