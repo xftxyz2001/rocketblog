@@ -23,7 +23,7 @@
 const ipsignimgsrc = ref("");
 
 axios.get("/images/ipsign").then((res) => {
-  ipsignimgsrc = res.data.data;
+  ipsignimgsrc.value = res.data.data;
 });
 </script>
 

@@ -7,10 +7,9 @@ const pageInfo = ref({});
 axios.get("/user/chat/sessions").then((res) => {
     var result = res.data;
     if (result.code == 0) {
-        var pageInfo = result.data;
-        console.log(pageInfo.list);
+        pageInfo.value = result.data;
     } else {
-
+        console.log(result.message);
     }
 });
 </script>

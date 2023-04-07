@@ -229,33 +229,91 @@ const comments = ref([]);
 const isme = ref(false);
 console.log(route.params);
 
-axios
-  .get("/user/info/" + route.params.userid)
-  .then((res) => {
-    userdata.value = res.data.data;
-    axios.get("/user/i").then((res) => {
-      if (userdata.value.username != res.data.data.username) {
-        isme.value = true;
-      }
-    });
-  });
+// axios
+//   .get("/user/info/" + route.params.userid)
+//   .then((res) => {
+//     userdata.value = res.data.data;
+//     axios.get("/user/i").then((res) => {
+//       if (userdata.value.username != res.data.data.username) {
+//         isme.value = true;
+//       }
+//     });
+//   });
 // axios.get("/user/i").then((res) => {
 //   if (userdata.value.username == res.data.data.username) {
 //     isme.value = true;
 //   }
 // });
 
-axios
-  .get("/blog/detail/" + route.params.blogid)
-  .then((res) => {
-    blogdata.value = res.data.data;
-  });
+// axios
+//   .get("/blog/detail/" + route.params.blogid)
+//   .then((res) => {
+//     blogdata.value = res.data.data;
+//   });
 
-axios
-  .get("/blog/comment/" + route.params.blogid)
-  .then((res) => {
-    comments.value = res.data.data;
-  });
+// axios
+//   .get("/blog/comment/" + route.params.blogid)
+//   .then((res) => {
+//     comments.value = res.data.data;
+//   });
+
+// 请求博客详情
+axios.get("/blog/detail/" + route.params.blogid).then((res) => {
+  var resultBlogDetail = res.data;
+  if (resultBlogDetail.code == 0) {
+    blogdata.value = resultBlogDetail.data;
+    // 请求评论
+    axios.get("/blog/comment/" + route.params.blogid).then((res) => {
+      var resultComment = res.data;
+      if (resultComment.code == 0) {
+        // 评论分页数据
+        var commentPage = resultComment.data;
+        comments.value = commentPage.list;
+      } else {
+        // 获取评论失败
+        ElMessage({
+          showClose: true,
+          message: resultComment.message,
+        });
+      }
+    });
+    
+    // 请求作者信息
+    axios.get("/user/info/" + blogdata.value.userid).then((res) => {
+      var resultUserInfo = res.data;
+      if (resultUserInfo.code == 0) {
+        userdata.value = resultUserInfo.data;
+        // 判断是否是自己
+        axios.get("/user/i").then((res) => {
+          var resultMyInfo = res.data;
+          if (resultMyInfo.code == 0) {
+            if (userdata.value.userid == resultMyInfo.data.userid) {
+              isme.value = true;
+            }
+          } else {
+            // 没登陆或获取个人信息失败
+            // ElMessage({
+            //   showClose: true,
+            //   message: resultMyInfo.message,
+            // });
+          }
+        });
+      } else {
+        // 获取作者信息失败
+        ElMessage({
+          showClose: true,
+          message: resultUserInfo.message,
+        });
+      }
+    });
+  } else {
+    // 获取博客详情失败
+    ElMessage({
+      showClose: true,
+      message: resultBlogDetail.message,
+    });
+  }
+});
 
 function checkTokenInCookie() {
   var cookies = document.cookie;
