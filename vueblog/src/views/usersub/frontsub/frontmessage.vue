@@ -41,16 +41,19 @@
           ></el-row>
         </div> </el-card
     ></el-col>
-    <el-col :span="10" :offset="1"><router-view></router-view></el-col>
+    <el-col :span="10" :offset="1"
+      ><router-view :key="$route.fullPath"></router-view
+    ></el-col>
   </el-row>
 </template>
 
 <script setup>
 import axios from "axios";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 // const myuserid = ref(105);
 const pageInfos = ref([]);
+const route = useRoute();
 // const msglist = ref([]);
 
 const router = useRouter();
