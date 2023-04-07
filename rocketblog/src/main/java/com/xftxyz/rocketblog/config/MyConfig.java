@@ -52,8 +52,12 @@ public class MyConfig implements WebMvcConfigurer {
                 "/blog/detail", // 获取博客详情
                 "/blog/search", // 搜索博客
                 "/blog/new", // 获取最新博客
-                "/blog/hot/*", // 获取热门博客
+                "/blog/hot", // 获取热门博客
+                "/blog/hot/*", // 获取热门博客（某一方面的）
                 "/blog/comment", // 获取评论
+                // 其他
+                "/", // 首页
+                "/images/**", // 图片上传和访问
                 // 静态资源
                 "/static/**");
         registry.addInterceptor(loginInterceptor())

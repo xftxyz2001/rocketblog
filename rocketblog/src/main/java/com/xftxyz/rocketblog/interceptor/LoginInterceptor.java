@@ -28,10 +28,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         // 未在session中找到登录信息，尝试从cookie中获取
         Cookie[] cookies = request.getCookies();
         String token = null;
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(EnvironmentVariables.COOKIE_TOKEN)) {
-                token = cookie.getValue();
-                break;
+        if (cookies != null){
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(EnvironmentVariables.COOKIE_TOKEN)) {
+                    token = cookie.getValue();
+                    break;
+                }
             }
         }
         User user = userService.fromToken(token);
