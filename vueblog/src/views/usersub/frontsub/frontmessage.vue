@@ -161,7 +161,7 @@ const msglist = ref([]);
 axios.get("/user/chat/sessions").then((res) => {
   var result = res.data.data.list;
   if (result.code == 0) {
-    pageInfos.value = result.data;
+    pageInfos.value = result.data.data.list;
   } else {
     console.log(result.message);
   }
