@@ -19,30 +19,30 @@ public interface BlogService {
     public List<BlogInfo> findByExample(BlogInfo blog);
 
     // 添加博客
-    public int add(Blog blog);
+    public Integer add(Blog blog);
 
     // 删除博客（管理员）
-    public int removeRF(Long blogId);
+    public Integer removeRF(Long blogId);
 
     // 删除博客（用户）
-    public int remove(Long blogId, Long userid);
+    public Integer remove(Long blogId, Long userid);
 
     // 修改博客
-    public int updateBlog(Blog blog);// 管理员
+    public Integer updateBlog(Blog blog);// 管理员
 
-    public int updateBlog(Blog blog, User user);
+    public Integer updateBlog(Blog blog, User user);
 
-    public long collect(Long userid, Long blogId);
+    public Long collect(Long userid, Long blogId);
 
-    public long cancelCollect(Long userid, Long blogId);
+    public Long cancelCollect(Long userid, Long blogId);
 
-    public long like(Long userid, Long blogId);
+    public Long like(Long userid, Long blogId);
 
-    public long cancelLike(Long userid, Long blogId);
+    public Long cancelLike(Long userid, Long blogId);
 
-    public int addComment(Comment comment);
+    public Integer addComment(Comment comment);
 
-    public int deleteComment(Long commentId);
+    public Integer deleteComment(Long commentId);
 
     // 获取热门博客
     public List<BlogInfo> getHotBlogs(User user);
@@ -76,7 +76,7 @@ public interface BlogService {
 
     public List<BlogInfo> searchBlogs(String keyword, User user);
 
-    public int publish(Blog blog, User user);
+    public Integer publish(Blog blog, User user);
 
     public List<BlogInfo> getDraftBlogs(User user);
 

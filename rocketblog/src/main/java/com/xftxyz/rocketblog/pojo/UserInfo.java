@@ -2,19 +2,19 @@ package com.xftxyz.rocketblog.pojo;
 
 public class UserInfo {
     // id
-    private long userid;
+    private Long userid;
     // username
     private String username;
     // avatar
     private String avatar;
     // followings
-    private long followings;
+    private Long followings;
     // followers
-    private long followers;
+    private Long followers;
     // blogs
-    private long blogs;
+    private Long blogs;
     // isFollowed
-    private boolean isFollowed;
+    private Boolean isFollowed;
 
     public String getUsername() {
         return username;
@@ -32,43 +32,43 @@ public class UserInfo {
         this.avatar = avatar;
     }
 
-    public long getFollowings() {
+    public Long getFollowings() {
         return followings;
     }
 
-    public void setFollowings(long followings) {
+    public void setFollowings(Long followings) {
         this.followings = followings;
     }
 
-    public long getFollowers() {
+    public Long getFollowers() {
         return followers;
     }
 
-    public void setFollowers(long followers) {
+    public void setFollowers(Long followers) {
         this.followers = followers;
     }
 
-    public long getBlogs() {
+    public Long getBlogs() {
         return blogs;
     }
 
-    public void setBlogs(long blogs) {
+    public void setBlogs(Long blogs) {
         this.blogs = blogs;
     }
 
-    public boolean isFollowed() {
+    public Boolean isFollowed() {
         return isFollowed;
     }
 
-    public void setFollowed(boolean isFollowed) {
+    public void setFollowed(Boolean isFollowed) {
         this.isFollowed = isFollowed;
     }
 
-    public long getUserid() {
+    public Long getUserid() {
         return userid;
     }
 
-    public void setUserid(long userid) {
+    public void setUserid(Long userid) {
         this.userid = userid;
     }
 

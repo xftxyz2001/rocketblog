@@ -35,13 +35,12 @@ public class BlogController {
     // 搜索博客
     @GetMapping("/search")
     public PageInfo<BlogInfo> search(@RequestParam("keyword") String keyword,
-            @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "5") Integer pageSize,
             HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> blogs = blogService.searchBlogs(keyword, user);
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
-        return pageInfo;
+        return new PageInfo<>(blogs);
     }
 
     @PostMapping("/publish")
@@ -52,79 +51,72 @@ public class BlogController {
     }
 
     @GetMapping("/draft")
-    public PageInfo<BlogInfo> draft(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> draft(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> draftBlogs = blogService.getDraftBlogs(user);
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(draftBlogs);
-        return pageInfo;
+        return new PageInfo<>(draftBlogs);
     }
 
     // 热门博客，分页返回
     @GetMapping("/hot")
-    public PageInfo<BlogInfo> hot(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> hot(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getHotBlogs(user);
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
-        return pageInfo;
+        return new PageInfo<>(hotBlogs);
     }
 
     // 点赞最多
     @GetMapping("/hot/like")
-    public PageInfo<BlogInfo> hotLike(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> hotLike(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostLikeBlogs(user);
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
-        return pageInfo;
+        return new PageInfo<>(hotBlogs);
     }
 
     // 收藏最多
     @GetMapping("/hot/collect")
-    public PageInfo<BlogInfo> hotCollect(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> hotCollect(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCollectBlogs(user);
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
-        return pageInfo;
+        return new PageInfo<>(hotBlogs);
     }
 
     // 评论最多
     @GetMapping("/hot/comment")
-    public PageInfo<BlogInfo> hotComment(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> hotComment(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCommentBlogs(user);
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(hotBlogs);
-        return pageInfo;
+        return new PageInfo<>(hotBlogs);
     }
 
     // 最新发布，分页返回
     @GetMapping("/new")
-    public PageInfo<BlogInfo> newBlog(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> newBlog(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> newBlogs = blogService.getNewBlogs(user);
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(newBlogs);
-        return pageInfo;
+        return new PageInfo<>(newBlogs);
     }
 
     // 获取我关注的人的博客
     @GetMapping("/follows")
-    public PageInfo<BlogInfo> getFollows(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> getFollows(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> follows = blogService.getFollowsBlogs(user.getUserid());
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(follows);
-        return pageInfo;
+        return new PageInfo<>(follows);
     }
 
     // 获取博客信息
@@ -162,13 +154,12 @@ public class BlogController {
 
     // 我发布的博客
     @GetMapping("/my")
-    public PageInfo<BlogInfo> my(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> my(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> myBlogs = blogService.getMyBlogs(user.getUserid());
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(myBlogs);
-        return pageInfo;
+        return new PageInfo<>(myBlogs);
     }
 
     // 收藏
@@ -189,13 +180,12 @@ public class BlogController {
 
     // 获取收藏的博客
     @GetMapping("/collects")
-    public PageInfo<BlogInfo> getCollects(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> getCollects(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> collects = blogService.getCollectsBlogs(user.getUserid());
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(collects);
-        return pageInfo;
+        return new PageInfo<>(collects);
     }
 
     // 点赞
@@ -216,13 +206,12 @@ public class BlogController {
 
     // 获取点赞的博客
     @GetMapping("/likes")
-    public PageInfo<BlogInfo> getLikes(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize, HttpSession session) {
+    public PageInfo<BlogInfo> getLikes(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpSession session) {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> likes = blogService.getLikesBlogs(user.getUserid());
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(likes);
-        return pageInfo;
+        return new PageInfo<>(likes);
     }
 
     // 评论
@@ -245,11 +234,10 @@ public class BlogController {
     // 获取评论，分页，默认第一页，每页5条
     @GetMapping("/comment/{blogId}")
     public PageInfo<VComment> getComments(@PathVariable("blogId") Long blogId,
-            @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "5") int pageSize) {
+            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "5") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<VComment> comments = blogService.getCommentsByBlogId(blogId);
-        PageInfo<VComment> pageInfo = new PageInfo<>(comments);
-        return pageInfo;
+        return new PageInfo<>(comments);
     }
 
 }

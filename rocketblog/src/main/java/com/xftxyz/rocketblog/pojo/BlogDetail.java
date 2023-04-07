@@ -5,24 +5,24 @@ import java.util.Date;
 public class BlogDetail {
 
     // 额外的字段：点赞
-    private boolean isLike;
+    private Boolean isLike;
 
     // 额外的字段：收藏
-    private boolean isCollect;
+    private Boolean isCollect;
 
-    public boolean isLike() {
+    public Boolean isLike() {
         return isLike;
     }
 
-    public void setLike(boolean like) {
+    public void setLike(Boolean like) {
         isLike = like;
     }
 
-    public boolean isCollect() {
+    public Boolean isCollect() {
         return isCollect;
     }
 
-    public void setCollect(boolean collect) {
+    public void setCollect(Boolean collect) {
         isCollect = collect;
     }
 

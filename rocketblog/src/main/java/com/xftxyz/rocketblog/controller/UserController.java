@@ -252,8 +252,7 @@ public class UserController {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<UserBase> followings = userService.getFollowings(user.getUserid());
-        PageInfo<UserBase> pageInfo = new PageInfo<>(followings);
-        return pageInfo;
+        return new PageInfo<>(followings);
     }
 
     // 获取用户粉丝列表
@@ -263,8 +262,7 @@ public class UserController {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<UserBase> followers = userService.getFollowers(user.getUserid());
-        PageInfo<UserBase> pageInfo = new PageInfo<>(followers);
-        return pageInfo;
+        return new PageInfo<>(followers);
     }
 
     // 发送消息
@@ -284,8 +282,7 @@ public class UserController {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<VChat> chats = userService.getChats(user.getUserid());
-        PageInfo<VChat> pageInfo = new PageInfo<>(chats);
-        return pageInfo;
+        return new PageInfo<>(chats);
     }
 
     // 获取会话列表
@@ -295,8 +292,7 @@ public class UserController {
         User user = (User) Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<ChatInfo> chatlist = userService.getSessionList(user);
-        PageInfo<ChatInfo> pageInfo = new PageInfo<>(chatlist);
-        return pageInfo;
+        return new PageInfo<>(chatlist);
     }
 
     // 更新指定会话
@@ -315,8 +311,7 @@ public class UserController {
         PageHelper.startPage(pageNum, pageSize);
         User user = (User) Utils.currentUser(session);
         List<VChat> chatDetail = userService.getChatDetail(user, userid);
-        PageInfo<VChat> pageInfo = new PageInfo<>(chatDetail);
-        return pageInfo;
+        return new PageInfo<>(chatDetail);
     }
 
     // 删除单条消息

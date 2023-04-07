@@ -65,19 +65,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int addUser(User user) {
+    public Integer addUser(User user) {
         int insert = userMapper.insert(user);
         return insert;
     }
 
     @Override
-    public int deleteUser(Long id) {
+    public Integer deleteUser(Long id) {
         int delete = userMapper.deleteByPrimaryKey(id);
         return delete;
     }
 
     @Override
-    public int updateUser(User user) {
+    public Integer updateUser(User user) {
         int update = userMapper.updateByPrimaryKey(user);
         return update;
     }
@@ -150,15 +150,12 @@ public class UserServiceImpl implements UserService {
     public UserInfo getUserInfo(User me, Long userid) {
         UserInfo userInfo = getUserInfo(getUser(userid));
         // 是否关注: isFollowed
-        if (me == null) {
-            userInfo.setFollowed(false);
-        } else {
+        if (me != null) {
             FollowExample exIsFollowed = new FollowExample();
             exIsFollowed.createCriteria().andUseridFollowingEqualTo(me.getUserid()).andUseridFollowedEqualTo(userid);
             long isFollowed = followMapper.countByExample(exIsFollowed);
             userInfo.setFollowed(isFollowed > 0);
         }
-
         return userInfo;
     }
 
@@ -205,7 +202,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int chat(Long fromUserid, Long toUserid, String content) {
+    public Integer chat(Long fromUserid, Long toUserid, String content) {
         Chat chat = new Chat();
         chat.setUseridFrom(fromUserid);
         chat.setUseridTo(toUserid);
@@ -227,14 +224,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteChat(Long chatid) {
+    public Integer deleteChat(Long chatid) {
         int delete = chatMapper.deleteByPrimaryKey(chatid);
         return delete;
     }
 
     // 关注数
     @Override
-    public long getFollowingCount(Long userid) {
+    public Long getFollowingCount(Long userid) {
         FollowExample exFollowings = new FollowExample();
         exFollowings.createCriteria().andUseridFollowingEqualTo(userid);
         long followings = followMapper.countByExample(exFollowings);
@@ -243,7 +240,7 @@ public class UserServiceImpl implements UserService {
 
     // 粉丝数
     @Override
-    public long getFollowerCount(Long userid) {
+    public Long getFollowerCount(Long userid) {
         FollowExample exFollowers = new FollowExample();
         exFollowers.createCriteria().andUseridFollowedEqualTo(userid);
         long followers = followMapper.countByExample(exFollowers);
@@ -252,7 +249,7 @@ public class UserServiceImpl implements UserService {
 
     // 文章数
     @Override
-    public long getBlogCount(Long userid) {
+    public Long getBlogCount(Long userid) {
         BlogExample exBlogs = new BlogExample();
         exBlogs.createCriteria().andUseridEqualTo(userid).andBlogStatusEqualTo(BlogStatus.PUBLISH);
         long blogs = blogMapper.countByExample(exBlogs);
@@ -377,7 +374,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteSession(User user, Long userid) {
+    public Integer deleteSession(User user, Long userid) {
         VChatExample exChats = new VChatExample();
         exChats.createCriteria().andUseridFromEqualTo(user.getUserid()).andUseridToEqualTo(userid); // 我发给对方的
         exChats.or().andUseridFromEqualTo(userid).andUseridToEqualTo(user.getUserid()); // 对方发给我的

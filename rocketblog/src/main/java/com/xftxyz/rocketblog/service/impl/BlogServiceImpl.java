@@ -85,7 +85,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int add(Blog blog) {
+    public Integer add(Blog blog) {
         // 设置创建时间
         blog.setCreateTime(new Date());
         // 设置更新时间
@@ -95,7 +95,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int remove(Long blogId, Long userid) {
+    public Integer remove(Long blogId, Long userid) {
         // 查询博客是否存在
         Blog blog = blogMapper.selectByPrimaryKey(blogId);
         if (blog == null) {
@@ -111,13 +111,13 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int updateBlog(Blog blog) {
+    public Integer updateBlog(Blog blog) {
         int update = blogMapper.updateByPrimaryKey(blog);
         return update;
     }
 
     @Override
-    public int updateBlog(Blog blog, User user) {
+    public Integer updateBlog(Blog blog, User user) {
         // 是不是自己的博客？
         if (blog.getUserid() != user.getUserid()) {
             return -1;
@@ -128,7 +128,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public long collect(Long userid, Long blogId) {
+    public Long collect(Long userid, Long blogId) {
         // 查询用户是否已经收藏过该博客
         BookmarkExample exBookmarkCheck = new BookmarkExample();
         exBookmarkCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
@@ -150,7 +150,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public long cancelCollect(Long userid, Long blogId) {
+    public Long cancelCollect(Long userid, Long blogId) {
         // 查询用户是否已经收藏过该博客
         BookmarkExample exBookmarkCheck = new BookmarkExample();
         exBookmarkCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
@@ -170,7 +170,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public long like(Long userid, Long blogId) {
+    public Long like(Long userid, Long blogId) {
         // 查询用户是否已经点赞过该博客
         LikeExample exLikeCheck = new LikeExample();
         exLikeCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
@@ -193,7 +193,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public long cancelLike(Long userid, Long blogId) {
+    public Long cancelLike(Long userid, Long blogId) {
         // 查询用户是否已经点赞过该博客
         LikeExample exLikeCheck = new LikeExample();
         exLikeCheck.createCriteria().andUseridEqualTo(userid).andBlogIdEqualTo(blogId);
@@ -212,14 +212,14 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int addComment(Comment comment) {
+    public Integer addComment(Comment comment) {
         comment.setCreatetime(new Date());
         int insert = commentMapper.insert(comment);
         return insert;
     }
 
     @Override
-    public int deleteComment(Long commentId) {
+    public Integer deleteComment(Long commentId) {
         int delete = commentMapper.deleteByPrimaryKey(commentId);
         return delete;
     }
@@ -379,7 +379,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int publish(Blog blog, User user) {
+    public Integer publish(Blog blog, User user) {
         // 博客内容为空
         // if (!StringUtils.hasLength(blog.getBlogContent())) {
         // return -1;
@@ -417,7 +417,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int removeRF(Long blogId) {
+    public Integer removeRF(Long blogId) {
         int delete = blogMapper.deleteByPrimaryKey(blogId);
         return delete;
     }

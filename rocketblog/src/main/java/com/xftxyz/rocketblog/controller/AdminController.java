@@ -33,12 +33,11 @@ public class AdminController {
     BlogService blogService;
 
     @GetMapping("/users")
-    public PageInfo<User> getUsers(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize) {
+    public PageInfo<User> getUsers(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> users = userService.getUsers();
-        PageInfo<User> pageInfo = new PageInfo<>(users);
-        return pageInfo;
+        return new PageInfo<>(users);
     }
 
     @GetMapping("/user/{id}")
@@ -66,40 +65,36 @@ public class AdminController {
 
     @GetMapping("/search/username/{name}")
     public PageInfo<User> getUserByName(@PathVariable("name") String name,
-            @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize) {
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> userList = userService.getUsersLikeName(name);
-        PageInfo<User> pageInfo = new PageInfo<>(userList);
-        return pageInfo;
+        return new PageInfo<>(userList);
     }
 
     @GetMapping("/search/email/{email}")
     public PageInfo<User> getUserByEmail(@PathVariable("email") String email,
-            @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize) {
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> userList = userService.getUsersLikeEmail(email);
-        PageInfo<User> pageInfo = new PageInfo<>(userList);
-        return pageInfo;
+        return new PageInfo<>(userList);
     }
 
     @GetMapping("/blogs")
-    public PageInfo<BlogInfo> getBlogs(@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize) {
+    public PageInfo<BlogInfo> getBlogs(@RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> blogs = blogService.getAllBlogs();
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
-        return pageInfo;
+        return new PageInfo<>(blogs);
     }
 
     @PostMapping("/search/blog")
-    public PageInfo<BlogInfo> getBlogs(@RequestBody BlogInfo blog, @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "5") int pageSize) {
+    public PageInfo<BlogInfo> getBlogs(@RequestBody BlogInfo blog, @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "5") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> blogs = blogService.findByExample(blog);
-        PageInfo<BlogInfo> pageInfo = new PageInfo<>(blogs);
-        return pageInfo;
+        return new PageInfo<>(blogs);
     }
 
     @PostMapping("/blog")
