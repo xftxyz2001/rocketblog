@@ -149,7 +149,7 @@ function send() {
   if (textarea2 !== "") {
     var sendmessage = { to: route.params.userid, content: textarea2.value };
     axios.post("user/chat", sendmessage).then((res) => {
-      result = res.data;
+      var result = res.data;
       if (result.code == 0) {
         axios.get("user/chat/session/" + route.params.userid);
       }
