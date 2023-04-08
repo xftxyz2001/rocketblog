@@ -1,7 +1,7 @@
 <template>
   <div
     class="common-layout"
-    style="margin-top: 60px; overflow-y: scroll; max-height: 1000px"
+    style="margin-top: 60px; overflow-y: scroll; height: 1000px"
   >
     <el-container style="position: relative">
       <el-header
