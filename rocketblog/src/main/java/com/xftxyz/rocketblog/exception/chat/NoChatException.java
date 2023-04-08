@@ -1,4 +1,4 @@
-package com.xftxyz.rocketblog.exception.user;
+package com.xftxyz.rocketblog.exception.chat;
 
 import com.xftxyz.rocketblog.exception.RocketBlogException;
 

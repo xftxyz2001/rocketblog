@@ -9,7 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xftxyz.rocketblog.exception.user.NoChatException;
+import com.xftxyz.rocketblog.exception.chat.NoChatException;
 import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.mapper.ChatMapper;
 import com.xftxyz.rocketblog.mapper.UserMapper;
@@ -99,6 +99,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Integer chat(Long fromUserid, Long toUserid, String content) {
+        if (userMapper.selectByPrimaryKey(toUserid) == null) {
+            throw new UserNotExistException(String.valueOf(toUserid));
+        }
         Chat chat = new Chat();
         chat.setUseridFrom(fromUserid);
         chat.setUseridTo(toUserid);
