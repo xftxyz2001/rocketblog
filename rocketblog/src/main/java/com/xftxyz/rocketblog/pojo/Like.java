@@ -4,21 +4,25 @@ import java.util.Date;
 
 public class Like {
     /**
+     * 点赞id
      * 此字段对应于数据库列t_like.like_id
      */
     private Long likeId;
 
     /**
+     * 被点赞博客id
      * 此字段对应于数据库列t_like.blog_id
      */
     private Long blogId;
 
     /**
+     * 点赞用户id
      * 此字段对应于数据库列t_like.userid
      */
     private Long userid;
 
     /**
+     * 点赞时间
      * 此字段对应于数据库列t_like.createtime
      */
     private Date createtime;

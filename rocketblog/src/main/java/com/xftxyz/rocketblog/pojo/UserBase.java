@@ -1,8 +1,17 @@
 package com.xftxyz.rocketblog.pojo;
 
 public class UserBase {
+    /**
+     * 用户id
+     */
     private Long userid;
+    /**
+     * 用户名
+     */
     private String username;
+    /**
+     * 用户头像
+     */
     private String avatar;
 
     public Long getUserid() {

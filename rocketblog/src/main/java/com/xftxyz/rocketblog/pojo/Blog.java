@@ -4,41 +4,49 @@ import java.util.Date;
 
 public class Blog {
     /**
+     * 博客id
      * 此字段对应于数据库列t_blog.blog_id
      */
     private Long blogId;
 
     /**
+     * 博客标题
      * 此字段对应于数据库列t_blog.blog_title
      */
     private String blogTitle;
 
     /**
+     * 博客作者的用户id
      * 此字段对应于数据库列t_blog.userid
      */
     private Long userid;
 
     /**
+     * 博客状态（0：草稿，1：发布）
      * 此字段对应于数据库列t_blog.blog_status
      */
     private Integer blogStatus;
 
     /**
+     * 博客创建时间
      * 此字段对应于数据库列t_blog.create_time
      */
     private Date createTime;
 
     /**
+     * 博客最后更新时间
      * 此字段对应于数据库列t_blog.update_time
      */
     private Date updateTime;
 
     /**
+     * 博客封面图片url
      * 此字段对应于数据库列t_blog.cover_image
      */
     private String coverImage;
 
     /**
+     * 博客内容
      * 此字段对应于数据库列t_blog.blog_content
      */
     private String blogContent;

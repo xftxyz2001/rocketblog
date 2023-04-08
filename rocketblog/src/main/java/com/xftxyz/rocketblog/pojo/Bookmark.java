@@ -4,21 +4,25 @@ import java.util.Date;
 
 public class Bookmark {
     /**
+     * 收藏id
      * 此字段对应于数据库列t_bookmark.bookmark_id
      */
     private Long bookmarkId;
 
     /**
+     * 收藏用户id
      * 此字段对应于数据库列t_bookmark.userid
      */
     private Long userid;
 
     /**
+     * 被收藏博客id
      * 此字段对应于数据库列t_bookmark.blog_id
      */
     private Long blogId;
 
     /**
+     * 收藏时间
      * 此字段对应于数据库列t_bookmark.createtime
      */
     private Date createtime;

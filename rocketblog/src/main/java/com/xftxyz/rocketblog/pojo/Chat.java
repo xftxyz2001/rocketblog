@@ -4,31 +4,37 @@ import java.util.Date;
 
 public class Chat {
     /**
+     * 聊天id
      * 此字段对应于数据库列t_chat.chat_id
      */
     private Long chatId;
 
     /**
+     * 发送者id
      * 此字段对应于数据库列t_chat.userid_from
      */
     private Long useridFrom;
 
     /**
+     * 接收者id
      * 此字段对应于数据库列t_chat.userid_to
      */
     private Long useridTo;
 
     /**
+     * 消息内容
      * 此字段对应于数据库列t_chat.message_content
      */
     private String messageContent;
 
     /**
+     * 消息发送时间
      * 此字段对应于数据库列t_chat.createtime
      */
     private Date createtime;
 
     /**
+     * 消息是否已读
      * 此字段对应于数据库列t_chat.readed
      */
     private Integer readed;

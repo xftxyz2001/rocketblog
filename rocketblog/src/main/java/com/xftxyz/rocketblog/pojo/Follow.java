@@ -4,21 +4,25 @@ import java.util.Date;
 
 public class Follow {
     /**
+     * 关注id
      * 此字段对应于数据库列t_follow.follow_id
      */
     private Long followId;
 
     /**
+     * 关注用户id
      * 此字段对应于数据库列t_follow.userid_following
      */
     private Long useridFollowing;
 
     /**
+     * 被关注用户id
      * 此字段对应于数据库列t_follow.userid_followed
      */
     private Long useridFollowed;
 
     /**
+     * 关注时间
      * 此字段对应于数据库列t_follow.createtime
      */
     private Date createtime;

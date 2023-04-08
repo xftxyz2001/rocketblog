@@ -4,26 +4,31 @@ import java.util.Date;
 
 public class Comment {
     /**
+     * 评论id
      * 此字段对应于数据库列t_comment.comment_id
      */
     private Long commentId;
 
     /**
+     * 评论内容
      * 此字段对应于数据库列t_comment.comment_content
      */
     private String commentContent;
 
     /**
+     * 评论所属博客id
      * 此字段对应于数据库列t_comment.blog_id
      */
     private Long blogId;
 
     /**
+     * 评论时间
      * 此字段对应于数据库列t_comment.createtime
      */
     private Date createtime;
 
     /**
+     * 评论用户id
      * 此字段对应于数据库列t_comment.userid
      */
     private Long userid;

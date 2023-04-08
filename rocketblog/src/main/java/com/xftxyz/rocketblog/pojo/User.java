@@ -10,51 +10,61 @@ import java.util.Date;
 
 public class User implements Serializable{
     /**
+     * 用户id
      * 此字段对应于数据库列t_user.userid
      */
     private Long userid;
 
     /**
+     * 用户名
      * 此字段对应于数据库列t_user.username
      */
     private String username;
 
     /**
+     * 密码
      * 此字段对应于数据库列t_user.password
      */
     private String password;
 
     /**
+     * 性别
      * 此字段对应于数据库列t_user.user_sex
      */
     private String userSex;
 
     /**
+     * 邮箱
      * 此字段对应于数据库列t_user.email
      */
     private String email;
 
     /**
+     * 手机号
      * 此字段对应于数据库列t_user.phone
      */
     private String phone;
 
     /**
+     * 头像
      * 此字段对应于数据库列t_user.avatar
      */
     private String avatar;
 
     /**
+     * 是否为超级管理员
      * 此字段对应于数据库列t_user.is_superuser
      */
     private Integer isSuperuser;
 
     /**
+     * 最后登录时间
      * 此字段对应于数据库列t_user.last_login
      */
     private Date lastLogin;
 
     /**
+     * 用户注册时间
      * 此字段对应于数据库列t_user.user_register_time
      */
     private Date userRegisterTime;

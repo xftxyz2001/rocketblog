@@ -4,10 +4,14 @@ import java.util.Date;
 
 public class BlogDetail {
 
-    // 额外的字段：点赞
+    /**
+     * 用户是否点赞该博客
+     */
     private Boolean isLike;
 
-    // 额外的字段：收藏
+    /**
+     * 用户是否收藏该博客
+     */
     private Boolean isCollect;
 
     public Boolean isLike() {
@@ -27,66 +31,79 @@ public class BlogDetail {
     }
 
     /**
+     * 博客id
      * 此字段对应于数据库列v_blogdetail.blog_id
      */
     private Long blogId;
 
     /**
+     * 博客标题
      * 此字段对应于数据库列v_blogdetail.blog_title
      */
     private String blogTitle;
 
     /**
+     * 博客作者的用户id
      * 此字段对应于数据库列v_blogdetail.userid
      */
     private Long userid;
 
     /**
+     * 博客作者的用户名
      * 此字段对应于数据库列v_blogdetail.username
      */
     private String username;
 
     /**
+     * 博客作者的头像
      * 此字段对应于数据库列v_blogdetail.avatar
      */
     private String avatar;
 
     /**
+     * 博客状态（0：草稿，1：发布）
      * 此字段对应于数据库列v_blogdetail.blog_status
      */
     private Integer blogStatus;
 
     /**
+     * 博客创建时间
      * 此字段对应于数据库列v_blogdetail.create_time
      */
     private Date createTime;
 
     /**
+     * 博客最后更新时间
      * 此字段对应于数据库列v_blogdetail.update_time
      */
     private Date updateTime;
 
     /**
+     * 博客封面图片url
      * 此字段对应于数据库列v_blogdetail.cover_image
      */
     private String coverImage;
 
     /**
+     * 博客点赞数
      * 此字段对应于数据库列v_blogdetail.like_count
      */
     private Long likeCount;
 
     /**
+     * 博客评论数
      * 此字段对应于数据库列v_blogdetail.comment_count
      */
     private Long commentCount;
 
     /**
+     * 博客收藏数
      * 此字段对应于数据库列v_blogdetail.bookmark_count
      */
     private Long bookmarkCount;
 
     /**
+     * 博客内容
      * 此字段对应于数据库列v_blogdetail.blog_content
      */
     private String blogContent;

@@ -4,51 +4,61 @@ import java.util.Date;
 
 public class VChat {
     /**
+     * 消息id
      * 此字段对应于数据库列v_chat.chat_id
      */
     private Long chatId;
 
     /**
+     * 发送方id
      * 此字段对应于数据库列v_chat.userid_from
      */
     private Long useridFrom;
 
     /**
+     * 接收方id
      * 此字段对应于数据库列v_chat.userid_to
      */
     private Long useridTo;
 
     /**
+     * 消息内容
      * 此字段对应于数据库列v_chat.message_content
      */
     private String messageContent;
 
     /**
+     * 消息发送时间
      * 此字段对应于数据库列v_chat.createtime
      */
     private Date createtime;
 
     /**
+     * 发送方用户名
      * 此字段对应于数据库列v_chat.from_username
      */
     private String fromUsername;
 
     /**
+     * 发送方用户头像
      * 此字段对应于数据库列v_chat.from_avatar
      */
     private String fromAvatar;
 
     /**
+     * 接收方用户名
      * 此字段对应于数据库列v_chat.to_username
      */
     private String toUsername;
 
     /**
+     * 接收方用户头像
      * 此字段对应于数据库列v_chat.to_avatar
      */
     private String toAvatar;
 
     /**
+     * 消息是否已读
      * 此字段对应于数据库列v_chat.readed
      */
     private Integer readed;
