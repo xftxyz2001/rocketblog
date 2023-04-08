@@ -4,13 +4,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.xftxyz.rocketblog.exception.blog.BlogNotExistException;
+import com.xftxyz.rocketblog.exception.chat.NoChatException;
 import com.xftxyz.rocketblog.exception.image.ImageException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
-import com.xftxyz.rocketblog.exception.user.NoChatException;
 import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.SelfOperationException;

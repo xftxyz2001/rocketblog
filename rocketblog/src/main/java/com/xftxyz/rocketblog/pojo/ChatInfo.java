@@ -3,14 +3,29 @@ package com.xftxyz.rocketblog.pojo;
 import java.util.Date;
 
 public class ChatInfo {
+    /**
+     * 用户id
+     */
     private Long userid;
+    /**
+     * 用户名
+     */
     private String username;
+    /**
+     * 用户头像
+     */
     private String avatar;
-    // 未读消息数量
+    /**
+     * 未读消息数量
+     */
     private Integer msgNum;
-    // 最后一条消息
+    /**
+     * 最后一条消息
+     */
     private String lastMsg;
-    // 最后一条消息时间
+    /**
+     * 最后一条消息的发送时间
+     */
     private Date lastTime;
 
     public Long getUserid() {

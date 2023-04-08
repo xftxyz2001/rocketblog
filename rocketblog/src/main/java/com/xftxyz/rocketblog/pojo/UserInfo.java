@@ -1,19 +1,33 @@
 package com.xftxyz.rocketblog.pojo;
 
 public class UserInfo {
-    // id
+    /**
+     * 用户id
+     */
     private Long userid;
-    // username
+    /**
+     * 用户名
+     */
     private String username;
-    // avatar
+    /**
+     * 用户头像
+     */
     private String avatar;
-    // followings
+    /**
+     * 关注数
+     */
     private Long followings;
-    // followers
+    /**
+     * 粉丝数
+     */
     private Long followers;
-    // blogs
+    /**
+     * 文章数
+     */
     private Long blogs;
-    // isFollowed
+    /**
+     * 是否关注
+     */
     private Boolean isFollowed;
 
     public String getUsername() {

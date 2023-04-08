@@ -26,6 +26,7 @@ import com.xftxyz.rocketblog.pojo.BlogInfoExample.Criteria;
 import com.xftxyz.rocketblog.pojo.Bookmark;
 import com.xftxyz.rocketblog.pojo.BookmarkExample;
 import com.xftxyz.rocketblog.pojo.Comment;
+import com.xftxyz.rocketblog.pojo.CommentExample;
 import com.xftxyz.rocketblog.pojo.Like;
 import com.xftxyz.rocketblog.pojo.LikeExample;
 import com.xftxyz.rocketblog.pojo.User;
@@ -213,6 +214,15 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer addComment(Comment comment) {
+        // 评论内容相同
+        CommentExample exComment = new CommentExample();
+        exComment.createCriteria().andBlogIdEqualTo(comment.getBlogId())
+                .andCommentContentEqualTo(comment.getCommentContent());
+        long count = commentMapper.countByExample(exComment);
+        if (count > 0) {
+            throw new AlreadyDoneException("评论内容相同");
+        }
+
         comment.setCreatetime(new Date());
         int insert = commentMapper.insert(comment);
         return insert;
@@ -308,6 +318,7 @@ public class BlogServiceImpl implements BlogService {
         exBlogDetail.createCriteria().andBlogIdEqualTo(blogId);
         List<BlogDetail> selectByExample = blogDetailMapper.selectByExampleWithBLOBs(exBlogDetail);
         BlogDetail blogDetail = selectByExample.get(0);
+        // 当用户未登录或管理员查看时，不展示如下信息
         if (user != null) {
             LikeExample exLike = new LikeExample();
             exLike.createCriteria().andBlogIdEqualTo(blogId).andUseridEqualTo(user.getUserid());

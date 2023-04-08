@@ -1,9 +1,24 @@
 package com.xftxyz.rocketblog.parameter;
 
 public class RegisterBody {
+    /**
+     * 用户名（昵称）
+     */
     private String name;
+
+    /**
+     * 密码
+     */
     private String password;
+
+    /**
+     * 邮箱
+     */
     private String email;
+
+    /**
+     * 验证码
+     */
     private String vertify;
 
     public String getName() {

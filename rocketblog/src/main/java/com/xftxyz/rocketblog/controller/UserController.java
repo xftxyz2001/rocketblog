@@ -398,7 +398,7 @@ public class UserController {
     @GetMapping("/followings")
     public PageInfo<UserBase> followings(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         // 获取当前登录用户信息，并获取该用户关注的用户列表
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
@@ -419,7 +419,7 @@ public class UserController {
     @GetMapping("/followers")
     public PageInfo<UserBase> followers(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         // 获取当前登录用户信息，并获取该用户的粉丝列表
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);

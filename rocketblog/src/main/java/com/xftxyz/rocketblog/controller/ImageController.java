@@ -29,6 +29,13 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
+    /**
+     * 上传图片。
+     *
+     * @param file 要上传的图片文件
+     * @return 返回一个字符串，表示图片上传成功后的 URL
+     * @throws ImageException 如果上传图片失败，则会抛出 ImageException 异常
+     */
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("file") MultipartFile file) {
         try {
@@ -39,6 +46,12 @@ public class ImageController {
         }
     }
 
+    /**
+     * 下载指定 id 的图片。
+     *
+     * @param id 要下载的图片的 id
+     * @return 返回一个 ResponseEntity<Resource> 对象，包含要下载的图片资源
+     */
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> downloadImage(@PathVariable("id") String id) {
         try {
@@ -50,6 +63,12 @@ public class ImageController {
         }
     }
 
+    /**
+     * 获取指定 id 的图片的字节数组。
+     *
+     * @param id 要获取的图片的 id
+     * @return 返回一个 ResponseEntity<byte[]> 对象，包含指定 id 的图片的字节数组
+     */
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) {
         try {
@@ -62,8 +81,14 @@ public class ImageController {
         }
     }
 
+    /**
+     * 获取IP签名档图片的URL。
+     *
+     * @return 返回一个字符串，表示IP签名档图片的URL
+     */
     @GetMapping("/ipsign")
     public String getIpSign() {
         return imageService.getIPSign();
     }
+
 }

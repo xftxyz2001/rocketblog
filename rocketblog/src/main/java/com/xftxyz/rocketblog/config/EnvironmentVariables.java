@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface EnvironmentVariables {
+    // 默认分页大小
+    String DEFAULT_PAGE_SIZE = "5";
 
     // 上传文件的目录
     String UPLOAD_DIRECTORY = "uploads";
