@@ -40,6 +40,7 @@ jobs:
         run: |
           cd rocketblog
           chmod +x mvnw
+          ./mvnw smart-doc:html
           ./mvnw clean package -DskipTests
 
       - name: 部署到服务器
