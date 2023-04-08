@@ -1,6 +1,6 @@
 <template>
   <div class="grid-content ep-bg-purple-light" />
-  <el-card shadow="never" style="height: 500px">
+  <el-card shadow="never" style="height: 500px; overflow-y: auto">
     <!-- <el-row
           v-for="msg in msglist"
           :key="msg.chatId"
@@ -22,11 +22,15 @@
           </div>
           <div v-else style="position: absolute; left: 5px">3</div>
         </el-row> -->
-    <div v-for="msg in msglist" :key="msg.chatId" style="width: 100%">
-      <div v-if="msg.useridFrom == myuserid" style="width: 100%; height: 80px">
+    <div
+      v-for="msg in msglist"
+      :key="msg.chatId"
+      style="width: 100%; overflow: hidden"
+    >
+      <div v-if="msg.useridFrom == myuserid" style="width: 100%">
         <div style="float: right">
           <img
-            :src="msg.toAvatar"
+            :src="msg.fromAvatar"
             alt=""
             style="width: 26px; border-radius: 13px"
           />
@@ -34,7 +38,7 @@
         <div style="float: right; padding-top: 5px">
           <div>
             <div style="font-size: 12px; float: right">
-              {{ msg.toUsername }}
+              {{ msg.fromUsername }}
             </div>
           </div>
           <div>
@@ -57,7 +61,7 @@
           </div>
         </div>
       </div>
-      <div v-else style="width: 100%; height: 80px">
+      <div v-else style="width: 100%">
         <div style="float: left">
           <img
             :src="msg.fromAvatar"
@@ -80,9 +84,11 @@
                   border-radius: 5px;
                   padding: 5px;
                   margin-top: 1px;
-
+                  max-width: 200px;
                   display: grid;
                   grid-template-rows: repeat(10, 10%);
+                  word-break: break-all;
+                  overflow: hidden;
                 "
               >
                 {{ msg.messageContent }}
@@ -93,13 +99,31 @@
       </div>
     </div>
   </el-card>
+  <div style="overflow: hidden">
+    <el-input
+      v-model="textarea2"
+      :autosize="{ minRows: 2, maxRows: 4 }"
+      type="textarea"
+      placeholder="请输入..."
+      style="float: right"
+    />
+    <el-button
+      type="primary"
+      round
+      style="float: right; margin-top: 7px"
+      @click="send"
+      >发送</el-button
+    >
+  </div>
 </template>
 <script setup >
 import axios from "axios";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 
+const textarea2 = ref("");
 const route = useRoute();
+// const myuserid = ref(null);
 const myuserid = ref(null);
 const msglist = ref([]);
 
@@ -107,9 +131,8 @@ axios.get("/user/i").then((res) => {
   var result = res.data;
   if (result.code == 0) {
     myuserid.value = result.data.userid;
-    console.log(3);
+
     axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
-      console.log(4);
       var result = res.data;
       if (result.code == 0) {
         var resultdata = result.data.list.reverse();
@@ -122,6 +145,16 @@ axios.get("/user/i").then((res) => {
     });
   }
 });
+function send() {
+  //     if(textarea2.trim()!==""){
+  //   var sendmessage = { to: route.params.userid ,content:textarea2.value};
+  //   axios.post("user/chat",sendmessage).then((res)=>{
+  //     result=res.data;
+  //     if(result.code==0){
+  //         axios.post("user/chat/session/")
+  //     }
+  //   });}
+}
 </script>
 <script>
 export default {};

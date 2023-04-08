@@ -36,7 +36,11 @@
                   {{ pageInfo.lastMsg }}
                 </div>
                 <div style="display: inline-block">
-                  <el-badge :value="pageInfo.msgNum" class="item" />
+                  <el-badge
+                    v-if="pageInfo.msgNum !== 0"
+                    :value="pageInfo.msgNum"
+                    class="item"
+                  />
                 </div> </el-row></el-col
           ></el-row>
         </div> </el-card
@@ -52,7 +56,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 // const myuserid = ref(105);
-const pageInfos = ref([]);
+const pageInfos = ref([{}]);
 const route = useRoute();
 // const msglist = ref([]);
 
