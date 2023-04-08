@@ -101,7 +101,7 @@
   </el-card>
   <div style="overflow: hidden">
     <el-input
-      v-model="textarea2"
+      v-model.trim="textarea2"
       :autosize="{ minRows: 2, maxRows: 4 }"
       type="textarea"
       placeholder="请输入..."
@@ -146,7 +146,7 @@ axios.get("/user/i").then((res) => {
   }
 });
 function send() {
-  if (textarea2.trim() !== "") {
+  if (textarea2 !== "") {
     var sendmessage = { to: route.params.userid, content: textarea2.value };
     axios.post("user/chat", sendmessage).then((res) => {
       result = res.data;
