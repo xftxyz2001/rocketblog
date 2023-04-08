@@ -92,7 +92,7 @@ export default {};
 <style>
 
 .infinite-list {
-  height: 250px;
+  height: 400px;
   padding: 0;
   margin: 0;
   list-style: none;

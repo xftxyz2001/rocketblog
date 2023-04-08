@@ -8,7 +8,7 @@
             <span style="font-weight: 700">消息</span>
           </div>
         </template>
-        <div style="overflow-y: scroll; height: 650px">
+        <div style="overflow-y: scroll; height: 400px">
           <div
             v-for="pageInfo in pageInfos"
             :key="pageInfo.userid"
@@ -61,7 +61,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 // const myuserid = ref(105);
-const pageInfos = ref([{}]);
+const pageInfos = ref([]);
 const route = useRoute();
 const selectchat = ref(false);
 // const msglist = ref([]);
