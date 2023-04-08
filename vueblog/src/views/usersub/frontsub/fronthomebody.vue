@@ -8,18 +8,17 @@
 
       <div class="grid-content ep-bg-purple" />
     </el-col>
-    <el-col :span="10">
+    <el-col :span="10" style="position: fixed">
       <!-- 轮播图 -->
-      <el-carousel indicator-position="outside" style="margin-top: 15px">
-        <el-carousel-item class="carousel-item" v-for="blog in hotblogs">
-          <img class="carousel-img" :src="blog.coverImage" alt="" srcset="" @click="clickImg(blog)" />
-          <h3>{{ blog.blogTitle }}</h3>
-        </el-carousel-item>
-      </el-carousel>
-      <router-view></router-view>
+
+      <div style="position: fixed; width: 100%; top: 50px; padding-left: 30px">
+        <div style="height: 15px"></div>
+        <router-view></router-view>
+      </div>
       <div class="grid-content ep-bg-purple" />
     </el-col>
-    <el-col :span="4">1235
+    <el-col :span="4"
+      >1235
       <div class="grid-content ep-bg-purple" />
     </el-col>
     <el-col :span="4">
@@ -34,14 +33,15 @@ import axios from "axios";
 import { ref } from "vue";
 const hotblogs = ref([]);
 
-axios
-  .get("/blog/hot")
-  .then((res) => {
-    hotblogs.value = res.data.data.list;
-  });
+axios.get("/blog/hot").then((res) => {
+  hotblogs.value = res.data.data.list;
+});
 
 function clickImg(blog) {
-  router.push({ name: "blogdetail", params: { userid: blog.userid, blogid: blog.blogId } });
+  router.push({
+    name: "blogdetail",
+    params: { userid: blog.userid, blogid: blog.blogId },
+  });
 }
 </script>
 
@@ -79,34 +79,8 @@ export default defineComponent({
   border-radius: 4px;
   min-height: 36px;
 }
-.el-carousel__item h3 {
-  display: flex;
-  color: #475669;
-  opacity: 0.75;
-  line-height: 300px;
-  margin: 0;
-}
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-.el-carousel__container {
-  z-index: -100;
-}
-.carousel-item {
-  width: 100%;
-  height: 100%;
-  background: white;
-  display: flex;
-  justify-content: center;
-}
-
-.carousel-img {
-  max-width: 100%;
-  max-height: 100%;
+.el-carousel::-webkit-scrollbar {
+  display: none;
 }
 </style>

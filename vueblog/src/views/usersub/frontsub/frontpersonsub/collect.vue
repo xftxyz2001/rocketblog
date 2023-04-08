@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isempty"><el-empty description="快去发一条博客吧！" /></div>
+  <div v-if="isempty"><el-empty description="你还没有收藏哦！" /></div>
   <el-card
     v-else
     v-for="collect in collects"

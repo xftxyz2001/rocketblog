@@ -15,6 +15,7 @@
     "mitt": "^3.0.0",
     "quill-image-extend-module": "^1.1.2",
     "smooth-scroll-into-view-if-needed": "^2.0.0",
+    "v-infinite-scroll": "^1.0.4",
     "vue": "^3.2.13",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^4.0.3"

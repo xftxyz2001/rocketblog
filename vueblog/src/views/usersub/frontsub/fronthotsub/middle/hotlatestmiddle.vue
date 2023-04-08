@@ -1,33 +1,40 @@
 <template>
-  <el-card
-    v-for="blog in latestdata"
-    :key="blog.blogId"
-    :data-blogid="blog.blogId"
-    :data-userid="blog.userid"
-    class="box-card"
+  <div
+    v-infinite-scroll="load"
+    class="infinite-list"
+    style="overflow: auto"
+    infinite-scroll-distance="1"
   >
-    <template #header>
-      <div class="card-header">
-        <div>
-          <el-avatar
-            :size="32"
-            class="mr-3"
-            :src="blog.avatar"
-            style="margin: 12px 5px 0px 0px"
-          />
-          <span
-            class="text-large font-600 mr-3"
-            style="
-              display: inline-block;
-              overflow: hidden;
-              margin: -3px 5px 3px 5px;
-            "
-          >
-            {{ blog.blogTitle }}
-          </span>
-        </div>
+    <div style="width: 40%; margin: 0 auto; padding-left: 40px">
+      <el-card
+        v-for="blog in latestdata"
+        :key="blog.blogId"
+        :data-blogid="blog.blogId"
+        :data-userid="blog.userid"
+        class="box-card"
+      >
+        <template #header>
+          <div class="card-header">
+            <div>
+              <el-avatar
+                :size="32"
+                class="mr-3"
+                :src="blog.avatar"
+                style="margin: 12px 5px 0px 0px"
+              />
+              <span
+                class="text-large font-600 mr-3"
+                style="
+                  display: inline-block;
+                  overflow: hidden;
+                  margin: -3px 5px 3px 5px;
+                "
+              >
+                {{ blog.blogTitle }}
+              </span>
+            </div>
 
-        <!-- <el-button
+            <!-- <el-button
           class="button"
           text
           style="color: #24acf2"
@@ -35,32 +42,38 @@
           ><el-icon style="margin: 0 2px 1.5px 0"><Plus /></el-icon
           >关注</el-button
         > -->
-      </div>
-      <span style="font-size: 5px; margin-left: 5px"
-        >作者：{{ blog.username }}</span
-      >
-    </template>
+          </div>
+          <span style="font-size: 5px; margin-left: 5px"
+            >作者：{{ blog.username }}</span
+          >
+        </template>
 
-    <el-skeleton style="width: 100%" :loading="loading" animated>
-      <template #default>
-        <div
-          style="padding: 14px; cursor: pointer"
-          @click="clickblog(blog.userid, blog.blogId)"
-        >
-          <el-row>
-            <el-col :span="6">
-              <div class="grid-content ep-bg-purple" />
-              <img :src="blog.coverImage" alt="" style="width: 100px; height: 100px"/>
-            </el-col>
-            <el-col :span="12">
-              <div class="grid-content ep-bg-purple-light" />
-              <div style="width: 100%" v-html="blog.blogSummary"></div>
-            </el-col>
-          </el-row>
-        </div>
-        <div class="bottom card-header">
-          <div class="time" style="font-size: 10px">{{ blog.updateTime }}</div>
-          <!-- <div>
+        <el-skeleton style="width: 100%" :loading="loading" animated>
+          <template #default>
+            <div
+              style="padding: 14px; cursor: pointer"
+              @click="clickblog(blog.userid, blog.blogId)"
+            >
+              <el-row>
+                <el-col :span="6">
+                  <div class="grid-content ep-bg-purple" />
+                  <img
+                    :src="blog.coverImage"
+                    alt=""
+                    style="width: 100px; height: 100px"
+                  />
+                </el-col>
+                <el-col :span="12">
+                  <div class="grid-content ep-bg-purple-light" />
+                  <div style="width: 100%" v-html="blog.blogSummary"></div>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="bottom card-header">
+              <div class="time" style="font-size: 10px">
+                {{ blog.updateTime }}
+              </div>
+              <!-- <div>
             <span
               class="iconfont"
               style="margin-right: 10px; cursor: pointer"
@@ -74,10 +87,12 @@
               >&#xe603;</span
             >
           </div> -->
-        </div>
-      </template>
-    </el-skeleton>
-  </el-card>
+            </div>
+          </template>
+        </el-skeleton>
+      </el-card>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -87,9 +102,11 @@ import { getCurrentInstance } from "vue";
 import { ref } from "vue";
 const router = useRouter();
 const latestdata = ref([]);
+const page = ref(1);
+const pagesize = ref(5);
 // import bus from "@/utils/bus";
 axios
-  .get("/blog/new?pageNum=1&pageSize=5")
+  .get("/blog/new?pageNum=" + page.value + "&pageSize=" + pagesize.value)
   .then((res) => {
     latestdata.value = res.data.data.list;
   });
@@ -117,6 +134,17 @@ const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 //     Bus.emit("collectneedlogin", {});
 //   }
 // }
+function load() {
+  page.value++;
+  axios
+    .get("/blog/new?pageNum=" + page.value + "&pageSize=" + pagesize.value)
+    .then((res) => {
+      var result = res.data;
+      for (let index = 0; index < result.data.list.length; index++) {
+        latestdata.value.push(result.data.list[index]);
+      }
+    });
+}
 function clickblog(userid, blogid) {
   // var userid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.userid;
   // var blogid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.blogid;
@@ -160,5 +188,34 @@ export default {};
   width: 100%;
   margin-bottom: 10px;
   /* vertical-align:baseline; */
+}
+/* .infinite-list::-webkit-scrollbar {
+  right: 10px;
+  width: 100px;
+} */
+/* .infinite-list ::-webkit-scrollbar-track {
+  position: relative;
+  
+} */
+/* .infinite-list::-webkit-scrollbar-track {
+  border-radius: 2px;
+} */
+.infinite-list {
+  height: calc(100vh);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
 }
 </style>
