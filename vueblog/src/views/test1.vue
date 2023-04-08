@@ -131,23 +131,17 @@
 //         "username": "测试"
 import axios from "axios";
 import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
-
-const route = useRoute();
+import { useRouter } from "vue-router";
 const router = useRouter();
 const userdata = ref({});
-
-axios.get("/user/info" + route.params.userid).then((res) => {
-  var resultUserInfo = res.data;
-  if (resultUserInfo.code == 0) {
-    userdata.value = resultUserInfo.data;
-  }
+axios.get("/user/i").then((res) => {
+  userdata.value = res.data.data;
 });
 function tootherpersonblog() {
-  //   router.push({
-  //     name: "otherpersonblog",
-  //     // params: { userid: userid, blogid: blogid },
-  //   });
+  router.push({
+    name: "otherpersonblog",
+    // params: { userid: userid, blogid: blogid },
+  });
 }
 </script>
 <script>

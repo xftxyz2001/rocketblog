@@ -28,7 +28,8 @@
 <script setup >
 import axios from "axios";
 import { ref } from "vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const isempty = ref(false);
 const guanzhus = ref([]);
 axios.get("/user/followings").then((res) => {
@@ -37,6 +38,12 @@ axios.get("/user/followings").then((res) => {
     isempty.value = true;
   }
 });
+function guanzhudetail(userid) {
+  router.push({
+    name: "otherperson",
+    params: { userid: userid },
+  });
+}
 // function guanzhudetail(guanzhuid, guanzhuid) {
 //   // var guanzhuid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.guanzhuid;
 //   // var guanzhuid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.guanzhuid;
