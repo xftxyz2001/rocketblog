@@ -153,9 +153,16 @@
             <div class="grid-content ep-bg-purple" />
           </el-col>
 
-          <el-col :span="9">
-            <div class="grid-content ep-bg-purple" />
+          <el-col :span="7">
+            <span
+              class="iconfont"
+              style="margin-right: 5px; cursor: pointer"
+              @click="collectthis"
+            >
+              &#xe6ad;
+            </span>
             评论 {{ blogdata.commentCount }}
+            <div class="grid-content ep-bg-purple" />
           </el-col>
           <el-input
             v-model.trim="commenttext"

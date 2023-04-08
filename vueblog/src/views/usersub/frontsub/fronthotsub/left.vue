@@ -17,7 +17,7 @@
     >
       <router-link :to="{ name: 'hotlatest' }"
         ><el-menu-item index="1" style="border-top: 1px #c8c9cc solid">
-          <span class="iconfont" style="margin-right: 5px">&#xe8bc;</span>
+          <span class="iconfont" style="margin-right: 5px">&#xe61e;</span>
           <span>最新发布</span>
         </el-menu-item></router-link
       >
