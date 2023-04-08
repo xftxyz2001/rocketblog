@@ -140,7 +140,7 @@ setInterval(function () {
       } else {
         var lastmessagenum = msglist.value[msglist.value.length - 1].chatId;
         for (let index = 0; index < resultdata.length; index++) {
-          if (lastmessagenum <= resultdata[index].chatId)
+          if (lastmessagenum < resultdata[index].chatId)
             msglist.value.push(resultdata[index]);
         }
       }
