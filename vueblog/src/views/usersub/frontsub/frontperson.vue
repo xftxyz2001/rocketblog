@@ -48,7 +48,9 @@
                             >昵称：{{ userdata.username }}</el-row
                           >
                           <el-row gutter="20" justify="left">
-                            <el-button link @click="router.push({ name: 'personguanzhu' })"
+                            <el-button
+                              link
+                              @click="router.push({ name: 'personguanzhu' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -64,7 +66,9 @@
                               </el-col></el-button
                             >
 
-                            <el-button link @click="router.push({ name: 'personfensi' })"
+                            <el-button
+                              link
+                              @click="router.push({ name: 'personfensi' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -79,7 +83,9 @@
                                 </el-col>
                               </el-col></el-button
                             >
-                            <el-button link @click="router.push({ name: 'personblog' })"
+                            <el-button
+                              link
+                              @click="router.push({ name: 'personblog' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -139,7 +145,7 @@
                           <span>博客</span>
                         </el-menu-item></router-link
                       >
-                      <router-link :to="{ name: 'personguanzhu ' }">
+                      <router-link :to="{ name: 'personguanzhu' }">
                         <el-menu-item index="4">
                           <span class="iconfont" style="margin-right: 5px"
                             >&#xe60f;</span

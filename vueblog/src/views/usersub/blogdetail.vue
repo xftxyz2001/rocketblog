@@ -8,8 +8,21 @@
         <template #header>
           <div class="card-header">
             <div style="margin-bottom: 20px">
-              <div style="overflow: hidden;width: 30px;display: inline-block;vertical-align: bottom;border-radius: 15px;">
-                <img :src="userdata.avatar" alt="" style="width: 30px" />
+              <div
+                style="
+                  overflow: hidden;
+                  width: 30px;
+                  display: inline-block;
+                  vertical-align: bottom;
+                  border-radius: 15px;
+                "
+              >
+                <img
+                  :src="userdata.avatar"
+                  alt=""
+                  style="width: 30px"
+                  @click="gotootherperson(userdata.userid)"
+                />
               </div>
               <span style="font-size: 5px">{{ userdata.username }}</span>
             </div>
@@ -68,9 +81,7 @@
             </el-col>
             <el-col :span="10">
               <div class="grid-content ep-bg-purple-light" />
-              <el-button @click="deletethis"
-                >删除</el-button
-              >
+              <el-button @click="deletethis">删除</el-button>
             </el-col>
           </el-row>
         </div>
@@ -228,7 +239,12 @@ const blogdata = ref({
 const comments = ref([]);
 const isme = ref(false);
 console.log(route.params);
-
+function gotootherperson(userid) {
+  router.push({
+    name: "otherperson",
+    params: { userid: userid },
+  });
+}
 // axios
 //   .get("/user/info/" + route.params.userid)
 //   .then((res) => {
@@ -277,7 +293,7 @@ axios.get("/blog/detail/" + route.params.blogid).then((res) => {
         });
       }
     });
-    
+
     // 请求作者信息
     axios.get("/user/info/" + blogdata.value.userid).then((res) => {
       var resultUserInfo = res.data;
@@ -317,7 +333,7 @@ axios.get("/blog/detail/" + route.params.blogid).then((res) => {
 
 function checkTokenInCookie() {
   var cookies = document.cookie;
-  return cookies.indexOf('token=') != -1;
+  return cookies.indexOf("token=") != -1;
 }
 
 function commentthis() {
@@ -331,67 +347,57 @@ function commentthis() {
       blogId: route.params.blogid,
       commentContent: commenttext.value,
     };
-    axios
-      .post("/blog/comment", commentdata)
-      .then((res) => {
-        if (res.data.code == 0) {
-          ElMessage({
-            showClose: true,
-            message: "发表成功",
-            type: "success",
-          });
+    axios.post("/blog/comment", commentdata).then((res) => {
+      if (res.data.code == 0) {
+        ElMessage({
+          showClose: true,
+          message: "发表成功",
+          type: "success",
+        });
 
-          comments.value.unshift(res.data.data);
+        comments.value.unshift(res.data.data);
 
-          commenttext.value = "";
-        }
-      });
+        commenttext.value = "";
+      }
+    });
   } else {
     Bus.emit("commentneedlogin", {});
   }
 }
 function dontfollowthis() {
   if (checkTokenInCookie()) {
-    axios
-      .delete("/user/follow/" + route.params.userid)
-      .then((res) => {
-        userdata.value.followed = false;
-      });
+    axios.delete("/user/follow/" + route.params.userid).then((res) => {
+      userdata.value.followed = false;
+    });
   } else {
     Bus.emit("likeneedlogin", {});
   }
 }
 function followthis() {
   if (checkTokenInCookie()) {
-    axios
-      .get("/user/follow/" + route.params.userid)
-      .then((res) => {
-        userdata.value.followed = true;
-      });
+    axios.get("/user/follow/" + route.params.userid).then((res) => {
+      userdata.value.followed = true;
+    });
   } else {
     Bus.emit("likeneedlogin", {});
   }
 }
 function likethis() {
   if (checkTokenInCookie()) {
-    axios
-      .get("/blog/like/" + route.params.blogid)
-      .then((res) => {
-        blogdata.value.like = true;
-        blogdata.value.likeCount = res.data.data;
-      });
+    axios.get("/blog/like/" + route.params.blogid).then((res) => {
+      blogdata.value.like = true;
+      blogdata.value.likeCount = res.data.data;
+    });
   } else {
     Bus.emit("likeneedlogin", {});
   }
 }
 function collectthis() {
   if (checkTokenInCookie()) {
-    axios
-      .get("/blog/collect/" + route.params.blogid)
-      .then((res) => {
-        blogdata.value.collect = true;
-        blogdata.value.bookmarkCount = res.data.data;
-      });
+    axios.get("/blog/collect/" + route.params.blogid).then((res) => {
+      blogdata.value.collect = true;
+      blogdata.value.bookmarkCount = res.data.data;
+    });
   } else {
     Bus.emit("collectneedlogin", {});
   }
@@ -399,24 +405,20 @@ function collectthis() {
 function dontcollectthis() {
   console.log(blogdata.value.collect);
   if (checkTokenInCookie()) {
-    axios
-      .delete("/blog/collect/" + route.params.blogid)
-      .then((res) => {
-        blogdata.value.collect = false;
-        blogdata.value.bookmarkCount = res.data.data;
-      });
+    axios.delete("/blog/collect/" + route.params.blogid).then((res) => {
+      blogdata.value.collect = false;
+      blogdata.value.bookmarkCount = res.data.data;
+    });
   } else {
     Bus.emit("collectneedlogin", {});
   }
 }
 function dontlikethis() {
   if (checkTokenInCookie()) {
-    axios
-      .delete("/blog/like/" + route.params.blogid)
-      .then((res) => {
-        blogdata.value.like = false;
-        blogdata.value.likeCount = res.data.data;
-      });
+    axios.delete("/blog/like/" + route.params.blogid).then((res) => {
+      blogdata.value.like = false;
+      blogdata.value.likeCount = res.data.data;
+    });
   } else {
     Bus.emit("likeneedlogin", {});
   }
@@ -424,18 +426,16 @@ function dontlikethis() {
 // 删除博客
 function deletethis() {
   if (checkTokenInCookie()) {
-    axios
-      .delete("/blog/delete/" + route.params.blogid)
-      .then((res) => {
-        if (res.data.code == 0) {
-          ElMessage({
-            showClose: true,
-            message: "删除成功",
-            type: "success",
-          });
-          router.push({name:"hotlatest"});
-        }
-      });
+    axios.delete("/blog/delete/" + route.params.blogid).then((res) => {
+      if (res.data.code == 0) {
+        ElMessage({
+          showClose: true,
+          message: "删除成功",
+          type: "success",
+        });
+        router.push({ name: "hotlatest" });
+      }
+    });
   } else {
     Bus.emit("likeneedlogin", {});
   }
