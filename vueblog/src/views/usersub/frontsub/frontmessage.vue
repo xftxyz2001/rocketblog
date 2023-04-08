@@ -8,7 +8,7 @@
             <span style="font-weight: 700">消息</span>
           </div>
         </template>
-        <div style="overflow-y: scroll">
+        <div style="overflow-y: scroll;max-height:650px">
           <div
             v-for="pageInfo in pageInfos"
             :key="pageInfo.userid"
