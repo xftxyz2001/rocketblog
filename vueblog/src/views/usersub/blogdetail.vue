@@ -60,6 +60,18 @@
           <el-row :gutter="100">
             <el-col :span="10" :offset="2">
               <div class="grid-content ep-bg-purple" />
+              <el-button>修改</el-button>
+            </el-col>
+            <el-col :span="10">
+              <div class="grid-content ep-bg-purple-light" />
+              <el-button @click="deletethis">删除</el-button>
+            </el-col>
+          </el-row>
+        </div>
+        <div v-else>
+          <el-row :gutter="100">
+            <el-col :span="10" :offset="2">
+              <div class="grid-content ep-bg-purple" />
               <el-button>私信</el-button>
             </el-col>
             <el-col :span="10">
@@ -70,18 +82,6 @@
               <el-button v-else type="primary" @click="followthis"
                 >关注</el-button
               >
-            </el-col>
-          </el-row>
-        </div>
-        <div v-else>
-          <el-row :gutter="100">
-            <el-col :span="10" :offset="2">
-              <div class="grid-content ep-bg-purple" />
-              <el-button>修改</el-button>
-            </el-col>
-            <el-col :span="10">
-              <div class="grid-content ep-bg-purple-light" />
-              <el-button @click="deletethis">删除</el-button>
             </el-col>
           </el-row>
         </div>
