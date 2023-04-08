@@ -1,8 +1,6 @@
 package com.xftxyz.rocketblog.controller;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xftxyz.rocketblog.pojo.BlogInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.UserService;
 
@@ -24,31 +21,35 @@ public class TestController {
     @Autowired
     UserService userService;
 
-    // 除零
+    /**
+     * 返回除零错误。
+     *
+     * @param num 要除以零的数字
+     * @return 除以零的结果
+     */
     @GetMapping("/by0")
     public Double by0(@RequestParam("num") Double num) {
         return num / 0;
     }
 
-    // 空返回
+    /**
+     * 空返回测试方法。
+     */
     @GetMapping("/null")
     public void nullReturn() {
     }
 
-    // 时间
+    /**
+     * 获取当前时间。
+     *
+     * @return 返回一个 {@link User} 对象，包含当前时间信息
+     */
     @GetMapping("/time")
-    public Map<String, Object> time() {
-        User user  = new User();
+    public User time() {
+        User user = new User();
         user.setLastLogin(new Date());
         user.setUserRegisterTime(new Date());
-        BlogInfo blogInfo = new BlogInfo();
-        blogInfo.setCreateTime(new Date());
-        blogInfo.setUpdateTime(new Date());
-
-        return new HashMap<String, Object>() {{
-            put("user", user);
-            put("blogInfo", blogInfo);
-        }};
+        return user;
     }
 
 }
