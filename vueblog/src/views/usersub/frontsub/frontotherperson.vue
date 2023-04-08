@@ -198,7 +198,12 @@ function chatwith() {
     var result = res.data;
     if (result.code == 400) {
       var sendmessage = { to: route.params.userid, content: "" };
-      axios.post("user/chat", sendmessage);
+      axios.post("user/chat", sendmessage).then((res) => {
+        router.push({
+          name: "messagedetail",
+          params: { userid: route.params.userid },
+        });
+      });
     }
   });
 }
