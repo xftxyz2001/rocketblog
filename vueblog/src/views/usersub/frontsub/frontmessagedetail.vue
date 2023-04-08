@@ -146,14 +146,15 @@ axios.get("/user/i").then((res) => {
   }
 });
 function send() {
-  //     if(textarea2.trim()!==""){
-  //   var sendmessage = { to: route.params.userid ,content:textarea2.value};
-  //   axios.post("user/chat",sendmessage).then((res)=>{
-  //     result=res.data;
-  //     if(result.code==0){
-  //         axios.post("user/chat/session/")
-  //     }
-  //   });}
+  if (textarea2.trim() !== "") {
+    var sendmessage = { to: route.params.userid, content: textarea2.value };
+    axios.post("user/chat", sendmessage).then((res) => {
+      result = res.data;
+      if (result.code == 0) {
+        axios.get("user/chat/session/" + route.params.userid);
+      }
+    });
+  }
 }
 </script>
 <script>
