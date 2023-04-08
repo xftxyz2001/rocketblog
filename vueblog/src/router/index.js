@@ -24,11 +24,24 @@ import personcollect from "@/views/usersub/frontsub/frontpersonsub/collect"
 import personfensi from "@/views/usersub/frontsub/frontpersonsub/fensi"
 import personguanzhu from "@/views/usersub/frontsub/frontpersonsub/guanzhu"
 import messagedetail from "@/views/usersub/frontsub/frontmessagedetail"
+import otherperson from "@/views/usersub/frontsub/frontotherperson.vue"
+import otherpersonblog from "@/views/usersub/frontsub/frontotherpersonsub/otherpersonblog"
 import test from "@/views/test"
+import test1 from "@/views/test1"
 const routes = [{
   path: '/test',
   name: 'test',
   component: test
+},
+{
+  path: '/test1',
+  name: 'test1',
+  component: test1,
+  children: [{
+    path: 'otherpersonblog',
+    name: 'otherpersonblog',
+    component: otherpersonblog
+  }]
 },
 
 {
@@ -190,6 +203,10 @@ const routes = [{
             component: personaccount
           }
           ]
+        }, {
+          path: 'otherperson/:userid',
+          name: 'otherperson',
+          component: otherperson,
         }
       ]
     }
