@@ -204,6 +204,11 @@ function chatwith() {
           params: { userid: route.params.userid },
         });
       });
+    } else {
+      router.push({
+        name: "messagedetail",
+        params: { userid: route.params.userid },
+      });
     }
   });
 }

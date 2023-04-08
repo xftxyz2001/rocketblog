@@ -37,6 +37,12 @@ axios.get("/user/followers").then((res) => {
     isempty.value = true;
   }
 });
+function fensidetail(userid) {
+  router.push({
+    name: "otherperson",
+    params: { userid: userid },
+  });
+}
 // function fensidetail(fensiid, fensiid) {
 //   // var fensiid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.fensiid;
 //   // var fensiid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.fensiid;
