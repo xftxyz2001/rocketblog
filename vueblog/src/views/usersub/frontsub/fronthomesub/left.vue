@@ -29,7 +29,7 @@
       >
       <router-link :to="{ name: 'latest' }">
         <el-menu-item index="3">
-          <span class="iconfont" style="margin-right: 5px">&#xe61e;</span>
+          <span class="iconfont" style="margin-right: 5px">&#xe6ad;</span>
           <span>评论最多</span>
         </el-menu-item>
       </router-link>
