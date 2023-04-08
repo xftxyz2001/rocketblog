@@ -82,6 +82,32 @@
                                 </el-col>
                               </el-col></el-button
                             >
+                            <el-col
+                              :span="1"
+                              :offset="14"
+                              style="margin-top: 10px"
+                            >
+                              <div class="grid-content ep-bg-purple" />
+                              <el-button>私信</el-button>
+                            </el-col>
+                            <el-col
+                              :span="1"
+                              :offset="1"
+                              style="margin-top: 10px"
+                            >
+                              <div class="grid-content ep-bg-purple-light" />
+                              <el-button
+                                v-if="userdata.followed"
+                                @click="dontfollowthis"
+                                >已关注</el-button
+                              >
+                              <el-button
+                                v-else
+                                type="primary"
+                                @click="followthis"
+                                >关注</el-button
+                              >
+                            </el-col>
                           </el-row>
                         </el-col>
                       </el-row>
@@ -137,7 +163,7 @@ const route = useRoute();
 const router = useRouter();
 const userdata = ref({});
 
-axios.get("/user/info" + route.params.userid).then((res) => {
+axios.get("/user/info/" + route.params.userid).then((res) => {
   var resultUserInfo = res.data;
   if (resultUserInfo.code == 0) {
     userdata.value = resultUserInfo.data;
