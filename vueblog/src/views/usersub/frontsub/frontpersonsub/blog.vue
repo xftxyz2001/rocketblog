@@ -1,4 +1,10 @@
 <template>
+ <div
+    v-infinite-scroll="load"
+    class="infinite-list"
+    style="overflow: auto"
+    infinite-scroll-distance="1"
+  >
   <div v-if="isempty"><el-empty description="快去发一条博客吧！" /></div>
   <el-card
     v-else
@@ -22,6 +28,7 @@
       >
     </el-row></el-card
   >
+ </div>
 </template>
 
 <script setup >
@@ -30,12 +37,31 @@ import { ref } from "vue";
 import router from "@/router";
 const isempty = ref(false);
 const blogs = ref([]);
+const page = ref(1);
+const pagesize = ref(5);
 axios.get("/blog/my").then((res) => {
   blogs.value = res.data.data.list;
   if (blogs.value.length == 0) {
     isempty.value = true;
   }
 });
+function load() {
+  page.value++;
+  axios
+    .get(
+      "/blog.my" +
+        "?pageNum=" +
+        page.value +
+        "&pageSize=" +
+        pagesize.value
+    )
+    .then((res) => {
+      var result = res.data;
+      for (let index = 0; index < result.data.list.length; index++) {
+        blogs.value.push(result.data.list[index]);
+      }
+    });
+}
 function blogdetail(userid, blogid) {
   // var userid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.userid;
   // var blogid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.blogid;
@@ -60,4 +86,26 @@ export default {};
 </script>
 
 <style>
+
+.infinite-list {
+  height: 250px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
+}
+.infinite-list ::-webkit-scrollbar {
+  display: none;
+}
 </style>

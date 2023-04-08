@@ -1,4 +1,10 @@
 <template>
+ <div
+    v-infinite-scroll="load"
+    class="infinite-list"
+    style="overflow: auto"
+    infinite-scroll-distance="1"
+  >
   <div v-if="isempty"><el-empty description="你还没有收藏哦！" /></div>
   <el-card
     v-else
@@ -26,6 +32,7 @@
       >
     </el-row></el-card
   >
+ </div>
 </template>
 
 <script setup >
@@ -34,12 +41,31 @@ import { ref } from "vue";
 import router from "@/router";
 const isempty = ref(false);
 const collects = ref([]);
+const page = ref(1);
+const pagesize = ref(5);
 axios.get("/blog/collects").then((res) => {
   collects.value = res.data.data.list;
   if (collects.value.length == 0) {
     isempty.value = true;
   }
 });
+function load() {
+  page.value++;
+  axios
+    .get(
+      "/blog/collects" +
+        "?pageNum=" +
+        page.value +
+        "&pageSize=" +
+        pagesize.value
+    )
+    .then((res) => {
+      var result = res.data;
+      for (let index = 0; index < result.data.list.length; index++) {
+        collects.value.push(result.data.list[index]);
+      }
+    });
+}
 function collectdetail(userid, blogid) {
   // var userid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.userid;
   // var collectid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.collectid;
@@ -64,4 +90,26 @@ export default {};
 </script>
 
 <style>
+
+.infinite-list {
+  height: 250px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
+}
+.infinite-list ::-webkit-scrollbar {
+  display: none;
+}
 </style>
