@@ -22,7 +22,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
             }
         }
 
-        log.info("{}:{}", request.getMethod(), request.getRequestURL(), parms);
+        log.info("{}:{}", request.getMethod(), request.getRequestURL());
         if (StringUtils.hasLength(parms)) {
             log.info("{}", parms.substring(0, parms.length() - 1));
         }

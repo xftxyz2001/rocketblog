@@ -318,6 +318,7 @@ public class BlogServiceImpl implements BlogService {
         exBlogDetail.createCriteria().andBlogIdEqualTo(blogId);
         List<BlogDetail> selectByExample = blogDetailMapper.selectByExampleWithBLOBs(exBlogDetail);
         BlogDetail blogDetail = selectByExample.get(0);
+        // 当用户未登录或管理员查看时，不展示如下信息
         if (user != null) {
             LikeExample exLike = new LikeExample();
             exLike.createCriteria().andBlogIdEqualTo(blogId).andUseridEqualTo(user.getUserid());

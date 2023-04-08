@@ -15,7 +15,7 @@ public interface UserService {
     public User fromToken(String token);
 
     // 获取用户列表
-    public List<User> getUsers();
+    public List<UserInfo> getUserInfos();
 
     // 获取用户
     public User getUser(Long id);
@@ -63,5 +63,9 @@ public interface UserService {
 
     // QQ邮箱默认头像
     public String defaultAvatar(String email);
+
+    public UserInfo getUserInfoById(Long id);
+
+    public List<UserInfo> findUserInfosByExample(User user);
 
 }

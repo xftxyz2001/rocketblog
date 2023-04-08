@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogInfo;
@@ -42,11 +43,11 @@ public class BlogController {
      * @param pageNum  分页页码
      * @param pageSize 分页大小
      * @param session  HttpSession对象，获取当前登录用户信息
-     * @return 返回一个 {@link PageInfo} 对象，包含搜索结果和分页信息
+     * @return 返回一个 {@link PageInfo} 对象，包含搜索结果和分页信息 {@link BlogInfo}
      */
     @GetMapping("/search")
     public PageInfo<BlogInfo> search(@RequestParam("keyword") String keyword,
-            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "5") Integer pageSize,
+            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize,
             HttpSession session) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
@@ -79,7 +80,7 @@ public class BlogController {
     @GetMapping("/draft")
     public PageInfo<BlogInfo> draft(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> draftBlogs = blogService.getDraftBlogs(user);
@@ -97,7 +98,7 @@ public class BlogController {
     @GetMapping("/hot")
     public PageInfo<BlogInfo> hot(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getHotBlogs(user);
@@ -115,7 +116,7 @@ public class BlogController {
     @GetMapping("/hot/like")
     public PageInfo<BlogInfo> hotLike(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostLikeBlogs(user);
@@ -133,7 +134,7 @@ public class BlogController {
     @GetMapping("/hot/collect")
     public PageInfo<BlogInfo> hotCollect(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCollectBlogs(user);
@@ -151,7 +152,7 @@ public class BlogController {
     @GetMapping("/hot/comment")
     public PageInfo<BlogInfo> hotComment(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> hotBlogs = blogService.getMostCommentBlogs(user);
@@ -169,7 +170,7 @@ public class BlogController {
     @GetMapping("/new")
     public PageInfo<BlogInfo> newBlog(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> newBlogs = blogService.getNewBlogs(user);
@@ -187,7 +188,7 @@ public class BlogController {
     @GetMapping("/follows")
     public PageInfo<BlogInfo> getFollows(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> follows = blogService.getFollowsBlogs(user.getUserid());
@@ -261,7 +262,7 @@ public class BlogController {
     @GetMapping("/my")
     public PageInfo<BlogInfo> my(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> myBlogs = blogService.getMyBlogs(user.getUserid());
@@ -307,7 +308,7 @@ public class BlogController {
     @GetMapping("/collects")
     public PageInfo<BlogInfo> getCollects(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> collects = blogService.getCollectsBlogs(user.getUserid());
@@ -355,7 +356,7 @@ public class BlogController {
     @GetMapping("/likes")
     public PageInfo<BlogInfo> getLikes(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         // 获取当前登录用户信息，并查询当前登录用户点赞的博客列表
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
@@ -404,7 +405,7 @@ public class BlogController {
      */
     @GetMapping("/comment/{blogId}")
     public PageInfo<VComment> getComments(@PathVariable("blogId") Long blogId,
-            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<VComment> comments = blogService.getCommentsByBlogId(blogId);
         return new PageInfo<>(comments);

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.parameter.ChatMessageBody;
 import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
@@ -65,7 +66,7 @@ public class ChatController {
     @GetMapping("/chats")
     public PageInfo<VChat> getAllMessages(HttpSession session,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         // 获取当前登录用户信息，并获取该用户的所有消息
         User user = Utils.currentUser(session);
         PageHelper.startPage(pageNum, pageSize);
@@ -120,7 +121,7 @@ public class ChatController {
     @GetMapping("/detail/{userid}")
     public PageInfo<VChat> chatDetail(HttpSession session, @PathVariable("userid") Long userid,
             @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         User user = Utils.currentUser(session);
         List<VChat> chatDetail = chatService.getChatDetail(user, userid);

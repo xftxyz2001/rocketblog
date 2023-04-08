@@ -1,5 +1,6 @@
 package com.xftxyz.rocketblog.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,9 +46,13 @@ public class UserServiceImpl implements UserService {
     VChatMapper vChatMapper;
 
     @Override
-    public List<User> getUsers() {
+    public List<UserInfo> getUserInfos() {
         List<User> users = userMapper.selectByExample(null);
-        return users;
+        List<UserInfo> userInfos = new ArrayList<>();
+        for (User user : users) {
+            userInfos.add(getUserInfo(user));
+        }
+        return userInfos;
     }
 
     @Override
@@ -273,6 +278,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public String toToken(User user) {
         return user.getEmail() + "#" + user.getPassword();
+    }
+
+    @Override
+    public UserInfo getUserInfoById(Long id) {
+        User user = getUser(id);
+        return getUserInfo(user);
+    }
+
+    @Override
+    public List<UserInfo> findUserInfosByExample(User user) {
+        UserExample exUser = new UserExample();
+        UserExample.Criteria criteria = exUser.createCriteria();
+        if (user != null) {
+            if (StringUtils.hasLength(user.getUsername())) {
+                criteria.andUsernameLike("%" + user.getUsername() + "%");
+            }
+            if (StringUtils.hasLength(user.getEmail())) {
+                criteria.andEmailLike("%" + user.getEmail() + "%");
+            }
+        }
+        List<User> users = userMapper.selectByExample(exUser);
+        List<UserInfo> userInfos = new ArrayList<>();
+        for (User u : users) {
+            UserInfo userInfo = getUserInfo(u);
+            userInfos.add(userInfo);
+        }
+        return userInfos;
     }
 
 }
