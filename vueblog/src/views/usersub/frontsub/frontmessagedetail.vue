@@ -129,11 +129,22 @@ const msglist = ref([]);
 setInterval(function () {
   axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
     var result = res.data;
+
     if (result.code == 0) {
       var resultdata = result.data.list.reverse();
-      for (let index = 0; index < resultdata.length; index++) {
-        msglist.value.push(resultdata[index]);
+
+      if (msglist.value.length == 0) {
+        for (let index = 0; index < resultdata.length; index++) {
+          msglist.value.push(resultdata[index]);
+        }
+      } else {
+        var lastmessagenum = msglist.value[msglist.value.length - 1].chatId;
+        for (let index = 0; index < resultdata.length; index++) {
+          if (lastmessagenum <= resultdata[index].chatId)
+            msglist.value.push(resultdata[index]);
+        }
       }
+
       // msglist.value = result.data.list.reverse();
       console.log(msglist.value);
     }
@@ -164,7 +175,6 @@ function send() {
       var result = res.data;
       if (result.code == 0) {
         textarea2.value = "";
-       
       }
     });
   }
