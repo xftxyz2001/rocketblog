@@ -24,177 +24,183 @@ import personcollect from "@/views/usersub/frontsub/frontpersonsub/collect"
 import personfensi from "@/views/usersub/frontsub/frontpersonsub/fensi"
 import personguanzhu from "@/views/usersub/frontsub/frontpersonsub/guanzhu"
 import messagedetail from "@/views/usersub/frontsub/frontmessagedetail"
-const routes = [
+import test from "@/views/test"
+const routes = [{
+  path: '/test',
+  name: 'test',
+  component: test
+},
 
-  {
-    path: '/admin',
-    name: 'admin',
-    component: admin,
-    children: [
-      {
-        path: 'useradmin',
-        name: 'useradmin',
-        component: useradmin
-      },
-      {
-        path: 'blogadmin',
-        name: 'blogadmin',
-        component: blogadmin
-      },
-      {
-        path: '',
-        name: '',
-        redirect: 'admin/useradmin'
-      }
-    ]
+{
+
+  path: '/admin',
+  name: 'admin',
+  component: admin,
+  children: [
+    {
+      path: 'useradmin',
+      name: 'useradmin',
+      component: useradmin
+    },
+    {
+      path: 'blogadmin',
+      name: 'blogadmin',
+      component: blogadmin
+    },
+    {
+      path: '',
+      name: '',
+      redirect: 'admin/useradmin'
+    }
+  ]
 
 
-  },
-  {
+},
+{
 
-    path: '/user',
-    name: 'user',
-    component: user,
-    children: [
-      {
-        path: '',
-        name: '',
-        redirect: { name: 'hotlatest' }
-      },
-      {
-        path: 'editblog',
-        name: 'editblog',
-        component: EditBlog
-      },
-      {
-        path: 'blogdetail/:userid/:blogid',
-        name: 'blogdetail',
-        component: blogdetail
-      },
-      {
-        path: 'front',
-        name: 'front',
-        component: front,
-        children: [
-          {
-            path: '',
-            name: '',
-            redirect: { name: 'hotlatest' }
-          },
-          {
-            path: 'home',
-            name: 'home',
-            component: fronthomebody,
-            children: [
-              {
-                path: '',
-                name: '',
-                redirect: { name: 'hotlatest' }
-              },
-              {
-                path: 'allconcern',
-                name: 'allconcern',
-                component: FrontHomeAllConcernMiddle
-              },
-              {
-                path: 'mostlike',
-                name: 'mostlike',
-                component: FrontHomeMostLikeMiddle
-              },
-              {
-                name: 'latest',
-                path: 'latest',
-                component: FrontHomeLatestMiddle
-              },
-              {
-                path: 'friend',
-                name: 'friend',
-                component: FrontHomeFriendMiddle
-              }
-            ]
-          },
-          {
-            path: 'hot',
-            name: 'hot',
-            component: fronthotbody,
-            children: [{
+  path: '/user',
+  name: 'user',
+  component: user,
+  children: [
+    {
+      path: '',
+      name: '',
+      redirect: { name: 'hotlatest' }
+    },
+    {
+      path: 'editblog',
+      name: 'editblog',
+      component: EditBlog
+    },
+    {
+      path: 'blogdetail/:userid/:blogid',
+      name: 'blogdetail',
+      component: blogdetail
+    },
+    {
+      path: 'front',
+      name: 'front',
+      component: front,
+      children: [
+        {
+          path: '',
+          name: '',
+          redirect: { name: 'hotlatest' }
+        },
+        {
+          path: 'home',
+          name: 'home',
+          component: fronthomebody,
+          children: [
+            {
               path: '',
               name: '',
               redirect: { name: 'hotlatest' }
             },
             {
-              path: 'latest',
-              name: 'hotlatest',
-              component: HotLatestMiddle
-            }, {
+              path: 'allconcern',
+              name: 'allconcern',
+              component: FrontHomeAllConcernMiddle
+            },
+            {
               path: 'mostlike',
-              name: 'hotmostlike',
-              component: HotMostLikeMiddle
-            }]
-
-
-          },
-          {
-            path: 'message',
-            name: 'message',
-            component: frontmessage,
-            children: [
-              {
-                path: 'messagedetail/:userid',
-                name: 'messagedetail',
-                component: messagedetail
-              }
-            ]
-          },
-          {
-            path: 'person',
-            name: 'person',
-            component: frontperson,
-            children: [{
-              path: '',
-              name: '',
-              redirect: { name: 'personuserinfo' }
+              name: 'mostlike',
+              component: FrontHomeMostLikeMiddle
             },
             {
-              path: 'personuserinfo',
-              name: 'personuserinfo',
-              component: personuserinfo,
+              name: 'latest',
+              path: 'latest',
+              component: FrontHomeLatestMiddle
             },
             {
-              path: 'personguanzhu ',
-              name: 'personguanzhu ',
-              component: personguanzhu
-            }, {
-              path: 'personfensi',
-              name: 'personfensi',
-              component: personfensi
-            }, {
-              path: "personcollect",
-              name: 'personcollect',
-              component: personcollect
-            },
-            {
-              path: "personblog",
-              name: 'personblog',
-              component: personblog
-            },
-            {
-              path: "personaccount",
-              name: 'personaccount',
-              component: personaccount
+              path: 'friend',
+              name: 'friend',
+              component: FrontHomeFriendMiddle
             }
-            ]
+          ]
+        },
+        {
+          path: 'hot',
+          name: 'hot',
+          component: fronthotbody,
+          children: [{
+            path: '',
+            name: '',
+            redirect: { name: 'hotlatest' }
+          },
+          {
+            path: 'latest',
+            name: 'hotlatest',
+            component: HotLatestMiddle
+          }, {
+            path: 'mostlike',
+            name: 'hotmostlike',
+            component: HotMostLikeMiddle
+          }]
+
+
+        },
+        {
+          path: 'message',
+          name: 'message',
+          component: frontmessage,
+          children: [
+            {
+              path: 'messagedetail/:userid',
+              name: 'messagedetail',
+              component: messagedetail
+            }
+          ]
+        },
+        {
+          path: 'person',
+          name: 'person',
+          component: frontperson,
+          children: [{
+            path: '',
+            name: '',
+            redirect: { name: 'personuserinfo' }
+          },
+          {
+            path: 'personuserinfo',
+            name: 'personuserinfo',
+            component: personuserinfo,
+          },
+          {
+            path: 'personguanzhu ',
+            name: 'personguanzhu ',
+            component: personguanzhu
+          }, {
+            path: 'personfensi',
+            name: 'personfensi',
+            component: personfensi
+          }, {
+            path: "personcollect",
+            name: 'personcollect',
+            component: personcollect
+          },
+          {
+            path: "personblog",
+            name: 'personblog',
+            component: personblog
+          },
+          {
+            path: "personaccount",
+            name: 'personaccount',
+            component: personaccount
           }
-        ]
-      }
-    ]
-  }
+          ]
+        }
+      ]
+    }
+  ]
+}
   ,
-  {
-    path: '',
-    name: '',
-    redirect: 'user'
-  }
+{
+  path: '',
+  name: '',
+  redirect: 'user'
+}
 ]
 
 const router = createRouter({
