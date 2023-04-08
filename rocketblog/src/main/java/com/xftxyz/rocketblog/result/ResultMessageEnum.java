@@ -23,7 +23,10 @@ public enum ResultMessageEnum {
     BLOG_NOT_EXIST(202, "博客不存在"),
 
     // 图片错误3xx
-    IMAGE_ERROR(300, "图片错误");
+    IMAGE_ERROR(300, "图片错误"),
+
+    // 聊天错误4xx
+    NO_CHAT(400, "没有与该用户的聊天");
 
     private Integer code;
     private String message;

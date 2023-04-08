@@ -13,7 +13,9 @@ import org.springframework.util.StringUtils;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
+import com.xftxyz.rocketblog.exception.user.NoChatException;
 import com.xftxyz.rocketblog.exception.user.SelfOperationException;
+import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.mapper.BlogMapper;
 import com.xftxyz.rocketblog.mapper.ChatMapper;
 import com.xftxyz.rocketblog.mapper.FollowMapper;
@@ -318,11 +320,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ChatInfo getSession(User user, Long userid) {
+        if (userMapper.selectByPrimaryKey(userid) == null) {
+            throw new UserNotExistException(String.valueOf(userid));
+        }
         VChatExample exChats = new VChatExample();
         exChats.createCriteria().andUseridFromEqualTo(user.getUserid()).andUseridToEqualTo(userid); // 我发给对方的
         exChats.or().andUseridFromEqualTo(userid).andUseridToEqualTo(user.getUserid()); // 对方发给我的
         exChats.setOrderByClause("createtime desc");
         List<VChat> chats = vChatMapper.selectByExample(exChats);
+        if (chats.size() < 1) {
+            throw new NoChatException(String.valueOf(userid));
+        }
         return createChatInfo(userid, chats);
     }
 

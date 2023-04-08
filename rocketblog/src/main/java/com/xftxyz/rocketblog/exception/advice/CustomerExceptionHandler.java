@@ -10,6 +10,7 @@ import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
+import com.xftxyz.rocketblog.exception.user.NoChatException;
 import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.SelfOperationException;
@@ -19,6 +20,13 @@ import com.xftxyz.rocketblog.result.ResultMessageEnum;
 
 @RestControllerAdvice
 public class CustomerExceptionHandler {
+
+    // 没有与该用户的聊天
+    @ExceptionHandler(NoChatException.class)
+    public Result<Object> handleNotChatException(NoChatException e) {
+        return Result.error(ResultMessageEnum.NO_CHAT.getCode(), ResultMessageEnum.NO_CHAT.getMessage());
+    }
+
     // 用户未登录异常
     @ExceptionHandler(NotLoginException.class)
     public Result<Object> handleNotLoginException(NotLoginException e) {

@@ -22,6 +22,9 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.service.UserService;
 
+/**
+ * 后台管理相关
+ */
 @RestController
 @RequestMapping("/admin")
 public class AdminController {

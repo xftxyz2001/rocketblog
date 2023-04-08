@@ -36,6 +36,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * 用户相关
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -47,7 +50,7 @@ public class UserController {
     EmailService emailService;
 
     /**
-     * 用于发送包含用户密码的邮件到用户的邮箱，以帮助他们找回密码。
+     * 发送包含用户密码的邮件到用户的邮箱，以帮助他们找回密码。
      * 
      * @param email 需要重置密码的用户的邮箱地址
      * @return 返回一个字符串，表示密码邮件已经成功发送到用户的邮箱
@@ -69,9 +72,9 @@ public class UserController {
     }
 
     /**
-     * 用于生成并发送验证码到用户的邮箱。
+     * 生成并发送验证码到用户的邮箱。
      * 
-     * @param session HttpSession对象，用于存储验证码
+     * @param session HttpSession对象，存储验证码
      * @param email   需要接收验证码的用户的邮箱地址
      * @return 返回一个字符串，表示验证码已经成功发送到用户的邮箱
      */
@@ -93,7 +96,7 @@ public class UserController {
      * 注册新用户
      * 
      * @param registerBody 包含用户注册信息的 {@link RegisterBody} 对象
-     * @param session      HttpSession对象，用于识别用户、获取验证码
+     * @param session      HttpSession对象，识别用户、获取验证码
      * @return 返回一个字符串，表示用户注册已成功
      * @throws CaptchaErrorException 如果提供的验证码与发送给用户的验证码不匹配，则会抛出
      *                               CaptchaErrorException 异常
@@ -121,11 +124,11 @@ public class UserController {
     }
 
     /**
-     * 用于用户登录。
+     * 用户登录。
      * 
      * @param registerBody 包含用户登录信息的 {@link RegisterBody} 对象
-     * @param session      HttpSession对象，用于存储用户信息
-     * @param response     HttpServletResponse对象，用于设置Cookie
+     * @param session      HttpSession对象，存储用户信息
+     * @param response     HttpServletResponse对象，设置Cookie
      * @return 返回一个 {@link UserInfo} 对象，包含用户信息
      */
     @PostMapping("/login")
@@ -152,10 +155,10 @@ public class UserController {
     }
 
     /**
-     * 用于用户登出。
+     * 用户登出。
      * 
-     * @param session  HttpSession对象，用于删除用户登录信息
-     * @param response HttpServletResponse对象，用于删除Cookie
+     * @param session  HttpSession对象，删除用户登录信息
+     * @param response HttpServletResponse对象，删除Cookie
      * @return 返回一个字符串，表示用户已经成功登出
      */
     @GetMapping("/logout")
@@ -172,9 +175,9 @@ public class UserController {
     }
 
     /**
-     * 用于获取当前登录用户的信息。
+     * 获取当前登录用户的信息。
      * 
-     * @param session HttpSession对象，用于获取当前登录用户信息
+     * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link UserInfo} 对象，包含当前登录用户的信息
      */
     @GetMapping("/i")
@@ -188,9 +191,9 @@ public class UserController {
     }
 
     /**
-     * 用于获取当前登录用户的详细信息。
+     * 获取当前登录用户的详细信息。
      * 
-     * @param session HttpSession对象，用于获取当前登录用户信息
+     * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link User} 对象，包含当前登录用户的详细信息，但密码将被屏蔽
      * @throws ClassNotFoundException 如果发生序列化错误，则会抛出 ClassNotFoundException 异常
      * @throws IOException            如果发生IO错误，则会抛出 IOException 异常
@@ -210,10 +213,10 @@ public class UserController {
     }
 
     /**
-     * 用于修改当前登录用户的信息。
+     * 修改当前登录用户的信息。
      * 
      * @param newUserData 包含新用户信息的 {@link User} 对象
-     * @param session     HttpSession对象，用于获取当前登录用户信息
+     * @param session     HttpSession对象，获取当前登录用户信息
      * @return 返回一个字符串，表示用户信息已经成功修改
      */
     @PostMapping("/update")
@@ -256,10 +259,10 @@ public class UserController {
     }
 
     /**
-     * 用于修改当前登录用户的邮箱。
+     * 修改当前登录用户的邮箱。
      * 
      * @param registerBody 包含新邮箱信息和验证码的 {@link RegisterBody} 对象
-     * @param session      HttpSession对象，用于获取当前登录用户信息和验证码
+     * @param session      HttpSession对象，获取当前登录用户信息和验证码
      * @return 返回一个字符串，表示用户邮箱已经成功修改
      * @throws CaptchaErrorException 如果提供的验证码与发送给用户的验证码不匹配，则会抛出
      *                               CaptchaErrorException 异常
@@ -289,10 +292,10 @@ public class UserController {
     }
 
     /**
-     * 用于修改当前登录用户的密码。
+     * 修改当前登录用户的密码。
      * 
      * @param resetPasswordBody 包含新密码和原密码的 {@link ResetPasswordBody} 对象
-     * @param session           HttpSession对象，用于获取当前登录用户信息
+     * @param session           HttpSession对象，获取当前登录用户信息
      * @return 返回一个字符串，表示用户密码已经成功修改
      * @throws PasswordErrorException 如果原密码不正确，则会抛出 PasswordErrorException 异常
      */
@@ -320,9 +323,9 @@ public class UserController {
     }
 
     /**
-     * 用于获取指定 userid 的用户信息。
+     * 获取指定 userid 的用户信息。
      * 
-     * @param session HttpSession 对象，用于获取当前登录用户信息
+     * @param session HttpSession 对象，获取当前登录用户信息
      * @param userid  需要查询的用户的id
      * @return 返回一个 {@link UserInfo} 对象，包含指定 userid 的用户信息
      */
@@ -337,9 +340,9 @@ public class UserController {
     }
 
     /**
-     * 用于删除当前登录用户的账户。
+     * 删除当前登录用户的账户。
      * 
-     * @param session HttpSession对象，用于获取当前登录用户信息
+     * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个字符串，表示用户账户已经成功删除
      */
     @DeleteMapping("/delete")
@@ -354,9 +357,9 @@ public class UserController {
     }
 
     /**
-     * 用于让当前登录用户关注指定的用户。
+     * 让当前登录用户关注指定的用户。
      * 
-     * @param session HttpSession对象，用于获取当前登录用户信息
+     * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  需要关注的用户的id
      * @return 返回一个 Long 类型的值，表示指定用户的最新粉丝数
      */
@@ -371,9 +374,9 @@ public class UserController {
     }
 
     /**
-     * 用于取消当前登录用户对指定用户的关注。
+     * 取消当前登录用户对指定用户的关注。
      * 
-     * @param session HttpSession对象，用于获取当前登录用户信息
+     * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  需要取消关注的用户的id
      * @return 返回一个 Long 类型的值，表示指定用户的最新粉丝数
      */
@@ -388,9 +391,9 @@ public class UserController {
     }
 
     /**
-     * 用于获取当前登录用户关注的用户列表。
+     * 获取当前登录用户关注的用户列表。
      * 
-     * @param session  HttpSession对象，用于获取当前登录用户信息
+     * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始
      * @param pageSize 每页显示的记录数
      * @return 返回一个 {@link PageInfo} 对象，其中包含了指定页面的 {@link UserBase} 列表
@@ -409,9 +412,9 @@ public class UserController {
     }
 
     /**
-     * 用于获取当前登录用户的粉丝列表。
+     * 获取当前登录用户的粉丝列表。
      * 
-     * @param session  HttpSession对象，用于获取当前登录用户信息
+     * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始
      * @param pageSize 每页显示的记录数
      * @return 返回一个 {@link PageInfo} 对象，其中包含了指定页面的 {@link UserBase} 列表
@@ -430,9 +433,9 @@ public class UserController {
     }
 
     /**
-     * 用于向指定的用户发送消息。
+     * 向指定的用户发送消息。
      * 
-     * @param session     HttpSession对象，用于获取当前登录用户信息
+     * @param session     HttpSession对象，获取当前登录用户信息
      * @param chatMessage 包含了要发送的消息内容和目标用户ID的 {@link ChatMessageBody} 对象
      * @return 返回一个字符串，表示消息发送已成功
      */
@@ -451,9 +454,9 @@ public class UserController {
     }
 
     /**
-     * 用于获取当前登录用户的所有消息。
+     * 获取当前登录用户的所有消息。
      * 
-     * @param session  HttpSession对象，用于获取当前登录用户信息
+     * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始
      * @param pageSize 每页显示的记录数
      * @return 返回一个 {@link PageInfo} 对象，其中包含了指定页面的 {@link VChat} 列表
@@ -472,20 +475,15 @@ public class UserController {
     }
 
     /**
-     * 用于获取当前登录用户的所有会话列表。
+     * 获取当前登录用户的所有会话列表。
      * 
-     * @param session  HttpSession对象，用于获取当前登录用户信息
-     * @param pageNum  获取的页面数，从1开始
-     * @param pageSize 每页显示的记录数
+     * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link PageInfo} 对象，其中包含了指定页面的 {@link ChatInfo} 列表
      */
     @GetMapping("/chat/sessions")
-    public PageInfo<ChatInfo> getChatSessionList(HttpSession session,
-            @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "5") Integer pageSize) {
+    public PageInfo<ChatInfo> getChatSessionList(HttpSession session) {
         // 获取当前登录用户信息，并获取该用户的所有会话列表
         User user = Utils.currentUser(session);
-        PageHelper.startPage(pageNum, pageSize);
         List<ChatInfo> chatlist = userService.getSessionList(user);
 
         // 返回一个 PageInfo 对象，其中包含了指定页面的 ChatInfo 列表
@@ -493,9 +491,9 @@ public class UserController {
     }
 
     /**
-     * 用于获取指定的会话信息。
+     * 获取指定的会话信息。
      * 
-     * @param session HttpSession对象，用于获取当前登录用户信息
+     * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  要更新会话的目标用户ID
      * @return 返回一个 {@link ChatInfo} 对象，表示指定会话的详细信息
      */
@@ -512,7 +510,7 @@ public class UserController {
     /**
      * 获取消息信息详情（对话）
      *
-     * @param session  HttpSession对象，用于识别用户
+     * @param session  HttpSession对象，识别用户
      * @param userid   对话的用户ID
      * @param pageNum  分页查询的页码，默认值为1
      * @param pageSize 分页查询的每页大小，默认值为5
@@ -531,7 +529,7 @@ public class UserController {
     /**
      * 删除指定的单条消息
      * 
-     * @param session HttpSession对象，用于获取当前用户
+     * @param session HttpSession对象，获取当前用户
      * @param chatid  要删除的消息ID
      * @return 返回一个字符串，表示消息删除成功
      */
@@ -544,7 +542,7 @@ public class UserController {
     /**
      * 删除指定的会话
      * 
-     * @param session HttpSession对象，用于获取当前用户
+     * @param session HttpSession对象，获取当前用户
      * @param userid  要删除会话的目标用户ID
      * @return 返回一个字符串，表示会话删除成功
      */

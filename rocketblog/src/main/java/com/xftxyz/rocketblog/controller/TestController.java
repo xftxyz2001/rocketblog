@@ -13,6 +13,9 @@ import com.xftxyz.rocketblog.util.Utils;
 
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * 测试相关
+ */
 @RestController
 @RequestMapping("/test")
 public class TestController {
