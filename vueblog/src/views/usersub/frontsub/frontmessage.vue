@@ -8,42 +8,45 @@
             <span style="font-weight: 700">消息</span>
           </div>
         </template>
-        <div
-          v-for="pageInfo in pageInfos"
-          :key="pageInfo.userid"
-          class="text item messagelist"
-        >
-          <el-row @click="chatdetail(pageInfo.userid)" style="cursor: pointer"
-            ><el-col :span="5"
-              ><img
-                :src="pageInfo.avatar"
-                alt=""
-                style="width: 36px; border-radius: 18px"
-            /></el-col>
-            <el-col :span="11" :offset="2"
-              ><el-row style="font-weight: 700">{{ pageInfo.username }}</el-row>
-              <el-row style="width: 150%; height: 20px; margin-top: 3px"
-                ><div
-                  style="
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    width: 60%;
-                    display: inline-block;
-                    font-size: 13px;
-                  "
-                >
-                  {{ pageInfo.lastMsg }}
-                </div>
-                <div style="display: inline-block">
-                  <el-badge
-                    v-if="pageInfo.msgNum !== 0"
-                    :value="pageInfo.msgNum"
-                    class="item"
-                  />
-                </div> </el-row></el-col
-          ></el-row>
-        </div> </el-card
+        <div style="overflow-y: scroll">
+          <div
+            v-for="pageInfo in pageInfos"
+            :key="pageInfo.userid"
+            class="text item messagelist"
+          >
+            <el-row @click="chatdetail(pageInfo.userid)" style="cursor: pointer"
+              ><el-col :span="5"
+                ><img
+                  :src="pageInfo.avatar"
+                  alt=""
+                  style="width: 36px; border-radius: 18px"
+              /></el-col>
+              <el-col :span="11" :offset="2"
+                ><el-row style="font-weight: 700">{{
+                  pageInfo.username
+                }}</el-row>
+                <el-row style="width: 150%; height: 20px; margin-top: 3px"
+                  ><div
+                    style="
+                      overflow: hidden;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      width: 60%;
+                      display: inline-block;
+                      font-size: 13px;
+                    "
+                  >
+                    {{ pageInfo.lastMsg }}
+                  </div>
+                  <div style="display: inline-block">
+                    <el-badge
+                      v-if="pageInfo.msgNum !== 0"
+                      :value="pageInfo.msgNum"
+                      class="item"
+                    />
+                  </div> </el-row></el-col
+            ></el-row>
+          </div></div></el-card
     ></el-col>
     <el-col :span="10" :offset="1">
       <el-empty v-if="selectchat" description="请开始一个对话" /><router-view
