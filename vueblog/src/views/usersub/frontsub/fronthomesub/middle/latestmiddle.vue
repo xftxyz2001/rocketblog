@@ -8,9 +8,9 @@
     <div style="width: 35%; margin: 0 auto">
       <el-carousel
         indicator-position="outside"
-        style="width: 100%; z-index: 1; padding-top: 10px"
+        style="width: 100%; padding-top: 10px"
       >
-        <el-carousel-item class="carousel-item" v-for="blog in hotblogs">
+        <el-carousel-item class="carousel-item" v-for="blog in hotblogs" :key="blog.id">
           <img
             class="carousel-img"
             :src="blog.coverImage"
@@ -222,7 +222,7 @@ export default {};
   /* vertical-align:baseline; */
 }
 .infinite-list {
-  height: calc(100vh);
+  height: 700px;
   padding: 0;
   margin: 0;
   list-style: none;

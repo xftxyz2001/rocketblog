@@ -79,8 +79,4 @@ export default defineComponent({
   border-radius: 4px;
   min-height: 36px;
 }
-
-.el-carousel::-webkit-scrollbar {
-  display: none;
-}
 </style>

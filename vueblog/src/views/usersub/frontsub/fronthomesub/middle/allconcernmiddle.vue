@@ -10,7 +10,7 @@
         indicator-position="outside"
         style="width: 100%; z-index: 1; padding-top: 10px"
       >
-        <el-carousel-item class="carousel-item" v-for="blog in hotblogs">
+        <el-carousel-item class="carousel-item" v-for="blog in hotblogs" :key="blog.id">
           <img
             class="carousel-img"
             :src="blog.coverImage"

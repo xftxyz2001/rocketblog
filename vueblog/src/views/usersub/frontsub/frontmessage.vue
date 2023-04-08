@@ -1,5 +1,5 @@
 <template>
-  <el-row>
+  <el-row style="margin-top: 60px">
     <el-col :span="3" :offset="4"
       ><div class="grid-content ep-bg-purple" />
       <el-card class="box-card">
