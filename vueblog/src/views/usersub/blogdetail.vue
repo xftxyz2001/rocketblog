@@ -154,11 +154,7 @@
           </el-col>
 
           <el-col :span="7">
-            <span
-              class="iconfont"
-              style="margin-right: 5px; cursor: pointer"
-              @click="collectthis"
-            >
+            <span class="iconfont" style="margin-right: 5px; cursor: pointer">
               &#xe6ad;
             </span>
             评论 {{ blogdata.commentCount }}
