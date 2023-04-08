@@ -1,3 +1,16 @@
 {
-    "outPath": "./target/doc" 
- }
+    "allInOne": true,
+    "outPath": "src/main/resources/static/doc",
+    "coverOld": true,
+    "createDebugPage": true,
+    "style": "xt256",
+    "framework": "spring",
+    "dataDictionaries": [
+        {
+            "title": "状态码字典",
+            "enumClassName": "com.xftxyz.rocketblog.result.ResultMessageEnum",
+            "codeField": "code",
+            "descField": "message"
+        }
+    ]
+}
