@@ -72,10 +72,10 @@ setInterval(function () {
       if (pageInfos.value.length == 0) {
         selectchat.value = true;
       } else {
-        router.push({
-          name: "messagedetail",
-          params: { userid: pageInfos.value[0].userid },
-        });
+        // router.push({
+        //   name: "messagedetail",
+        //   params: { userid: pageInfos.value[0].userid },
+        // });
         selectchat.value = false;
       }
     } else {
