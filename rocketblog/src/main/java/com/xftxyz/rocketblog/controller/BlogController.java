@@ -26,6 +26,9 @@ import com.xftxyz.rocketblog.util.Utils;
 
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * 博客相关
+ */
 @RestController
 @RequestMapping("/blog")
 public class BlogController {

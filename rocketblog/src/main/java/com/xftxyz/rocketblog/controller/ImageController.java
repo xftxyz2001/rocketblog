@@ -19,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.xftxyz.rocketblog.exception.image.ImageException;
 import com.xftxyz.rocketblog.service.ImageService;
 
+/**
+ * 图片相关
+ */
 @RestController
 @RequestMapping("/images")
 public class ImageController {
