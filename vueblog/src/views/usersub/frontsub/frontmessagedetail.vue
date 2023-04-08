@@ -126,7 +126,19 @@ const route = useRoute();
 // const myuserid = ref(null);
 const myuserid = ref(null);
 const msglist = ref([]);
-
+setInterval(function () {
+  axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
+    var result = res.data;
+    if (result.code == 0) {
+      var resultdata = result.data.list.reverse();
+      for (let index = 0; index < resultdata.length; index++) {
+        msglist.value.push(resultdata[index]);
+      }
+      // msglist.value = result.data.list.reverse();
+      console.log(msglist.value);
+    }
+  });
+}, 1000);
 axios.get("/user/i").then((res) => {
   var result = res.data;
   if (result.code == 0) {
@@ -151,7 +163,8 @@ function send() {
     axios.post("user/chat", sendmessage).then((res) => {
       var result = res.data;
       if (result.code == 0) {
-        axios.get("user/chat/session/" + route.params.userid);
+        textarea2.value = "";
+       
       }
     });
   }

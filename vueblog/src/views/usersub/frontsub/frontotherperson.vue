@@ -88,7 +88,7 @@
                               style="margin-top: 10px"
                             >
                               <div class="grid-content ep-bg-purple" />
-                              <el-button>私信</el-button>
+                              <el-button @click="chatwith">私信</el-button>
                             </el-col>
                             <el-col
                               :span="1"
@@ -174,6 +174,29 @@ function tootherpersonblog() {
   //     name: "otherpersonblog",
   //     // params: { userid: userid, blogid: blogid },
   //   });
+}
+function dontfollowthis() {
+  if (checkTokenInCookie()) {
+    axios.delete("/user/follow/" + route.params.userid).then((res) => {
+      userdata.value.followed = false;
+    });
+  } else {
+    Bus.emit("likeneedlogin", {});
+  }
+}
+function followthis() {
+  if (checkTokenInCookie()) {
+    axios.get("/user/follow/" + route.params.userid).then((res) => {
+      userdata.value.followed = true;
+    });
+  } else {
+    Bus.emit("likeneedlogin", {});
+  }
+}
+function chatwith() {
+  axios.get("/user/chat/session/" + route.params.userid).then((res) => {});
+  var sendmessage = { to: route.params.userid, content: "" };
+  axios.post("user/chat", sendmessage);
 }
 </script>
 <script>

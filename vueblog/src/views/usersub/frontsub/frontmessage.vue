@@ -61,15 +61,17 @@ const route = useRoute();
 // const msglist = ref([]);
 
 const router = useRouter();
+setInterval(function () {
+  axios.get("/user/chat/sessions").then((res) => {
+    var result = res.data;
+    if (result.code == 0) {
+      pageInfos.value = result.data.list;
+    } else {
+      console.log(result.message);
+    }
+  });
+}, 1000);
 
-axios.get("/user/chat/sessions").then((res) => {
-  var result = res.data;
-  if (result.code == 0) {
-    pageInfos.value = result.data.list;
-  } else {
-    console.log(result.message);
-  }
-});
 function chatdetail(userid) {
   //   axios.get("/user/chat/detail/" + userid).then((res) => {
   //     var result = res.data;
