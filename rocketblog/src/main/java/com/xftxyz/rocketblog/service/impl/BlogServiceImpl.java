@@ -26,6 +26,7 @@ import com.xftxyz.rocketblog.pojo.BlogInfoExample.Criteria;
 import com.xftxyz.rocketblog.pojo.Bookmark;
 import com.xftxyz.rocketblog.pojo.BookmarkExample;
 import com.xftxyz.rocketblog.pojo.Comment;
+import com.xftxyz.rocketblog.pojo.CommentExample;
 import com.xftxyz.rocketblog.pojo.Like;
 import com.xftxyz.rocketblog.pojo.LikeExample;
 import com.xftxyz.rocketblog.pojo.User;
@@ -213,6 +214,15 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer addComment(Comment comment) {
+        // 评论内容相同
+        CommentExample exComment = new CommentExample();
+        exComment.createCriteria().andBlogIdEqualTo(comment.getBlogId())
+                .andCommentContentEqualTo(comment.getCommentContent());
+        long count = commentMapper.countByExample(exComment);
+        if (count > 0) {
+            throw new AlreadyDoneException("评论内容相同");
+        }
+
         comment.setCreatetime(new Date());
         int insert = commentMapper.insert(comment);
         return insert;
