@@ -135,13 +135,15 @@ setInterval(function () {
 
       if (msglist.value.length == 0) {
         for (let index = 0; index < resultdata.length; index++) {
-          if (resultdata[index] !== "") msglist.value.push(resultdata[index]);
+          if (resultdata[index].messageContent !== "")
+            msglist.value.push(resultdata[index]);
         }
       } else {
         var lastmessagenum = msglist.value[msglist.value.length - 1].chatId;
         for (let index = 0; index < resultdata.length; index++) {
           if (lastmessagenum < resultdata[index].chatId) {
-            if (resultdata[index] !== "") msglist.value.push(resultdata[index]);
+            if (resultdata[index].messageContent !== "")
+              msglist.value.push(resultdata[index]);
           }
         }
       }
@@ -161,7 +163,8 @@ axios.get("/user/i").then((res) => {
       if (result.code == 0) {
         var resultdata = result.data.list.reverse();
         for (let index = 0; index < resultdata.length; index++) {
-          if (resultdata[index] !== "") msglist.value.push(resultdata[index]);
+          if (resultdata[index].messageContent !== "")
+            msglist.value.push(resultdata[index]);
         }
         // msglist.value = result.data.list.reverse();
         console.log(msglist.value);

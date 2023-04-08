@@ -83,7 +83,23 @@ setInterval(function () {
     }
   });
 }, 1000);
-
+axios.get("/user/chat/sessions").then((res) => {
+  var result = res.data;
+  if (result.code == 0) {
+    pageInfos.value = result.data.list;
+    if (pageInfos.value.length == 0) {
+      selectchat.value = true;
+    } else {
+      router.push({
+        name: "messagedetail",
+        params: { userid: pageInfos.value[0].userid },
+      });
+      selectchat.value = false;
+    }
+  } else {
+    console.log(result.message);
+  }
+});
 function chatdetail(userid) {
   //   axios.get("/user/chat/detail/" + userid).then((res) => {
   //     var result = res.data;
