@@ -97,7 +97,7 @@ export default {};
 
 <style>
 .infinite-list {
-  height: 400px;
+  height: 550px;
   padding: 0;
   margin: 0;
   list-style: none;
