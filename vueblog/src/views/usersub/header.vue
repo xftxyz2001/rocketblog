@@ -343,9 +343,6 @@
     </el-dialog>
 
     <span class="text-large font-600 mr-3" style="margin: 19px 5px 0px 35px">
-      <el-icon style="color: #fff">
-        <Star />
-      </el-icon>
       <a
         href="https://github.com/xftxyz2001/rocketblog/issues/new"
         style="
@@ -354,7 +351,7 @@
           margin: -3px 0 0 4px;
           color: #fff;
         "
-        >反馈</a
+        ><span class="iconfont" style="margin-right: 5px">&#xe738;</span>反馈</a
       >
     </span>
   </el-menu>

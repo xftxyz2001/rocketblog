@@ -180,8 +180,8 @@ const routes = [{
             component: personuserinfo,
           },
           {
-            path: 'personguanzhu ',
-            name: 'personguanzhu ',
+            path: 'personguanzhu',
+            name: 'personguanzhu',
             component: personguanzhu
           }, {
             path: 'personfensi',

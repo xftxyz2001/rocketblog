@@ -48,7 +48,9 @@
                             >昵称：{{ userdata.username }}</el-row
                           >
                           <el-row gutter="20" justify="left">
-                            <el-button link @click="router.push({ name: 'personguanzhu' })"
+                            <el-button
+                              link
+                              @click="router.push({ name: 'personguanzhu' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -64,7 +66,9 @@
                               </el-col></el-button
                             >
 
-                            <el-button link @click="router.push({ name: 'personfensi' })"
+                            <el-button
+                              link
+                              @click="router.push({ name: 'personfensi' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -79,7 +83,9 @@
                                 </el-col>
                               </el-col></el-button
                             >
-                            <el-button link @click="router.push({ name: 'personblog' })"
+                            <el-button
+                              link
+                              @click="router.push({ name: 'personblog' })"
                               ><el-col>
                                 <div class="grid-content ep-bg-purple" />
                                 <el-col
@@ -118,7 +124,7 @@
                           style="border-top: 1px #c8c9cc solid"
                         >
                           <span class="iconfont" style="margin-right: 5px"
-                            >&#xe8bc;</span
+                            >&#xe657;</span
                           >
                           <span>个人资料</span>
                         </el-menu-item></router-link
@@ -126,7 +132,7 @@
                       <router-link :to="{ name: 'personaccount' }">
                         <el-menu-item index="2">
                           <span class="iconfont" style="margin-right: 5px"
-                            >&#xe60f;</span
+                            >&#xe71b;</span
                           >
                           <span>账号管理</span>
                         </el-menu-item></router-link
@@ -134,15 +140,15 @@
                       <router-link :to="{ name: 'personblog' }">
                         <el-menu-item index="3">
                           <span class="iconfont" style="margin-right: 5px"
-                            >&#xe60f;</span
+                            >&#xe604;</span
                           >
                           <span>博客</span>
                         </el-menu-item></router-link
                       >
-                      <router-link :to="{ name: 'personguanzhu ' }">
+                      <router-link :to="{ name: 'personguanzhu' }">
                         <el-menu-item index="4">
                           <span class="iconfont" style="margin-right: 5px"
-                            >&#xe60f;</span
+                            >&#xe8bc;</span
                           >
                           <span>关注</span>
                         </el-menu-item></router-link
@@ -150,7 +156,7 @@
                       <router-link :to="{ name: 'personfensi' }">
                         <el-menu-item index="5">
                           <span class="iconfont" style="margin-right: 5px"
-                            >&#xe60f;</span
+                            >&#xe626;</span
                           >
                           <span>粉丝</span>
                         </el-menu-item></router-link
@@ -158,7 +164,7 @@
                       <router-link :to="{ name: 'personcollect' }">
                         <el-menu-item index="6">
                           <span class="iconfont" style="margin-right: 5px"
-                            >&#xe60f;</span
+                            >&#xe670;</span
                           >
                           <span>收藏</span>
                         </el-menu-item></router-link

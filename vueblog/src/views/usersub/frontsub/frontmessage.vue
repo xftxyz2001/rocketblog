@@ -45,8 +45,10 @@
           ></el-row>
         </div> </el-card
     ></el-col>
-    <el-col :span="10" :offset="1"
-      ><router-view :key="$route.fullPath"></router-view
+    <el-col :span="10" :offset="1">
+      <el-empty v-if="selectchat" description="请开始一个对话" /><router-view
+        :key="$route.fullPath"
+      ></router-view
     ></el-col>
   </el-row>
 </template>
@@ -58,14 +60,42 @@ import { useRouter, useRoute } from "vue-router";
 // const myuserid = ref(105);
 const pageInfos = ref([{}]);
 const route = useRoute();
+const selectchat = ref(false);
 // const msglist = ref([]);
 
 const router = useRouter();
-
+setInterval(function () {
+  axios.get("/user/chat/sessions").then((res) => {
+    var result = res.data;
+    if (result.code == 0) {
+      pageInfos.value = result.data.list;
+      if (pageInfos.value.length == 0) {
+        selectchat.value = true;
+      } else {
+        // router.push({
+        //   name: "messagedetail",
+        //   params: { userid: pageInfos.value[0].userid },
+        // });
+        selectchat.value = false;
+      }
+    } else {
+      console.log(result.message);
+    }
+  });
+}, 1000);
 axios.get("/user/chat/sessions").then((res) => {
   var result = res.data;
   if (result.code == 0) {
     pageInfos.value = result.data.list;
+    if (pageInfos.value.length == 0) {
+      selectchat.value = true;
+    } else {
+      router.push({
+        name: "messagedetail",
+        params: { userid: pageInfos.value[0].userid },
+      });
+      selectchat.value = false;
+    }
   } else {
     console.log(result.message);
   }
@@ -78,6 +108,7 @@ function chatdetail(userid) {
   //       console.log(msglist.value);
   //     }
   //   });
+  selectchat.value = false;
   router.push({
     name: "messagedetail",
     params: { userid: userid },

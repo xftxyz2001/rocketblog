@@ -49,6 +49,5 @@ export default defineComponent({
   top: 60px;
   bottom: 0;
   background-color: #f1f2f5;
-  height: 2000px;
 }
 </style>
