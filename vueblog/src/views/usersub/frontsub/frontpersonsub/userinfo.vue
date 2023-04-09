@@ -219,10 +219,7 @@ function formSubmit() {
       axios.get("/user/i/detail").then((res) => {
         userinfo.value = res.data.data;
       });
-      if (window.location.href.indexOf("#reloaded") == -1) {
-        window.location.href = window.location.href + "#reloaded";
-        window.location.reload();
-      }
+      window.location.reload();
     } else {
       ElMessage.error({
         message: result.message,
