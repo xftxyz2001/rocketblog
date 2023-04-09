@@ -26,6 +26,8 @@ import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.service.UserService;
 
+import jakarta.validation.constraints.Min;
+
 /**
  * 后台管理相关
  */
@@ -63,7 +65,7 @@ public class AdminController {
      * @return 返回一个 {@link UserInfo} 对象，包含指定用户的信息
      */
     @GetMapping("/user/{id}")
-    public UserInfo getUserInfo(@PathVariable("id") Long id) {
+    public UserInfo getUserInfo(@PathVariable("id") @Min(value = 1, message = "目标用户ID不合法") Long id) {
         return userService.getUserInfoById(id);
     }
 
@@ -74,7 +76,7 @@ public class AdminController {
      * @return 返回一个 {@link User} 对象，包含指定用户的详细信息
      */
     @GetMapping("/user/detail/{id}")
-    public User getUser(@PathVariable("id") Long id) {
+    public User getUser(@PathVariable("id") @Min(value = 1, message = "目标用户ID不合法") Long id) {
         return userService.getUser(id);
     }
 
@@ -109,7 +111,7 @@ public class AdminController {
      * @return 返回一个整数值，表示删除用户的行数
      */
     @DeleteMapping("/user/{id}")
-    public Integer deleteUser(@PathVariable("id") Long id) {
+    public Integer deleteUser(@PathVariable("id") @Min(value = 1, message = "目标用户ID不合法") Long id) {
         return userService.deleteUser(id);
     }
 
@@ -155,7 +157,7 @@ public class AdminController {
      * @return 返回一个 {@link BlogDetail} 对象，包含指定博客的详细信息
      */
     @GetMapping("/blog/{id}")
-    public BlogDetail getBlog(@PathVariable("id") Long id) {
+    public BlogDetail getBlog(@PathVariable("id") @Min(value = 1, message = "目标博客ID不合法") Long id) {
         return blogService.getBlogDetail(id, null);
     }
 
@@ -212,7 +214,7 @@ public class AdminController {
      * @return 返回一个整数值，表示删除博客的行数
      */
     @DeleteMapping("/blog/{id}")
-    public Integer deleteBlog(@PathVariable("id") Long id) {
+    public Integer deleteBlog(@PathVariable("id") @Min(value = 1, message = "目标博客ID不合法") Long id) {
         return blogService.removeRF(id);
     }
 
