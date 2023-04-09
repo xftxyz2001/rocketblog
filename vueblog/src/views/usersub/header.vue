@@ -682,12 +682,13 @@ function tomessage() {
   router.push({ name: "message" });
 }
 function toperson() {
-  if (checkTokenInCookie()) router.push({ name: "personuserinfo" });
-  else {
-    loginVisible.value = "true";
-    loginform.email = "";
-    loginform.password = "";
-  }
+  // if (checkTokenInCookie()) router.push({ name: "personuserinfo" });
+  // else {
+  //   loginVisible.value = "true";
+  //   loginform.email = "";
+  //   loginform.password = "";
+  // }
+  router.push({ name: "personuserinfo" });
 }
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 Bus.on("followneedlogin", () => {

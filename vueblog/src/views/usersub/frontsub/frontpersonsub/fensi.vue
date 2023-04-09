@@ -1,35 +1,35 @@
 <template>
- <div
+  <div
     v-infinite-scroll="load"
     class="infinite-list"
-    style="overflow: auto"
+    style="overflow: auto; height: 400px; margin-top: 10px"
     infinite-scroll-distance="1"
   >
-  <div v-if="isempty"><el-empty description="还没有人关注你哦！" /></div>
-  <el-card
-    v-else
-    v-for="fensi in fensis"
-    :key="fensi.id"
-    shadow="hover"
-    style="height: 80px; overflow: hidden"
-  >
-    <el-row :gutter="20" @click="fensidetail(fensi.userid)">
-      <el-col :span="3" style="text-align: center"
-        ><div class="grid-content ep-bg-purple" />
-        <img
-          :src="fensi.avatar"
-          alt=""
-          style="width: 40px; height: 40px; border-radius: 20px"
-      /></el-col>
-      <el-col :span="16"
-        ><div class="grid-content ep-bg-purple" />
-        <el-row style="padding-top: 7px"
-          ><span style="font-weight: 700">{{ fensi.username }}</span></el-row
-        >
-      </el-col>
-    </el-row></el-card
-  >
- </div>
+    <div v-if="isempty"><el-empty description="还没有人关注你哦！" /></div>
+    <el-card
+      v-else
+      v-for="fensi in fensis"
+      :key="fensi.id"
+      shadow="hover"
+      style="height: 80px; overflow: hidden"
+    >
+      <el-row :gutter="20" @click="fensidetail(fensi.userid)">
+        <el-col :span="3" style="text-align: center"
+          ><div class="grid-content ep-bg-purple" />
+          <img
+            :src="fensi.avatar"
+            alt=""
+            style="width: 40px; height: 40px; border-radius: 20px"
+        /></el-col>
+        <el-col :span="16"
+          ><div class="grid-content ep-bg-purple" />
+          <el-row style="padding-top: 7px"
+            ><span style="font-weight: 700">{{ fensi.username }}</span></el-row
+          >
+        </el-col>
+      </el-row></el-card
+    >
+  </div>
 </template>
 
 <script setup >
@@ -93,9 +93,8 @@ export default {};
 </script>
 
 <style>
-
 .infinite-list {
-  height: 370px;
+  
   padding: 0;
   margin: 0;
   list-style: none;

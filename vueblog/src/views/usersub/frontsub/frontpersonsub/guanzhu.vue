@@ -2,7 +2,7 @@
   <div
     v-infinite-scroll="load"
     class="infinite-list"
-    style="overflow: auto"
+    style="overflow: auto; height: 400px; margin-top: 10px"
     infinite-scroll-distance="1"
   >
     <div v-if="isempty"><el-empty description="你还没有关注别人哦！" /></div>
@@ -97,11 +97,11 @@ export default {};
 
 <style>
 .infinite-list {
-  height: 370px;
   padding: 0;
   margin: 0;
   list-style: none;
 }
+
 .infinite-list .infinite-list-item {
   display: flex;
   align-items: center;
