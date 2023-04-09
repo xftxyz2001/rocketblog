@@ -26,12 +26,12 @@ public interface EnvironmentVariables {
     // 验证码邮件主题
     String EMAIL_CODE_SUBJECT = "火箭博客验证码";
     // 验证码邮件内容
-    String EMAIL_CODE_CONTENT = "您的验证码为：";
+    String EMAIL_CODE_CONTENT = "您的验证码为: %s，有效期为5分钟，请尽快验证。如非本人操作，请忽略此邮件。";
 
     // 找回密码邮件主题
     String EMAIL_FORGET_SUBJECT = "火箭博客找回密码";
     // 找回密码邮件内容
-    String EMAIL_FORGET_CONTENT = "您的密码是：";
+    String EMAIL_FORGET_CONTENT = "您的密码是: %s";
 
     // 密码掩码
     String PASSWORD_MASK = "********";

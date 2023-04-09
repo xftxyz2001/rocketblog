@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 日志：打印请求地址和参数
+ */
 @Slf4j
 public class LoggingInterceptor implements HandlerInterceptor {
     @Override

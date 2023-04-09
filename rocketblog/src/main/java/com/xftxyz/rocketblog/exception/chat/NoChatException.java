@@ -1,8 +1,6 @@
 package com.xftxyz.rocketblog.exception.chat;
 
-import com.xftxyz.rocketblog.exception.RocketBlogException;
-
-public class NoChatException extends RocketBlogException {
+public class NoChatException extends RuntimeException {
 
     public NoChatException() {
     }

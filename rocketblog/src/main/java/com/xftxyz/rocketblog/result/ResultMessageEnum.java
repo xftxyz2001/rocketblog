@@ -26,7 +26,10 @@ public enum ResultMessageEnum {
     IMAGE_ERROR(300, "图片错误"),
 
     // 聊天错误4xx
-    NO_CHAT(400, "没有与该用户的聊天");
+    NO_CHAT(400, "没有与该用户的聊天"),
+    
+    // 其他错误
+    PARAM_ERROR(500, "方法参数类型不匹配");
 
     private Integer code;
     private String message;

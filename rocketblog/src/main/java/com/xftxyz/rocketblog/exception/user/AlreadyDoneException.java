@@ -1,8 +1,6 @@
 package com.xftxyz.rocketblog.exception.user;
 
-import com.xftxyz.rocketblog.exception.RocketBlogException;
-
-public class AlreadyDoneException extends RocketBlogException {
+public class AlreadyDoneException extends RuntimeException {
 
     public AlreadyDoneException() {
     }

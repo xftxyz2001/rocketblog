@@ -62,7 +62,7 @@ public class UserController {
             throw new UserNotExistException(email);
         }
         // 否则，发送包含用户密码的邮件到用户的邮箱
-        String content = EnvironmentVariables.EMAIL_FORGET_CONTENT + user.getPassword();
+        String content = String.format(EnvironmentVariables.EMAIL_FORGET_CONTENT, user.getPassword());
         emailService.sendSimpleMail(email, EnvironmentVariables.EMAIL_FORGET_SUBJECT, content);
         // 返回一个消息，指示密码邮件已发送到用户的邮箱
         return "密码邮件已发送到您的邮箱，请注意查收。";
@@ -82,7 +82,7 @@ public class UserController {
         session.setAttribute(EnvironmentVariables.SESSION_CODE, code);
 
         // 发送邮件
-        String content = EnvironmentVariables.EMAIL_CODE_CONTENT + code;
+        String content = String.format(EnvironmentVariables.EMAIL_CODE_CONTENT, code);
         emailService.sendSimpleMail(email, EnvironmentVariables.EMAIL_CODE_SUBJECT, content);
 
         // 返回一个消息，指示验证码已经成功发送到用户的邮箱

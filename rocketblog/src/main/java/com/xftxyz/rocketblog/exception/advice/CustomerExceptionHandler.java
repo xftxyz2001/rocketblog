@@ -2,6 +2,7 @@ package com.xftxyz.rocketblog.exception.advice;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.xftxyz.rocketblog.exception.blog.BlogNotExistException;
 import com.xftxyz.rocketblog.exception.chat.NoChatException;
@@ -18,6 +19,9 @@ import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.result.Result;
 import com.xftxyz.rocketblog.result.ResultMessageEnum;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestControllerAdvice
 public class CustomerExceptionHandler {
 
@@ -95,9 +99,17 @@ public class CustomerExceptionHandler {
         return Result.error(ResultMessageEnum.ILLEGAL_OPERATION.getCode(), e.getMessage());
     }
 
+    // 请求参数异常
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public Result<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return Result.error(ResultMessageEnum.PARAM_ERROR.getCode(),
+                ResultMessageEnum.PARAM_ERROR.getMessage() + ": " + e.getName() + "应为" + e.getRequiredType());
+    }
+
     // 未知异常
     @ExceptionHandler(Exception.class)
     public Result<Object> handleException(Exception e) {
+        log.error("出现未知异常：", e);
         return Result.error(ResultMessageEnum.UNKNOWN_ERROR.getCode(), e.getMessage());
     }
 }
