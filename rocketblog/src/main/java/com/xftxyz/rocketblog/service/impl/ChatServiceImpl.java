@@ -8,7 +8,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.chat.NoChatException;
 import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.mapper.ChatMapper;
@@ -100,8 +102,12 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Integer chat(Long fromUserid, Long toUserid, String content) {
+
         if (userMapper.selectByPrimaryKey(toUserid) == null) {
             throw new UserNotExistException(String.valueOf(toUserid));
+        }
+        if (StringUtils.hasLength(content) && content.length() > EnvironmentVariables.MAX_LENGTH) {
+            throw new IllegalArgumentException("内容长度不能超过" + EnvironmentVariables.MAX_LENGTH + "个字符");
         }
         Chat chat = new Chat();
         chat.setUseridFrom(fromUserid);

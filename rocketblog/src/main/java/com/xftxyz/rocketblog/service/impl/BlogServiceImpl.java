@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.blog.BlogNotExistException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
@@ -214,13 +215,27 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer addComment(Comment comment) {
-        // 评论内容相同
+        if (comment.getCommentContent() == null || comment.getCommentContent().length() == 0) {
+            throw new IllegalOperationException("评论内容不能为空");
+        }
+        // 查询博客是否存在
+        Blog blog = blogMapper.selectByPrimaryKey(comment.getBlogId());
+        if (blog == null) {
+            throw new BlogNotExistException("博客" + comment.getBlogId() + "不存在");
+        }
+        // 评论是否在500字以内
+        if (comment.getCommentContent().length() > EnvironmentVariables.MAX_LENGTH) {
+            throw new IllegalOperationException("评论内容不能超过" + EnvironmentVariables.MAX_LENGTH + "字");
+        }
+
+        // 短时间只能评论一次
         CommentExample exComment = new CommentExample();
         exComment.createCriteria().andBlogIdEqualTo(comment.getBlogId())
-                .andCommentContentEqualTo(comment.getCommentContent());
+                .andUseridEqualTo(comment.getUserid())
+                .andCreatetimeGreaterThan(new Date(System.currentTimeMillis() - 1000 * 60)); // 1分钟
         long count = commentMapper.countByExample(exComment);
         if (count > 0) {
-            throw new AlreadyDoneException("评论内容相同");
+            throw new AlreadyDoneException("短时间内只能评论一次");
         }
 
         comment.setCreatetime(new Date());
