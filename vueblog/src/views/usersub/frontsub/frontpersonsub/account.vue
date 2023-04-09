@@ -16,7 +16,7 @@
     <div class="text item">
       <span style="margin-right: 30px">密码</span
       ><span
-        ><el-button link text @click="editinfo" style="color: #246fdd"
+        ><el-button link text @click="editpassword" style="color: #246fdd"
           >修改密码</el-button
         ></span
       >
@@ -63,6 +63,32 @@
       </span>
     </template>
   </el-dialog>
+  <el-dialog
+    ref="editform"
+    v-model="passworddialogFormVisible"
+    title="修改密码"
+    style="width: 30%"
+  >
+    <el-form :model="editpasswordform">
+      <el-form-item label="旧密码" :label-width="formLabelWidth">
+        <el-input v-model.trim="editpasswordform.password" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="新密码" :label-width="formLabelWidth">
+        <el-input
+          v-model.trim="editpasswordform.newPassword"
+          autocomplete="off"
+        />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="passworddialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="editpasswordformSubmit">
+          提交
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup >
@@ -70,11 +96,13 @@ import axios from "axios";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 const emaildialogFormVisible = ref(false);
+const passworddialogFormVisible = ref(false);
 const userinfo = ref({});
 // var form = {
 //   username: "",
 // };
 const editemailform = ref({});
+const editpasswordform = ref({});
 axios.get("/user/i/detail").then((res) => {
   userinfo.value = res.data.data;
 });
@@ -90,6 +118,12 @@ function editemail() {
   editemailform.value.email = "";
   editemailform.value.vertify = "";
   emaildialogFormVisible.value = true;
+}
+function editpassword() {
+  editpasswordform.value.password = "";
+  editpasswordform.value.newPassword = "";
+
+  passworddialogFormVisible.value = true;
 }
 function getverify() {
   console.log(editemailform.value.email);
@@ -137,6 +171,36 @@ function editemailformSubmit() {
           message: "修改成功",
           type: "success",
         });
+        emaildialogFormVisible.value = false;
+        window.location.reload();
+      }
+    });
+  }
+}
+function editpasswordformSubmit() {
+  if (!editpasswordform.value.password || !editpasswordform.value.newPassword) {
+    ElMessage({
+      showClose: true,
+      message: "新密码和旧密码不能为空",
+      type: "error",
+    });
+  } else {
+    axios.post("/user/update/password", editpasswordform.value).then((res) => {
+      var result = res.data;
+      if (result.code == 103) {
+        ElMessage({
+          showClose: true,
+          message: "旧密码错误",
+          type: "error",
+        });
+      } else if (result.code == 0) {
+        ElMessage({
+          showClose: true,
+          message: "修改成功",
+          type: "success",
+        });
+        passworddialogFormVisible.value = false;
+        window.location.reload();
       }
     });
   }
