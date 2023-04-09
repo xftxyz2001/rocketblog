@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ import jakarta.servlet.http.HttpSession;
  * 博客相关
  */
 @RestController
+@Validated
 @RequestMapping("/blog")
 public class BlogController {
     @Autowired

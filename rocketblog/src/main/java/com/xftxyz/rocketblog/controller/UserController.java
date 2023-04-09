@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +34,13 @@ import com.xftxyz.rocketblog.util.Utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.Email;
 
 /**
  * 用户相关
  */
 @RestController
+@Validated
 @RequestMapping("/user")
 public class UserController {
 
@@ -55,7 +58,7 @@ public class UserController {
      * @throws UserNotExistException 如果提供的邮箱地址对应的用户不存在，则会抛出 UserNotExistException 异常
      */
     @GetMapping("/forget/{email}")
-    public String forgetPassword(@PathVariable("email") String email) {
+    public String forgetPassword(@PathVariable("email") @Email String email) {
         // 获取与提供的电子邮件地址相应的用户
         User user = userService.getUserByEmail(email);
         // 如果找不到与该电子邮件地址相应的用户，则抛出 UserNotExistException 异常

@@ -30,6 +30,7 @@ import jakarta.validation.constraints.Min;
  * 私信相关
  */
 @RestController
+@Validated
 @RequestMapping("/user/chat")
 public class ChatController {
 
