@@ -406,13 +406,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer publish(Blog blog, User user) {
-        // 博客内容为空
-        // if (!StringUtils.hasLength(blog.getBlogContent())) {
-        // return -1;
-        // }
 
         blog.setUserid(user.getUserid());
-        if (StringUtils.hasLength(blog.getBlogTitle())) {
+        if (!StringUtils.hasLength(blog.getBlogTitle())) {
             blog.setBlogTitle("无标题");
         }
         // 如果不是草稿

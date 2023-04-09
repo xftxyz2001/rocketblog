@@ -76,4 +76,6 @@ public interface UserService {
 
     public void deleteToken(String token);
 
+    public void deleteUserTokens(Long userid);
+
 }

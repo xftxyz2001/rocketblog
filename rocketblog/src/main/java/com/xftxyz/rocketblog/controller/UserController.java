@@ -328,17 +328,19 @@ public class UserController {
      */
     @DeleteMapping("/delete")
     public String deleteUser(HttpSession session, HttpServletResponse response, @CookieValue("token") String token) {
+        
+        // 获取当前登录用户信息
+        User user = Utils.currentUser(session);
         // 删除redis中的token
-        userService.deleteToken(token);
+        userService.deleteUserTokens(user.getUserid());
+        // 删除用户账户
+        userService.deleteUser(user.getUserid());
+        
         // 删除Cookie
         Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
-        
-        // 获取当前登录用户信息，并删除用户账户
-        User user = Utils.currentUser(session);
-        userService.deleteUser(user.getUserid());
         
         // 使会话无效
         session.invalidate();
