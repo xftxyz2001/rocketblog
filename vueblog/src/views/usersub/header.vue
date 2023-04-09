@@ -223,10 +223,10 @@
         <el-form-item :label-width="formLabelWidth" prop="password">
           <el-input
             v-model="loginform.password"
-            autocomplete="off"
-            placeholder="密码"
-            prefix-icon="Key"
             type="password"
+            placeholder="密码"
+            show-password
+            prefix-icon="Key"
           />
         </el-form-item>
       </el-form>
@@ -292,10 +292,11 @@
         <el-form-item :label-width="formLabelWidth" prop="password">
           <el-input
             v-model="registerform.password"
-            autocomplete="off"
-            placeholder="密码"
-            prefix-icon="Key"
             type="password"
+            placeholder="密码"
+            show-password
+            prefix-icon="Key"
+            autocomplete="off"
           />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" prop="confirmpassword">
@@ -305,6 +306,7 @@
             placeholder="确认密码"
             prefix-icon="Key"
             type="password"
+            show-password
           />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" prop="vertify">

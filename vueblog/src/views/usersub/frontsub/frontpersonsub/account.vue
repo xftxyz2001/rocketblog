@@ -78,6 +78,7 @@
           v-model.trim="editpasswordform.password"
           autocomplete="off"
           type="password"
+          show-password
         />
       </el-form-item>
       <el-form-item label="新密码" :label-width="formLabelWidth">
@@ -85,6 +86,7 @@
           v-model.trim="editpasswordform.newPassword"
           autocomplete="off"
           type="password"
+          show-password
         />
       </el-form-item>
     </el-form>
