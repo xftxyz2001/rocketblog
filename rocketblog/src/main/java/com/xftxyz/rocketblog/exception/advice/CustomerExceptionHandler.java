@@ -1,6 +1,11 @@
 package com.xftxyz.rocketblog.exception.advice;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -98,6 +103,15 @@ public class CustomerExceptionHandler {
     @ExceptionHandler(IllegalOperationException.class)
     public Result<Object> handleIllegalOperationException(IllegalOperationException e) {
         return Result.error(ResultMessageEnum.ILLEGAL_OPERATION.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Result<Object> handleValidationException(MethodArgumentNotValidException ex) {
+        BindingResult result = ex.getBindingResult();
+        List<String> errorMessages = result.getFieldErrors().stream()
+                .map(error -> String.format("%s : %s", error.getField(), error.getDefaultMessage()))
+                .collect(Collectors.toList());
+        return Result.error(ResultMessageEnum.PARAM_VALID_ERROR.getCode(), "请求参数校验失败" + errorMessages);
     }
 
     // HTTP消息不可读异常
