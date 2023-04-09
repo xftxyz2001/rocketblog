@@ -7,12 +7,10 @@ import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.UserService;
-import com.xftxyz.rocketblog.util.Utils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 public class LoginInterceptor implements HandlerInterceptor {
 
@@ -23,17 +21,20 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         // 获取session中的user判断是否登录
-        HttpSession session = request.getSession();
-        User user = Utils.currentUser(session);
-        if (user != null) {
-            // 密码检查未通过
-            if (!userService.checkPassword(user)) {
-                // 清除session
-                session.invalidate();
-                throw new NotLoginException("用户被注销或密码已被修改");
-            }
+        if (request.getSession().getAttribute(EnvironmentVariables.COOKIE_TOKEN) != null){
             return true;
         }
+        // HttpSession session = request.getSession();
+        // User usr = Utils.currentUser(session);
+        // if (usr != null) {
+        //     // 密码检查未通过
+        //     if (!userService.checkPassword(usr)) {
+        //         // 清除session
+        //         session.invalidate();
+        //         throw new NotLoginException("用户被注销或密码已被修改");
+        //     }
+        //     return true;
+        // }
         // 未在session中找到登录信息，尝试从cookie中获取
         Cookie[] cookies = request.getCookies();
         String token = null;
@@ -45,7 +46,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 }
             }
         }
-        user = userService.fromToken(token);
+        User user = userService.fromToken(token);
         if (user == null) {
             throw new NotLoginException("用户未登录");
         }
