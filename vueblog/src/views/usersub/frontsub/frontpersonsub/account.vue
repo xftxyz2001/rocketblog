@@ -26,7 +26,11 @@
     </div>
     <div class="text item">
       <span style="margin-right: 30px">账户注销</span
-      ><el-button link text @click="editinfo" style="color: #246fdd"
+      ><el-button
+        link
+        text
+        @click="deleteaccountDialogVisible = true"
+        style="color: #246fdd"
         >立即注销</el-button
       >
     </div>
@@ -89,14 +93,32 @@
       </span>
     </template>
   </el-dialog>
+  <el-dialog
+    v-model="deleteaccountDialogVisible"
+    title="提示"
+    width="30%"
+    center
+  >
+    <span style="display: inline-block; width: 100%; text-align: center">
+      确定要注销账户吗？
+    </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="deleteaccountDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmdelete"> 确定 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup >
 import axios from "axios";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
+import router from "@/router";
 const emaildialogFormVisible = ref(false);
 const passworddialogFormVisible = ref(false);
+const deleteaccountDialogVisible = ref(false);
 const userinfo = ref({});
 // var form = {
 //   username: "",
@@ -204,6 +226,19 @@ function editpasswordformSubmit() {
       }
     });
   }
+}
+function confirmdelete() {
+  axios.delete("/user/delete").then((res) => {
+    var result = res.data;
+    if (result.code == 0) {
+      ElMessage({
+        showClose: true,
+        message: result.data,
+        type: "success",
+      });
+      router.push({ name: "hotlatest" });
+    }
+  });
 }
 </script>
 <script>
