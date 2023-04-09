@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +43,7 @@ public class ChatController {
      * @return 返回一个字符串，表示消息发送已成功
      */
     @PostMapping("")
-    public String sendMessage(HttpSession session, @RequestBody ChatMessageBody chatMessage) {
+    public String sendMessage(HttpSession session, @RequestBody @Validated ChatMessageBody chatMessage) {
         // 获取当前登录用户信息，并获取要发送的消息内容和目标用户ID
         User user = Utils.currentUser(session);
         Long toUserid = chatMessage.getTo();
