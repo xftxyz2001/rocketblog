@@ -327,13 +327,22 @@ public class UserController {
      * @return 返回一个字符串，表示用户账户已经成功删除
      */
     @DeleteMapping("/delete")
-    public String deleteUser(HttpSession session) {
+    public String deleteUser(HttpSession session, HttpServletResponse response, @CookieValue("token") String token) {
+        // 删除redis中的token
+        userService.deleteToken(token);
+        // 删除Cookie
+        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        
         // 获取当前登录用户信息，并删除用户账户
         User user = Utils.currentUser(session);
         userService.deleteUser(user.getUserid());
-
-        // 注销并返回一个消息，指示用户账户已经成功删除
+        
+        // 使会话无效
         session.invalidate();
+        // 返回一个消息，指示用户账户已经成功删除
         return "注销成功";
     }
 
