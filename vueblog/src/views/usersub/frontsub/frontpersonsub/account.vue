@@ -9,8 +9,8 @@
     <div class="text item">
       <span style="margin-right: 20px">邮箱</span>
       <span style="margin-right: 20px">{{ userinfo.email }} </span
-      ><el-button link text @click="editinfo" style="color: #246fdd"
-        >编辑</el-button
+      ><el-button link text @click="editemail" style="color: #246fdd"
+        >修改邮箱</el-button
       >
     </div>
     <div class="text item">
@@ -34,31 +34,32 @@
 
   <el-dialog
     ref="editform"
-    v-model="dialogFormVisible"
-    title="编辑资料"
+    v-model="emaildialogFormVisible"
+    title="修改邮箱"
     style="width: 30%"
   >
-    <el-form :model="form">
-      <el-form-item label="头像" :label-width="formLabelWidth">
-        <el-input v-model="form.image" autocomplete="off" />
+    <el-form :model="editemailform">
+      <el-form-item label="新邮箱" :label-width="formLabelWidth">
+        <el-input v-model.trim="editemailform.email" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="用户昵称" :label-width="formLabelWidth">
-        <el-input v-model="form.username" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="性别" :label-width="formLabelWidth">
-        <el-select v-model="form.sex" placeholder="Please select a zone">
-          <el-option label="男" value="男" />
-          <el-option label="女" value="女" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="手机" :label-width="formLabelWidth">
-        <el-input v-model="form.phone" autocomplete="off" />
+
+      <el-form-item label="验证码" :label-width="formLabelWidth">
+        <el-input
+          v-model.trim="editemailform.vertify"
+          autocomplete="off"
+          placeholder="验证码"
+          prefix-icon="Unlock"
+          style="width: 50%; margin-right: 12px"
+        />
+        <el-button @click="getverify">获取验证码</el-button>
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="formSubmit"> 提交 </el-button>
+        <el-button @click="emaildialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="editemailformSubmit">
+          提交
+        </el-button>
       </span>
     </template>
   </el-dialog>
@@ -67,12 +68,13 @@
 <script setup >
 import axios from "axios";
 import { ref } from "vue";
-const dialogFormVisible = ref(false);
+import { ElMessage } from "element-plus";
+const emaildialogFormVisible = ref(false);
 const userinfo = ref({});
 // var form = {
 //   username: "",
 // };
-const form = ref({});
+const editemailform = ref({});
 axios.get("/user/i/detail").then((res) => {
   userinfo.value = res.data.data;
 });
@@ -84,7 +86,61 @@ axios.get("/user/i/detail").then((res) => {
 
 //   //   修改用户信息
 // }
-function formSubmit() {}
+function editemail() {
+  editemailform.value.email = "";
+  editemailform.value.vertify = "";
+  emaildialogFormVisible.value = true;
+}
+function getverify() {
+  console.log(editemailform.value.email);
+  if (!editemailform.value.email) {
+    ElMessage({
+      showClose: true,
+      message: "请输入邮箱",
+      type: "error",
+    });
+  } else {
+    if (
+      /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/.test(
+        editemailform.value.email
+      )
+    ) {
+      axios.get("/user/code/" + editemailform.value.email, true);
+    } else {
+      ElMessage({
+        showClose: true,
+        message: "请输入正确的邮箱",
+        type: "error",
+      });
+    }
+  }
+}
+function editemailformSubmit() {
+  if (!editemailform.value.email || !editemailform.value.vertify) {
+    ElMessage({
+      showClose: true,
+      message: "邮箱和验证码不能为空",
+      type: "error",
+    });
+  } else {
+    axios.post("/user/update/email", editemailform.value).then((res) => {
+      var result = res.data;
+      if (result.code == 101) {
+        ElMessage({
+          showClose: true,
+          message: "验证码错误",
+          type: "error",
+        });
+      } else if (result.code == 0) {
+        ElMessage({
+          showClose: true,
+          message: "修改成功",
+          type: "success",
+        });
+      }
+    });
+  }
+}
 </script>
 <script>
 export default {};

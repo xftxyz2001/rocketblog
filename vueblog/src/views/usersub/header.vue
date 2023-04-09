@@ -629,7 +629,7 @@ function getverify(formE1) {
   else {
     //如果输入邮箱的格式正确
     if (
-      /^([a-z]|[0-9])+((\.|\-|_)?([a-z]|[0-9])+)*@[a-z]+(\-?[a-z]+)*(\.[a-z]+(\-?[a-z]+)*)+$/.test(
+      /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/.test(
         registerform.email
       )
     ) {
