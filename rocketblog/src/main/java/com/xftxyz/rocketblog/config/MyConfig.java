@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.xftxyz.rocketblog.interceptor.AdminInterceptor;
-import com.xftxyz.rocketblog.interceptor.LoggingInterceptor;
 import com.xftxyz.rocketblog.interceptor.LoginInterceptor;
 
 @Configuration
@@ -37,7 +36,7 @@ public class MyConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 日志拦截器
-        registry.addInterceptor(new LoggingInterceptor());
+        // registry.addInterceptor(new LoggingInterceptor());
 
         // 登录拦截器
         List<String> loginExcludePathPatterns = List.of(

@@ -1,8 +1,6 @@
 package com.xftxyz.rocketblog.exception.image;
 
-import com.xftxyz.rocketblog.exception.RocketBlogException;
-
-public class ImageException extends RocketBlogException {
+public class ImageException extends RuntimeException {
 
     public ImageException() {
     }

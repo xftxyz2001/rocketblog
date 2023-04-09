@@ -1,8 +1,6 @@
 package com.xftxyz.rocketblog.exception.user;
 
-import com.xftxyz.rocketblog.exception.RocketBlogException;
-
-public class PasswordErrorException extends RocketBlogException {
+public class PasswordErrorException extends RuntimeException {
 
     public PasswordErrorException() {
     }

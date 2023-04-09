@@ -9,7 +9,7 @@ import com.xftxyz.rocketblog.pojo.UserInfo;
 public interface UserService {
 
     // 生成token
-    public String toToken(User user);
+    public String toToken(String string, User user);
 
     // 解析token
     public User fromToken(String token);
@@ -67,5 +67,7 @@ public interface UserService {
     public UserInfo getUserInfoById(Long id);
 
     public List<UserInfo> findUserInfosByExample(User user);
+
+    public void checkCaptcha(String email, String vertify);
 
 }

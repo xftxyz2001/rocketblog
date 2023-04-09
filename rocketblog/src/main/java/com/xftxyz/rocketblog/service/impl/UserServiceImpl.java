@@ -3,12 +3,16 @@ package com.xftxyz.rocketblog.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
+import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.SelfOperationException;
@@ -29,6 +33,9 @@ import com.xftxyz.rocketblog.status.BlogStatus;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    StringRedisTemplate redisTemplate;
 
     @Autowired
     UserMapper userMapper;
@@ -268,16 +275,18 @@ public class UserServiceImpl implements UserService {
         if (!StringUtils.hasLength(token)) {
             return null;
         }
-        // 从token中提取email和password，尝试登录
-        int index = token.indexOf("#");
-        String email = token.substring(0, index);
-        String password = token.substring(index + 1);
-        return login(email, password);
+        String userid = redisTemplate.boundValueOps(token).get();
+        if (userid == null) {
+            return null;
+        }
+        return getUser(Long.valueOf(userid));
     }
 
     @Override
-    public String toToken(User user) {
-        return user.getEmail() + "#" + user.getPassword();
+    public String toToken(String sessionId, User user) {
+        redisTemplate.boundValueOps(sessionId).set(String.valueOf(user.getUserid()),
+                EnvironmentVariables.COOKIE_TOKEN_EXPIRE, TimeUnit.SECONDS);
+        return sessionId;
     }
 
     @Override
@@ -305,6 +314,17 @@ public class UserServiceImpl implements UserService {
             userInfos.add(userInfo);
         }
         return userInfos;
+    }
+
+    @Override
+    public void checkCaptcha(String email, String vertify) {
+        String captcha = redisTemplate.boundValueOps(email).get();
+        if (captcha == null) {
+            throw new CaptchaErrorException("验证码已过期");
+        }
+        if (!captcha.equals(vertify)) {
+            throw new CaptchaErrorException("验证码错误");
+        }
     }
 
 }
