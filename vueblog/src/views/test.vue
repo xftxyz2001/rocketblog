@@ -1,4 +1,5 @@
 <template>
+  <button @click="clickthis"></button>
   <el-upload
     list-type="picture-card"
     :action="'http://xxx.xxx.xxx.xxx:8118/upload?pid=' + product_id"
@@ -45,6 +46,12 @@ const beforeUpload = (file) => {
   //   if(type.includes('jpg'))
 };
 
+function clickthis() {
+  if (window.location.href.indexOf("#reloaded") == -1) {
+    window.location.href = window.location.href + "#reloaded";
+    window.location.reload();
+  }
+}
 //上传成功回调
 const handleSuccess = (res, file) => {
   console.log("handleSuccessres", res);
@@ -81,8 +88,8 @@ const beforeRemove = (file, fileList) => {
       type: "warning",
     })
       .then(() => {
-        let index = fileList.indexOf(file)
-        fileList.splice(index,1)
+        let index = fileList.indexOf(file);
+        fileList.splice(index, 1);
         // 请求删除接口
       })
       .catch(() => {

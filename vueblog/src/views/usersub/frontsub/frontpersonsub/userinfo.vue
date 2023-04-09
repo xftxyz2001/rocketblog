@@ -115,7 +115,7 @@ import axios from "axios";
 import { ref, reactive } from "vue";
 import { Plus } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import router from '@/router';
+import router from "@/router";
 
 const fileList = reactive([]);
 const dialogFormVisible = ref(false);
@@ -219,7 +219,10 @@ function formSubmit() {
       axios.get("/user/i/detail").then((res) => {
         userinfo.value = res.data.data;
       });
-      router.push({name:'personuserinfo'});
+      if (window.location.href.indexOf("#reloaded") == -1) {
+        window.location.href = window.location.href + "#reloaded";
+        window.location.reload();
+      }
     } else {
       ElMessage.error({
         message: result.message,
