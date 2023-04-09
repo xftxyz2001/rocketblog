@@ -222,6 +222,7 @@ function formSubmit() {
       ElMessage.success({
         message: result.data,
       });
+      dialogFormVisible.value = false;
     } else {
       ElMessage.error({
         message: result.message,
