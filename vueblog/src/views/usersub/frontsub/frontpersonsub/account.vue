@@ -74,12 +74,17 @@
   >
     <el-form :model="editpasswordform">
       <el-form-item label="旧密码" :label-width="formLabelWidth">
-        <el-input v-model.trim="editpasswordform.password" autocomplete="off" />
+        <el-input
+          v-model.trim="editpasswordform.password"
+          autocomplete="off"
+          type="password"
+        />
       </el-form-item>
       <el-form-item label="新密码" :label-width="formLabelWidth">
         <el-input
           v-model.trim="editpasswordform.newPassword"
           autocomplete="off"
+          type="password"
         />
       </el-form-item>
     </el-form>
@@ -203,6 +208,14 @@ function editpasswordformSubmit() {
     ElMessage({
       showClose: true,
       message: "新密码和旧密码不能为空",
+      type: "error",
+    });
+  } else if (
+    !/^[A-Za-z0-9._~!@#$^&*]{8,16}$/.test(editpasswordform.value.newPassword)
+  ) {
+    ElMessage({
+      showClose: true,
+      message: "新密码应为包含英文字母大小写、数字和特殊符号的 8-16 位组合",
       type: "error",
     });
   } else {
