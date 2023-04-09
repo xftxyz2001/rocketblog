@@ -7,8 +7,10 @@
       <Left></Left>
       <div class="grid-content ep-bg-purple" />
     </el-col>
-    <el-col :span="10"
-      ><router-view></router-view>
+    <el-col :span="10" style="position: fixed"
+      ><div style="position: fixed; width: 100%; top: 70px">
+        <router-view></router-view>
+      </div>
       <div class="grid-content ep-bg-purple" />
     </el-col>
     <el-col :span="4"
@@ -16,7 +18,7 @@
         :src="ipsignimgsrc"
         alt=""
         srcset=""
-        style="position: fixed; width: 23%"
+        style="position: fixed; width: 23%; right: 50px; top: 80px"
       />
       <div class="grid-content ep-bg-purple" />
     </el-col>

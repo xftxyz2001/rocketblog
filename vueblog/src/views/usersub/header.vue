@@ -670,6 +670,7 @@ function tohome() {
     loginform.email = "";
     loginform.password = "";
   }
+  router.push({ name: "allconcern" });
 }
 function tomessage() {
   // if (checkTokenInCookie()) router.push({ name: "message" });

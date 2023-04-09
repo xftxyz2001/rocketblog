@@ -26,4 +26,8 @@ nav {
 a {
   text-decoration: none;
 }
+html {
+  overflow-x: hidden; //隐藏水平滚动条
+  overflow-y: hidden; //隐藏垂直滚动条
+}
 </style>

@@ -23,7 +23,7 @@
       >
       <router-link :to="{ name: 'mostlike' }">
         <el-menu-item index="2">
-          <span class="iconfont" style="margin-right: 5px">&#xe670;</span>
+          <span class="iconfont" style="margin-right: 5px"> &#xe603; </span>
           <span>收藏最多</span>
         </el-menu-item></router-link
       >
@@ -51,6 +51,7 @@
 <style scoped>
 .nav {
   position: fixed;
+  z-index: 1;
   top: 70px;
   background-color: #fff;
   width: 200px;

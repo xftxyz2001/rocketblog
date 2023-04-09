@@ -11,10 +11,11 @@ import mitt from 'mitt'
 
 import '@/assets/icons/iconfont.css'
 import '@/assets/icons/iconfont.js';
+import InfiniteScroll from "element-plus";
 
 axios.defaults.withCredentials = true;
-// axios.defaults.baseURL = "http://8.130.81.23:8080";
-axios.defaults.baseURL = window.location.origin;
+axios.defaults.baseURL = "http://8.130.81.23:8080";
+// axios.defaults.baseURL = window.location.origin;
 /*
 axios.get("/api").then((res) => {
   var result = res.data;
@@ -30,6 +31,7 @@ axios.get("/api").then((res) => {
 const app = createApp(App)
 app.use(router)
 app.use(ElementPlus)
+app.use(InfiniteScroll)
 app.config.globalProperties.Bus = mitt()
 app.mount('#app')
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

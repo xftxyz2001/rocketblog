@@ -3,7 +3,6 @@
     <el-container>
       <el-header><Header></Header></el-header>
       <el-main><router-view></router-view></el-main>
-      <el-footer>Footer</el-footer>
     </el-container>
   </div>
 </template>
@@ -43,11 +42,11 @@ export default defineComponent({
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
 .el-main {
-  position: absolute;
-  left: 0px;
-  right: 0;
-  top: 60px;
-  bottom: 0;
   background-color: #f1f2f5;
+  height: 1000px;
+  z-index: 0;
+}
+.el-main::-webkit-scrollbar {
+  display: none;
 }
 </style>

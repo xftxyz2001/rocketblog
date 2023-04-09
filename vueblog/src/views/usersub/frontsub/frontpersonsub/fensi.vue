@@ -1,4 +1,10 @@
 <template>
+ <div
+    v-infinite-scroll="load"
+    class="infinite-list"
+    style="overflow: auto"
+    infinite-scroll-distance="1"
+  >
   <div v-if="isempty"><el-empty description="还没有人关注你哦！" /></div>
   <el-card
     v-else
@@ -23,12 +29,15 @@
       </el-col>
     </el-row></el-card
   >
+ </div>
 </template>
 
 <script setup >
 import axios from "axios";
 import { ref } from "vue";
 import router from "@/router";
+const page = ref(1);
+const pagesize = ref(5);
 const isempty = ref(false);
 const fensis = ref([]);
 axios.get("/user/followers").then((res) => {
@@ -42,6 +51,23 @@ function fensidetail(userid) {
     name: "otherperson",
     params: { userid: userid },
   });
+}
+function load() {
+  page.value++;
+  axios
+    .get(
+      "/user/followers" +
+        "?pageNum=" +
+        page.value +
+        "&pageSize=" +
+        pagesize.value
+    )
+    .then((res) => {
+      var result = res.data;
+      for (let index = 0; index < result.data.list.length; index++) {
+        fensis.value.push(result.data.list[index]);
+      }
+    });
 }
 // function fensidetail(fensiid, fensiid) {
 //   // var fensiid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.fensiid;
@@ -67,4 +93,26 @@ export default {};
 </script>
 
 <style>
+
+.infinite-list {
+  height: 370px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
+}
+.infinite-list ::-webkit-scrollbar {
+  display: none;
+}
 </style>

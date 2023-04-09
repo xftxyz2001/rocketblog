@@ -180,26 +180,32 @@
         <div style="height: 30px"></div>
         <el-divider border-style="dashed" />
         <div
-          v-for="comment in comments"
-          :key="comment.commentId"
-          style="padding: 10px 0 0 10px"
+          v-infinite-scroll="load"
+          class="infinite-list"
+          style="overflow: auto"
+          infinite-scroll-distance="1"
         >
-          <div style="">
-            <img
-              :src="comment.avatar"
-              alt=""
-              style="width: 30px; border-radius: 15px; vertical-align: bottom"
-            />
-            <div style="display: inline-block; padding: 0 0 0 7px">
-              <div>{{ comment.username }}</div>
-              <div style="font-size: 5px">{{ comment.createtime }}</div>
+          <div
+            v-for="comment in comments"
+            :key="comment.commentId"
+            style="padding: 10px 0 0 10px"
+          >
+            <div style="">
+              <img
+                :src="comment.avatar"
+                alt=""
+                style="width: 30px; border-radius: 15px; vertical-align: bottom"
+              />
+              <div style="display: inline-block; padding: 0 0 0 7px">
+                <div>{{ comment.username }}</div>
+                <div style="font-size: 5px">{{ comment.createtime }}</div>
+              </div>
             </div>
+            <el-row style="display: inline-block; padding: 5px 0 0 45px">{{
+              comment.commentContent
+            }}</el-row>
           </div>
-          <el-row style="display: inline-block; padding: 5px 0 0 45px">{{
-            comment.commentContent
-          }}</el-row>
         </div>
-
         <el-divider border-style="dashed" />
       </el-card>
     </el-col>
@@ -214,6 +220,8 @@ const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 const route = useRoute();
 const router = useRouter();
 const commenttext = ref("");
+const page = ref(1);
+const pagesize = ref(5);
 const userdata = ref({
   followers: "",
   followings: "",
@@ -275,7 +283,24 @@ function gotootherperson(userid) {
 //   .then((res) => {
 //     comments.value = res.data.data;
 //   });
-
+function load() {
+  page.value++;
+  axios
+    .get(
+      "/blog/comment/" +
+        route.params.blogid +
+        "?pageNum=" +
+        page.value +
+        "&pageSize=" +
+        pagesize.value
+    )
+    .then((res) => {
+      var result = res.data;
+      for (let index = 0; index < result.data.list.length; index++) {
+        comments.value.push(result.data.list[index]);
+      }
+    });
+}
 // 请求博客详情
 axios.get("/blog/detail/" + route.params.blogid).then((res) => {
   var resultBlogDetail = res.data;
@@ -507,5 +532,26 @@ export default defineComponent({
 
 .box-card {
   width: 480px;
+}
+.infinite-list {
+  height: 250px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
+}
+.infinite-list ::-webkit-scrollbar {
+  display: none;
 }
 </style>

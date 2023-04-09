@@ -1,5 +1,8 @@
 <template>
-  <div class="common-layout">
+  <div
+    class="common-layout"
+    style="margin-top: 60px; overflow-y: scroll; height: 1000px"
+  >
     <el-container style="position: relative">
       <el-header
         style="
@@ -163,9 +166,9 @@
                       >
                       <router-link :to="{ name: 'personcollect' }">
                         <el-menu-item index="6">
-                          <span class="iconfont" style="margin-right: 5px"
-                            >&#xe670;</span
-                          >
+                          <span class="iconfont" style="margin-right: 5px">
+                            &#xe603;
+                          </span>
                           <span>收藏</span>
                         </el-menu-item></router-link
                       >

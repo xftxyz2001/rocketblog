@@ -48,7 +48,7 @@
         <el-input v-model="form.username" autocomplete="off" />
       </el-form-item>
       <el-form-item label="性别" :label-width="formLabelWidth">
-        <el-select v-model="form.sex" placeholder="Please select a zone">
+        <el-select v-model="form.userSex" placeholder="Please select a zone">
           <el-option label="男" value="男" />
           <el-option label="女" value="女" />
         </el-select>

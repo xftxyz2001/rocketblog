@@ -23,7 +23,7 @@
       >
       <router-link :to="{ name: 'hotmostlike' }">
         <el-menu-item index="2">
-          <span class="iconfont" style="margin-right: 5px">&#xe60f;</span>
+          <span class="iconfont" style="margin-right: 5px">&#xe600;</span>
           <span>点赞最多</span>
         </el-menu-item></router-link
       >
@@ -42,6 +42,7 @@ export default {
 <style scoped>
 .nav {
   position: fixed;
+  z-index: 1;
   top: 70px;
   background-color: #fff;
   width: 200px;

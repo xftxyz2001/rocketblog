@@ -102,7 +102,6 @@
   <div style="overflow: hidden">
     <el-input
       v-model.trim="textarea2"
-      @keyup.enter.native="send"
       :autosize="{ minRows: 2, maxRows: 4 }"
       type="textarea"
       placeholder="请输入..."
