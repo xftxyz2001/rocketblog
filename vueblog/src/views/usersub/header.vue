@@ -640,6 +640,7 @@ function getverify(formE1) {
 function logout() {
   axios.get("/user/logout").then((res) => {
     loginsuccess.value = false;
+    router.push({ name: "hotlatest" });
     // localStorage.removeItem("token");
     // localStorage.removeItem("token.email");
     // localStorage.removeItem("token.password");
