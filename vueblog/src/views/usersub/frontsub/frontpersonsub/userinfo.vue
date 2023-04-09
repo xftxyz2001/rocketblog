@@ -215,6 +215,9 @@ function formSubmit() {
         message: result.data,
       });
       dialogFormVisible.value = false;
+      axios.get("/user/i/detail").then((res) => {
+        userinfo.value = res.data.data;
+      });
     } else {
       ElMessage.error({
         message: result.message,
