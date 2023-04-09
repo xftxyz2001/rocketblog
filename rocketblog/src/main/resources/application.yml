@@ -1,9 +1,7 @@
 spring:
   data:
     redis:
-      url: redis://localhost
-      port: 6379
-      password: THuCMY&kZ8oH2qlKK+
+      url: redis://THuCMY&kZ8oH2qlKK+@localhost:6379
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
