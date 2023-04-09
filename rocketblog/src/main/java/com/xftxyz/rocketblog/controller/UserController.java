@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -147,9 +148,12 @@ public class UserController {
      * @return 返回一个字符串，表示用户已经成功登出
      */
     @GetMapping("/logout")
-    public String logout(HttpSession session, HttpServletResponse response) {
-        // 使会话无效，并删除Cookie
+    public String logout(HttpSession session, HttpServletResponse response, @CookieValue("token") String token) {
+        // 使会话无效
         session.invalidate();
+        // 删除redis中的token
+        userService.deleteToken(token);
+        // 删除Cookie
         Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
@@ -290,14 +294,7 @@ public class UserController {
         String password = resetPasswordBody.getPassword();
         String newPassword = resetPasswordBody.getNewPassword();
 
-        // 如果原密码不正确，则抛出 PasswordErrorException 异常
-        if (!user.getPassword().equals(password)) {
-            throw new PasswordErrorException();
-        }
-
-        // 更新用户密码并保存到数据库中
-        user.setPassword(newPassword);
-        userService.updateUser(user);
+        userService.changePassword(user, password, newPassword);
 
         // 返回一个消息，指示用户密码已经成功修改
         return "密码修改成功";

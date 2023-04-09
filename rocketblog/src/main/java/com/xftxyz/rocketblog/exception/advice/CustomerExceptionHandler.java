@@ -35,7 +35,7 @@ public class CustomerExceptionHandler {
     // 用户未登录异常
     @ExceptionHandler(NotLoginException.class)
     public Result<Object> handleNotLoginException(NotLoginException e) {
-        return Result.error(ResultMessageEnum.USER_NOT_LOGIN.getCode(), ResultMessageEnum.USER_NOT_LOGIN.getMessage());
+        return Result.error(ResultMessageEnum.USER_NOT_LOGIN.getCode(), e.getMessage());
     }
 
     // 用户不存在异常

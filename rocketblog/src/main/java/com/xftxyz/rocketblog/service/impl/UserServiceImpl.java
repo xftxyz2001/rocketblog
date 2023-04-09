@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
+import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.SelfOperationException;
 import com.xftxyz.rocketblog.mapper.BlogMapper;
 import com.xftxyz.rocketblog.mapper.ChatMapper;
@@ -327,4 +329,40 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void changePassword(User user, String password, String newPassword) {
+
+        // 如果原密码不正确，则抛出 PasswordErrorException 异常
+        if (!user.getPassword().equals(password)) {
+            throw new PasswordErrorException();
+        }
+
+        // 更新用户密码并保存到数据库中
+        user.setPassword(newPassword);
+        updateUser(user);
+
+        // ！！！非常不好的做法！！！
+        // 清除用户登录状态，遍历redis中的所有key，如果value为用户id，则删除
+        Set<String> keys = redisTemplate.keys("*");
+        for (String key : keys) {
+            String value = redisTemplate.boundValueOps(key).get();
+            if (value != null && value.equals(String.valueOf(user.getUserid()))) {
+                redisTemplate.delete(key);
+            }
+        }
+
+    }
+
+    @Override
+    public boolean checkPassword(User user) {
+        // 根据id查询用户
+        User dbUser = getUser(user.getUserid());
+        // 用户存在且密码正确
+        return dbUser != null && dbUser.getPassword().equals(user.getPassword());
+    }
+
+    @Override
+    public void deleteToken(String token) {
+        redisTemplate.delete(token);
+    }
 }
