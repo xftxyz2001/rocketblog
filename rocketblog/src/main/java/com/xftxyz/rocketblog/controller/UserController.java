@@ -290,14 +290,7 @@ public class UserController {
         String password = resetPasswordBody.getPassword();
         String newPassword = resetPasswordBody.getNewPassword();
 
-        // 如果原密码不正确，则抛出 PasswordErrorException 异常
-        if (!user.getPassword().equals(password)) {
-            throw new PasswordErrorException();
-        }
-
-        // 更新用户密码并保存到数据库中
-        user.setPassword(newPassword);
-        userService.updateUser(user);
+        userService.changePassword(user, password, newPassword);
 
         // 返回一个消息，指示用户密码已经成功修改
         return "密码修改成功";

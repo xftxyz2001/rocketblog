@@ -70,4 +70,8 @@ public interface UserService {
 
     public void checkCaptcha(String email, String vertify);
 
+    public void changePassword(User user, String password, String newPassword);
+
+    public boolean checkPassword(User user);
+
 }
