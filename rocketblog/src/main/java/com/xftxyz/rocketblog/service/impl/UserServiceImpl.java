@@ -360,4 +360,9 @@ public class UserServiceImpl implements UserService {
         // 用户存在且密码正确
         return dbUser != null && dbUser.getPassword().equals(user.getPassword());
     }
+
+    @Override
+    public void deleteToken(String token) {
+        redisTemplate.delete(token);
+    }
 }
