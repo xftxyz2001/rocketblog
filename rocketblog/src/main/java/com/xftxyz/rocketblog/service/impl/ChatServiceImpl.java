@@ -15,6 +15,7 @@ import com.xftxyz.rocketblog.mapper.ChatMapper;
 import com.xftxyz.rocketblog.mapper.UserMapper;
 import com.xftxyz.rocketblog.mapper.VChatMapper;
 import com.xftxyz.rocketblog.pojo.Chat;
+import com.xftxyz.rocketblog.pojo.ChatExample;
 import com.xftxyz.rocketblog.pojo.ChatInfo;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.VChat;
@@ -153,10 +154,10 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Integer deleteSession(User user, Long userid) {
-        VChatExample exChats = new VChatExample();
+        ChatExample exChats = new ChatExample();
         exChats.createCriteria().andUseridFromEqualTo(user.getUserid()).andUseridToEqualTo(userid); // 我发给对方的
         exChats.or().andUseridFromEqualTo(userid).andUseridToEqualTo(user.getUserid()); // 对方发给我的
-        int delete = vChatMapper.deleteByExample(exChats);
+        int delete = chatMapper.deleteByExample(exChats);
         return delete;
     }
 

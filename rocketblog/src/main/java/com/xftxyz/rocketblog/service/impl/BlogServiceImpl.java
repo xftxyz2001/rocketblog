@@ -397,7 +397,7 @@ public class BlogServiceImpl implements BlogService {
         // }
 
         blog.setUserid(user.getUserid());
-        if (blog.getBlogTitle() == null || blog.getBlogTitle().equals("")) {
+        if (StringUtils.hasLength(blog.getBlogTitle())) {
             blog.setBlogTitle("无标题");
         }
         // 如果不是草稿
