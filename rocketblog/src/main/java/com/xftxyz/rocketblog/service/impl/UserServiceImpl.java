@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -35,7 +35,7 @@ import com.xftxyz.rocketblog.status.BlogStatus;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    RedisTemplate<String, String> redisTemplate;
+    StringRedisTemplate redisTemplate;
 
     @Autowired
     UserMapper userMapper;

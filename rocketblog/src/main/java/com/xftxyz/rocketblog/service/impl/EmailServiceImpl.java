@@ -3,7 +3,7 @@ package com.xftxyz.rocketblog.service.impl;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class EmailServiceImpl implements EmailService {
     JavaMailSender javaMailSender;
 
     @Autowired
-    RedisTemplate<String, String> redisTemplate;
+    StringRedisTemplate redisTemplate;
 
     @Override
     public void sendSimpleMail(String to, String subject, String content) {

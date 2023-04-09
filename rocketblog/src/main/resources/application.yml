@@ -1,9 +1,7 @@
 spring:
   data:
     redis:
-      url: localhost
-      port: 6379
-      database: 0
+      url: redis://localhost
       password: THuCMY&kZ8oH2qlKK+
 
   jackson:
