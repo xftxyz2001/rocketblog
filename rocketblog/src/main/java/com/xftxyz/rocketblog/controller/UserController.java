@@ -71,20 +71,12 @@ public class UserController {
     /**
      * 生成并发送验证码到用户的邮箱。
      * 
-     * @param session HttpSession对象，存储验证码
-     * @param email   需要接收验证码的用户的邮箱地址
+     * @param email 需要接收验证码的用户的邮箱地址
      * @return 返回一个字符串，表示验证码已经成功发送到用户的邮箱
      */
     @GetMapping("/code/{email}")
-    public String getVerificationCode(HttpSession session, @PathVariable("email") String email) {
-        // 随机生成六位数验证码
-        String code = Utils.getRandomString(EnvironmentVariables.CODE_LENGTH);
-        session.setAttribute(EnvironmentVariables.SESSION_CODE, code);
-
-        // 发送邮件
-        String content = String.format(EnvironmentVariables.EMAIL_CODE_CONTENT, code);
-        emailService.sendSimpleMail(email, EnvironmentVariables.EMAIL_CODE_SUBJECT, content);
-
+    public String getVerificationCode(@PathVariable("email") String email) {
+        emailService.sendVerifyCode(email);
         // 返回一个消息，指示验证码已经成功发送到用户的邮箱
         return "验证码已发送到您的邮箱，请注意查收。";
     }
@@ -105,13 +97,8 @@ public class UserController {
         String email = registerBody.getEmail();
         String vertify = registerBody.getVertify();
 
-        // 获取发送给用户的验证码
-        String acode = (String) session.getAttribute(EnvironmentVariables.SESSION_CODE);
-
-        // 如果验证码为空或者与提供的验证码不匹配，则抛出 CaptchaErrorException 异常
-        if (acode == null || !acode.equals(vertify)) {
-            throw new CaptchaErrorException();
-        }
+        // 检查验证码是否正确
+        userService.checkCaptcha(email, vertify);
 
         // 否则，注册用户
         userService.register(name, password, email);
@@ -140,8 +127,9 @@ public class UserController {
         // 将用户信息存放到Session中
         session.setAttribute(EnvironmentVariables.SESSION_USER, user);
 
-        // 将用户信息存放到Cookie中
-        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, userService.toToken(user));
+        // 将会话id存放到Cookie中
+        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN,
+                userService.toToken(session.getId(), user));
         cookie.setPath("/");
         cookie.setMaxAge(EnvironmentVariables.COOKIE_TOKEN_EXPIRE);
         response.addCookie(cookie);
@@ -274,12 +262,8 @@ public class UserController {
         String email = registerBody.getEmail();
         String vertify = registerBody.getVertify();
 
-        // 获取发送给用户的验证码，并进行比较，如果不匹配则抛出 CaptchaErrorException 异常
-        String acode = (String) session.getAttribute(EnvironmentVariables.SESSION_CODE);
-        if (acode == null || !acode.equals(vertify)) {
-            throw new CaptchaErrorException();
-        }
-
+        // 检查验证码是否正确
+        userService.checkCaptcha(email, vertify);
         // 更新用户邮箱并保存到数据库中
         user.setEmail(email);
         userService.updateUser(user);

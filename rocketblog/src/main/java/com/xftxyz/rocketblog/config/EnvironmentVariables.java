@@ -20,13 +20,12 @@ public interface EnvironmentVariables {
 
     // 验证码位数
     int CODE_LENGTH = 6;
-    // SESSION中验证码的key
-    String SESSION_CODE = "code";
-
+    // 验证码过期时间（秒）
+    long CODE_EXPIRE_TIME = 5 * 60; // 5分钟
     // 验证码邮件主题
     String EMAIL_CODE_SUBJECT = "火箭博客验证码";
     // 验证码邮件内容
-    String EMAIL_CODE_CONTENT = "您的验证码为: %s，有效期为5分钟，请尽快验证。如非本人操作，请忽略此邮件。";
+    String EMAIL_CODE_CONTENT = "您的验证码为: %s，有效期为" + (CODE_EXPIRE_TIME / 60) + "分钟，请尽快验证。如非本人操作，请忽略此邮件。";
 
     // 找回密码邮件主题
     String EMAIL_FORGET_SUBJECT = "火箭博客找回密码";
