@@ -3,7 +3,6 @@
     <template #header>
       <div class="card-header">
         <span style="font-weight: 700">账号管理</span>
-        <el-button class="button" text @click="editinfo">编辑</el-button>
       </div>
     </template>
     <div class="text item">
