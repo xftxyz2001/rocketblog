@@ -1,5 +1,6 @@
 package com.xftxyz.rocketblog.exception.advice;
 
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -97,6 +98,12 @@ public class CustomerExceptionHandler {
     @ExceptionHandler(IllegalOperationException.class)
     public Result<Object> handleIllegalOperationException(IllegalOperationException e) {
         return Result.error(ResultMessageEnum.ILLEGAL_OPERATION.getCode(), e.getMessage());
+    }
+
+    // HTTP消息不可读异常
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public Result<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return Result.error(ResultMessageEnum.PARAM_ERROR.getCode(), ResultMessageEnum.PARAM_ERROR.getMessage());
     }
 
     // 请求参数异常
