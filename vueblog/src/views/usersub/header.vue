@@ -640,6 +640,7 @@ function getverify(formE1) {
 function logout() {
   axios.get("/user/logout").then((res) => {
     loginsuccess.value = false;
+    router.push({ name: "hotlatest" });
     // localStorage.removeItem("token");
     // localStorage.removeItem("token.email");
     // localStorage.removeItem("token.password");
@@ -670,25 +671,25 @@ function tohome() {
     loginform.email = "";
     loginform.password = "";
   }
-  router.push({ name: "allconcern" });
+  //router.push({ name: "allconcern" });
 }
 function tomessage() {
-  // if (checkTokenInCookie()) router.push({ name: "message" });
-  // else {
-  //   loginVisible.value = "true";
-  //   loginform.email = "";
-  //   loginform.password = "";
-  // }
-  router.push({ name: "message" });
+  if (checkTokenInCookie()) router.push({ name: "message" });
+  else {
+    loginVisible.value = "true";
+    loginform.email = "";
+    loginform.password = "";
+  }
+  // router.push({ name: "message" });
 }
 function toperson() {
-  // if (checkTokenInCookie()) router.push({ name: "personuserinfo" });
-  // else {
-  //   loginVisible.value = "true";
-  //   loginform.email = "";
-  //   loginform.password = "";
-  // }
-  router.push({ name: "personuserinfo" });
+  if (checkTokenInCookie()) router.push({ name: "personuserinfo" });
+  else {
+    loginVisible.value = "true";
+    loginform.email = "";
+    loginform.password = "";
+  }
+  // router.push({ name: "personuserinfo" });
 }
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 Bus.on("followneedlogin", () => {
