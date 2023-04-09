@@ -118,15 +118,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 
 const fileList = reactive([]);
 const dialogFormVisible = ref(false);
-const userinfo = ref({
-  username: "川澄 舞",
-  password: "********",
-  userSex: "女",
-  email: "mai-kawasumi@kanon.key",
-  phone: "12345678901",
-  avatar:
-    "https://kaginado.com/wordpress/wp-content/uploads/2021/09/24123827/%E5%B7%9D%E6%BE%84-%E8%88%9E.png",
-});
+const userinfo = ref({});
 const form = ref({});
 const percent = ref(0);
 
@@ -203,9 +195,9 @@ const handleExceed = (files, uploadFiles) => {
 //   username: "",
 // };
 
-// axios.get("/user/i/detail").then((res) => {
-//   userinfo.value = res.data.data;
-// });
+axios.get("/user/i/detail").then((res) => {
+  userinfo.value = res.data.data;
+});
 function editinfo() {
   form.value.username = userinfo.value.username;
   form.value.avatar = userinfo.value.avatar;
