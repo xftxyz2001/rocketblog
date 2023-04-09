@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +27,13 @@ import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.util.Utils;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.Min;
 
 /**
  * 博客相关
  */
 @RestController
+@Validated
 @RequestMapping("/blog")
 public class BlogController {
     @Autowired
@@ -203,7 +206,7 @@ public class BlogController {
      * @return 返回一个 {@link BlogInfo} 对象，包含指定博客的信息
      */
     @GetMapping("/info/{blogId}")
-    public BlogInfo info(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public BlogInfo info(@PathVariable("blogId")@Min(value = 1, message = "目标博客ID不合法")  Long blogId, HttpSession session) {
         User user = Utils.currentUser(session);
         BlogInfo blogInfo = blogService.getBlogInfo(blogId, user);
         return blogInfo;
@@ -217,7 +220,7 @@ public class BlogController {
      * @return 返回一个 {@link BlogDetail} 对象，包含指定博客的详细信息
      */
     @GetMapping("/detail/{blogId}")
-    public BlogDetail detail(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public BlogDetail detail(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法")Long blogId, HttpSession session) {
         User user = Utils.currentUser(session);
         BlogDetail blog = blogService.getBlogDetail(blogId, user);
         return blog;
@@ -245,7 +248,7 @@ public class BlogController {
      * @return 返回一个整数，表示成功删除的博客数
      */
     @DeleteMapping("/delete/{blogId}")
-    public Integer delete(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Integer delete(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法")Long blogId, HttpSession session) {
         User user = Utils.currentUser(session);
         int delete = blogService.remove(blogId, user.getUserid());
         return delete;
@@ -277,7 +280,7 @@ public class BlogController {
      * @return 返回一个long类型值，表示收藏博客的数量
      */
     @GetMapping("/collect/{blogId}")
-    public Long collect(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Long collect(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法")Long blogId, HttpSession session) {
         User user = Utils.currentUser(session);
         long collect = blogService.collect(user.getUserid(), blogId);
         return collect;
@@ -291,7 +294,7 @@ public class BlogController {
      * @return 返回一个long类型值，表示取消收藏博客的数量
      */
     @DeleteMapping("/collect/{blogId}")
-    public Long cancelCollect(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Long cancelCollect(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法")Long blogId, HttpSession session) {
         User user = Utils.currentUser(session);
         long cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
         return cancelCollect;
@@ -323,7 +326,7 @@ public class BlogController {
      * @return 返回点赞的数量
      */
     @GetMapping("/like/{blogId}")
-    public Long like(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Long like(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法")Long blogId, HttpSession session) {
         // 获取当前登录用户信息，并进行点赞操作
         User user = Utils.currentUser(session);
         long like = blogService.like(user.getUserid(), blogId);
@@ -338,7 +341,7 @@ public class BlogController {
      * @return 返回点赞的数量
      */
     @DeleteMapping("/like/{blogId}")
-    public Long cancelLike(@PathVariable("blogId") Long blogId, HttpSession session) {
+    public Long cancelLike(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法")Long blogId, HttpSession session) {
         // 获取当前登录用户信息，并进行取消点赞操作
         User user = Utils.currentUser(session);
         long cancelLike = blogService.cancelLike(user.getUserid(), blogId);
@@ -390,7 +393,7 @@ public class BlogController {
      * @return 返回一个 Integer 类型的值，表示删除评论的数量
      */
     @DeleteMapping("/comment/{commentId}")
-    public Integer deleteComment(@PathVariable("commentId") Long commentId, HttpSession session) {
+    public Integer deleteComment(@PathVariable("commentId") @Min(value = 1, message = "目标评论ID不合法")Long commentId, HttpSession session) {
         int delete = blogService.deleteComment(commentId);
         return delete;
     }
@@ -404,7 +407,7 @@ public class BlogController {
      * @return 返回一个 {@link PageInfo} 对象，表示指定博客的评论列表
      */
     @GetMapping("/comment/{blogId}")
-    public PageInfo<VComment> getComments(@PathVariable("blogId") Long blogId,
+    public PageInfo<VComment> getComments(@PathVariable("blogId")@Min(value = 1, message = "目标博客ID不合法") Long blogId,
             @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<VComment> comments = blogService.getCommentsByBlogId(blogId);

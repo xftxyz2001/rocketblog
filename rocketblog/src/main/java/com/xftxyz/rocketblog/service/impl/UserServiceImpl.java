@@ -341,15 +341,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(newPassword);
         updateUser(user);
 
-        // ！！！非常不好的做法！！！
-        // 清除用户登录状态，遍历redis中的所有key，如果value为用户id，则删除
-        Set<String> keys = redisTemplate.keys("*");
-        for (String key : keys) {
-            String value = redisTemplate.boundValueOps(key).get();
-            if (value != null && value.equals(String.valueOf(user.getUserid()))) {
-                redisTemplate.delete(key);
-            }
-        }
+        deleteUserTokens(user.getUserid());
 
     }
 
@@ -364,5 +356,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteToken(String token) {
         redisTemplate.delete(token);
+    }
+
+    @Override
+    public void deleteUserTokens(Long userid) {
+        // ！！！非常不好的做法！！！
+        // 清除用户登录状态，遍历redis中的所有key，如果value为用户id，则删除
+        Set<String> keys = redisTemplate.keys("*");
+        for (String key : keys) {
+            String value = redisTemplate.boundValueOps(key).get();
+            if (value != null && value.equals(String.valueOf(userid))) {
+                redisTemplate.delete(key);
+            }
+        }
     }
 }

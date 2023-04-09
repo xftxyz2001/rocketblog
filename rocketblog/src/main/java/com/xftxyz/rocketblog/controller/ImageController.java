@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.xftxyz.rocketblog.exception.image.ImageException;
 import com.xftxyz.rocketblog.service.ImageService;
 
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * 图片相关
  */
@@ -53,7 +55,7 @@ public class ImageController {
      * @return 返回一个 ResponseEntity<Resource> 对象，包含要下载的图片资源
      */
     @GetMapping("/download/{id}")
-    public ResponseEntity<Resource> downloadImage(@PathVariable("id") String id) {
+    public ResponseEntity<Resource> downloadImage(@PathVariable("id") @NotBlank(message = "id不能为空") String id) {
         try {
             Resource imageResource = imageService.downloadImage(id);
             return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
@@ -70,7 +72,7 @@ public class ImageController {
      * @return 返回一个 ResponseEntity<byte[]> 对象，包含指定 id 的图片的字节数组
      */
     @GetMapping("/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) {
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") @NotBlank(message = "id不能为空") String id) {
         try {
             byte[] imageData = imageService.getImage(id);
             HttpHeaders headers = new HttpHeaders();

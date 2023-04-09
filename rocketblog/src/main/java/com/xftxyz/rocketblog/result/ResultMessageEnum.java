@@ -27,9 +27,11 @@ public enum ResultMessageEnum {
 
     // 聊天错误4xx
     NO_CHAT(400, "没有与该用户的聊天"),
-    
+
     // 其他错误
-    PARAM_ERROR(500, "非法参数");
+    PARAM_ERROR(500, "非法参数"),
+    // 参数校验错误
+    PARAM_VALID_ERROR(501, "参数校验错误");
 
     private Integer code;
     private String message;

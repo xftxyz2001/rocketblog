@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +34,14 @@ import com.xftxyz.rocketblog.util.Utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 
 /**
  * 用户相关
  */
 @RestController
+@Validated
 @RequestMapping("/user")
 public class UserController {
 
@@ -55,7 +59,7 @@ public class UserController {
      * @throws UserNotExistException 如果提供的邮箱地址对应的用户不存在，则会抛出 UserNotExistException 异常
      */
     @GetMapping("/forget/{email}")
-    public String forgetPassword(@PathVariable("email") String email) {
+    public String forgetPassword(@PathVariable("email") @Email(message = "非法的邮箱格式") String email) {
         // 获取与提供的电子邮件地址相应的用户
         User user = userService.getUserByEmail(email);
         // 如果找不到与该电子邮件地址相应的用户，则抛出 UserNotExistException 异常
@@ -76,7 +80,7 @@ public class UserController {
      * @return 返回一个字符串，表示验证码已经成功发送到用户的邮箱
      */
     @GetMapping("/code/{email}")
-    public String getVerificationCode(@PathVariable("email") String email) {
+    public String getVerificationCode(@PathVariable("email") @Email(message = "非法的邮箱格式") String email) {
         emailService.sendVerifyCode(email);
         // 返回一个消息，指示验证码已经成功发送到用户的邮箱
         return "验证码已发送到您的邮箱，请注意查收。";
@@ -148,7 +152,8 @@ public class UserController {
      * @return 返回一个字符串，表示用户已经成功登出
      */
     @GetMapping("/logout")
-    public String logout(HttpSession session, HttpServletResponse response, @CookieValue("token") String token) {
+    public String logout(HttpSession session, HttpServletResponse response,
+            @CookieValue(EnvironmentVariables.COOKIE_TOKEN) String token) {
         // 使会话无效
         session.invalidate();
         // 删除redis中的token
@@ -308,7 +313,8 @@ public class UserController {
      * @return 返回一个 {@link UserInfo} 对象，包含指定 userid 的用户信息
      */
     @GetMapping("/info/{userid}")
-    public UserInfo getUserInformation(HttpSession session, @PathVariable("userid") Long userid) {
+    public UserInfo getUserInformation(HttpSession session,
+            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
         // 获取当前登录用户信息，并获取指定 userid 的用户信息
         User user = Utils.currentUser(session);
         UserInfo userInfo = userService.getUserInfo(user, userid);
@@ -324,13 +330,25 @@ public class UserController {
      * @return 返回一个字符串，表示用户账户已经成功删除
      */
     @DeleteMapping("/delete")
-    public String deleteUser(HttpSession session) {
-        // 获取当前登录用户信息，并删除用户账户
+    public String deleteUser(HttpSession session, HttpServletResponse response,
+            @CookieValue(EnvironmentVariables.COOKIE_TOKEN) String token) {
+
+        // 获取当前登录用户信息
         User user = Utils.currentUser(session);
+        // 删除redis中的token
+        userService.deleteUserTokens(user.getUserid());
+        // 删除用户账户
         userService.deleteUser(user.getUserid());
 
-        // 注销并返回一个消息，指示用户账户已经成功删除
+        // 删除Cookie
+        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        // 使会话无效
         session.invalidate();
+        // 返回一个消息，指示用户账户已经成功删除
         return "注销成功";
     }
 
@@ -342,7 +360,8 @@ public class UserController {
      * @return 返回一个 Long 类型的值，表示指定用户的最新粉丝数
      */
     @GetMapping("/follow/{userid}")
-    public Long follow(HttpSession session, @PathVariable("userid") Long userid) {
+    public Long follow(HttpSession session,
+            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
         // 获取当前登录用户信息，并让该用户关注指定的用户
         User user = Utils.currentUser(session);
         Long newFansCount = userService.follow(user.getUserid(), userid);
@@ -359,7 +378,8 @@ public class UserController {
      * @return 返回一个 Long 类型的值，表示指定用户的最新粉丝数
      */
     @DeleteMapping("/follow/{userid}")
-    public Long cancelFollow(HttpSession session, @PathVariable("userid") Long userid) {
+    public Long cancelFollow(HttpSession session,
+            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
         // 获取当前登录用户信息，并取消该用户对指定用户的关注
         User user = Utils.currentUser(session);
         Long newFansCount = userService.cancelFollow(user.getUserid(), userid);

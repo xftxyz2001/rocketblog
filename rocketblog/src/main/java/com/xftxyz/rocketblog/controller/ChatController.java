@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +24,13 @@ import com.xftxyz.rocketblog.service.ChatService;
 import com.xftxyz.rocketblog.util.Utils;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.Min;
 
 /**
  * 私信相关
  */
 @RestController
+@Validated
 @RequestMapping("/user/chat")
 public class ChatController {
 
@@ -42,7 +45,7 @@ public class ChatController {
      * @return 返回一个字符串，表示消息发送已成功
      */
     @PostMapping("")
-    public String sendMessage(HttpSession session, @RequestBody ChatMessageBody chatMessage) {
+    public String sendMessage(HttpSession session, @RequestBody @Validated ChatMessageBody chatMessage) {
         // 获取当前登录用户信息，并获取要发送的消息内容和目标用户ID
         User user = Utils.currentUser(session);
         Long toUserid = chatMessage.getTo();
@@ -100,7 +103,8 @@ public class ChatController {
      * @return 返回一个 {@link ChatInfo} 对象，表示指定会话的详细信息
      */
     @GetMapping("/session/{userid}")
-    public ChatInfo updateChatSession(HttpSession session, @PathVariable("userid") Long userid) {
+    public ChatInfo updateChatSession(HttpSession session,
+            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
         // 获取当前登录用户信息，并获取指定会话的详细信息
         User user = Utils.currentUser(session);
         ChatInfo chat = chatService.getSession(user, userid);
@@ -119,7 +123,8 @@ public class ChatController {
      * @return 返回一个 PageInfo 对象，其中包含了指定会话的每天对话信息 {@link VChat} 列表
      */
     @GetMapping("/detail/{userid}")
-    public PageInfo<VChat> chatDetail(HttpSession session, @PathVariable("userid") Long userid,
+    public PageInfo<VChat> chatDetail(HttpSession session,
+            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid,
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -136,7 +141,8 @@ public class ChatController {
      * @return 返回一个字符串，表示消息删除成功
      */
     @DeleteMapping("/{chatid}")
-    public String deleteChat(HttpSession session, @PathVariable("chatid") Long chatid) {
+    public String deleteChat(HttpSession session,
+            @PathVariable("chatid") @Min(value = 1, message = "目标用户ID不合法") Long chatid) {
         chatService.deleteChat(chatid);
         return "消息删除成功";
     }
@@ -149,7 +155,8 @@ public class ChatController {
      * @return 返回一个字符串，表示会话删除成功
      */
     @DeleteMapping("/session/{userid}")
-    public String deleteSession(HttpSession session, @PathVariable("userid") Long userid) {
+    public String deleteSession(HttpSession session,
+            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
         User user = Utils.currentUser(session);
         chatService.deleteSession(user, userid);
         return "会话删除成功";
