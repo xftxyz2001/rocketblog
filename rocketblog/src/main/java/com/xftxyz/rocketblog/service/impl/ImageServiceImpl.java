@@ -3,6 +3,7 @@ package com.xftxyz.rocketblog.service.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
+import com.xftxyz.rocketblog.exception.image.ImageException;
 import com.xftxyz.rocketblog.service.ImageService;
 import com.xftxyz.rocketblog.util.Utils;
 
@@ -33,45 +35,48 @@ public class ImageServiceImpl implements ImageService {
 
     private String uploadDirectory = EnvironmentVariables.UPLOAD_DIRECTORY;
 
-    public String uploadImage(MultipartFile file) throws IOException {
+    public String uploadImage(MultipartFile file) throws ImageException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         // 后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         // 只允许上传图片：GIF、JPG、JPEG、PNG、SVG、WEBP、ICO
         if (!suffixName.matches("(.gif|.jpg|.jpeg|.png|.svg|.webp|.ico)$")) {
-            throw new IOException("不被允许的文件格式" + suffixName + "，只允许上传图片：GIF、JPG、JPEG、PNG、SVG、WEBP、ICO");
+            throw new ImageException("不被允许的文件格式" + suffixName + "，只允许上传图片：GIF、JPG、JPEG、PNG、SVG、WEBP、ICO");
         }
         // UUID
         String uuid = Utils.getUUID();
         fileName = uuid + suffixName;
         Path uploadPath = Paths.get(uploadDirectory);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
 
         try (InputStream inputStream = file.getInputStream()) {
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
             return "/images/" + fileName;
         } catch (IOException e) {
-            throw new IOException("保存文件失败 " + fileName, e);
+            throw new ImageException("上传文件失败 " + fileName, e);
         }
     }
 
-    public Resource downloadImage(String id) throws IOException {
+    public Resource downloadImage(String id) throws ImageException {
         Path filePath = Paths.get(uploadDirectory).resolve(id);
-        Resource resource = new UrlResource(filePath.toUri());
-        if (resource.exists() || resource.isReadable()) {
-            return resource;
-        } else {
-            throw new IOException("无法读取文件: " + id);
+        try {
+            return new UrlResource(filePath.toUri());
+        } catch (MalformedURLException e) {
+            throw new ImageException("无法读取文件: " + id);
         }
     }
 
     @Override
-    public byte[] getImage(String id) throws IOException {
+    public byte[] getImage(String id) throws ImageException {
         Path filePath = Paths.get(uploadDirectory).resolve(id);
-        return Files.readAllBytes(filePath);
+        try {
+            return Files.readAllBytes(filePath);
+        } catch (IOException e) {
+            throw new ImageException("无法读取文件: " + id);
+        }
     }
 
     // 动漫IP签名档

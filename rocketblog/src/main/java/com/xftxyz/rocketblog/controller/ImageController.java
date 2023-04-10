@@ -1,7 +1,5 @@
 package com.xftxyz.rocketblog.controller;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -40,12 +38,7 @@ public class ImageController {
      */
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("file") MultipartFile file) {
-        try {
-            String imageUrl = imageService.uploadImage(file);
-            return imageUrl;
-        } catch (IOException e) {
-            throw new ImageException("上传图片失败");
-        }
+        return imageService.uploadImage(file);
     }
 
     /**
@@ -56,13 +49,9 @@ public class ImageController {
      */
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> downloadImage(@PathVariable("id") @NotBlank(message = "id不能为空") String id) {
-        try {
-            Resource imageResource = imageService.downloadImage(id);
-            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                    "attachment; filename=\"" + imageResource.getFilename() + "\"").body(imageResource);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        Resource imageResource = imageService.downloadImage(id);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + imageResource.getFilename() + "\"").body(imageResource);
     }
 
     /**
@@ -73,14 +62,10 @@ public class ImageController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable("id") @NotBlank(message = "id不能为空") String id) {
-        try {
-            byte[] imageData = imageService.getImage(id);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        byte[] imageData = imageService.getImage(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
     }
 
     /**
