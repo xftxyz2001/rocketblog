@@ -25,6 +25,7 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.service.UserService;
+import com.xftxyz.rocketblog.validation.ValidInfo;
 
 import jakarta.validation.constraints.Min;
 
@@ -50,7 +51,7 @@ public class AdminController {
      * @return 返回一个 {@link PageInfo} 对象，包含获取到的用户信息列表 {@link UserInfo}
      */
     @GetMapping("/users")
-    public PageInfo<UserInfo> getUserInfos(@RequestParam(defaultValue = "1") Integer pageNum,
+    public PageInfo<UserInfo> getUserInfos(@RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
@@ -65,7 +66,7 @@ public class AdminController {
      * @return 返回一个 {@link UserInfo} 对象，包含指定用户的信息
      */
     @GetMapping("/user/{id}")
-    public UserInfo getUserInfo(@PathVariable("id") @Min(value = 1, message = "目标用户ID不合法") Long id) {
+    public UserInfo getUserInfo(@PathVariable("id") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long id) {
         return userService.getUserInfoById(id);
     }
 
@@ -76,7 +77,7 @@ public class AdminController {
      * @return 返回一个 {@link User} 对象，包含指定用户的详细信息
      */
     @GetMapping("/user/detail/{id}")
-    public User getUser(@PathVariable("id") @Min(value = 1, message = "目标用户ID不合法") Long id) {
+    public User getUser(@PathVariable("id") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long id) {
         return userService.getUser(id);
     }
 
@@ -111,7 +112,7 @@ public class AdminController {
      * @return 返回一个整数值，表示删除用户的行数
      */
     @DeleteMapping("/user/{id}")
-    public Integer deleteUser(@PathVariable("id") @Min(value = 1, message = "目标用户ID不合法") Long id) {
+    public Integer deleteUser(@PathVariable("id") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long id) {
         return userService.deleteUser(id);
     }
 
@@ -125,7 +126,7 @@ public class AdminController {
      */
     @PostMapping("/user/s")
     public PageInfo<UserInfo> findUserInfosByExample(@RequestBody User user,
-            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
@@ -142,7 +143,7 @@ public class AdminController {
      * @return 返回一个 {@link PageInfo} 对象，包含获取到的博客列表 {@link BlogInfo}
      */
     @GetMapping("/blogs")
-    public PageInfo<BlogInfo> getBlogs(@RequestParam(defaultValue = "1") Integer pageNum,
+    public PageInfo<BlogInfo> getBlogs(@RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> blogs = blogService.getAllBlogs();
@@ -172,7 +173,7 @@ public class AdminController {
      */
     @PostMapping("/blog/s")
     public PageInfo<BlogInfo> getBlogs(@RequestBody BlogInfo blog,
-            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> blogs = blogService.findByExample(blog);

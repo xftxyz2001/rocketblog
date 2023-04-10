@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.blog.BlogNotExistException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
@@ -35,6 +34,7 @@ import com.xftxyz.rocketblog.pojo.VComment;
 import com.xftxyz.rocketblog.pojo.VCommentExample;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.status.BlogStatus;
+import com.xftxyz.rocketblog.validation.ValidInfo;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -224,8 +224,8 @@ public class BlogServiceImpl implements BlogService {
             throw new BlogNotExistException("博客" + comment.getBlogId() + "不存在");
         }
         // 评论是否在500字以内
-        if (comment.getCommentContent().length() > EnvironmentVariables.MAX_LENGTH) {
-            throw new IllegalOperationException("评论内容不能超过" + EnvironmentVariables.MAX_LENGTH + "字");
+        if (comment.getCommentContent().length() > ValidInfo.MAX_LENGTH) {
+            throw new IllegalOperationException("评论内容不能超过" + ValidInfo.MAX_LENGTH + "字");
         }
 
         // 短时间只能评论一次
