@@ -198,7 +198,7 @@ const handleExceed = (files, uploadFiles) => {
 // };
 
 // 动态修改上传图片的action
-document.getElementById("upload").setAttribute("action", axios.defaults.baseURL+"/images/upload")
+// document.getElementById("upload").setAttribute("action", axios.defaults.baseURL+"/images/upload")
 
 axios.get("/user/i/detail").then((res) => {
   userinfo.value = res.data.data;
