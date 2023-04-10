@@ -55,7 +55,7 @@ public class UserController {
     EmailService emailService;
 
     /**
-     * 发送包含用户密码的邮件到用户的邮箱，以帮助他们找回密码。
+     * 发送包含用户密码的邮件到用户的邮箱，以帮助他们找回密码
      * 
      * @param email 需要重置密码的用户的邮箱地址
      * @return 返回一个字符串，表示密码邮件已经成功发送到用户的邮箱
@@ -77,7 +77,7 @@ public class UserController {
     }
 
     /**
-     * 生成并发送验证码到用户的邮箱。
+     * 生成并发送验证码到用户的邮箱
      * 
      * @param email 需要接收验证码的用户的邮箱地址
      * @return 返回一个字符串，表示验证码已经成功发送到用户的邮箱
@@ -117,7 +117,7 @@ public class UserController {
     }
 
     /**
-     * 用户登录。
+     * 用户登录
      * 
      * @param loginBody 包含用户登录信息的 {@link LoginBody} 对象
      * @param session   HttpSession对象，存储用户信息
@@ -150,7 +150,7 @@ public class UserController {
     }
 
     /**
-     * 用户登出。
+     * 用户登出
      * 
      * @param session  HttpSession对象，删除用户登录信息
      * @param response HttpServletResponse对象，删除Cookie
@@ -174,7 +174,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户的信息。
+     * 获取当前登录用户的信息
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link UserInfo} 对象，包含当前登录用户的信息
@@ -190,7 +190,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户的详细信息。
+     * 获取当前登录用户的详细信息
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link User} 对象，包含当前登录用户的详细信息，但密码将被屏蔽
@@ -212,7 +212,7 @@ public class UserController {
     }
 
     /**
-     * 修改当前登录用户的信息。
+     * 修改当前登录用户的信息
      * 
      * @param newUserData 包含新用户信息的 {@link User} 对象
      * @param session     HttpSession对象，获取当前登录用户信息
@@ -258,7 +258,7 @@ public class UserController {
     }
 
     /**
-     * 修改当前登录用户的邮箱。
+     * 修改当前登录用户的邮箱
      * 
      * @param updateEmailBody 包含新邮箱信息和验证码的 {@link UpdateEmailBody} 对象
      * @param session         HttpSession对象，获取当前登录用户信息和验证码
@@ -287,7 +287,7 @@ public class UserController {
     }
 
     /**
-     * 修改当前登录用户的密码。
+     * 修改当前登录用户的密码
      * 
      * @param resetPasswordBody 包含新密码和原密码的 {@link ResetPasswordBody} 对象
      * @param session           HttpSession对象，获取当前登录用户信息
@@ -311,7 +311,7 @@ public class UserController {
     }
 
     /**
-     * 获取指定 userid 的用户信息。
+     * 获取指定 userid 的用户信息
      * 
      * @param session HttpSession 对象，获取当前登录用户信息
      * @param userid  需要查询的用户的id
@@ -329,7 +329,7 @@ public class UserController {
     }
 
     /**
-     * 删除当前登录用户的账户。
+     * 删除当前登录用户的账户
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个字符串，表示用户账户已经成功删除
@@ -358,7 +358,7 @@ public class UserController {
     }
 
     /**
-     * 让当前登录用户关注指定的用户。
+     * 让当前登录用户关注指定的用户
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  需要关注的用户的id
@@ -376,7 +376,7 @@ public class UserController {
     }
 
     /**
-     * 取消当前登录用户对指定用户的关注。
+     * 取消当前登录用户对指定用户的关注
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  需要取消关注的用户的id
@@ -394,7 +394,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户关注的用户列表。
+     * 获取当前登录用户关注的用户列表
      * 
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始
@@ -415,7 +415,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户的粉丝列表。
+     * 获取当前登录用户的粉丝列表
      * 
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始

@@ -41,7 +41,7 @@ public class BlogController {
     BlogService blogService;
 
     /**
-     * 搜索博客。
+     * 搜索博客
      *
      * @param keyword  关键字
      * @param pageNum  分页页码
@@ -61,7 +61,7 @@ public class BlogController {
     }
 
     /**
-     * 发布博客。
+     * 发布博客
      *
      * @param blog    要发布的博客对象
      * @param session HttpSession对象，获取当前登录用户信息
@@ -75,7 +75,7 @@ public class BlogController {
     }
 
     /**
-     * 获取自己博客草稿列表。
+     * 获取自己博客草稿列表
      *
      * @param pageNum  分页页码
      * @param pageSize 分页大小
@@ -93,7 +93,7 @@ public class BlogController {
     }
 
     /**
-     * 获取热门博客列表。
+     * 获取热门博客列表
      *
      * @param pageNum  分页页码
      * @param pageSize 分页大小
@@ -111,7 +111,7 @@ public class BlogController {
     }
 
     /**
-     * 获取点赞最多的博客列表。
+     * 获取点赞最多的博客列表
      *
      * @param pageNum  分页页码
      * @param pageSize 分页大小
@@ -129,7 +129,7 @@ public class BlogController {
     }
 
     /**
-     * 获取收藏最多的博客列表。
+     * 获取收藏最多的博客列表
      *
      * @param pageNum  分页页码
      * @param pageSize 分页大小
@@ -147,7 +147,7 @@ public class BlogController {
     }
 
     /**
-     * 获取评论最多的博客列表。
+     * 获取评论最多的博客列表
      *
      * @param pageNum  分页页码
      * @param pageSize 分页大小
@@ -165,7 +165,7 @@ public class BlogController {
     }
 
     /**
-     * 获取最新发布的博客列表。
+     * 获取最新发布的博客列表
      *
      * @param pageNum  分页页码
      * @param pageSize 分页大小
@@ -183,7 +183,7 @@ public class BlogController {
     }
 
     /**
-     * 获取我关注的人的博客列表。
+     * 获取我关注的人的博客列表
      *
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  分页页码
@@ -201,14 +201,14 @@ public class BlogController {
     }
 
     /**
-     * 获取博客信息。
+     * 获取博客信息
      *
      * @param blogId  需要获取的博客的id
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link BlogInfo} 对象，包含指定博客的信息
      */
     @GetMapping("/info/{blogId}")
-    public BlogInfo info(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法") Long blogId,
+    public BlogInfo info(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
         BlogInfo blogInfo = blogService.getBlogInfo(blogId, user);
@@ -216,14 +216,14 @@ public class BlogController {
     }
 
     /**
-     * 获取博客详情。
+     * 获取博客详情
      *
      * @param blogId  需要获取的博客的id
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link BlogDetail} 对象，包含指定博客的详细信息
      */
     @GetMapping("/detail/{blogId}")
-    public BlogDetail detail(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法") Long blogId,
+    public BlogDetail detail(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
         BlogDetail blog = blogService.getBlogDetail(blogId, user);
@@ -231,7 +231,7 @@ public class BlogController {
     }
 
     /**
-     * 修改博客。
+     * 修改博客
      *
      * @param blog    需要修改的博客（包含博客id和修改后的内容）
      * @param session HttpSession对象，获取当前登录用户信息
@@ -245,14 +245,14 @@ public class BlogController {
     }
 
     /**
-     * 删除博客。
+     * 删除博客
      *
      * @param blogId  需要删除的博客的id
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个整数，表示成功删除的博客数
      */
     @DeleteMapping("/delete/{blogId}")
-    public Integer delete(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法") Long blogId,
+    public Integer delete(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
         int delete = blogService.remove(blogId, user.getUserid());
@@ -260,7 +260,7 @@ public class BlogController {
     }
 
     /**
-     * 获取我发布的博客列表。
+     * 获取我发布的博客列表
      *
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  分页页码
@@ -278,14 +278,14 @@ public class BlogController {
     }
 
     /**
-     * 收藏博客。
+     * 收藏博客
      *
      * @param blogId  博客id
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个long类型值，表示收藏博客的数量
      */
     @GetMapping("/collect/{blogId}")
-    public Long collect(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法") Long blogId,
+    public Long collect(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
         long collect = blogService.collect(user.getUserid(), blogId);
@@ -293,14 +293,14 @@ public class BlogController {
     }
 
     /**
-     * 取消收藏博客。
+     * 取消收藏博客
      *
      * @param blogId  博客id
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个long类型值，表示取消收藏博客的数量
      */
     @DeleteMapping("/collect/{blogId}")
-    public Long cancelCollect(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法") Long blogId,
+    public Long cancelCollect(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
         long cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
@@ -308,7 +308,7 @@ public class BlogController {
     }
 
     /**
-     * 获取我收藏的博客列表。
+     * 获取我收藏的博客列表
      *
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  分页页码
@@ -326,14 +326,14 @@ public class BlogController {
     }
 
     /**
-     * 点赞博客。
+     * 点赞博客
      * 
      * @param blogId  需要点赞的博客id
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回点赞的数量
      */
     @GetMapping("/like/{blogId}")
-    public Long like(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法") Long blogId, HttpSession session) {
+    public Long like(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId, HttpSession session) {
         // 获取当前登录用户信息，并进行点赞操作
         User user = Utils.currentUser(session);
         long like = blogService.like(user.getUserid(), blogId);
@@ -341,14 +341,14 @@ public class BlogController {
     }
 
     /**
-     * 取消点赞博客。
+     * 取消点赞博客
      * 
      * @param blogId  需要取消点赞的博客id
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回点赞的数量
      */
     @DeleteMapping("/like/{blogId}")
-    public Long cancelLike(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法") Long blogId,
+    public Long cancelLike(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         // 获取当前登录用户信息，并进行取消点赞操作
         User user = Utils.currentUser(session);
@@ -357,7 +357,7 @@ public class BlogController {
     }
 
     /**
-     * 获取当前登录用户点赞的博客列表。
+     * 获取当前登录用户点赞的博客列表
      * 
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  当前页数，默认为1
@@ -378,7 +378,7 @@ public class BlogController {
     }
 
     /**
-     * 对指定博客进行评论。
+     * 对指定博客进行评论
      *
      * @param comment 包含评论内容和博客 ID 的 {@link Comment} 对象
      * @param session HttpSession 对象，获取当前登录用户信息
@@ -394,7 +394,7 @@ public class BlogController {
     }
 
     /**
-     * 删除指定评论。
+     * 删除指定评论
      *
      * @param commentId 评论 ID
      * @param session   HttpSession 对象，获取当前登录用户信息
@@ -408,7 +408,7 @@ public class BlogController {
     }
 
     /**
-     * 获取指定博客的评论列表。
+     * 获取指定博客的评论列表
      *
      * @param blogId   博客 ID
      * @param pageNum  分页页码，默认为 1
@@ -416,7 +416,7 @@ public class BlogController {
      * @return 返回一个 {@link PageInfo} 对象，表示指定博客的评论列表
      */
     @GetMapping("/comment/{blogId}")
-    public PageInfo<VComment> getComments(@PathVariable("blogId") @Min(value = 1, message = "目标博客ID不合法") Long blogId,
+    public PageInfo<VComment> getComments(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);

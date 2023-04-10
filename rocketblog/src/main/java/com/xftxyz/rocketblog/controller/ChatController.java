@@ -39,7 +39,7 @@ public class ChatController {
     ChatService chatService;
 
     /**
-     * 向指定的用户发送消息。
+     * 向指定的用户发送消息
      * 
      * @param session     HttpSession对象，获取当前登录用户信息
      * @param chatMessage 包含了要发送的消息内容和目标用户ID的 {@link ChatMessageBody} 对象
@@ -60,7 +60,7 @@ public class ChatController {
     }
 
     /**
-     * 获取当前登录用户的所有消息。
+     * 获取当前登录用户的所有消息
      * 
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始
@@ -81,7 +81,7 @@ public class ChatController {
     }
 
     /**
-     * 获取当前登录用户的所有会话列表。
+     * 获取当前登录用户的所有会话列表
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link PageInfo} 对象，其中包含了指定页面的 {@link ChatInfo} 列表
@@ -97,7 +97,7 @@ public class ChatController {
     }
 
     /**
-     * 获取指定的会话信息。
+     * 获取指定的会话信息
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  要更新会话的目标用户ID

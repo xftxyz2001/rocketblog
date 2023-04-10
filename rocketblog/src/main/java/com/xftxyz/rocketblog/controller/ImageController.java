@@ -30,7 +30,7 @@ public class ImageController {
     private ImageService imageService;
 
     /**
-     * 上传图片。
+     * 上传图片
      *
      * @param file 要上传的图片文件
      * @return 返回一个字符串，表示图片上传成功后的 URL
@@ -42,7 +42,7 @@ public class ImageController {
     }
 
     /**
-     * 下载指定 id 的图片。
+     * 下载指定 id 的图片
      *
      * @param id 要下载的图片的 id
      * @return 返回一个 ResponseEntity<Resource> 对象，包含要下载的图片资源
@@ -55,7 +55,7 @@ public class ImageController {
     }
 
     /**
-     * 获取指定 id 的图片的字节数组。
+     * 获取指定 id 的图片的字节数组
      *
      * @param id 要获取的图片的 id
      * @return 返回一个 ResponseEntity<byte[]> 对象，包含指定 id 的图片的字节数组
@@ -69,7 +69,7 @@ public class ImageController {
     }
 
     /**
-     * 获取IP签名档图片的URL。
+     * 获取IP签名档图片的URL
      *
      * @return 返回一个字符串，表示IP签名档图片的URL
      */

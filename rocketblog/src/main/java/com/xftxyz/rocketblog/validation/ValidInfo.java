@@ -6,6 +6,11 @@ public interface ValidInfo {
     // 用户ID不能小于1
     String USER_ID_LESS_THAN_ONE = "目标用户ID不合法";
 
+    // 博客ID不能为空
+    String BLOG_ID_NOT_NULL = "博客ID不能为空";
+    // 博客ID不能小于1
+    String BLOG_ID_LESS_THAN_ONE = "目标博客ID不合法";
+
     // 页码小于1
     String PAGE_LESS_THAN_ONE = "页码从1开始";
 
