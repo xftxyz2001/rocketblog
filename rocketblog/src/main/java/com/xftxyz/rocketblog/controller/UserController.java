@@ -436,7 +436,7 @@ public class UserController {
         return new PageInfo<>(followers);
     }
 
-    @GetMapping("/notlogin")
+    @RequestMapping("/notlogin")
     public String notLogin(HttpSession session) {
         if (Utils.currentUser(session) != null) {
             return "已经登录";
