@@ -237,6 +237,7 @@ function editpasswordformSubmit() {
         });
         passworddialogFormVisible.value = false;
         window.location.reload();
+        router.push({ name: "hotlatest" });
       }
     });
   }
@@ -251,6 +252,7 @@ function confirmdelete() {
         type: "success",
       });
       router.push({ name: "hotlatest" });
+      Bus.emit("deleteaccount", {});
     }
   });
 }
