@@ -18,7 +18,7 @@ public class RegisterBody {
      * 密码
      */
     @NotEmpty(message = "密码不能为空")
-    @Size(min = ValidInfo.MIN_PASSWORD_LENGTH, max = ValidInfo.MAX_LENGTH, message = "密码长度必须在"
+    @Size(min = ValidInfo.MIN_PASSWORD_LENGTH, max = ValidInfo.MAX_PASSWORD_LENGTH, message = "密码长度必须在"
             + ValidInfo.MIN_PASSWORD_LENGTH + "-" + ValidInfo.MAX_PASSWORD_LENGTH + "位之间")
     private String password;
 

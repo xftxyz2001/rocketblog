@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
-import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.UserService;
 
@@ -48,7 +47,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         User user = userService.fromToken(token);
         if (user == null) {
-            throw new NotLoginException("用户未登录");
+            request.getRequestDispatcher("/user/notlogin").forward(request, response);
         }
         request.getSession().setAttribute(EnvironmentVariables.SESSION_USER, user);
         return true;

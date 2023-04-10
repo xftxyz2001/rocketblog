@@ -20,6 +20,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
+import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.parameter.LoginBody;
@@ -99,7 +100,8 @@ public class UserController {
      *                               CaptchaErrorException 异常
      */
     @PostMapping("/register")
-    public String register(@RequestBody @Validated RegisterBody registerBody, HttpSession session) throws CaptchaErrorException {
+    public String register(@RequestBody @Validated RegisterBody registerBody, HttpSession session)
+            throws CaptchaErrorException {
         String name = registerBody.getName();
         String password = registerBody.getPassword();
         String email = registerBody.getEmail();
@@ -119,12 +121,13 @@ public class UserController {
      * 用户登录。
      * 
      * @param loginBody 包含用户登录信息的 {@link LoginBody} 对象
-     * @param session      HttpSession对象，存储用户信息
-     * @param response     HttpServletResponse对象，设置Cookie
+     * @param session   HttpSession对象，存储用户信息
+     * @param response  HttpServletResponse对象，设置Cookie
      * @return 返回一个 {@link UserInfo} 对象，包含用户信息
      */
     @PostMapping("/login")
-    public UserInfo login(@RequestBody @Validated LoginBody loginBody, HttpSession session, HttpServletResponse response) {
+    public UserInfo login(@RequestBody @Validated LoginBody loginBody, HttpSession session,
+            HttpServletResponse response) {
         // 解析请求体中的用户登录信息
         String email = loginBody.getEmail();
         String password = loginBody.getPassword();
@@ -259,7 +262,7 @@ public class UserController {
      * 修改当前登录用户的邮箱。
      * 
      * @param updateEmailBody 包含新邮箱信息和验证码的 {@link UpdateEmailBody} 对象
-     * @param session      HttpSession对象，获取当前登录用户信息和验证码
+     * @param session         HttpSession对象，获取当前登录用户信息和验证码
      * @return 返回一个字符串，表示用户邮箱已经成功修改
      * @throws CaptchaErrorException 如果提供的验证码与发送给用户的验证码不匹配，则会抛出
      *                               CaptchaErrorException 异常
@@ -431,6 +434,14 @@ public class UserController {
 
         // 返回一个 PageInfo 对象，其中包含了指定页面的 UserBase 列表
         return new PageInfo<>(followers);
+    }
+
+    @GetMapping("/notlogin")
+    public String notLogin(HttpSession session) {
+        if (Utils.currentUser(session) != null) {
+            return "已经登录";
+        }
+        throw new NotLoginException("用户未登录");
     }
 
 }
