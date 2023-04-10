@@ -3,8 +3,11 @@ package com.xftxyz.rocketblog.interceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.pojo.User;
+import com.xftxyz.rocketblog.result.Result;
+import com.xftxyz.rocketblog.result.ResultMessageEnum;
 import com.xftxyz.rocketblog.service.UserService;
 
 import jakarta.servlet.http.Cookie;
@@ -15,25 +18,16 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         // 获取session中的user判断是否登录
-        if (request.getSession().getAttribute(EnvironmentVariables.COOKIE_TOKEN) != null){
+        if (request.getSession().getAttribute(EnvironmentVariables.COOKIE_TOKEN) != null) {
             return true;
         }
-        // HttpSession session = request.getSession();
-        // User usr = Utils.currentUser(session);
-        // if (usr != null) {
-        //     // 密码检查未通过
-        //     if (!userService.checkPassword(usr)) {
-        //         // 清除session
-        //         session.invalidate();
-        //         throw new NotLoginException("用户被注销或密码已被修改");
-        //     }
-        //     return true;
-        // }
         // 未在session中找到登录信息，尝试从cookie中获取
         Cookie[] cookies = request.getCookies();
         String token = null;
@@ -47,7 +41,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         User user = userService.fromToken(token);
         if (user == null) {
-            request.getRequestDispatcher("/user/notlogin").forward(request, response);
+            // 未登录
+            response.setContentType("application/json;charset=utf-8");
+            response.getWriter().write(objectMapper.writeValueAsString(Result
+                    .error(ResultMessageEnum.USER_NOT_LOGIN.getCode(), ResultMessageEnum.USER_NOT_LOGIN.getMessage())));
+
+            return false;
         }
         request.getSession().setAttribute(EnvironmentVariables.SESSION_USER, user);
         return true;

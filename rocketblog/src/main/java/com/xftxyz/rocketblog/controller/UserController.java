@@ -20,7 +20,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
-import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.parameter.LoginBody;
@@ -434,14 +433,6 @@ public class UserController {
 
         // 返回一个 PageInfo 对象，其中包含了指定页面的 UserBase 列表
         return new PageInfo<>(followers);
-    }
-
-    @RequestMapping("/notlogin")
-    public String notLogin(HttpSession session) {
-        if (Utils.currentUser(session) != null) {
-            return "已经登录";
-        }
-        throw new NotLoginException("用户未登录");
     }
 
 }

@@ -40,8 +40,6 @@ public class MyConfig implements WebMvcConfigurer {
 
         // 登录拦截器
         List<String> loginExcludePathPatterns = List.of(
-                // notlogin
-                "/user/notlogin",
                 // 接口文档
                 "/doc/*",
                 // 用户相关
