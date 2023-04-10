@@ -37,6 +37,10 @@ public class ImageServiceImpl implements ImageService {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         // 后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        // 只允许上传图片：GIF、JPG、JPEG、PNG、SVG、WEBP、ICO
+        if (!suffixName.matches("(.gif|.jpg|.jpeg|.png|.svg|.webp|.ico)$")) {
+            throw new IOException("不被允许的文件格式" + suffixName + "，只允许上传图片：GIF、JPG、JPEG、PNG、SVG、WEBP、ICO");
+        }
         // UUID
         String uuid = Utils.getUUID();
         fileName = uuid + suffixName;
@@ -50,7 +54,7 @@ public class ImageServiceImpl implements ImageService {
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
             return "/images/" + fileName;
         } catch (IOException e) {
-            throw new IOException("Failed to save file " + fileName, e);
+            throw new IOException("保存文件失败 " + fileName, e);
         }
     }
 
@@ -60,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
         if (resource.exists() || resource.isReadable()) {
             return resource;
         } else {
-            throw new IOException("Could not read file: " + id);
+            throw new IOException("无法读取文件: " + id);
         }
     }
 
