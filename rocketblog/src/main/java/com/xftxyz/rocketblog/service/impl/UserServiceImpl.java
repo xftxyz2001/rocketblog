@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(String name, String password, String email) {
-
+        // 检查邮箱是否已注册
         UserExample exEmail = new UserExample();
         exEmail.createCriteria().andEmailEqualTo(email);
         long countEmail = userMapper.countByExample(exEmail);
@@ -114,11 +114,12 @@ public class UserServiceImpl implements UserService {
             throw new EmailExistException();
         }
         User user = new User();
-        user.setUsername(name);
+        // 默认用户名：邮箱前缀
+        user.setUsername(StringUtils.hasLength(name) ? name : email.substring(0, email.indexOf("@")));
         user.setPassword(password);
         user.setEmail(email);
 
-        // 默认头像
+        // 默认头像：qq邮箱头像（其他暂未处理）
         user.setAvatar(defaultAvatar(email));
 
         user.setUserRegisterTime(new Date());

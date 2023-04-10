@@ -22,14 +22,17 @@ import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.UserNotExistException;
+import com.xftxyz.rocketblog.parameter.LoginBody;
 import com.xftxyz.rocketblog.parameter.RegisterBody;
 import com.xftxyz.rocketblog.parameter.ResetPasswordBody;
+import com.xftxyz.rocketblog.parameter.UpdateEmailBody;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
 import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.service.EmailService;
 import com.xftxyz.rocketblog.service.UserService;
 import com.xftxyz.rocketblog.util.Utils;
+import com.xftxyz.rocketblog.validation.ValidInfo;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,7 +55,7 @@ public class UserController {
     EmailService emailService;
 
     /**
-     * 发送包含用户密码的邮件到用户的邮箱，以帮助他们找回密码。
+     * 发送包含用户密码的邮件到用户的邮箱，以帮助他们找回密码
      * 
      * @param email 需要重置密码的用户的邮箱地址
      * @return 返回一个字符串，表示密码邮件已经成功发送到用户的邮箱
@@ -74,7 +77,7 @@ public class UserController {
     }
 
     /**
-     * 生成并发送验证码到用户的邮箱。
+     * 生成并发送验证码到用户的邮箱
      * 
      * @param email 需要接收验证码的用户的邮箱地址
      * @return 返回一个字符串，表示验证码已经成功发送到用户的邮箱
@@ -90,13 +93,14 @@ public class UserController {
      * 注册新用户
      * 
      * @param registerBody 包含用户注册信息的 {@link RegisterBody} 对象
-     * @param session      HttpSession对象，识别用户、获取验证码
+     * @param session      HttpSession对象，识别用户
      * @return 返回一个字符串，表示用户注册已成功
      * @throws CaptchaErrorException 如果提供的验证码与发送给用户的验证码不匹配，则会抛出
      *                               CaptchaErrorException 异常
      */
     @PostMapping("/register")
-    public String register(@RequestBody RegisterBody registerBody, HttpSession session) throws CaptchaErrorException {
+    public String register(@RequestBody @Validated RegisterBody registerBody, HttpSession session)
+            throws CaptchaErrorException {
         String name = registerBody.getName();
         String password = registerBody.getPassword();
         String email = registerBody.getEmail();
@@ -113,18 +117,19 @@ public class UserController {
     }
 
     /**
-     * 用户登录。
+     * 用户登录
      * 
-     * @param registerBody 包含用户登录信息的 {@link RegisterBody} 对象
-     * @param session      HttpSession对象，存储用户信息
-     * @param response     HttpServletResponse对象，设置Cookie
+     * @param loginBody 包含用户登录信息的 {@link LoginBody} 对象
+     * @param session   HttpSession对象，存储用户信息
+     * @param response  HttpServletResponse对象，设置Cookie
      * @return 返回一个 {@link UserInfo} 对象，包含用户信息
      */
     @PostMapping("/login")
-    public UserInfo login(@RequestBody RegisterBody registerBody, HttpSession session, HttpServletResponse response) {
+    public UserInfo login(@RequestBody @Validated LoginBody loginBody, HttpSession session,
+            HttpServletResponse response) {
         // 解析请求体中的用户登录信息
-        String email = registerBody.getEmail();
-        String password = registerBody.getPassword();
+        String email = loginBody.getEmail();
+        String password = loginBody.getPassword();
 
         // 登录并获取用户信息
         User user = userService.login(email, password);
@@ -145,7 +150,7 @@ public class UserController {
     }
 
     /**
-     * 用户登出。
+     * 用户登出
      * 
      * @param session  HttpSession对象，删除用户登录信息
      * @param response HttpServletResponse对象，删除Cookie
@@ -169,7 +174,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户的信息。
+     * 获取当前登录用户的信息
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link UserInfo} 对象，包含当前登录用户的信息
@@ -185,7 +190,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户的详细信息。
+     * 获取当前登录用户的详细信息
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link User} 对象，包含当前登录用户的详细信息，但密码将被屏蔽
@@ -207,7 +212,7 @@ public class UserController {
     }
 
     /**
-     * 修改当前登录用户的信息。
+     * 修改当前登录用户的信息
      * 
      * @param newUserData 包含新用户信息的 {@link User} 对象
      * @param session     HttpSession对象，获取当前登录用户信息
@@ -253,23 +258,23 @@ public class UserController {
     }
 
     /**
-     * 修改当前登录用户的邮箱。
+     * 修改当前登录用户的邮箱
      * 
-     * @param registerBody 包含新邮箱信息和验证码的 {@link RegisterBody} 对象
-     * @param session      HttpSession对象，获取当前登录用户信息和验证码
+     * @param updateEmailBody 包含新邮箱信息和验证码的 {@link UpdateEmailBody} 对象
+     * @param session         HttpSession对象，获取当前登录用户信息和验证码
      * @return 返回一个字符串，表示用户邮箱已经成功修改
      * @throws CaptchaErrorException 如果提供的验证码与发送给用户的验证码不匹配，则会抛出
      *                               CaptchaErrorException 异常
      */
     @PostMapping("/update/email")
-    public String updateEmail(@RequestBody RegisterBody registerBody, HttpSession session)
+    public String updateEmail(@RequestBody @Validated UpdateEmailBody updateEmailBody, HttpSession session)
             throws CaptchaErrorException {
         // 获取当前登录用户信息
         User user = Utils.currentUser(session);
 
         // 解析请求体中的新邮箱信息和验证码
-        String email = registerBody.getEmail();
-        String vertify = registerBody.getVertify();
+        String email = updateEmailBody.getEmail();
+        String vertify = updateEmailBody.getVertify();
 
         // 检查验证码是否正确
         userService.checkCaptcha(email, vertify);
@@ -282,7 +287,7 @@ public class UserController {
     }
 
     /**
-     * 修改当前登录用户的密码。
+     * 修改当前登录用户的密码
      * 
      * @param resetPasswordBody 包含新密码和原密码的 {@link ResetPasswordBody} 对象
      * @param session           HttpSession对象，获取当前登录用户信息
@@ -290,7 +295,7 @@ public class UserController {
      * @throws PasswordErrorException 如果原密码不正确，则会抛出 PasswordErrorException 异常
      */
     @PostMapping("/update/password")
-    public String updatePassword(@RequestBody ResetPasswordBody resetPasswordBody, HttpSession session)
+    public String updatePassword(@RequestBody @Validated ResetPasswordBody resetPasswordBody, HttpSession session)
             throws PasswordErrorException {
         // 获取当前登录用户信息
         User user = Utils.currentUser(session);
@@ -306,7 +311,7 @@ public class UserController {
     }
 
     /**
-     * 获取指定 userid 的用户信息。
+     * 获取指定 userid 的用户信息
      * 
      * @param session HttpSession 对象，获取当前登录用户信息
      * @param userid  需要查询的用户的id
@@ -314,7 +319,7 @@ public class UserController {
      */
     @GetMapping("/info/{userid}")
     public UserInfo getUserInformation(HttpSession session,
-            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
+            @PathVariable("userid") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long userid) {
         // 获取当前登录用户信息，并获取指定 userid 的用户信息
         User user = Utils.currentUser(session);
         UserInfo userInfo = userService.getUserInfo(user, userid);
@@ -324,7 +329,7 @@ public class UserController {
     }
 
     /**
-     * 删除当前登录用户的账户。
+     * 删除当前登录用户的账户
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个字符串，表示用户账户已经成功删除
@@ -353,7 +358,7 @@ public class UserController {
     }
 
     /**
-     * 让当前登录用户关注指定的用户。
+     * 让当前登录用户关注指定的用户
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  需要关注的用户的id
@@ -361,7 +366,7 @@ public class UserController {
      */
     @GetMapping("/follow/{userid}")
     public Long follow(HttpSession session,
-            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
+            @PathVariable("userid") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long userid) {
         // 获取当前登录用户信息，并让该用户关注指定的用户
         User user = Utils.currentUser(session);
         Long newFansCount = userService.follow(user.getUserid(), userid);
@@ -371,7 +376,7 @@ public class UserController {
     }
 
     /**
-     * 取消当前登录用户对指定用户的关注。
+     * 取消当前登录用户对指定用户的关注
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  需要取消关注的用户的id
@@ -379,7 +384,7 @@ public class UserController {
      */
     @DeleteMapping("/follow/{userid}")
     public Long cancelFollow(HttpSession session,
-            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
+            @PathVariable("userid") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long userid) {
         // 获取当前登录用户信息，并取消该用户对指定用户的关注
         User user = Utils.currentUser(session);
         Long newFansCount = userService.cancelFollow(user.getUserid(), userid);
@@ -389,7 +394,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户关注的用户列表。
+     * 获取当前登录用户关注的用户列表
      * 
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始
@@ -398,7 +403,7 @@ public class UserController {
      */
     @GetMapping("/followings")
     public PageInfo<UserBase> followings(HttpSession session,
-            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         // 获取当前登录用户信息，并获取该用户关注的用户列表
         User user = Utils.currentUser(session);
@@ -410,7 +415,7 @@ public class UserController {
     }
 
     /**
-     * 获取当前登录用户的粉丝列表。
+     * 获取当前登录用户的粉丝列表
      * 
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始
@@ -419,7 +424,7 @@ public class UserController {
      */
     @GetMapping("/followers")
     public PageInfo<UserBase> followers(HttpSession session,
-            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         // 获取当前登录用户信息，并获取该用户的粉丝列表
         User user = Utils.currentUser(session);

@@ -22,6 +22,7 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.VChat;
 import com.xftxyz.rocketblog.service.ChatService;
 import com.xftxyz.rocketblog.util.Utils;
+import com.xftxyz.rocketblog.validation.ValidInfo;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Min;
@@ -38,7 +39,7 @@ public class ChatController {
     ChatService chatService;
 
     /**
-     * 向指定的用户发送消息。
+     * 向指定的用户发送消息
      * 
      * @param session     HttpSession对象，获取当前登录用户信息
      * @param chatMessage 包含了要发送的消息内容和目标用户ID的 {@link ChatMessageBody} 对象
@@ -59,7 +60,7 @@ public class ChatController {
     }
 
     /**
-     * 获取当前登录用户的所有消息。
+     * 获取当前登录用户的所有消息
      * 
      * @param session  HttpSession对象，获取当前登录用户信息
      * @param pageNum  获取的页面数，从1开始
@@ -68,7 +69,7 @@ public class ChatController {
      */
     @GetMapping("/chats")
     public PageInfo<VChat> getAllMessages(HttpSession session,
-            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         // 获取当前登录用户信息，并获取该用户的所有消息
         User user = Utils.currentUser(session);
@@ -80,7 +81,7 @@ public class ChatController {
     }
 
     /**
-     * 获取当前登录用户的所有会话列表。
+     * 获取当前登录用户的所有会话列表
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @return 返回一个 {@link PageInfo} 对象，其中包含了指定页面的 {@link ChatInfo} 列表
@@ -96,7 +97,7 @@ public class ChatController {
     }
 
     /**
-     * 获取指定的会话信息。
+     * 获取指定的会话信息
      * 
      * @param session HttpSession对象，获取当前登录用户信息
      * @param userid  要更新会话的目标用户ID
@@ -104,7 +105,7 @@ public class ChatController {
      */
     @GetMapping("/session/{userid}")
     public ChatInfo updateChatSession(HttpSession session,
-            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
+            @PathVariable("userid") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long userid) {
         // 获取当前登录用户信息，并获取指定会话的详细信息
         User user = Utils.currentUser(session);
         ChatInfo chat = chatService.getSession(user, userid);
@@ -124,8 +125,8 @@ public class ChatController {
      */
     @GetMapping("/detail/{userid}")
     public PageInfo<VChat> chatDetail(HttpSession session,
-            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid,
-            @RequestParam(defaultValue = "1") Integer pageNum,
+            @PathVariable("userid") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long userid,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         User user = Utils.currentUser(session);
@@ -142,7 +143,7 @@ public class ChatController {
      */
     @DeleteMapping("/{chatid}")
     public String deleteChat(HttpSession session,
-            @PathVariable("chatid") @Min(value = 1, message = "目标用户ID不合法") Long chatid) {
+            @PathVariable("chatid") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long chatid) {
         chatService.deleteChat(chatid);
         return "消息删除成功";
     }
@@ -156,7 +157,7 @@ public class ChatController {
      */
     @DeleteMapping("/session/{userid}")
     public String deleteSession(HttpSession session,
-            @PathVariable("userid") @Min(value = 1, message = "目标用户ID不合法") Long userid) {
+            @PathVariable("userid") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long userid) {
         User user = Utils.currentUser(session);
         chatService.deleteSession(user, userid);
         return "会话删除成功";

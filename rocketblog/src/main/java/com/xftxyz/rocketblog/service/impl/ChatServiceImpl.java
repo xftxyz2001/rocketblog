@@ -104,8 +104,8 @@ public class ChatServiceImpl implements ChatService {
         if (userMapper.selectByPrimaryKey(toUserid) == null) {
             throw new UserNotExistException(String.valueOf(toUserid));
         }
-        // if (StringUtils.hasLength(content) && content.length() > EnvironmentVariables.MAX_LENGTH) {
-        //     throw new IllegalArgumentException("内容长度不能超过" + EnvironmentVariables.MAX_LENGTH + "个字符");
+        // if (StringUtils.hasLength(content) && content.length() > ValidInfo.MAX_LENGTH) {
+        //     throw new IllegalArgumentException("内容长度不能超过" + ValidInfo.MAX_LENGTH + "个字符");
         // }
         Chat chat = new Chat();
         chat.setUseridFrom(fromUserid);

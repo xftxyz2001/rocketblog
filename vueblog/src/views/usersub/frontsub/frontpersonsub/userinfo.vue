@@ -68,7 +68,7 @@
           />
           <el-upload
             class="upload-demo"
-            action="http://8.130.81.23:8080/images/upload"
+            action="/images/upload"
             :on-change="handleChange"
             :on-success="handleSuccess"
             :before-upload="beforeUpload"
@@ -78,6 +78,7 @@
             :file-list="fileList"
             :multiple="true"
             :limit="1"
+            id = "upload"
             style="margin-left: 50px; margin-bottom: 40px"
           >
             <el-button type="primary">选择图片</el-button>
@@ -195,6 +196,9 @@ const handleExceed = (files, uploadFiles) => {
 // var form = {
 //   username: "",
 // };
+
+// 动态修改上传图片的action
+// document.getElementById("upload").setAttribute("action", axios.defaults.baseURL+"/images/upload")
 
 axios.get("/user/i/detail").then((res) => {
   userinfo.value = res.data.data;

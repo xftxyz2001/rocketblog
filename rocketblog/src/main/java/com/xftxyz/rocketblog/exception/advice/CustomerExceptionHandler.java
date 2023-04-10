@@ -1,11 +1,13 @@
 package com.xftxyz.rocketblog.exception.advice;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -25,6 +27,8 @@ import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.result.Result;
 import com.xftxyz.rocketblog.result.ResultMessageEnum;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -105,6 +109,7 @@ public class CustomerExceptionHandler {
         return Result.error(ResultMessageEnum.ILLEGAL_OPERATION.getCode(), e.getMessage());
     }
 
+    // 请求参数校验失败异常
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result<Object> handleValidationException(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
@@ -112,6 +117,22 @@ public class CustomerExceptionHandler {
                 .map(error -> String.format("%s : %s", error.getField(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
         return Result.error(ResultMessageEnum.PARAM_VALID_ERROR.getCode(), "请求参数校验失败" + errorMessages);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public Result<Object> handleConstraintViolationException(ConstraintViolationException e) {
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        List<String> errorMessages = violations.stream()
+                .map(violation -> String.format("%s : %s", violation.getPropertyPath(), violation.getMessage()))
+                .collect(Collectors.toList());
+        return Result.error(ResultMessageEnum.PARAM_VALID_ERROR.getCode(), "请求参数校验失败" + errorMessages);
+    }
+
+    // 请求参数缺失
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public Result<Object> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        return Result.error(ResultMessageEnum.PARAM_ERROR.getCode(),
+                ResultMessageEnum.PARAM_ERROR.getMessage() + ": " + e.getParameterName() + "不能为空");
     }
 
     // HTTP消息不可读异常
