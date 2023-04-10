@@ -68,7 +68,7 @@
           />
           <el-upload
             class="upload-demo"
-            action="http://8.130.81.23:8080/images/upload"
+            action="http://8.130.81.23/images/upload"
             :on-change="handleChange"
             :on-success="handleSuccess"
             :before-upload="beforeUpload"

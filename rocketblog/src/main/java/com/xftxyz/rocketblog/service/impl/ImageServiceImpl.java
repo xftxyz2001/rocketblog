@@ -48,7 +48,6 @@ public class ImageServiceImpl implements ImageService {
         try (InputStream inputStream = file.getInputStream()) {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            // return "http://8.130.81.23:8080/images/" + fileName;
             return "/images/" + fileName;
         } catch (IOException e) {
             throw new IOException("Failed to save file " + fileName, e);
