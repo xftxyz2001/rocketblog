@@ -224,8 +224,8 @@ public class BlogServiceImpl implements BlogService {
             throw new BlogNotExistException("博客" + comment.getBlogId() + "不存在");
         }
         // 评论是否在500字以内
-        if (comment.getCommentContent().length() > ValidInfo.MAX_LENGTH) {
-            throw new IllegalOperationException("评论内容不能超过" + ValidInfo.MAX_LENGTH + "字");
+        if (comment.getCommentContent().length() > ValidInfo.CONTENT_MAX_LENGTH) {
+            throw new IllegalOperationException("评论内容不能超过" + ValidInfo.CONTENT_MAX_LENGTH + "字");
         }
 
         // 短时间只能评论一次
