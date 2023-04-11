@@ -7,6 +7,11 @@
 </head>
 
 <body>
+    <form action="/user/login" method="post">
+        <input type="text" name="email" />
+        <input type="password" name="password" />
+        <input type="submit" value="登录" />
+    </form>
     To: <input id="message" type="text" /><br />
     Content: <input id="sessionId" type="text" /><br />
     <button onclick="sendMessage()">发送</button>

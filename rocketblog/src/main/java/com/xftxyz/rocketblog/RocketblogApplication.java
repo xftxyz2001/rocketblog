@@ -5,14 +5,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import com.xftxyz.rocketblog.component.MessageServer;
+
 @SpringBootApplication
 @MapperScan({ "com.xftxyz.rocketblog.mapper" })
 public class RocketblogApplication {
 
-	public static ConfigurableApplicationContext ac;
-
 	public static void main(String[] args) {
-		ac = SpringApplication.run(RocketblogApplication.class, args);
+		ConfigurableApplicationContext ac = SpringApplication.run(RocketblogApplication.class, args);
+		MessageServer.init(ac);
 	}
 
 }

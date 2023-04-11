@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.xftxyz.rocketblog.RocketblogApplication;
 import com.xftxyz.rocketblog.parameter.ChatMessageBody;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.ChatService;
@@ -32,9 +32,14 @@ import lombok.extern.slf4j.Slf4j;
 @ServerEndpoint(value = "/chat/{token}")
 public class MessageServer {
 
-    UserService userService = RocketblogApplication.ac.getBean(UserService.class);
+    private static UserService userService;
 
-    ChatService chatService = RocketblogApplication.ac.getBean(ChatService.class);
+    private static ChatService chatService;
+
+    public static void init(ConfigurableApplicationContext ac) {
+        userService = ac.getBean(UserService.class);
+        chatService = ac.getBean(ChatService.class);
+    }
 
     // 用户连接集合
     private static Map<Long, Session> onlineMap = new ConcurrentHashMap<>();
