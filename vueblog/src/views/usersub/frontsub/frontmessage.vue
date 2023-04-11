@@ -98,6 +98,23 @@ websocket.onmessage = function (event) {
     message: event.data,
     type: "success",
   });
+  // axios.get("/user/chat/sessions").then((res) => {
+  //   var result = res.data;
+  //   if (result.code == 0) {
+  //     pageInfos.value = result.data.list;
+  //     if (pageInfos.value.length == 0) {
+  //       selectchat.value = true;
+  //     } else {
+  //       selectchat.value = false;
+  //     }
+  //   } else {
+  //     console.log(result.message);
+  //   }
+  // });
+}
+/** websocket-end */
+
+setInterval(function () {
   axios.get("/user/chat/sessions").then((res) => {
     var result = res.data;
     if (result.code == 0) {
@@ -105,35 +122,18 @@ websocket.onmessage = function (event) {
       if (pageInfos.value.length == 0) {
         selectchat.value = true;
       } else {
+        // router.push({
+        //   name: "messagedetail",
+        //   params: { userid: pageInfos.value[0].userid },
+        // });
         selectchat.value = false;
       }
     } else {
       console.log(result.message);
     }
   });
-}
+}, 1000);
 
-// setInterval(function () {
-//   axios.get("/user/chat/sessions").then((res) => {
-//     var result = res.data;
-//     if (result.code == 0) {
-//       pageInfos.value = result.data.list;
-//       if (pageInfos.value.length == 0) {
-//         selectchat.value = true;
-//       } else {
-//         // router.push({
-//         //   name: "messagedetail",
-//         //   params: { userid: pageInfos.value[0].userid },
-//         // });
-//         selectchat.value = false;
-//       }
-//     } else {
-//       console.log(result.message);
-//     }
-//   });
-// }, 1000);
-
-/** websocket-end */
 axios.get("/user/chat/sessions").then((res) => {
   var result = res.data;
   if (result.code == 0) {

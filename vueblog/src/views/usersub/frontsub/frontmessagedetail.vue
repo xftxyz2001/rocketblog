@@ -191,6 +191,7 @@ function sendMessage(msgBody) {
 //     }
 //   });
 // }
+/** websocket-end */
 
 setInterval(function () {
   axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
@@ -220,7 +221,6 @@ setInterval(function () {
   });
 }, 1000);
 
-/** websocket-end */
 axios.get("/user/i").then((res) => {
   var result = res.data;
   if (result.code == 0) {
