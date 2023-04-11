@@ -74,8 +74,8 @@ public interface UserService {
 
     public boolean checkPassword(User user);
 
-    public void deleteToken(String token);
+    public void deleteUserToken(Long userid);
 
-    public void deleteUserTokens(Long userid);
+    // public void deleteUserTokens(Long userid);
 
 }

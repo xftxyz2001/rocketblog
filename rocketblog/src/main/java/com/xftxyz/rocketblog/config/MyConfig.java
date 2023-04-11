@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import com.xftxyz.rocketblog.interceptor.AdminInterceptor;
 import com.xftxyz.rocketblog.interceptor.LoginInterceptor;
@@ -17,6 +18,13 @@ import com.xftxyz.rocketblog.interceptor.LoginInterceptor;
 @Configuration
 public class MyConfig implements WebMvcConfigurer {
 
+    // WebSocket配置
+    @Bean
+	ServerEndpointExporter serverEndpointExporter() {
+		return new ServerEndpointExporter();
+	}
+    
+    // 跨域配置
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -28,6 +36,7 @@ public class MyConfig implements WebMvcConfigurer {
 
     }
 
+    // 拦截器配置
     @Bean
     LoginInterceptor loginInterceptor() {
         return new LoginInterceptor();
@@ -67,6 +76,7 @@ public class MyConfig implements WebMvcConfigurer {
 
     }
 
+    // RestTemplate相关配置
     @Bean
     RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
