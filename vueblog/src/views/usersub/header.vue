@@ -714,6 +714,9 @@ Bus.on("commentneedlogin", () => {
   loginform.email = "";
   loginform.password = "";
 });
+Bus.on("deleteaccount",()=>{
+  loginsuccess.value = false;
+})
 </script>
 <script>
 import { FormInstance, FormRules } from "element-plus";
