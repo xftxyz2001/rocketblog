@@ -58,6 +58,7 @@
 
 <script setup>
 import axios from "axios";
+import { ElMessage } from "element-plus";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 // const myuserid = ref(105);
@@ -93,6 +94,10 @@ if ('WebSocket' in window) {
 
 // 客户端接收消息时的回调方法
 websocket.onmessage = function (event) {
+  ElMessage({
+    message: event.data,
+    type: "success",
+  });
   axios.get("/user/chat/sessions").then((res) => {
     var result = res.data;
     if (result.code == 0) {
