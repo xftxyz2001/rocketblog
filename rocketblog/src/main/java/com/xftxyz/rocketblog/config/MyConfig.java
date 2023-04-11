@@ -40,8 +40,6 @@ public class MyConfig implements WebMvcConfigurer {
 
         // 登录拦截器
         List<String> loginExcludePathPatterns = List.of(
-                // 接口文档
-                "/doc/*",
                 // 用户相关
                 "/user/register", // 注册
                 "/user/login", // 登录
@@ -64,7 +62,8 @@ public class MyConfig implements WebMvcConfigurer {
                 .excludePathPatterns(loginExcludePathPatterns);
 
         // 管理员拦截器 拦截路径 /admin
-        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/admin/**");
+        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/admin/**",
+                "/doc/*");
 
     }
 
