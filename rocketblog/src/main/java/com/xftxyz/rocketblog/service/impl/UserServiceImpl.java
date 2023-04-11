@@ -273,7 +273,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @SuppressWarnings("null") // sToken不可能为null
     public User fromToken(String token) {
         if (!StringUtils.hasLength(token)) {
             return null;
@@ -283,11 +282,12 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         String userid = token.substring(0, index);
-        String sToken = redisTemplate.boundValueOps(token).get();
-        if (!StringUtils.hasLength(sToken)) {
+        String tokenSessionId = token.substring(index + 1);
+        String sSessionId = redisTemplate.boundValueOps(userid).get();
+        if (tokenSessionId == null || !tokenSessionId.equals(sSessionId)) {
             return null;
         }
-        return sToken.equals(token) ? getUser(Long.valueOf(userid)) : null;
+        return getUser(Long.valueOf(userid));
     }
 
     @Override
