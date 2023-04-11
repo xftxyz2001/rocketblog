@@ -36,7 +36,6 @@ public class MessageServer {
 
     private static ChatService chatService;
 
-    
     @Autowired
     public void setUserService(UserService userService) {
         MessageServer.userService = userService;
@@ -61,14 +60,14 @@ public class MessageServer {
         Long userid = user.getUserid();
         // 将连接放入集合
         onlineMap.put(userid, session);
-        // 连接成功后，向用户发送消息
-        sendMessage("连接成功", session);
+        // 验证成功
+        sendMessage("身份验证成功", session);
 
     }
 
     // 关闭连接
     @OnClose
-    public void onClose(Session session, @PathParam("token") Long token) {
+    public void onClose(Session session, @PathParam("token") String token) {
         User user = userService.fromToken(token.toString());
         if (user == null) {
             return;

@@ -67,7 +67,32 @@ const selectchat = ref(false);
 // const msglist = ref([]);
 
 const router = useRouter();
-setInterval(function () {
+/** websocket-start */
+var websocket = null;
+
+// 从cookie中获取token
+function getToken() {
+    if (document.cookie.length > 0) {
+        offset = document.cookie.indexOf("token=");
+        if (offset != -1) {
+            offset += "token=".length;
+            end = document.cookie.indexOf(";", offset);
+            if (end == -1)
+                end = document.cookie.length;
+            return unescape(document.cookie.substring(offset, end))
+        }
+    }
+}
+
+// 判断当前浏览器是否支持WebSocket
+if ('WebSocket' in window) {
+    websocket = new WebSocket("ws://" + window.location.host + "/chat/" + getToken());
+} else {
+    alert("当前浏览器不支持WebSocket");
+}
+
+// 客户端接收消息时的回调方法
+websocket.onmessage = function (event) {
   axios.get("/user/chat/sessions").then((res) => {
     var result = res.data;
     if (result.code == 0) {
@@ -75,17 +100,35 @@ setInterval(function () {
       if (pageInfos.value.length == 0) {
         selectchat.value = true;
       } else {
-        // router.push({
-        //   name: "messagedetail",
-        //   params: { userid: pageInfos.value[0].userid },
-        // });
         selectchat.value = false;
       }
     } else {
       console.log(result.message);
     }
   });
-}, 1000);
+}
+
+// setInterval(function () {
+//   axios.get("/user/chat/sessions").then((res) => {
+//     var result = res.data;
+//     if (result.code == 0) {
+//       pageInfos.value = result.data.list;
+//       if (pageInfos.value.length == 0) {
+//         selectchat.value = true;
+//       } else {
+//         // router.push({
+//         //   name: "messagedetail",
+//         //   params: { userid: pageInfos.value[0].userid },
+//         // });
+//         selectchat.value = false;
+//       }
+//     } else {
+//       console.log(result.message);
+//     }
+//   });
+// }, 1000);
+
+/** websocket-end */
 axios.get("/user/chat/sessions").then((res) => {
   var result = res.data;
   if (result.code == 0) {
