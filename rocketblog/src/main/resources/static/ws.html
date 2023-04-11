@@ -7,13 +7,8 @@
 </head>
 
 <body>
-    <form action="/user/login" method="post">
-        <input type="text" name="email" />
-        <input type="password" name="password" />
-        <input type="submit" value="登录" />
-    </form>
-    To: <input id="message" type="text" /><br />
-    Content: <input id="sessionId" type="text" /><br />
+    To: <input id="to" type="text" /><br />
+    Content: <input id="content" type="text" /><br />
     <button onclick="sendMessage()">发送</button>
     <hr />
     <div id="response"></div>
@@ -72,12 +67,13 @@
         if (websocket.readyState != 1) {
             printMessage("red", "未建立连接或者连接已处于关闭状态！");
         } else {
-            var message = document.getElementById('message').value;
-            var sessionId = document.getElementById('sessionId').value;
+            var to = document.getElementById("to").value;
+            var content = document.getElementById("content").value;
+            var obj = {
+                "to": to,
+                "content": content
+            };
 
-            var obj = new Object();
-            obj.message = message;
-            obj.sessionId = sessionId;
             websocket.send(JSON.stringify(obj));
         }
     }
