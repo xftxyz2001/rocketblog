@@ -21,7 +21,7 @@
         if (document.cookie.length > 0) {
             offset = document.cookie.indexOf("token=");
             if (offset != -1) {
-                offset += search.length;
+                offset += "token=".length;
                 end = document.cookie.indexOf(";", offset);
                 if (end == -1)
                     end = document.cookie.length;
