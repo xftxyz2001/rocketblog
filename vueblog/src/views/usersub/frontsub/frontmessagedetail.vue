@@ -128,42 +128,42 @@ const myuserid = ref(null);
 const msglist = ref([]);
 
 /** websocket-start */
-var websocket = null;
+// var websocket = null;
 
 // 从cookie中获取token
-function getToken() {
-    if (document.cookie.length > 0) {
-        var offset = document.cookie.indexOf("token=");
-        if (offset != -1) {
-            offset += "token=".length;
-            var end = document.cookie.indexOf(";", offset);
-            if (end == -1)
-                end = document.cookie.length;
-            return unescape(document.cookie.substring(offset, end))
-        }
-    }
-}
+// function getToken() {
+//     if (document.cookie.length > 0) {
+//         var offset = document.cookie.indexOf("token=");
+//         if (offset != -1) {
+//             offset += "token=".length;
+//             var end = document.cookie.indexOf(";", offset);
+//             if (end == -1)
+//                 end = document.cookie.length;
+//             return unescape(document.cookie.substring(offset, end))
+//         }
+//     }
+// }
 
 // 判断当前浏览器是否支持WebSocket
-if ('WebSocket' in window) {
-    websocket = new WebSocket("ws://" + window.location.host + "/chat/" + getToken());
-} else {
-    alert("当前浏览器不支持WebSocket");
-}
+// if ('WebSocket' in window) {
+//     websocket = new WebSocket("ws://" + window.location.host + "/chat/" + getToken());
+// } else {
+//     alert("当前浏览器不支持WebSocket");
+// }
 
 // 发送消息
-function sendMessage(msgBody) {
-    if (websocket.readyState != 1) {
-        console.log("websocket连接没有建立成功！");
-    } else {
-        var obj = {
-            "to": msgBody.to,
-            "content": msgBody.content
-        };
+// function sendMessage(msgBody) {
+//     if (websocket.readyState != 1) {
+//         console.log("websocket连接没有建立成功！");
+//     } else {
+//         var obj = {
+//             "to": msgBody.to,
+//             "content": msgBody.content
+//         };
 
-        websocket.send(JSON.stringify(obj));
-    }
-}
+//         websocket.send(JSON.stringify(obj));
+//     }
+// }
 
 // // 客户端接收消息时的回调方法
 // websocket.onmessage = function (event) {
@@ -249,7 +249,7 @@ function send() {
         textarea2.value = "";
       }
     });
-    sendMessage(sendmessage);
+    // sendMessage(sendmessage);
   }
 }
 </script>
