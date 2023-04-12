@@ -635,7 +635,19 @@ function getverify(formE1) {
         registerform.email
       )
     ) {
-      axios.get("/user/code/" + registerform.email, true);
+      axios.get("/user/code/" + registerform.email, true).then((res) => {
+        var result = res.data;
+        if (result.code == 0) {
+          // result.data is the data you want
+          ElMessage({
+            message: result.data,
+            type: "success",
+          });
+        } else {
+          // result.message is the error message
+          ElMessage.error(result.message);
+        }
+      });
     }
   }
 }
