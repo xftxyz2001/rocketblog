@@ -54,7 +54,7 @@
           prefix-icon="Unlock"
           style="width: 50%; margin-right: 12px"
         />
-        <el-button @click="getverify">获取验证码</el-button>
+        <el-button @click="getverify($event)">获取验证码</el-button>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -153,7 +153,8 @@ function editpassword() {
 
   passworddialogFormVisible.value = true;
 }
-function getverify() {
+const flag = ref(true);
+function getverify(e) {
   console.log(editemailform.value.email);
   if (!editemailform.value.email) {
     ElMessage({
@@ -167,7 +168,23 @@ function getverify() {
         editemailform.value.email
       )
     ) {
-      axios.get("/user/code/" + editemailform.value.email, true);
+      if (flag.value) {
+        axios.get("/user/code/" + editemailform.value.email);
+        flag.value = false;
+        let i = 60;
+        e.target.innerHTML = `${i}秒后重新获取`;
+        let timerId = setInterval(function () {
+          i--;
+          if (i >= 10) e.target.innerHTML = `${i}秒后重新获取`;
+          else if (i > 0) {
+            e.target.innerHTML = `0${i}秒后重新获取`;
+          } else if (i == 0) {
+            clearInterval(timerId);
+            e.target.innerHTML = `重新获取`;
+            flag.value = true;
+          }
+        }, 1000);
+      }
     } else {
       ElMessage({
         showClose: true,

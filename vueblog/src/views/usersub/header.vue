@@ -317,7 +317,9 @@
             prefix-icon="Unlock"
             style="width: 50%; margin-right: 12px"
           />
-          <el-button @click="getverify(registerformRef)">获取验证码</el-button>
+          <el-button @click="getverify($event, registerformRef)"
+            >获取验证码</el-button
+          >
         </el-form-item>
       </el-form>
       <template #footer>
@@ -625,8 +627,9 @@ const changetologin = (formE1) => {
   if (!formE1) return;
   else formE1.resetFields();
 };
+const flag = ref(true);
 //获取验证码
-function getverify(formE1) {
+function getverify(e, formE1) {
   if (!formE1) return;
   else {
     //如果输入邮箱的格式正确
@@ -635,7 +638,23 @@ function getverify(formE1) {
         registerform.email
       )
     ) {
-      axios.get("/user/code/" + registerform.email, true);
+      if (flag.value) {
+        axios.get("/user/code/" + registerform.email);
+        flag.value = false;
+        let i = 60;
+        e.target.innerHTML = `${i}秒后重新获取`;
+        let timerId = setInterval(function () {
+          i--;
+          if (i >= 10) e.target.innerHTML = `${i}秒后重新获取`;
+          else if (i > 0) {
+            e.target.innerHTML = `0${i}秒后重新获取`;
+          } else if (i == 0) {
+            clearInterval(timerId);
+            e.target.innerHTML = `重新获取`;
+            flag.value = true;
+          }
+        }, 1000);
+      }
     }
   }
 }
@@ -714,9 +733,9 @@ Bus.on("commentneedlogin", () => {
   loginform.email = "";
   loginform.password = "";
 });
-Bus.on("deleteaccount",()=>{
+Bus.on("deleteaccount", () => {
   loginsuccess.value = false;
-})
+});
 </script>
 <script>
 import { FormInstance, FormRules } from "element-plus";
