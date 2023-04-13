@@ -45,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
             // 获取验证码发送时间
             Long time = redisTemplate.getExpire(to);
             // 剩余等待时间
-            long waitTime = EnvironmentVariables.CODE_EXPIRE_TIME - time;
+            long waitTime = EnvironmentVariables.CODE_REQUEST_INTERVAL - (EnvironmentVariables.CODE_EXPIRE_TIME - time);
             if (waitTime > 0) {
                 throw new FrequentOperationException("验证码发送过于频繁，" + waitTime + "秒后再试");
             }
