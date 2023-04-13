@@ -50,7 +50,7 @@
                   border-radius: 5px;
                   padding: 5px;
                   margin-top: 1px;
-
+                  max-width: 200px;
                   display: grid;
                   grid-template-rows: repeat(10, 10%);
                 "
