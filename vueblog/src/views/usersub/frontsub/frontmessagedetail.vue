@@ -45,7 +45,7 @@
             <div>
               <div
                 style="
-                  float: right;
+                  float: left;
                   border: 1px #e4e7ed solid;
                   border-radius: 5px;
                   padding: 5px;
@@ -53,6 +53,8 @@
                   max-width: 200px;
                   display: grid;
                   grid-template-rows: repeat(10, 10%);
+                  word-break: break-all;
+                  overflow: hidden;
                 "
               >
                 {{ msg.messageContent }}
