@@ -5,12 +5,14 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
-import com.xftxyz.rocketblog.exception.user.FrequentOperationException;
+import com.xftxyz.rocketblog.exception.blog.EmailSendError;
+import com.xftxyz.rocketblog.exception.captcha.FrequentOperationException;
 import com.xftxyz.rocketblog.service.EmailService;
 import com.xftxyz.rocketblog.util.Utils;
 
@@ -34,8 +36,11 @@ public class EmailServiceImpl implements EmailService {
         message.setTo(to); // 设置收件人
         message.setSubject(subject); // 设置邮件主题
         message.setText(content); // 设置邮件内容
-        // log.info(message.toString());
-        javaMailSender.send(message);
+        try {
+            javaMailSender.send(message);
+        } catch (MailException e) {
+            throw new EmailSendError();
+        }
     }
 
     @Override

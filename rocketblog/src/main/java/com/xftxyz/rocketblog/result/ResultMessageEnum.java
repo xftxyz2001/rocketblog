@@ -19,7 +19,6 @@ public enum ResultMessageEnum {
     EMAIL_SEND_ERROR(107, "邮件发送失败"),
     CAPTCHA_SEND_FREQUENTLY(108, "验证码发送过于频繁"),
 
-
     // 博客错误2xx
     SELF_OPERATION(200, "不能对自己进行此操作"),
     ALREADY_DONE(201, "已经执行过该操作"),

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
+import com.xftxyz.rocketblog.exception.captcha.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
-import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;

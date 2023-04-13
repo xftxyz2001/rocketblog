@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
-import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
+import com.xftxyz.rocketblog.exception.captcha.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.parameter.LoginBody;

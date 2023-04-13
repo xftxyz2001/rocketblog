@@ -1,4 +1,4 @@
-package com.xftxyz.rocketblog.exception.user;
+package com.xftxyz.rocketblog.exception.captcha;
 
 public class FrequentOperationException extends RuntimeException {
 
