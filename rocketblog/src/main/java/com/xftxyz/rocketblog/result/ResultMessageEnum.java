@@ -16,6 +16,9 @@ public enum ResultMessageEnum {
     USER_NOT_EXIST(104, "用户不存在"),
     EMAIL_EXIST(105, "邮箱已被注册"),
     ILLEGAL_OPERATION(106, "非法操作"),
+    EMAIL_SEND_ERROR(107, "邮件发送失败"),
+    CAPTCHA_SEND_FREQUENTLY(108, "验证码发送过于频繁"),
+
 
     // 博客错误2xx
     SELF_OPERATION(200, "不能对自己进行此操作"),

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.sun.mail.smtp.SMTPSendFailedException;
 import com.xftxyz.rocketblog.exception.blog.BlogNotExistException;
 import com.xftxyz.rocketblog.exception.chat.NoChatException;
 import com.xftxyz.rocketblog.exception.image.ImageException;
@@ -19,6 +20,7 @@ import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
+import com.xftxyz.rocketblog.exception.user.FrequentOperationException;
 import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
 import com.xftxyz.rocketblog.exception.user.NotLoginException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
@@ -34,6 +36,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class CustomerExceptionHandler {
+    // 邮件发送失败
+    @ExceptionHandler(SMTPSendFailedException.class)
+    public Result<Object> handleSMTPSendFailedException(SMTPSendFailedException e) {
+        return Result.error(ResultMessageEnum.EMAIL_SEND_ERROR.getCode(),
+                ResultMessageEnum.EMAIL_SEND_ERROR.getMessage());
+    }
+
+    // 验证码发送过于频繁
+    @ExceptionHandler(FrequentOperationException.class)
+    public Result<Object> handleFrequentOperationException(FrequentOperationException e) {
+        return Result.error(ResultMessageEnum.CAPTCHA_SEND_FREQUENTLY.getCode(),
+                e.getMessage());
+    }
 
     // 没有与该用户的聊天
     @ExceptionHandler(NoChatException.class)

@@ -68,7 +68,7 @@ public interface UserService {
 
     public List<UserInfo> findUserInfosByExample(User user);
 
-    public void checkCaptcha(String email, String vertify);
+    public boolean checkCaptcha(String email, String vertify);
 
     public void changePassword(User user, String password, String newPassword);
 

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface EnvironmentVariables {
-    
+
     // 默认分页大小
     String DEFAULT_PAGE_SIZE = "5";
 
@@ -23,6 +23,8 @@ public interface EnvironmentVariables {
     int CODE_LENGTH = 6;
     // 验证码过期时间（秒）
     long CODE_EXPIRE_TIME = 5 * 60; // 5分钟
+    // 验证码请求间隔时间（秒）
+    long CODE_REQUEST_INTERVAL = 60; // 60秒
     // 验证码邮件主题
     String EMAIL_CODE_SUBJECT = "火箭博客验证码";
     // 验证码邮件内容

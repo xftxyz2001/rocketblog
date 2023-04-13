@@ -327,7 +327,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void checkCaptcha(String email, String vertify) {
+    public boolean checkCaptcha(String email, String vertify) {
         String captcha = redisTemplate.boundValueOps(email).get();
         if (captcha == null) {
             throw new CaptchaErrorException("验证码已过期");
@@ -335,6 +335,9 @@ public class UserServiceImpl implements UserService {
         if (!captcha.equals(vertify)) {
             throw new CaptchaErrorException("验证码错误");
         }
+        // 验证码正确，删除验证码
+        redisTemplate.delete(email);
+        return true;
     }
 
     @Override
