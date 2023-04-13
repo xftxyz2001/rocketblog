@@ -639,7 +639,19 @@ function getverify(e, formE1) {
       )
     ) {
       if (flag.value) {
-        axios.get("/user/code/" + registerform.email);
+        axios.get("/user/code/" + registerform.email, true).then((res) => {
+          var result = res.data;
+          if (result.code == 0) {
+            // result.data is the data you want
+            ElMessage({
+              message: result.data,
+              type: "success",
+            });
+          } else {
+            // result.message is the error message
+            ElMessage.error(result.message);
+          }
+        });
         flag.value = false;
         let i = 60;
         e.target.innerHTML = `${i}秒后重新获取`;

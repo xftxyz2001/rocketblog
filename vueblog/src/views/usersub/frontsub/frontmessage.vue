@@ -58,6 +58,7 @@
 
 <script setup>
 import axios from "axios";
+import { ElMessage } from "element-plus";
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 // const myuserid = ref(105);
@@ -67,6 +68,52 @@ const selectchat = ref(false);
 // const msglist = ref([]);
 
 const router = useRouter();
+/** websocket-start */
+// var websocket = null;
+
+// 从cookie中获取token
+// function getToken() {
+//     if (document.cookie.length > 0) {
+//       var offset = document.cookie.indexOf("token=");
+//         if (offset != -1) {
+//             offset += "token=".length;
+//             var end = document.cookie.indexOf(";", offset);
+//             if (end == -1)
+//                 end = document.cookie.length;
+//             return unescape(document.cookie.substring(offset, end))
+//         }
+//     }
+// }
+
+// 判断当前浏览器是否支持WebSocket
+// if ('WebSocket' in window) {
+//     websocket = new WebSocket("ws://" + window.location.host + "/chat/" + getToken());
+// } else {
+//     alert("当前浏览器不支持WebSocket");
+// }
+
+// 客户端接收消息时的回调方法
+// websocket.onmessage = function (event) {
+//   ElMessage({
+//     message: event.data,
+//     type: "success",
+//   });
+  // axios.get("/user/chat/sessions").then((res) => {
+  //   var result = res.data;
+  //   if (result.code == 0) {
+  //     pageInfos.value = result.data.list;
+  //     if (pageInfos.value.length == 0) {
+  //       selectchat.value = true;
+  //     } else {
+  //       selectchat.value = false;
+  //     }
+  //   } else {
+  //     console.log(result.message);
+  //   }
+  // });
+// }
+/** websocket-end */
+
 setInterval(function () {
   axios.get("/user/chat/sessions").then((res) => {
     var result = res.data;
@@ -86,6 +133,7 @@ setInterval(function () {
     }
   });
 }, 1000);
+
 axios.get("/user/chat/sessions").then((res) => {
   var result = res.data;
   if (result.code == 0) {

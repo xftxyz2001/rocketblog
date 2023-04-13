@@ -126,6 +126,73 @@ const route = useRoute();
 // const myuserid = ref(null);
 const myuserid = ref(null);
 const msglist = ref([]);
+
+/** websocket-start */
+// var websocket = null;
+
+// 从cookie中获取token
+// function getToken() {
+//     if (document.cookie.length > 0) {
+//         var offset = document.cookie.indexOf("token=");
+//         if (offset != -1) {
+//             offset += "token=".length;
+//             var end = document.cookie.indexOf(";", offset);
+//             if (end == -1)
+//                 end = document.cookie.length;
+//             return unescape(document.cookie.substring(offset, end))
+//         }
+//     }
+// }
+
+// 判断当前浏览器是否支持WebSocket
+// if ('WebSocket' in window) {
+//     websocket = new WebSocket("ws://" + window.location.host + "/chat/" + getToken());
+// } else {
+//     alert("当前浏览器不支持WebSocket");
+// }
+
+// 发送消息
+// function sendMessage(msgBody) {
+//     if (websocket.readyState != 1) {
+//         console.log("websocket连接没有建立成功！");
+//     } else {
+//         var obj = {
+//             "to": msgBody.to,
+//             "content": msgBody.content
+//         };
+
+//         websocket.send(JSON.stringify(obj));
+//     }
+// }
+
+// // 客户端接收消息时的回调方法
+// websocket.onmessage = function (event) {
+//   axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
+//     var result = res.data;
+
+//     if (result.code == 0) {
+//       var resultdata = result.data.list.reverse();
+
+//       if (msglist.value.length == 0) {
+//         for (let index = 0; index < resultdata.length; index++) {
+//           if (resultdata[index].messageContent !== "")
+//             msglist.value.push(resultdata[index]);
+//         }
+//       } else {
+//         var lastmessagenum = msglist.value[msglist.value.length - 1].chatId;
+//         for (let index = 0; index < resultdata.length; index++) {
+//           if (lastmessagenum < resultdata[index].chatId) {
+//             if (resultdata[index].messageContent !== "")
+//               msglist.value.push(resultdata[index]);
+//           }
+//         }
+//       }
+//       console.log(msglist.value);
+//     }
+//   });
+// }
+/** websocket-end */
+
 setInterval(function () {
   axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
     var result = res.data;
@@ -153,6 +220,7 @@ setInterval(function () {
     }
   });
 }, 1000);
+
 axios.get("/user/i").then((res) => {
   var result = res.data;
   if (result.code == 0) {
@@ -181,6 +249,7 @@ function send() {
         textarea2.value = "";
       }
     });
+    // sendMessage(sendmessage);
   }
 }
 </script>

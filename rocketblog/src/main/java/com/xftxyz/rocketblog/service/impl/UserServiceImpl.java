@@ -3,7 +3,6 @@ package com.xftxyz.rocketblog.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -278,8 +277,14 @@ public class UserServiceImpl implements UserService {
         if (!StringUtils.hasLength(token)) {
             return null;
         }
-        String userid = redisTemplate.boundValueOps(token).get();
-        if (userid == null) {
+        int index = token.indexOf("_");
+        if (index == -1) {
+            return null;
+        }
+        String userid = token.substring(0, index);
+        String tokenSessionId = token.substring(index + 1);
+        String sSessionId = redisTemplate.boundValueOps(userid).get();
+        if (tokenSessionId == null || !tokenSessionId.equals(sSessionId)) {
             return null;
         }
         return getUser(Long.valueOf(userid));
@@ -287,9 +292,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String toToken(String sessionId, User user) {
-        redisTemplate.boundValueOps(sessionId).set(String.valueOf(user.getUserid()),
+        Long userid = user.getUserid();
+        String token = userid + "_" + sessionId;
+        redisTemplate.boundValueOps(String.valueOf(userid)).set(sessionId,
                 EnvironmentVariables.COOKIE_TOKEN_EXPIRE, TimeUnit.SECONDS);
-        return sessionId;
+        return token;
     }
 
     @Override
@@ -342,7 +349,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(newPassword);
         updateUser(user);
 
-        deleteUserTokens(user.getUserid());
+        deleteUserToken(user.getUserid());
 
     }
 
@@ -355,20 +362,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteToken(String token) {
-        redisTemplate.delete(token);
-    }
-
-    @Override
-    public void deleteUserTokens(Long userid) {
-        // ！！！非常不好的做法！！！
-        // 清除用户登录状态，遍历redis中的所有key，如果value为用户id，则删除
-        Set<String> keys = redisTemplate.keys("*");
-        for (String key : keys) {
-            String value = redisTemplate.boundValueOps(key).get();
-            if (value != null && value.equals(String.valueOf(userid))) {
-                redisTemplate.delete(key);
-            }
-        }
+    public void deleteUserToken(Long userid) {
+        redisTemplate.delete(userid.toString());
     }
 }

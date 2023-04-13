@@ -157,12 +157,12 @@ public class UserController {
      * @return 返回一个字符串，表示用户已经成功登出
      */
     @GetMapping("/logout")
-    public String logout(HttpSession session, HttpServletResponse response,
-            @CookieValue(EnvironmentVariables.COOKIE_TOKEN) String token) {
+    public String logout(HttpSession session, HttpServletResponse response) {
+        User user = Utils.currentUser(session);
+        // 删除redis中的token
+        userService.deleteUserToken(user.getUserid());
         // 使会话无效
         session.invalidate();
-        // 删除redis中的token
-        userService.deleteToken(token);
         // 删除Cookie
         Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
         cookie.setMaxAge(0);
@@ -341,7 +341,7 @@ public class UserController {
         // 获取当前登录用户信息
         User user = Utils.currentUser(session);
         // 删除redis中的token
-        userService.deleteUserTokens(user.getUserid());
+        userService.deleteUserToken(user.getUserid());
         // 删除用户账户
         userService.deleteUser(user.getUserid());
 
