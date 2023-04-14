@@ -84,7 +84,7 @@
                 </el-col>
                 <el-col :span="12">
                   <div class="grid-content ep-bg-purple-light" />
-                  <div style="width: 100%" v-html="blog.blogSummary"></div>
+                  <div id="blogSummary" style="width: 100%" v-html="blog.blogSummary"></div>
                 </el-col>
               </el-row>
             </div>
@@ -269,5 +269,10 @@ export default {};
 .carousel-img {
   max-width: 100%;
   max-height: 100%;
+}
+
+#blogSummary img {
+  max-width: 100%; /* 图片宽度最大为父级div的宽度 */
+  height: auto; /* 保持图片高度自适应 */
 }
 </style>
