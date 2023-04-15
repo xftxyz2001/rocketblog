@@ -105,7 +105,7 @@ public class BlogServiceImpl implements BlogService {
         }
         // 是不是自己的博客？
         if (blog.getUserid() != userid) {
-            throw new IllegalOperationException();
+            throw new IllegalOperationException("不是自己的博客，无法删除");
         }
         // 删除博客
         int delete = blogMapper.deleteByPrimaryKey(blogId);
@@ -406,6 +406,20 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer publish(Blog blog, User user) {
+        if (blog.getBlogId() != null) {
+            // 查询出原来的blog
+            Blog oldBlog = blogMapper.selectByPrimaryKey(blog.getBlogId());
+            // 如果查询出来了
+            if (oldBlog != null) {
+                // 不是自己的blog
+                if (!oldBlog.getUserid().equals(user.getUserid())) {
+                    throw new IllegalOperationException("不能修改别人的blog");
+                }
+            } else {
+                // 没有查询出来
+                blog.setBlogId(null);
+            }
+        }
 
         blog.setUserid(user.getUserid());
         if (!StringUtils.hasLength(blog.getBlogTitle())) {
