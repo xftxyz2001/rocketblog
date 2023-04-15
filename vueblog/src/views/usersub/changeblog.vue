@@ -143,22 +143,6 @@ export default {
               image: function (value) {
                 QuillWatch.emit(this.quill.id);
               },
-              // link: function (value) {
-              //   if (value) {
-              //     var href = prompt("请输入链接地址：");
-              //     this.quill.format("link", href);
-              //   } else {
-              //     this.quill.format("link", false);
-              //   }
-              // },
-              // video: function (value) {
-              //   if (value) {
-              //     var href = prompt("请输入视频链接：");
-              //     this.quill.format("video", href);
-              //   } else {
-              //     this.quill.format("video", false);
-              //   }
-              // },
             },
           },
           ImageResize: {
@@ -175,53 +159,27 @@ export default {
   },
   beforeMount() {
     // var that = this.content;
-    axios.get("http://8.130.81.23:8080/blog/detail/" + 132).then((res) => {
-      var result = res.data;
-      // console.log("b" + that);
-      // console.log(this);
-      //oldcoverImage = result.data.coverImage;
-      // this.blogTitle = result.data.blogTitle;
-      // console.log(this.content);
-      // this.content = result.data.blogContent;
-      this.renderComponent = false;
-
-      this.$nextTick(() => {
-        // 在 DOM 中添加 my-component 组件
-        this.renderComponent = true;
-      });
-
-      // console.log(oldcontent);
-    });
-  },
-  beforeCreate() {
-    // console.log("b" + that.$);
-    // console.log("b" + this.$);
-
     axios
       .get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid)
       .then((res) => {
         var result = res.data;
-        // console.log("b" + that);
-        // console.log(this);
-        //oldcoverImage = result.data.coverImage;
-        this.blogTitle = result.data.blogTitle;
-        // this.content = result.data.blogContent;
-        // console.log(oldcontent);
+
+        this.renderComponent = false;
+
+        this.$nextTick(() => {
+          // 在 DOM 中添加 my-component 组件
+          this.renderComponent = true;
+        });
       });
-    //  oldcontent = "1";
-    // this.oldcontent = "123";
-    // console.log(this.content + "1");
-    // oldcontent = "123";
-    // console.log(this.content + "1");
-    // axios.get("/blog/detail/" + 132).then((res) => {
-    //   var result = res.data;
-    //   this.coverImage = result.data.coverImage;
-    //   this.blogTitle = result.data.blogTitle;
-    //   this.content = result.data.blogContent;
-    //   console.log(this.content);
-    // });
-    // oldblogTitle = "1";
-    // console.log(this.content + "7");
+  },
+  beforeCreate() {
+    axios
+      .get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid)
+      .then((res) => {
+        var result = res.data;
+
+        this.blogTitle = result.data.blogTitle;
+      });
   },
   methods: {
     save() {
