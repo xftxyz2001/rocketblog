@@ -106,7 +106,6 @@ import router from "@/router";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 
-var route = useRoute();
 export default {
   components: { QuillEditor },
   props: ["model"],
