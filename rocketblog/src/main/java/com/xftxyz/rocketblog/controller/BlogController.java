@@ -26,6 +26,7 @@ import com.xftxyz.rocketblog.pojo.VComment;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.util.Utils;
 import com.xftxyz.rocketblog.validation.ValidInfo;
+import com.xftxyz.rocketblog.validation.ValidationGroups;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Min;
@@ -68,7 +69,7 @@ public class BlogController {
      * @return 返回一个整数值，表示博客插入的行数
      */
     @PostMapping("/publish")
-    public Integer publish(@RequestBody Blog blog, HttpSession session) {
+    public Integer publish(@RequestBody @Validated(ValidationGroups.BlogAdd.class) Blog blog, HttpSession session) {
         User user = Utils.currentUser(session);
         int insert = blogService.publish(blog, user);
         return insert;
@@ -253,7 +254,7 @@ public class BlogController {
      * @return 返回一个整数，表示成功修改的博客数
      */
     @PutMapping("/update")
-    public Integer update(@RequestBody Blog blog, HttpSession session) {
+    public Integer update(@RequestBody @Validated(ValidationGroups.BlogUpdate.class) Blog blog, HttpSession session) {
         User user = Utils.currentUser(session);
         int update = blogService.updateBlog(blog, user);
         return update;

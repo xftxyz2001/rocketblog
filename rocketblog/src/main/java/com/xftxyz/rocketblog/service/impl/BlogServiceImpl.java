@@ -120,10 +120,19 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer updateBlog(Blog blog, User user) {
-        // 是不是自己的博客？
-        if (blog.getUserid() != user.getUserid()) {
-            return -1;
+        // 查询出原来的blog
+        Blog oldBlog = blogMapper.selectByPrimaryKey(blog.getBlogId());
+        // 如果没查询出来
+        if (oldBlog == null) {
+            // 发表
+            blog.setBlogId(null);
+            return publish(oldBlog, user);
         }
+        // 是不是自己的博客？
+        if (oldBlog.getUserid() != user.getUserid()) {
+            throw new IllegalOperationException("不是自己的博客，无法修改");
+        }
+
         // 设置更新时间
         blog.setUpdateTime(new Date());
         return updateBlog(blog);
@@ -406,21 +415,6 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer publish(Blog blog, User user) {
-        if (blog.getBlogId() != null) {
-            // 查询出原来的blog
-            Blog oldBlog = blogMapper.selectByPrimaryKey(blog.getBlogId());
-            // 如果查询出来了
-            if (oldBlog != null) {
-                // 不是自己的blog
-                if (!oldBlog.getUserid().equals(user.getUserid())) {
-                    throw new IllegalOperationException("不能修改别人的blog");
-                }
-            } else {
-                // 没有查询出来
-                blog.setBlogId(null);
-            }
-        }
-
         blog.setUserid(user.getUserid());
         if (!StringUtils.hasLength(blog.getBlogTitle())) {
             blog.setBlogTitle("无标题");
