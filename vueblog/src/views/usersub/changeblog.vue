@@ -51,6 +51,7 @@
             contentType="html"
             theme="snow"
             style="min-height: 400px"
+            v-if="renderComponent"
           />
         </el-main>
       </el-container>
@@ -110,6 +111,7 @@ export default {
   props: ["model"],
   data() {
     return {
+      renderComponent: true,
       blogTitle: "",
       content: "",
       coverImage: "",
@@ -171,14 +173,53 @@ export default {
       },
     };
   },
-  mounted() {
-    axios.get("/blog/detail/" + this.route.params.blogid).then((res) => {
+  beforeMount() {
+    // var that = this.content;
+    axios.get("http://8.130.81.23:8080/blog/detail/" + 132).then((res) => {
       var result = res.data;
-      this.coverImage = result.data.coverImage;
-      this.blogTitle = result.data.blogTitle;
-      this.content = result.data.blogContent;
+      // console.log("b" + that);
+      // console.log(this);
+      //oldcoverImage = result.data.coverImage;
+      // this.blogTitle = result.data.blogTitle;
+      // console.log(this.content);
+      // this.content = result.data.blogContent;
+      this.renderComponent = false;
+
+      this.$nextTick(() => {
+        // 在 DOM 中添加 my-component 组件
+        this.renderComponent = true;
+      });
+
+      // console.log(oldcontent);
     });
-    //this.blogTitle = "1";
+  },
+  beforeCreate() {
+    // console.log("b" + that.$);
+    // console.log("b" + this.$);
+
+    axios.get("http://8.130.81.23:8080/blog/detail/" + 132).then((res) => {
+      var result = res.data;
+      // console.log("b" + that);
+      // console.log(this);
+      //oldcoverImage = result.data.coverImage;
+      this.blogTitle = result.data.blogTitle;
+      // this.content = result.data.blogContent;
+      // console.log(oldcontent);
+    });
+    //  oldcontent = "1";
+    // this.oldcontent = "123";
+    // console.log(this.content + "1");
+    // oldcontent = "123";
+    // console.log(this.content + "1");
+    // axios.get("/blog/detail/" + 132).then((res) => {
+    //   var result = res.data;
+    //   this.coverImage = result.data.coverImage;
+    //   this.blogTitle = result.data.blogTitle;
+    //   this.content = result.data.blogContent;
+    //   console.log(this.content);
+    // });
+    // oldblogTitle = "1";
+    // console.log(this.content + "7");
   },
   methods: {
     save() {
