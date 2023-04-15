@@ -105,7 +105,7 @@ public class BlogServiceImpl implements BlogService {
             throw new BlogNotExistException("博客" + blogId + "不存在");
         }
         // 是不是自己的博客？
-        if (blog.getUserid() != userid) {
+        if (!blog.getUserid().equals(userid)) {
             throw new IllegalOperationException("不是自己的博客，无法删除");
         }
         // 删除博客
@@ -130,8 +130,8 @@ public class BlogServiceImpl implements BlogService {
             return publish(blog, user);
         }
         // 是不是自己的博客？
-        if (oldBlog.getUserid() != user.getUserid()) {
-            throw new IllegalOperationException("不是自己的博客，无法修改"+oldBlog.getUserid()+" "+user.getUserid());
+        if (!oldBlog.getUserid().equals(user.getUserid())) {
+            throw new IllegalOperationException("不是自己的博客，无法修改");
         }
         // 将新的blog信息复制到旧的blog中
         oldBlog.setBlogTitle(blog.getBlogTitle());
