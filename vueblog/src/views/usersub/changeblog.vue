@@ -106,6 +106,7 @@ import router from "@/router";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 
+var route = useRoute();
 export default {
   components: { QuillEditor },
   props: ["model"],
@@ -115,7 +116,7 @@ export default {
       blogTitle: "",
       content: "",
       coverImage: "",
-      route: useRoute(),
+
       editorOption: {
         theme: "snow",
         placeholder: "请输入",
@@ -158,28 +159,26 @@ export default {
     };
   },
   beforeMount() {
+    var route = useRoute();
     // var that = this.content;
-    axios
-      .get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid)
-      .then((res) => {
-        var result = res.data;
+    axios.get("/blog/detail/" + route.params.blogid).then((res) => {
+      var result = res.data;
+      this.content = result.data.blogContent;
+      this.renderComponent = false;
 
-        this.renderComponent = false;
-
-        this.$nextTick(() => {
-          // 在 DOM 中添加 my-component 组件
-          this.renderComponent = true;
-        });
+      this.$nextTick(() => {
+        // 在 DOM 中添加 my-component 组件
+        this.renderComponent = true;
       });
+    });
   },
   beforeCreate() {
-    axios
-      .get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid)
-      .then((res) => {
-        var result = res.data;
+    var route = useRoute();
+    axios.get("/blog/detail/" + route.params.blogid).then((res) => {
+      var result = res.data;
 
-        this.blogTitle = result.data.blogTitle;
-      });
+      this.blogTitle = result.data.blogTitle;
+    });
   },
   methods: {
     save() {
