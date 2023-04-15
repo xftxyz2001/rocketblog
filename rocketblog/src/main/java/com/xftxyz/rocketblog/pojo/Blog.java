@@ -2,11 +2,19 @@ package com.xftxyz.rocketblog.pojo;
 
 import java.util.Date;
 
+import com.xftxyz.rocketblog.validation.ValidationGroups;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
+
 public class Blog {
     /**
      * 博客id
      * 此字段对应于数据库列t_blog.blog_id
      */
+    @NotNull(message = "博客id不能为空", groups = ValidationGroups.BlogUpdate.class)
+    @Null(message = "博客id必须为空", groups = ValidationGroups.BlogAdd.class)
     private Long blogId;
 
     /**
@@ -49,6 +57,7 @@ public class Blog {
      * 博客内容
      * 此字段对应于数据库列t_blog.blog_content
      */
+    @NotBlank(message = "博客内容不能为空", groups = { ValidationGroups.BlogAdd.class, ValidationGroups.BlogUpdate.class })
     private String blogContent;
 
     /**

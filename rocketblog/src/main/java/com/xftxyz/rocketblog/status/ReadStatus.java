@@ -1,8 +1,8 @@
 package com.xftxyz.rocketblog.status;
 
-public class ReadStatus {
+public interface ReadStatus {
     // 未读
-    public static final Integer UNREAD = 0;
+    Integer UNREAD = 0;
     // 已读
-    public static final Integer READ = 1;
+    Integer READ = 1;
 }

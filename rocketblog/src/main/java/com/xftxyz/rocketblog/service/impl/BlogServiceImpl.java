@@ -34,6 +34,7 @@ import com.xftxyz.rocketblog.pojo.VComment;
 import com.xftxyz.rocketblog.pojo.VCommentExample;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.status.BlogStatus;
+import com.xftxyz.rocketblog.status.RoleStatus;
 import com.xftxyz.rocketblog.validation.ValidInfo;
 
 @Service
@@ -120,10 +121,19 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer updateBlog(Blog blog, User user) {
-        // 是不是自己的博客？
-        if (blog.getUserid() != user.getUserid()) {
-            return -1;
+        // 查询出原来的blog
+        Blog oldBlog = blogMapper.selectByPrimaryKey(blog.getBlogId());
+        // 如果没查询出来
+        if (oldBlog == null) {
+            // 发表
+            blog.setBlogId(null);
+            return publish(oldBlog, user);
         }
+        // 是不是自己的博客？
+        if (oldBlog.getUserid() != user.getUserid()) {
+            throw new IllegalOperationException("不是自己的博客，无法修改");
+        }
+
         // 设置更新时间
         blog.setUpdateTime(new Date());
         return updateBlog(blog);
@@ -329,11 +339,26 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogDetail getBlogDetail(Long blogId, User user) {
+        // 尝试获取博客详情
         BlogDetailExample exBlogDetail = new BlogDetailExample();
         exBlogDetail.createCriteria().andBlogIdEqualTo(blogId);
         List<BlogDetail> selectByExample = blogDetailMapper.selectByExampleWithBLOBs(exBlogDetail);
+
+        // 博客不存在
+        if (selectByExample == null || selectByExample.size() < 0) {
+            throw new BlogNotExistException("博客" + blogId + "不存在");
+        }
+
         BlogDetail blogDetail = selectByExample.get(0);
-        // 当用户未登录或管理员查看时，不展示如下信息
+
+        // 博客未发布，只有作者和管理员可以查看
+        if (blogDetail.getBlogStatus() != BlogStatus.PUBLISH) {
+            if (!blogDetail.getUserid().equals(user.getUserid()) && user.getIsSuperuser() != RoleStatus.ADMIN) {
+                throw new IllegalOperationException("没有权限查看博客");
+            }
+        }
+
+        // 当用户未登录或管理员查看时，不展示如下信息（是否点赞、收藏）
         if (user != null) {
             LikeExample exLike = new LikeExample();
             exLike.createCriteria().andBlogIdEqualTo(blogId).andUseridEqualTo(user.getUserid());
@@ -406,21 +431,6 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Integer publish(Blog blog, User user) {
-        if (blog.getBlogId() != null) {
-            // 查询出原来的blog
-            Blog oldBlog = blogMapper.selectByPrimaryKey(blog.getBlogId());
-            // 如果查询出来了
-            if (oldBlog != null) {
-                // 不是自己的blog
-                if (!oldBlog.getUserid().equals(user.getUserid())) {
-                    throw new IllegalOperationException("不能修改别人的blog");
-                }
-            } else {
-                // 没有查询出来
-                blog.setBlogId(null);
-            }
-        }
-
         blog.setUserid(user.getUserid());
         if (!StringUtils.hasLength(blog.getBlogTitle())) {
             blog.setBlogTitle("无标题");
