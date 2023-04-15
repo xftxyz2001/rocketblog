@@ -1,4 +1,5 @@
 import { Quill } from '@vueup/vue-quill'
+
 // 源码中是import直接倒入，这里要用Quill.import引入
 const BlockEmbed = Quill.import('blots/block/embed')
 const Link = Quill.import('formats/link')

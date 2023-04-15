@@ -57,7 +57,7 @@
           </el-row>
         </template>
         <div v-if="isme">
-          <el-row :gutter="100">
+          <!-- <el-row :gutter="100">
             <el-col :span="10" :offset="2">
               <div class="grid-content ep-bg-purple" />
               <el-button>修改</el-button>
@@ -66,7 +66,7 @@
               <div class="grid-content ep-bg-purple-light" />
               <el-button @click="deletethis">删除</el-button>
             </el-col>
-          </el-row>
+          </el-row> -->
         </div>
         <div v-else>
           <el-row :gutter="100">
@@ -110,6 +110,21 @@
         <template #header>
           <div class="card-header">
             <span>{{ blogdata.blogTitle }}</span>
+            <div v-if="isme">
+              <el-button
+                type="primary"
+                :icon="Edit"
+                circle
+                title="编辑博客"
+                @click="changeblog"
+              /><el-button
+                type="danger"
+                :icon="Delete"
+                circle
+                title="删除博客"
+                @click="deleteaccountDialogVisible = true"
+              />
+            </div>
           </div>
         </template>
         <div v-html="blogdata.blogContent"></div>
@@ -210,13 +225,38 @@
       </el-card>
     </el-col>
   </el-row>
+  <el-dialog
+    v-model="deleteaccountDialogVisible"
+    title="提示"
+    width="30%"
+    center
+  >
+    <span style="display: inline-block; width: 100%; text-align: center">
+      确定要删除博客吗？
+    </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="deleteaccountDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmdelete"> 确定 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script setup >
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import { getCurrentInstance, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import {
+  Check,
+  Delete,
+  Edit,
+  Message,
+  Search,
+  Star,
+} from "@element-plus/icons-vue";
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
+const deleteaccountDialogVisible = ref(false);
 const route = useRoute();
 const router = useRouter();
 const commenttext = ref("");
@@ -448,6 +488,7 @@ function commentthis() {
     Bus.emit("commentneedlogin", {});
   }
 }
+
 function dontfollowthis() {
   if (checkTokenInCookie()) {
     axios.delete("/user/follow/" + route.params.userid).then((res) => {
@@ -508,7 +549,7 @@ function dontlikethis() {
   }
 }
 // 删除博客
-function deletethis() {
+function confirmdelete() {
   if (checkTokenInCookie()) {
     axios.delete("/blog/delete/" + route.params.blogid).then((res) => {
       if (res.data.code == 0) {
@@ -524,6 +565,7 @@ function deletethis() {
     Bus.emit("likeneedlogin", {});
   }
 }
+
 // Bus.on("clickblog", (data) => {
 //   console.log(data.userid);
 //   axios.get("/user/info/" + data.userid).then((res) => {

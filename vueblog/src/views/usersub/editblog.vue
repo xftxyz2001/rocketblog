@@ -1,61 +1,60 @@
 <template>
-  <div class="common-layout">
-    <el-container>
-      <el-header
-        ><el-page-header @back="back">
-          <template #content>
-            <el-avatar
-              :size="32"
-              class="mr-3"
-              :src="userdata.avatar"
-            />
-          </template>
-          <template #extra>
-            <div class="flex items-center">
-              <el-button @click="save">保存</el-button>
-              <el-button type="primary" class="ml-2" @click="submit"
-                >发布</el-button
-              >
-            </div>
-          </template>
-        </el-page-header></el-header
-      >
-
-      <el-main>
-        <el-row style="margin-bottom: 10px"
-          ><sapn style="font-weight: 700; font-size: 20px; margin-right: 20px"
-            >标题</sapn
-          >
-          <el-input style="width: 60%" v-model="blogTitle"></el-input
-        ></el-row>
-        <el-row style="margin-bottom: 10px"
-          >封面图片（可选）
-          <el-upload
-            class="upload-demo"
-            action="/images/upload"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="1"
-            :on-exceed="handleExceed"
-            :on-success="handleAvatarSuccess"
-            :file-list="fileList"
-          >
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div class="el-upload__tip" style="margin-left: 5px">
-              只能上传jpg/png文件，且不超过500kb
-            </div>
-          </el-upload></el-row
+  <div style="width: 100%; height: 700px; overflow: scroll">
+    <div class="common-layout">
+      <el-container>
+        <el-header
+          ><el-page-header @back="back">
+            <template #content>
+              <el-avatar :size="32" class="mr-3" :src="userdata.avatar" />
+            </template>
+            <template #extra>
+              <div class="flex items-center">
+                <el-button @click="save">保存</el-button>
+                <el-button type="primary" class="ml-2" @click="submit"
+                  >发布</el-button
+                >
+              </div>
+            </template>
+          </el-page-header></el-header
         >
-        <QuillEditor
-          v-model:content="content"
-          :options="editorOption"
-          contentType="html"
-          theme="snow"
-        />
-      </el-main>
-    </el-container>
+
+        <el-main style="margin-bottom: 30px">
+          <el-row style="margin-bottom: 10px"
+            ><sapn style="font-weight: 700; font-size: 20px; margin-right: 20px"
+              >标题</sapn
+            >
+            <el-input style="width: 60%" v-model="blogTitle"></el-input
+          ></el-row>
+          <el-row style="margin-bottom: 10px"
+            >封面图片（可选）
+            <el-upload
+              class="upload-demo"
+              action="/images/upload"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :before-remove="beforeRemove"
+              multiple
+              :limit="1"
+              :on-exceed="handleExceed"
+              :on-success="handleAvatarSuccess"
+              :file-list="fileList"
+            >
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div class="el-upload__tip" style="margin-left: 5px">
+                只能上传jpg/png文件，且不超过500kb
+              </div>
+            </el-upload></el-row
+          >
+          <QuillEditor
+            v-model:content="content"
+            :options="editorOption"
+            contentType="html"
+            theme="snow"
+            style="min-height: 400px"
+          />
+        </el-main>
+      </el-container>
+    </div>
   </div>
 </template>
  <script setup>
@@ -92,6 +91,8 @@ import { ElMessage } from "element-plus";
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import { container, ImageExtend, QuillWatch } from "quill-image-extend-module";
 import quillTool from "@/utils/quillTool";
+import ImageResize from "quill-image-resize-module";
+Quill.register("modules/ImageResize", ImageResize);
 Quill.register(quillTool, true);
 Quill.register("modules/ImageExtend", ImageExtend);
 import "quill/dist/quill.core.css";
@@ -119,7 +120,7 @@ export default {
             },
             response: (res) => {
               console.log(res);
-              return ""+res.data;
+              return "" + res.data;
             },
 
             size: 8, // 图片不能超过8M
@@ -151,42 +152,55 @@ export default {
               // },
             },
           },
+          ImageResize: {
+            displayStyles: {
+              backgroundColor: "black",
+              border: "none",
+              color: "white",
+            },
+            modules: ["Resize", "DisplaySize", "Toolbar"],
+          },
         },
       },
     };
   },
   methods: {
     save() {
-      var blogdata = {blogStatus:0, coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
+      var blogdata = {
+        blogStatus: 0,
+        coverImage: this.coverImage,
+        blogTitle: this.blogTitle,
+        blogContent: this.content,
+      };
 
-      axios
-        .post("/blog/publish", blogdata)
-        .then((res) => {
-          ElMessage({
-            showClose: true,
-            message: "保存成功",
-            type: "success",
-          });
-          this.blogTitle = "";
-          this.content = "";
-          router.push({name:"hotlatest"});
+      axios.post("/blog/publish", blogdata).then((res) => {
+        ElMessage({
+          showClose: true,
+          message: "保存成功",
+          type: "success",
         });
+        this.blogTitle = "";
+        this.content = "";
+        router.push({ name: "hotlatest" });
+      });
     },
     submit() {
-      var blogdata = {coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
+      var blogdata = {
+        coverImage: this.coverImage,
+        blogTitle: this.blogTitle,
+        blogContent: this.content,
+      };
 
-      axios
-        .post("/blog/publish", blogdata)
-        .then((res) => {
-          ElMessage({
-            showClose: true,
-            message: "发表成功",
-            type: "success",
-          });
-          this.blogTitle = "";
-          this.content = "";
-          router.push({name:"hotlatest"});
+      axios.post("/blog/publish", blogdata).then((res) => {
+        ElMessage({
+          showClose: true,
+          message: "发表成功",
+          type: "success",
         });
+        this.blogTitle = "";
+        this.content = "";
+        router.push({ name: "hotlatest" });
+      });
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -212,7 +226,7 @@ export default {
 };
 </script>
  
-<style>
+<style scoped>
 .ql-container {
   height: 300px;
   line-height: normal;

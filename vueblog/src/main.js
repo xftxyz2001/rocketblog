@@ -32,6 +32,7 @@ const app = createApp(App)
 app.use(router)
 app.use(ElementPlus)
 app.use(InfiniteScroll)
+
 app.config.globalProperties.Bus = mitt()
 app.mount('#app')
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
