@@ -84,7 +84,7 @@
                 </el-col>
                 <el-col :span="12">
                   <div class="grid-content ep-bg-purple-light" />
-                  <div style="width: 100%" v-html="blog.blogSummary"></div>
+                  <div style="width: 100%; height: 100px; overflow: hidden" v-html="blog.blogSummary"></div>
                 </el-col>
               </el-row>
             </div>
