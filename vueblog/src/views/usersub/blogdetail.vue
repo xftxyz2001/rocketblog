@@ -110,7 +110,7 @@
         <template #header>
           <div class="card-header">
             <span>{{ blogdata.blogTitle }}</span>
-            <div>
+            <div v-if="isme">
               <el-button
                 type="primary"
                 :icon="Edit"
@@ -122,7 +122,7 @@
                 :icon="Delete"
                 circle
                 title="删除博客"
-                @click="deletethis"
+                @click="deleteaccountDialogVisible = true"
               />
             </div>
           </div>
@@ -225,6 +225,22 @@
       </el-card>
     </el-col>
   </el-row>
+  <el-dialog
+    v-model="deleteaccountDialogVisible"
+    title="提示"
+    width="30%"
+    center
+  >
+    <span style="display: inline-block; width: 100%; text-align: center">
+      确定要删除博客吗？
+    </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="deleteaccountDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmdelete"> 确定 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script setup >
 import axios from "axios";
@@ -240,6 +256,7 @@ import {
   Star,
 } from "@element-plus/icons-vue";
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
+const deleteaccountDialogVisible = ref(false);
 const route = useRoute();
 const router = useRouter();
 const commenttext = ref("");
@@ -532,7 +549,7 @@ function dontlikethis() {
   }
 }
 // 删除博客
-function deletethis() {
+function confirmdelete() {
   if (checkTokenInCookie()) {
     axios.delete("/blog/delete/" + route.params.blogid).then((res) => {
       if (res.data.code == 0) {
@@ -548,6 +565,7 @@ function deletethis() {
     Bus.emit("likeneedlogin", {});
   }
 }
+
 // Bus.on("clickblog", (data) => {
 //   console.log(data.userid);
 //   axios.get("/user/info/" + data.userid).then((res) => {

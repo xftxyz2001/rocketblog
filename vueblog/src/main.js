@@ -14,8 +14,8 @@ import '@/assets/icons/iconfont.js';
 import InfiniteScroll from "element-plus";
 
 axios.defaults.withCredentials = true;
-//axios.defaults.baseURL = "http://8.130.81.23:8080";
-axios.defaults.baseURL = window.location.origin;
+axios.defaults.baseURL = "http://8.130.81.23:8080";
+//axios.defaults.baseURL = window.location.origin;
 /*
 axios.get("/api").then((res) => {
   var result = res.data;
