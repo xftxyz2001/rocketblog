@@ -49,4 +49,8 @@ export default defineComponent({
 .el-main::-webkit-scrollbar {
   display: none;
 }
+/* html {
+  overflow-x: hidden;
+  overflow-y: hidden;
+} */
 </style>
