@@ -133,6 +133,11 @@ public class BlogServiceImpl implements BlogService {
         if (oldBlog.getUserid() != user.getUserid()) {
             throw new IllegalOperationException("不是自己的博客，无法修改");
         }
+        // 如果不是草稿
+        if (blog.getBlogStatus() != BlogStatus.DRAFT) {
+            // 设置属性为发布
+            blog.setBlogStatus(BlogStatus.PUBLISH);
+        }
 
         // 设置更新时间
         blog.setUpdateTime(new Date());
