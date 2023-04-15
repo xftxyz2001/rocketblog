@@ -198,7 +198,7 @@ export default {
 
     submit() {
       var blogdata = {
-        blogId:route.params.blogid;
+        blogId: route.params.blogid,
         coverImage: this.coverImage,
         blogTitle: this.blogTitle,
         blogContent: this.content,
