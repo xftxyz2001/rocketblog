@@ -9,7 +9,7 @@
             </template>
             <template #extra>
               <div class="flex items-center">
-                <el-button @click="save">保存</el-button>
+                <!-- <el-button @click="save">保存</el-button> -->
                 <el-button type="primary" class="ml-2" @click="submit"
                   >发布</el-button
                 >

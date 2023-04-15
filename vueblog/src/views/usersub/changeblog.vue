@@ -9,7 +9,7 @@
             </template>
             <template #extra>
               <div class="flex items-center">
-                <el-button @click="save">保存</el-button>
+                <!-- <el-button @click="save">保存</el-button> -->
                 <el-button type="primary" class="ml-2" @click="submit"
                   >发布</el-button
                 >
@@ -63,9 +63,10 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 const userdata = ref({});
 const route = useRoute();
-// axios.get("/user/i").then((res) => {
-//   userdata.value = res.data.data;
-// });
+
+axios.get("/user/i").then((res) => {
+  userdata.value = res.data.data;
+});
 
 function back() {
   router.push({ name: "allconcern" });
@@ -102,6 +103,8 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import router from "@/router";
 import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
+
 export default {
   components: { QuillEditor },
   props: ["model"],
@@ -110,9 +113,11 @@ export default {
       blogTitle: "",
       content: "",
       coverImage: "",
+      route: useRoute(),
       editorOption: {
         theme: "snow",
         placeholder: "请输入",
+
         modules: {
           ImageExtend: {
             name: "file", // 参数名
@@ -167,7 +172,7 @@ export default {
     };
   },
   mounted() {
-    axios.get("/blog/detail/" + route.params.blogid).then((res) => {
+    axios.get("/blog/detail/" + this.route.params.blogid).then((res) => {
       var result = res.data;
       this.coverImage = result.data.coverImage;
       this.blogTitle = result.data.blogTitle;
