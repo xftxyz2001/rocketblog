@@ -106,7 +106,6 @@ import router from "@/router";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 
-var route = useRoute();
 export default {
   components: { QuillEditor },
   props: ["model"],
@@ -115,6 +114,7 @@ export default {
       renderComponent: true,
       blogTitle: "",
       content: "",
+      route: useRoute(),
       coverImage: "",
       route: useRoute(),
       editorOption: {
@@ -202,9 +202,9 @@ export default {
     },
 
     submit() {
-      var route = useRoute();
+      // var route = useRoute();
       var blogdata = {
-        blogId: route.params.blogid,
+        blogId: this.route.params.blogid,
         coverImage: this.coverImage,
         blogTitle: this.blogTitle,
         blogContent: this.content,
