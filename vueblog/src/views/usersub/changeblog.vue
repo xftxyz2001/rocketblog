@@ -197,15 +197,17 @@ export default {
     // console.log("b" + that.$);
     // console.log("b" + this.$);
 
-    axios.get("http://8.130.81.23:8080/blog/detail/" + 132).then((res) => {
-      var result = res.data;
-      // console.log("b" + that);
-      // console.log(this);
-      //oldcoverImage = result.data.coverImage;
-      this.blogTitle = result.data.blogTitle;
-      // this.content = result.data.blogContent;
-      // console.log(oldcontent);
-    });
+    axios
+      .get("http://8.130.81.23:8080/blog/detail/" + route.params.blogid)
+      .then((res) => {
+        var result = res.data;
+        // console.log("b" + that);
+        // console.log(this);
+        //oldcoverImage = result.data.coverImage;
+        this.blogTitle = result.data.blogTitle;
+        // this.content = result.data.blogContent;
+        // console.log(oldcontent);
+      });
     //  oldcontent = "1";
     // this.oldcontent = "123";
     // console.log(this.content + "1");
