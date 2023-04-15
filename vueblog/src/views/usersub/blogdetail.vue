@@ -1,63 +1,63 @@
 <template>
   <el-header style="padding: 0; margin: 0"><Header></Header></el-header>
-
-  <el-row style="padding-top: 80px; margin-left: 30px">
-    <el-col :span="5">
-      <div class="grid-content ep-bg-purple" />
-      <el-card class="box-card" style="width: 100%">
-        <template #header>
-          <div class="card-header">
-            <div style="margin-bottom: 20px">
-              <div
-                style="
-                  overflow: hidden;
-                  width: 30px;
-                  display: inline-block;
-                  vertical-align: bottom;
-                  border-radius: 15px;
-                "
-              >
-                <img
-                  :src="userdata.avatar"
-                  alt=""
-                  style="width: 30px"
-                  @click="gotootherperson(userdata.userid)"
-                />
+  <div style="width: 100%; height: 700px; overflow: scroll">
+    <el-row style="padding-top: 80px; margin-left: 30px">
+      <el-col :span="5">
+        <div class="grid-content ep-bg-purple" />
+        <el-card class="box-card" style="width: 100%">
+          <template #header>
+            <div class="card-header">
+              <div style="margin-bottom: 20px">
+                <div
+                  style="
+                    overflow: hidden;
+                    width: 30px;
+                    display: inline-block;
+                    vertical-align: bottom;
+                    border-radius: 15px;
+                  "
+                >
+                  <img
+                    :src="userdata.avatar"
+                    alt=""
+                    style="width: 30px"
+                    @click="gotootherperson(userdata.userid)"
+                  />
+                </div>
+                <span style="font-size: 5px">{{ userdata.username }}</span>
               </div>
-              <span style="font-size: 5px">{{ userdata.username }}</span>
             </div>
-          </div>
-          <el-row :gutter="15" style="width: 100%; text-align: center">
-            <el-col :span="8">
-              <div class="grid-content ep-bg-purple" />
-              关注
-            </el-col>
-            <el-col :span="8"
-              >粉丝
-              <div class="grid-content ep-bg-purple" />
-            </el-col>
-            <el-col :span="8">
-              <div class="grid-content ep-bg-purple" />
-              博客
-            </el-col>
-          </el-row>
-          <el-row :gutter="15" style="width: 100%; text-align: center">
-            <el-col :span="8">
-              <div class="grid-content ep-bg-purple" />
-              {{ userdata.followings }}
-            </el-col>
-            <el-col :span="8"
-              >{{ userdata.followers }}
-              <div class="grid-content ep-bg-purple" />
-            </el-col>
-            <el-col :span="8">
-              <div class="grid-content ep-bg-purple" />
-              {{ userdata.blogs }}
-            </el-col>
-          </el-row>
-        </template>
-        <div v-if="isme">
-          <!-- <el-row :gutter="100">
+            <el-row :gutter="15" style="width: 100%; text-align: center">
+              <el-col :span="8">
+                <div class="grid-content ep-bg-purple" />
+                关注
+              </el-col>
+              <el-col :span="8"
+                >粉丝
+                <div class="grid-content ep-bg-purple" />
+              </el-col>
+              <el-col :span="8">
+                <div class="grid-content ep-bg-purple" />
+                博客
+              </el-col>
+            </el-row>
+            <el-row :gutter="15" style="width: 100%; text-align: center">
+              <el-col :span="8">
+                <div class="grid-content ep-bg-purple" />
+                {{ userdata.followings }}
+              </el-col>
+              <el-col :span="8"
+                >{{ userdata.followers }}
+                <div class="grid-content ep-bg-purple" />
+              </el-col>
+              <el-col :span="8">
+                <div class="grid-content ep-bg-purple" />
+                {{ userdata.blogs }}
+              </el-col>
+            </el-row>
+          </template>
+          <div v-if="isme">
+            <!-- <el-row :gutter="100">
             <el-col :span="10" :offset="2">
               <div class="grid-content ep-bg-purple" />
               <el-button>修改</el-button>
@@ -67,27 +67,27 @@
               <el-button @click="deletethis">删除</el-button>
             </el-col>
           </el-row> -->
-        </div>
-        <div v-else>
-          <el-row :gutter="100">
-            <el-col :span="10" :offset="2">
-              <div class="grid-content ep-bg-purple" />
-              <el-button>私信</el-button>
-            </el-col>
-            <el-col :span="10">
-              <div class="grid-content ep-bg-purple-light" />
-              <el-button v-if="userdata.followed" @click="dontfollowthis"
-                >已关注</el-button
-              >
-              <el-button v-else type="primary" @click="followthis"
-                >关注</el-button
-              >
-            </el-col>
-          </el-row>
-        </div>
-        <div class="bottom card-header">
-          <div class="time" style="font-size: 10px"></div>
-          <!-- <div>
+          </div>
+          <div v-else>
+            <el-row :gutter="100">
+              <el-col :span="10" :offset="2">
+                <div class="grid-content ep-bg-purple" />
+                <el-button>私信</el-button>
+              </el-col>
+              <el-col :span="10">
+                <div class="grid-content ep-bg-purple-light" />
+                <el-button v-if="userdata.followed" @click="dontfollowthis"
+                  >已关注</el-button
+                >
+                <el-button v-else type="primary" @click="followthis"
+                  >关注</el-button
+                >
+              </el-col>
+            </el-row>
+          </div>
+          <div class="bottom card-header">
+            <div class="time" style="font-size: 10px"></div>
+            <!-- <div>
             <span
               class="iconfont"
               style="margin-right: 10px; cursor: pointer"
@@ -101,130 +101,135 @@
               >&#xe603;</span
             >
           </div> -->
-        </div>
-      </el-card>
-    </el-col>
-    <el-col :span="17">
-      <div class="grid-content ep-bg-purple-light" />
-      <el-card class="box-card" style="width: 100%; margin-left: 30px">
-        <template #header>
-          <div class="card-header">
-            <span>{{ blogdata.blogTitle }}</span>
-            <div v-if="isme">
-              <el-button
-                type="primary"
-                :icon="Edit"
-                circle
-                title="编辑博客"
-                @click="changeblog"
-              /><el-button
-                type="danger"
-                :icon="Delete"
-                circle
-                title="删除博客"
-                @click="deleteaccountDialogVisible = true"
-              />
-            </div>
           </div>
-        </template>
-        <div v-html="blogdata.blogContent"></div>
-        <el-divider border-style="dashed" />
-        <el-row :gutter="10" style="width: 100%; text-align: center">
-          <el-col v-if="blogdata.like" :span="7">
-            <div class="grid-content ep-bg-purple" />
-            <span
-              class="iconfont"
-              style="margin-right: 10px; cursor: pointer"
-              @click="dontlikethis"
-              >&#xe60f;</span
-            >点赞 {{ blogdata.likeCount }}
-          </el-col>
-          <el-col v-else :span="7">
-            <div class="grid-content ep-bg-purple" />
-            <span
-              class="iconfont"
-              style="margin-right: 10px; cursor: pointer; color: black"
-              @click="likethis"
-              >&#xe600;</span
-            >点赞{{ blogdata.likeCount }}
-          </el-col>
-          <el-col v-if="blogdata.collect" :span="7">
-            <span
-              class="iconfont"
-              style="margin-right: 5px; cursor: pointer"
-              @click="dontcollectthis"
-              >&#xe630;</span
-            >收藏 {{ blogdata.bookmarkCount }}
-            <div class="grid-content ep-bg-purple" />
-          </el-col>
-          <el-col v-else :span="7">
-            <span
-              class="iconfont"
-              style="margin-right: 5px; cursor: pointer"
-              @click="collectthis"
-            >
-              &#xe603; </span
-            >收藏 {{ blogdata.bookmarkCount }}
-            <div class="grid-content ep-bg-purple" />
-          </el-col>
-
-          <el-col :span="7">
-            <span class="iconfont" style="margin-right: 5px; cursor: pointer">
-              &#xe6ad;
-            </span>
-            评论 {{ blogdata.commentCount }}
-            <div class="grid-content ep-bg-purple" />
-          </el-col>
-          <el-input
-            v-model.trim="commenttext"
-            maxlength="100"
-            placeholder="请文明评论"
-            show-word-limit
-            type="textarea"
-            style="margin: 20px 0 0 5px"
-          />
-          <el-row style="margin: 10px 0 0 0; position: relative; width: 100%"
-            ><el-button
-              type="primary"
-              style="position: absolute; right: 0px"
-              @click="commentthis"
-              >发表</el-button
-            ></el-row
-          >
-        </el-row>
-        <div style="height: 30px"></div>
-        <el-divider border-style="dashed" />
-        <div
-          v-infinite-scroll="load"
-          class="infinite-list"
-          style="overflow: auto"
-          infinite-scroll-distance="1"
-        >
-          <div
-            v-for="comment in comments"
-            :key="comment.commentId"
-            style="padding: 10px 0 0 10px"
-          >
-            <div style="">
-              <img
-                :src="comment.avatar"
-                alt=""
-                style="width: 30px; border-radius: 15px; vertical-align: bottom"
-              />
-              <div style="display: inline-block; padding: 0 0 0 7px">
-                <div>{{ comment.username }}</div>
-                <div style="font-size: 5px">{{ comment.createtime }}</div>
+        </el-card>
+      </el-col>
+      <el-col :span="17">
+        <div class="grid-content ep-bg-purple-light" />
+        <el-card class="box-card" style="width: 100%; margin-left: 30px">
+          <template #header>
+            <div class="card-header">
+              <span>{{ blogdata.blogTitle }}</span>
+              <div v-if="isme">
+                <el-button
+                  type="primary"
+                  :icon="Edit"
+                  circle
+                  title="编辑博客"
+                  @click="changeblog"
+                /><el-button
+                  type="danger"
+                  :icon="Delete"
+                  circle
+                  title="删除博客"
+                  @click="deleteaccountDialogVisible = true"
+                />
               </div>
             </div>
-            <el-row style="display: inline-block; padding: 5px 0 0 45px">{{
-              comment.commentContent
-            }}</el-row>
+          </template>
+          <div v-html="blogdata.blogContent"></div>
+          <el-divider border-style="dashed" />
+          <el-row :gutter="10" style="width: 100%; text-align: center">
+            <el-col v-if="blogdata.like" :span="7">
+              <div class="grid-content ep-bg-purple" />
+              <span
+                class="iconfont"
+                style="margin-right: 10px; cursor: pointer"
+                @click="dontlikethis"
+                >&#xe60f;</span
+              >点赞 {{ blogdata.likeCount }}
+            </el-col>
+            <el-col v-else :span="7">
+              <div class="grid-content ep-bg-purple" />
+              <span
+                class="iconfont"
+                style="margin-right: 10px; cursor: pointer; color: black"
+                @click="likethis"
+                >&#xe600;</span
+              >点赞{{ blogdata.likeCount }}
+            </el-col>
+            <el-col v-if="blogdata.collect" :span="7">
+              <span
+                class="iconfont"
+                style="margin-right: 5px; cursor: pointer"
+                @click="dontcollectthis"
+                >&#xe630;</span
+              >收藏 {{ blogdata.bookmarkCount }}
+              <div class="grid-content ep-bg-purple" />
+            </el-col>
+            <el-col v-else :span="7">
+              <span
+                class="iconfont"
+                style="margin-right: 5px; cursor: pointer"
+                @click="collectthis"
+              >
+                &#xe603; </span
+              >收藏 {{ blogdata.bookmarkCount }}
+              <div class="grid-content ep-bg-purple" />
+            </el-col>
+
+            <el-col :span="7">
+              <span class="iconfont" style="margin-right: 5px; cursor: pointer">
+                &#xe6ad;
+              </span>
+              评论 {{ blogdata.commentCount }}
+              <div class="grid-content ep-bg-purple" />
+            </el-col>
+            <el-input
+              v-model.trim="commenttext"
+              maxlength="100"
+              placeholder="请文明评论"
+              show-word-limit
+              type="textarea"
+              style="margin: 20px 0 0 5px"
+            />
+            <el-row style="margin: 10px 0 0 0; position: relative; width: 100%"
+              ><el-button
+                type="primary"
+                style="position: absolute; right: 0px"
+                @click="commentthis"
+                >发表</el-button
+              ></el-row
+            >
+          </el-row>
+          <div style="height: 30px"></div>
+          <el-divider border-style="dashed" />
+          <div
+            v-infinite-scroll="load"
+            class="infinite-list"
+            style="overflow: auto"
+            infinite-scroll-distance="1"
+          >
+            <div
+              v-for="comment in comments"
+              :key="comment.commentId"
+              style="padding: 10px 0 0 10px"
+            >
+              <div style="">
+                <img
+                  :src="comment.avatar"
+                  alt=""
+                  style="
+                    width: 30px;
+                    border-radius: 15px;
+                    vertical-align: bottom;
+                  "
+                />
+                <div style="display: inline-block; padding: 0 0 0 7px">
+                  <div>{{ comment.username }}</div>
+                  <div style="font-size: 5px">{{ comment.createtime }}</div>
+                </div>
+              </div>
+              <el-row style="display: inline-block; padding: 5px 0 0 45px">{{
+                comment.commentContent
+              }}</el-row>
+            </div>
           </div>
-        </div>
-        <el-divider border-style="dashed" />
-      </el-card>
-    </el-col>
-  </el-row>
+          <el-divider border-style="dashed" />
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
   <el-dialog
     v-model="deleteaccountDialogVisible"
     title="提示"
@@ -403,7 +408,12 @@ function checkTokenInCookie() {
   var cookies = document.cookie;
   return cookies.indexOf("token=") != -1;
 }
-
+function changeblog() {
+  router.push({
+    name: "changeblog",
+    params: { blogid: route.params.blogid },
+  });
+}
 function commentthis() {
   //发布评论
   // comments.value.unshift(commenttext.value);

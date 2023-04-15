@@ -28,6 +28,7 @@ import otherperson from "@/views/usersub/frontsub/frontotherperson.vue"
 import otherpersonblog from "@/views/usersub/frontsub/frontotherpersonsub/otherpersonblog"
 import test from "@/views/test"
 import test1 from "@/views/test1"
+import ChangeBlog from "@/views/usersub/changeblog"
 const routes = [{
   path: '/test',
   name: 'test',
@@ -84,6 +85,11 @@ const routes = [{
       path: 'editblog',
       name: 'editblog',
       component: EditBlog
+    },
+    {
+      path: 'changeblog/:blogid',
+      name: 'changeblog',
+      component: ChangeBlog
     },
     {
       path: 'blogdetail/:userid/:blogid',

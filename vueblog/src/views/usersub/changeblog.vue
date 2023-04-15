@@ -60,7 +60,10 @@
  <script setup>
 // import axios from "axios";
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 const userdata = ref({});
+const route = useRoute();
+
 axios.get("/user/i").then((res) => {
   userdata.value = res.data.data;
 });
@@ -100,6 +103,8 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import router from "@/router";
 import axios from "axios";
+import { useRoute, useRouter } from "vue-router";
+
 export default {
   components: { QuillEditor },
   props: ["model"],
@@ -108,9 +113,11 @@ export default {
       blogTitle: "",
       content: "",
       coverImage: "",
+      route: useRoute(),
       editorOption: {
         theme: "snow",
         placeholder: "请输入",
+
         modules: {
           ImageExtend: {
             name: "file", // 参数名
@@ -164,6 +171,15 @@ export default {
       },
     };
   },
+  mounted() {
+    axios.get("/blog/detail/" + this.route.params.blogid).then((res) => {
+      var result = res.data;
+      this.coverImage = result.data.coverImage;
+      this.blogTitle = result.data.blogTitle;
+      this.content = result.data.blogContent;
+    });
+    //this.blogTitle = "1";
+  },
   methods: {
     save() {
       var blogdata = {
@@ -184,17 +200,19 @@ export default {
         router.push({ name: "hotlatest" });
       });
     },
+
     submit() {
       var blogdata = {
+        blogId: route.params.blogid,
         coverImage: this.coverImage,
         blogTitle: this.blogTitle,
         blogContent: this.content,
       };
 
-      axios.post("/blog/publish", blogdata).then((res) => {
+      axios.put("/blog/update", blogdata).then((res) => {
         ElMessage({
           showClose: true,
-          message: "发表成功",
+          message: "修改成功",
           type: "success",
         });
         this.blogTitle = "";
