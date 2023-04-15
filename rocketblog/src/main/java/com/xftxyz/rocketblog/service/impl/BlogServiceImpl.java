@@ -127,7 +127,7 @@ public class BlogServiceImpl implements BlogService {
         if (oldBlog == null) {
             // 发表
             blog.setBlogId(null);
-            return publish(oldBlog, user);
+            return publish(blog, user);
         }
         // 是不是自己的博客？
         if (oldBlog.getUserid() != user.getUserid()) {
