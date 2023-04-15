@@ -458,4 +458,19 @@ public class BlogServiceImpl implements BlogService {
         return delete;
     }
 
+    @Override
+    public Integer reprint(Long blogId, User user) {
+        Blog blog = blogMapper.selectByPrimaryKey(blogId);
+        if (blog == null) {
+            throw new BlogNotExistException("博客" + blogId + "不存在");
+        }
+        blog.setBlogId(null);
+        if (blog.getBlogStatus() != BlogStatus.PUBLISH) {
+            throw new IllegalOperationException("不能转载未发布的博客");
+        }
+        blog.setBlogTitle("【转载】" + blog.getBlogTitle());
+        return publish(blog, user);
+
+    }
+
 }

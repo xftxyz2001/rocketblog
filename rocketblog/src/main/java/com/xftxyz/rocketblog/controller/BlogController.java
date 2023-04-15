@@ -75,6 +75,20 @@ public class BlogController {
     }
 
     /**
+     * 转载博客
+     * 
+     * @param session HttpSession对象，获取当前登录用户信息
+     * @param blogId  要转载的博客id
+     * @return 返回一个整数值，表示博客插入的行数
+     */
+    @PostMapping("/reprint/{blogId}")
+    public Integer reprint(HttpSession session, @PathVariable("blogId") Long blogId) {
+        User user = Utils.currentUser(session);
+        int insert = blogService.reprint(blogId, user);
+        return insert;
+    }
+
+    /**
      * 获取自己博客草稿列表
      *
      * @param pageNum  分页页码
@@ -223,7 +237,8 @@ public class BlogController {
      * @return 返回一个 {@link BlogDetail} 对象，包含指定博客的详细信息
      */
     @GetMapping("/detail/{blogId}")
-    public BlogDetail detail(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
+    public BlogDetail detail(
+            @PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
         BlogDetail blog = blogService.getBlogDetail(blogId, user);
@@ -252,7 +267,8 @@ public class BlogController {
      * @return 返回一个整数，表示成功删除的博客数
      */
     @DeleteMapping("/delete/{blogId}")
-    public Integer delete(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
+    public Integer delete(
+            @PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
         int delete = blogService.remove(blogId, user.getUserid());
@@ -300,7 +316,8 @@ public class BlogController {
      * @return 返回一个long类型值，表示取消收藏博客的数量
      */
     @DeleteMapping("/collect/{blogId}")
-    public Long cancelCollect(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
+    public Long cancelCollect(
+            @PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
         long cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
@@ -333,7 +350,8 @@ public class BlogController {
      * @return 返回点赞的数量
      */
     @GetMapping("/like/{blogId}")
-    public Long like(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId, HttpSession session) {
+    public Long like(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
+            HttpSession session) {
         // 获取当前登录用户信息，并进行点赞操作
         User user = Utils.currentUser(session);
         long like = blogService.like(user.getUserid(), blogId);
@@ -348,7 +366,8 @@ public class BlogController {
      * @return 返回点赞的数量
      */
     @DeleteMapping("/like/{blogId}")
-    public Long cancelLike(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
+    public Long cancelLike(
+            @PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         // 获取当前登录用户信息，并进行取消点赞操作
         User user = Utils.currentUser(session);
@@ -416,7 +435,8 @@ public class BlogController {
      * @return 返回一个 {@link PageInfo} 对象，表示指定博客的评论列表
      */
     @GetMapping("/comment/{blogId}")
-    public PageInfo<VComment> getComments(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
+    public PageInfo<VComment> getComments(
+            @PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
