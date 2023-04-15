@@ -131,7 +131,7 @@ public class BlogServiceImpl implements BlogService {
         }
         // 是不是自己的博客？
         if (oldBlog.getUserid() != user.getUserid()) {
-            throw new IllegalOperationException("不是自己的博客，无法修改");
+            throw new IllegalOperationException("不是自己的博客，无法修改"+oldBlog.getUserid()+" "+user.getUserid());
         }
         // 将新的blog信息复制到旧的blog中
         oldBlog.setBlogTitle(blog.getBlogTitle());
