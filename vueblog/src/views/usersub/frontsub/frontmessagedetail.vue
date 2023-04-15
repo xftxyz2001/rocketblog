@@ -50,7 +50,7 @@
                   border-radius: 5px;
                   padding: 5px;
                   margin-top: 1px;
-                  max-width: 200px;
+                  max-width: 350px;
                   display: grid;
                   grid-template-rows: repeat(10, 10%);
                   word-break: break-all;
