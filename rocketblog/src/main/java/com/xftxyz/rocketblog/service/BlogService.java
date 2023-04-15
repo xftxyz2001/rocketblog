@@ -80,4 +80,6 @@ public interface BlogService {
 
     public List<BlogInfo> getDraftBlogs(User user);
 
+    public Integer reprint(Long blogId, User user);
+
 }
