@@ -116,7 +116,7 @@ export default {
       blogTitle: "",
       content: "",
       coverImage: "",
-
+      route: useRoute(),
       editorOption: {
         theme: "snow",
         placeholder: "请输入",
@@ -202,6 +202,7 @@ export default {
     },
 
     submit() {
+      var route = useRoute();
       var blogdata = {
         blogId: route.params.blogid,
         coverImage: this.coverImage,

@@ -110,7 +110,7 @@
           <template #header>
             <div class="card-header">
               <span>{{ blogdata.blogTitle }}</span>
-              <div v-if="true">
+              <div v-if="isme">
                 <el-button
                   type="primary"
                   :icon="Edit"
