@@ -4,11 +4,7 @@
       <el-header
         ><el-page-header @back="back">
           <template #content>
-            <el-avatar
-              :size="32"
-              class="mr-3"
-              :src="userdata.avatar"
-            />
+            <el-avatar :size="32" class="mr-3" :src="userdata.avatar" />
           </template>
           <template #extra>
             <div class="flex items-center">
@@ -113,13 +109,13 @@ export default {
         modules: {
           ImageExtend: {
             name: "file", // 参数名
-            action: "/images/upload", // 服务器地址，如果为空则采用base64插入图片
+            action: "", // 服务器地址，如果为空则采用base64插入图片/images/upload
             headers: (xhr) => {
               // 设置请求头参数（选填）
             },
             response: (res) => {
               console.log(res);
-              return ""+res.data;
+              return "" + res.data;
             },
 
             size: 8, // 图片不能超过8M
@@ -157,36 +153,41 @@ export default {
   },
   methods: {
     save() {
-      var blogdata = {blogStatus:0, coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
+      var blogdata = {
+        blogStatus: 0,
+        coverImage: this.coverImage,
+        blogTitle: this.blogTitle,
+        blogContent: this.content,
+      };
 
-      axios
-        .post("/blog/publish", blogdata)
-        .then((res) => {
-          ElMessage({
-            showClose: true,
-            message: "保存成功",
-            type: "success",
-          });
-          this.blogTitle = "";
-          this.content = "";
-          router.push({name:"hotlatest"});
+      axios.post("/blog/publish", blogdata).then((res) => {
+        ElMessage({
+          showClose: true,
+          message: "保存成功",
+          type: "success",
         });
+        this.blogTitle = "";
+        this.content = "";
+        router.push({ name: "hotlatest" });
+      });
     },
     submit() {
-      var blogdata = {coverImage: this.coverImage, blogTitle: this.blogTitle, blogContent: this.content };
+      var blogdata = {
+        coverImage: this.coverImage,
+        blogTitle: this.blogTitle,
+        blogContent: this.content,
+      };
 
-      axios
-        .post("/blog/publish", blogdata)
-        .then((res) => {
-          ElMessage({
-            showClose: true,
-            message: "发表成功",
-            type: "success",
-          });
-          this.blogTitle = "";
-          this.content = "";
-          router.push({name:"hotlatest"});
+      axios.post("/blog/publish", blogdata).then((res) => {
+        ElMessage({
+          showClose: true,
+          message: "发表成功",
+          type: "success",
         });
+        this.blogTitle = "";
+        this.content = "";
+        router.push({ name: "hotlatest" });
+      });
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

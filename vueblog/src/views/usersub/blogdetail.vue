@@ -57,7 +57,7 @@
           </el-row>
         </template>
         <div v-if="isme">
-          <el-row :gutter="100">
+          <!-- <el-row :gutter="100">
             <el-col :span="10" :offset="2">
               <div class="grid-content ep-bg-purple" />
               <el-button>修改</el-button>
@@ -66,7 +66,7 @@
               <div class="grid-content ep-bg-purple-light" />
               <el-button @click="deletethis">删除</el-button>
             </el-col>
-          </el-row>
+          </el-row> -->
         </div>
         <div v-else>
           <el-row :gutter="100">
@@ -110,6 +110,21 @@
         <template #header>
           <div class="card-header">
             <span>{{ blogdata.blogTitle }}</span>
+            <div>
+              <el-button
+                type="primary"
+                :icon="Edit"
+                circle
+                title="编辑博客"
+                @click="changeblog"
+              /><el-button
+                type="danger"
+                :icon="Delete"
+                circle
+                title="删除博客"
+                @click="deletethis"
+              />
+            </div>
           </div>
         </template>
         <div v-html="blogdata.blogContent"></div>
@@ -216,6 +231,14 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 import { getCurrentInstance, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import {
+  Check,
+  Delete,
+  Edit,
+  Message,
+  Search,
+  Star,
+} from "@element-plus/icons-vue";
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 const route = useRoute();
 const router = useRouter();
@@ -448,6 +471,7 @@ function commentthis() {
     Bus.emit("commentneedlogin", {});
   }
 }
+
 function dontfollowthis() {
   if (checkTokenInCookie()) {
     axios.delete("/user/follow/" + route.params.userid).then((res) => {

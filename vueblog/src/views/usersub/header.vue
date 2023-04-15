@@ -690,12 +690,12 @@ function getuserinfo() {
   });
 }
 function editbutton() {
-  console.log(1);
   if (checkTokenInCookie()) {
     console.log(checkTokenInCookie());
     router.push({ name: "editblog" });
   } else loginVisible.value = "true";
   // window.open({ name: "editblog" }, "_blank");
+  router.push({ name: "editblog" });
 }
 function tohome() {
   if (checkTokenInCookie()) router.push({ name: "allconcern" });
