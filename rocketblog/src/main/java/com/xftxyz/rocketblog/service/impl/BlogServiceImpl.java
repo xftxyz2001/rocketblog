@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.blog.BlogNotExistException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
@@ -35,7 +36,6 @@ import com.xftxyz.rocketblog.pojo.VCommentExample;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.status.BlogStatus;
 import com.xftxyz.rocketblog.status.RoleStatus;
-import com.xftxyz.rocketblog.validation.ValidInfo;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -226,34 +226,39 @@ public class BlogServiceImpl implements BlogService {
         return count;
     }
 
-    @Override
-    public Integer addComment(Comment comment) {
-        if (comment.getCommentContent() == null || comment.getCommentContent().length() == 0) {
-            throw new IllegalOperationException("评论内容不能为空");
-        }
+    private void checkComment(Comment comment) {
         // 查询博客是否存在
         Blog blog = blogMapper.selectByPrimaryKey(comment.getBlogId());
         if (blog == null) {
             throw new BlogNotExistException("博客" + comment.getBlogId() + "不存在");
         }
-        // 评论是否在500字以内
-        if (comment.getCommentContent().length() > ValidInfo.CONTENT_MAX_LENGTH) {
-            throw new IllegalOperationException("评论内容不能超过" + ValidInfo.CONTENT_MAX_LENGTH + "字");
-        }
-
-        // 短时间只能评论一次
+        // 限定时间内最后一次评论
         CommentExample exComment = new CommentExample();
         exComment.createCriteria().andBlogIdEqualTo(comment.getBlogId())
                 .andUseridEqualTo(comment.getUserid())
-                .andCreatetimeGreaterThan(new Date(System.currentTimeMillis() - 1000 * 60)); // 1分钟
-        long count = commentMapper.countByExample(exComment);
-        if (count > 0) {
-            throw new AlreadyDoneException("短时间内只能评论一次");
+                .andCreatetimeGreaterThan(
+                        new Date(System.currentTimeMillis() - 1000 * EnvironmentVariables.COMMENT_INTERVAL));
+        exComment.setOrderByClause("createtime desc");
+        List<Comment> comments = commentMapper.selectByExample(exComment);
+        if (comments != null && comments.size() > 0) {
+            Comment lastComment = comments.get(0);
+            // 计算还剩多少秒可以评论
+            long interval = (lastComment.getCreatetime().getTime() + 1000 * EnvironmentVariables.COMMENT_INTERVAL)
+                    - System.currentTimeMillis();
+            if (interval > 0) {
+                throw new AlreadyDoneException("短时间内只能评论一次，距离下次可评论还剩" + interval / 1000 + "秒");
+            }
         }
 
+    }
+
+    @Override
+    public Integer addComment(Comment comment) {
+
+        // 检查是否可评论
+        checkComment(comment);
         comment.setCreatetime(new Date());
-        int insert = commentMapper.insert(comment);
-        return insert;
+        return commentMapper.insert(comment);
     }
 
     @Override

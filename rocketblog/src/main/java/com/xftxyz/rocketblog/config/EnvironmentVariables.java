@@ -19,6 +19,9 @@ public interface EnvironmentVariables {
     // SESSION中用户的key
     String SESSION_USER = "user";
 
+    // 评论最小间隔时间（秒）
+    long COMMENT_INTERVAL = 60; // 60秒
+
     // 验证码位数
     int CODE_LENGTH = 6;
     // 验证码过期时间（秒）
