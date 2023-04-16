@@ -48,7 +48,7 @@ axios.get("/blog/my").then((res) => {
 function load() {
   page.value++;
   axios
-    .get("/blog.my" + "?pageNum=" + page.value + "&pageSize=" + pagesize.value)
+    .get("/blog/my" + "?pageNum=" + page.value + "&pageSize=" + pagesize.value)
     .then((res) => {
       var result = res.data;
       for (let index = 0; index < result.data.list.length; index++) {
