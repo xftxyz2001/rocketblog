@@ -5,8 +5,9 @@
         <div>
           <text class="text-large font-600 mr-3"> 博客后台管理系统 </text>
           <div class="quite">
-            <el-link type="danger" style="color: #606266" @click="back">返回前台</el-link>
-            <el-link type="danger" style="color: #606266" @click="logout">退出登录</el-link>
+            <router-link :to="{ name: 'hotlatest' }">
+              <el-link type="danger" style="color: #606266">返回前台</el-link>
+            </router-link>
           </div>
           <div class="fenge"></div>
           <el-avatar class="profile" :src="user.avatar" />
@@ -72,21 +73,6 @@ axios.get("/user/i").then((res) => {
   }
 });
 
-function back() {
-  window.location.href = "/"; //感觉应该用router跳转，但是不知道怎么写
-}
-
-
-function logout() {
-  axios.get("/user/logout").then((res) => {
-    var r = res.data;
-    if (r.code == 0) {
-      ElMessage.success(r.data);
-    }else{
-      ElMessage.error(r.message);
-    }
-  });
-}
 </script>
 
 <script>

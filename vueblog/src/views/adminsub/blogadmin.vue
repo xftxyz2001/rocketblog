@@ -39,7 +39,7 @@
   <el-main>
     <el-scrollbar>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="createTime" label="创建日期" width="150" />
+        <el-table-column fixed prop="createTime" label="创建日期" width="160" />
         <el-table-column
           class="idcolumn"
           prop="blogId"
@@ -47,18 +47,34 @@
           v-if="false"
         />
         <el-table-column prop="blogTitle" label="标题" width="120" />
-        <el-table-column prop="userid" label="用户id" width="120" />
-        <el-table-column prop="blogStatus" label="状态" width="150" />
-        <el-table-column prop="updateTime" label="更新时间" width="150" />
+        <el-table-column prop="userid" label="用户id" width="100" />
+        <el-table-column prop="blogStatus" label="状态" width="100">
+          <!-- 如果blogStatus为0显示为草稿，为1显示为已发布 -->
+          <template v-slot="scope">
+            <el-tag
+              v-if="scope.row.blogStatus == 0"
+              type="success"
+              disable-transitions
+              >草稿</el-tag
+            >
+            <el-tag
+              v-else-if="scope.row.blogStatus == 1"
+              type="success"
+              disable-transitions
+              >已发布</el-tag
+            >
+          </template>
+        </el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" width="160" />
         <el-table-column prop="coverImage" label="封面图片" width="150" />
-        <el-table-column prop="blogContent" label="内容" width="120" />
+        <el-table-column prop="blogSummary" label="摘要" width="180" />
 
         <el-table-column fixed="right" label="选项" width="120">
-          <!-- <template v-slot="scope"> -->
+          <template v-slot="scope">
           <!-- <el-button @click="change(scope.row.ID)">修改</el-button> -->
           <!-- <el-button type="danger" @click="del(scope.row.ID)">删除</el-button> -->
 
-          <!-- <el-button
+          <el-button
               link
               type="primary"
               size="small"
@@ -71,12 +87,12 @@
               size="small"
               @click="deleteblog(scope.row.blogId)"
               >删除</el-button
-            > -->
+            >
 
           <!-- <el-button text @click="dialogFormVisible = true">
     open a Form nested Dialog
   </el-button> -->
-          <!-- </template> -->
+          </template>
         </el-table-column>
       </el-table>
     </el-scrollbar>
@@ -90,21 +106,6 @@ const formInline = ref({});
 const tableData = ref([]);
 axios.get("/admin/blogs").then((res) => {
   tableData.value = res.data.data.list;
-  // for (let index = 0; index < tableData.value.length; index++) {
-  //   console.log(res.data[index].blogStatus);
-  //   switch (res.data[index].blogStatus) {
-  //     case 0:
-  //       tableData.value[index].blogStatus = "草稿";
-  //       break;
-  //     case 1:
-  //       tableData.value[index].blogStatus = "已发布";
-  //       break;
-  //     default:
-  //       tableData.value[index].blogStatus = "未知";
-  //   }
-  // }
-  // if (res.data.userSex == "0") tableData.value.userSex = "男";
-  // else tableData.value.userSex = "女";
 });
 function selectBlog() {
   // console.log(formInline.value.name.trim() === "");
@@ -148,6 +149,15 @@ function selectBlog() {
       }
     }
   });
+}
+
+function editblog(blogid) {
+  console.log("editblog" + blogid);
+  // axios.put("/admin/blog/" + blogid);
+}
+function deleteblog(blogid) {
+  console.log("deleteblog" + blogid);
+  // axios.delete("/admin/blog/" + blogid);
 }
 </script>
 <script>
