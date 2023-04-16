@@ -14,13 +14,13 @@
           class="carousel-item"
           v-for="blog in hotblogs"
           :key="blog.id"
+          @click="clickImg(blog)"
         >
           <img
             class="carousel-img"
             :src="blog.coverImage"
             alt=""
             srcset=""
-            @click="clickImg(blog)"
             v-if="blog.coverImage != ''"
           />
           <h3>{{ blog.blogTitle }}</h3>

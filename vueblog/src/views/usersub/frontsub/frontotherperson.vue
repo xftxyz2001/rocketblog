@@ -175,6 +175,11 @@ function tootherpersonblog() {
   //     // params: { userid: userid, blogid: blogid },
   //   });
 }
+function checkTokenInCookie() {
+  var cookies = document.cookie;
+  return cookies.indexOf("token=") != -1;
+}
+
 function dontfollowthis() {
   if (checkTokenInCookie()) {
     axios.delete("/user/follow/" + route.params.userid).then((res) => {
