@@ -519,25 +519,6 @@ const Submitloginform = (formEl) => {
           password: loginform.password.trim(),
         };
         axios.post("/user/login", logindata).then((res) => {
-          // if (res.data.code == 0) {
-          //   ElMessage({
-          //     message: "登录成功！",
-          //     type: "success",
-          //   });
-          //   loginVisible.value = false;
-          //   loginsuccess.value = true;
-          //   userinfo.value = res.data.data;
-          //   localStorage.setItem("token", "user" + res.data.data.email);
-          //   localStorage.setItem("token.email", logindata.email);
-          //   localStorage.setItem("token.password", logindata.password);
-          // } else if (res.data.code == "402") {
-          //   console.log(res.code);
-          //   console.log(1);
-          //   ElMessage.error("用户名或密码错误！");
-          //   localStorage.removeItem("token");
-          //   localStorage.removeItem("token.email");
-          //   localStorage.removeItem("token.password");
-          // }
           var result = res.data;
           if (result.code == 0) {
             // result.data is the data you want
@@ -548,6 +529,7 @@ const Submitloginform = (formEl) => {
             loginVisible.value = false;
             loginsuccess.value = true;
             userinfo.value = result.data;
+            judgesuper();
           } else {
             // result.message is the error message
             ElMessage.error(result.message);
@@ -681,25 +663,28 @@ function logout() {
     // localStorage.removeItem("token.password");
   });
 }
+function judgesuper() {
+  axios.get("/user/i/detail").then((res) => {
+    var rd = res.data;
+    if (rd.code == 0) {
+      // result.data is the data you want
+      if (rd.data.isSuperuser == 1) {
+        isSuperuser.value = true;
+      } else {
+        isSuperuser.value = false;
+      }
+    } else {
+      // result.message is the error message
+      ElMessage.error(rd.message);
+    }
+  });
+}
 function getuserinfo() {
   axios.get("/user/i").then((res) => {
     if (res.data.code == 0) {
       userinfo.value = res.data.data;
       loginsuccess.value = true;
-      axios.get("/user/i/detail").then((res) => {
-        var rd = res.data;
-        if (rd.code == 0) {
-          // result.data is the data you want
-          if (rd.data.isSuperuser == 1) {
-            isSuperuser.value = true;
-          } else {
-            isSuperuser.value = false;
-          }
-        } else {
-          // result.message is the error message
-          ElMessage.error(rd.message);
-        }
-      });
+      judgesuper();
     } else {
       loginsuccess.value = false;
     }
