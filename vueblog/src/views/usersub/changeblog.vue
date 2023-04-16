@@ -231,6 +231,7 @@ export default {
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
+      this.coverImage = "";
     },
     handlePreview(file) {
       console.log(file);
