@@ -32,7 +32,7 @@ import jakarta.validation.constraints.Min;
  */
 @RestController
 @Validated
-@RequestMapping("/user/chat")
+@RequestMapping("/chat")
 public class ChatController {
 
     @Autowired
@@ -45,7 +45,7 @@ public class ChatController {
      * @param chatMessage 包含了要发送的消息内容和目标用户ID的 {@link ChatMessageBody} 对象
      * @return 返回一个字符串，表示消息发送已成功
      */
-    @PostMapping("")
+    @PostMapping("/s")
     public String sendMessage(HttpSession session, @RequestBody @Validated ChatMessageBody chatMessage) {
         // 获取当前登录用户信息，并获取要发送的消息内容和目标用户ID
         User user = Utils.currentUser(session);

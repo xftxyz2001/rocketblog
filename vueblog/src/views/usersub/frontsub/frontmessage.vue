@@ -98,7 +98,7 @@ const router = useRouter();
 //     message: event.data,
 //     type: "success",
 //   });
-  // axios.get("/user/chat/sessions").then((res) => {
+  // axios.get("/chat/sessions").then((res) => {
   //   var result = res.data;
   //   if (result.code == 0) {
   //     pageInfos.value = result.data.list;
@@ -115,7 +115,7 @@ const router = useRouter();
 /** websocket-end */
 
 setInterval(function () {
-  axios.get("/user/chat/sessions").then((res) => {
+  axios.get("/chat/sessions").then((res) => {
     var result = res.data;
     if (result.code == 0) {
       pageInfos.value = result.data.list;
@@ -134,7 +134,7 @@ setInterval(function () {
   });
 }, 1000);
 
-axios.get("/user/chat/sessions").then((res) => {
+axios.get("/chat/sessions").then((res) => {
   var result = res.data;
   if (result.code == 0) {
     pageInfos.value = result.data.list;
@@ -152,7 +152,7 @@ axios.get("/user/chat/sessions").then((res) => {
   }
 });
 function chatdetail(userid) {
-  //   axios.get("/user/chat/detail/" + userid).then((res) => {
+  //   axios.get("/chat/detail/" + userid).then((res) => {
   //     var result = res.data;
   //     if (result.code == 0) {
   //       msglist.value.push(result.data.list.reverse());

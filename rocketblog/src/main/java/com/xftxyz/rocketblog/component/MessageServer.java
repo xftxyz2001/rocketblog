@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Component
-@ServerEndpoint(value = "/chat/{token}")
+@ServerEndpoint(value = "/message/{token}")
 public class MessageServer {
 
     private static UserService userService;

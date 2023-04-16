@@ -169,7 +169,7 @@ const msglist = ref([]);
 
 // // 客户端接收消息时的回调方法
 // websocket.onmessage = function (event) {
-//   axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
+//   axios.get("/chat/detail/" + route.params.userid).then((res) => {
 //     var result = res.data;
 
 //     if (result.code == 0) {
@@ -196,7 +196,7 @@ const msglist = ref([]);
 /** websocket-end */
 
 setInterval(function () {
-  axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
+  axios.get("/chat/detail/" + route.params.userid).then((res) => {
     var result = res.data;
 
     if (result.code == 0) {
@@ -228,7 +228,7 @@ axios.get("/user/i").then((res) => {
   if (result.code == 0) {
     myuserid.value = result.data.userid;
 
-    axios.get("/user/chat/detail/" + route.params.userid).then((res) => {
+    axios.get("/chat/detail/" + route.params.userid).then((res) => {
       var result = res.data;
       if (result.code == 0) {
         var resultdata = result.data.list.reverse();
@@ -245,7 +245,7 @@ axios.get("/user/i").then((res) => {
 function send() {
   if (textarea2 !== "") {
     var sendmessage = { to: route.params.userid, content: textarea2.value };
-    axios.post("user/chat", sendmessage).then((res) => {
+    axios.post("/chat/s", sendmessage).then((res) => {
       var result = res.data;
       if (result.code == 0) {
         textarea2.value = "";
