@@ -16,31 +16,24 @@
       </el-form-item>
     </el-form>
     <el-button type="primary" plain class="adduser" @click="adduser">
-      添加用户</el-button
-    >
+      添加用户</el-button>
   </el-header>
   <div></div>
   <el-main>
     <el-scrollbar>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column
-          fixed
-          prop="userRegisterTime"
-          label="注册日期"
-          width="150"
-        />
-        <el-table-column
-          class="idcolumn"
-          prop="userid"
-          label="id"
-          v-if="false"
-        />
+        <el-table-column fixed prop="userRegisterTime" label="注册日期" width="150" />
+        <el-table-column class="idcolumn" prop="userid" label="id" v-if="false" />
         <el-table-column prop="username" label="昵称" width="120" />
         <el-table-column prop="userSex" label="性别" width="120" />
         <el-table-column prop="email" label="邮箱" width="150" />
         <el-table-column prop="phone" label="手机" width="150" />
         <el-table-column prop="password" label="密码" width="150" />
-        <el-table-column prop="image" label="头像" width="120" />
+        <el-table-column label="头像" width="120">
+          <template v-slot="scope">
+            <el-avatar :src="scope.raw.image" alt="" srcset="" />
+          </template>
+        </el-table-column>
         <el-table-column prop="lastLogin" label="上次登陆日期" width="200" />
 
         <el-table-column fixed="right" label="选项" width="120">
@@ -48,20 +41,8 @@
             <!-- <el-button @click="change(scope.row.ID)">修改</el-button> -->
             <!-- <el-button type="danger" @click="del(scope.row.ID)">删除</el-button> -->
 
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="editclick(scope.row.userid)"
-              >编辑</el-button
-            >
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="deleteclick(scope.row.userid)"
-              >删除</el-button
-            >
+            <el-button link type="primary" size="small" @click="editclick(scope.row.userid)">编辑</el-button>
+            <el-button link type="primary" size="small" @click="deleteclick(scope.row.userid)">删除</el-button>
 
             <!-- <el-button text @click="dialogFormVisible = true">
     open a Form nested Dialog
@@ -74,9 +55,9 @@
   <!-- 添加表单 -->
   <el-dialog ref="editform" v-model="addFormVisible" title="Shipping address">
     <el-form :model="addform">
-      <el-form-item label="id" :label-width="formLabelWidth">
+      <!-- <el-form-item label="id" :label-width="formLabelWidth">
         <el-input v-model="addform.userid" autocomplete="off" />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="昵称" :label-width="formLabelWidth">
         <el-input v-model="addform.username" autocomplete="off" />
       </el-form-item>
@@ -107,14 +88,11 @@
     </template>
   </el-dialog>
   <!-- 编辑表单 -->
-  <el-dialog
-    ref="editform"
-    v-model="dialogFormVisible"
-    title="Shipping address"
-  >
+  <el-dialog ref="editform" v-model="dialogFormVisible" title="Shipping address">
     <el-form :model="form">
       <el-form-item label="id" :label-width="formLabelWidth">
-        <el-input v-model="form.userid" autocomplete="off" />
+        <!-- 不可编辑 -->
+        <el-input v-model="form.userid" autocomplete="off" disabled />
       </el-form-item>
       <el-form-item label="昵称" :label-width="formLabelWidth">
         <el-input v-model="form.username" autocomplete="off" />
@@ -224,20 +202,6 @@ function deleteclick(id) {
     .then(() => {
       axios.get("/admin/users").then((res) => {
         tableData.value = res.data;
-        // for (let index = 0; index < tableData.value.length; index++) {
-        //   switch (res.data[index].userSex) {
-        //     case "0":
-        //       tableData.value[index].userSex = "女";
-        //       break;
-        //     case "1":
-        //       tableData.value[index].userSex = "男";
-        //       break;
-        //     default:
-        //       tableData.value[index].userSex = "未知";
-        //   }
-        // }
-        // if (res.data.userSex == "0") tableData.value.userSex = "男";
-        // else tableData.value.userSex = "女";
       });
     });
 }
@@ -367,7 +331,7 @@ import { axiosinstance } from "@/main";
 
 export default {
   name: "useradmin",
-  data() {},
+  data() { },
 
   methods: {
     selectByName() {
@@ -414,16 +378,20 @@ export default {
   background-color: var(--el-color-primary-light-7);
   color: var(--el-text-color-primary);
 }
+
 .layout-container-demo .el-aside {
   color: var(--el-text-color-primary);
   background: var(--el-color-primary-light-8);
 }
+
 .layout-container-demo .el-menu {
   border-right: none;
 }
+
 .layout-container-demo .el-main {
   padding: 0;
 }
+
 .layout-container-demo .toolbar {
   display: inline-flex;
   align-items: center;
@@ -431,6 +399,7 @@ export default {
   height: 100%;
   right: 20px;
 }
+
 .text-large {
   margin-left: 10px;
   height: 60px;
@@ -439,15 +408,19 @@ export default {
   font-size: 25px;
   font-family: 华文行楷, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu;
 }
+
 .el-header {
   overflow: hiden;
 }
+
 .el-row {
   margin-bottom: 20px;
 }
+
 .el-row:last-child {
   margin-bottom: 0;
 }
+
 .el-col {
   border-radius: 4px;
 }
@@ -456,30 +429,37 @@ export default {
   border-radius: 4px;
   min-height: 36px;
 }
+
 .demo-form-inline {
   display: inline-block;
   padding-top: 15px;
   position: absolute;
   left: 20px;
 }
+
 .adduser {
   position: absolute;
   right: 10px;
   top: 13px;
 }
+
 .el-table_1_column_1 {
   visibility: hidden;
   display: none;
 }
+
 .el-button--text {
   margin-right: 15px;
 }
+
 .el-select {
   width: 300px;
 }
+
 .el-input {
   width: 300px;
 }
+
 .dialog-footer button:first-child {
   margin-right: 10px;
 }

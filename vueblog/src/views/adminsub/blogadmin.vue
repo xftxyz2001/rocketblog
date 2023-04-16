@@ -51,14 +51,14 @@
         <el-table-column prop="blogStatus" label="状态" width="150" />
         <el-table-column prop="updateTime" label="更新时间" width="150" />
         <el-table-column prop="coverImage" label="封面图片" width="150" />
-        <el-table-column prop="blogContent" label="内容" width="120" />
+        <el-table-column prop="blogSummary" label="摘要" width="150" />
 
         <el-table-column fixed="right" label="选项" width="120">
-          <!-- <template v-slot="scope"> -->
+          <template v-slot="scope">
           <!-- <el-button @click="change(scope.row.ID)">修改</el-button> -->
           <!-- <el-button type="danger" @click="del(scope.row.ID)">删除</el-button> -->
 
-          <!-- <el-button
+          <el-button
               link
               type="primary"
               size="small"
@@ -71,12 +71,12 @@
               size="small"
               @click="deleteblog(scope.row.blogId)"
               >删除</el-button
-            > -->
+            >
 
           <!-- <el-button text @click="dialogFormVisible = true">
     open a Form nested Dialog
   </el-button> -->
-          <!-- </template> -->
+          </template>
         </el-table-column>
       </el-table>
     </el-scrollbar>
@@ -148,6 +148,15 @@ function selectBlog() {
       }
     }
   });
+}
+
+function editblog(blogid) {
+  console.log("editblog" + blogid);
+  // axios.put("/admin/blog/" + blogid);
+}
+function deleteblog(blogid) {
+  console.log("deleteblog" + blogid);
+  // axios.delete("/admin/blog/" + blogid);
 }
 </script>
 <script>
