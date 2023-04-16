@@ -54,13 +54,9 @@ public class UserServiceImpl implements UserService {
     VChatMapper vChatMapper;
 
     @Override
-    public List<UserInfo> getUserInfos() {
+    public List<User> getUsers() {
         List<User> users = userMapper.selectByExample(null);
-        List<UserInfo> userInfos = new ArrayList<>();
-        for (User user : users) {
-            userInfos.add(getUserInfo(user));
-        }
-        return userInfos;
+        return users;
     }
 
     @Override

@@ -51,11 +51,11 @@ public class AdminController {
      * @return 返回一个 {@link PageInfo} 对象，包含获取到的用户信息列表 {@link UserInfo}
      */
     @GetMapping("/users")
-    public PageInfo<UserInfo> getUserInfos(@RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
+    public PageInfo<User> getUsers(@RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
-        List<UserInfo> users = userService.getUserInfos();
+        List<User> users = userService.getUsers();
         return new PageInfo<>(users);
     }
 

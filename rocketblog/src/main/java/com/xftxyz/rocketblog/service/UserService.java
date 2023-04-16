@@ -15,7 +15,7 @@ public interface UserService {
     public User fromToken(String token);
 
     // 获取用户列表
-    public List<UserInfo> getUserInfos();
+    public List<User> getUsers();
 
     // 获取用户
     public User getUser(Long id);
