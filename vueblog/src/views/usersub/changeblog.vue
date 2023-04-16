@@ -45,11 +45,9 @@
               :on-success="handleAvatarSuccess"
               :file-list="fileList"
             >
-              <img
-                v-if="this.coverImage"
-                :src="this.coverImage"
-                class="avatar"
-              /><el-icon v-else class="avatar-uploader-icon"
+              <img v-if="coverImage" :src="coverImage" class="avatar" /><el-icon
+                v-else
+                class="avatar-uploader-icon"
                 ><Plus
               /></el-icon> </el-upload
           ></el-row>
@@ -184,7 +182,9 @@ export default {
     var route = useRoute();
     axios.get("/blog/detail/" + route.params.blogid).then((res) => {
       var result = res.data;
+      console.log(1);
       this.coverImage = result.data.coverImage;
+      console.log(2);
       this.blogTitle = result.data.blogTitle;
     });
   },
@@ -247,6 +247,7 @@ export default {
     },
     handleAvatarSuccess(res) {
       console.log(res);
+      console.log(1);
       this.coverImage = res.data;
     },
   },
