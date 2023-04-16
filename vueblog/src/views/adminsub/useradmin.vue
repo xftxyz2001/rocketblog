@@ -22,11 +22,11 @@
   <el-main>
     <el-scrollbar>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="userRegisterTime" label="注册日期" width="150" />
+        <el-table-column fixed prop="userRegisterTime" label="注册日期" width="160" />
         <el-table-column class="idcolumn" prop="userid" label="id" v-if="false" />
         <el-table-column prop="username" label="昵称" width="120" />
-        <el-table-column prop="userSex" label="性别" width="120" />
-        <el-table-column prop="email" label="邮箱" width="150" />
+        <el-table-column prop="userSex" label="性别" width="90" />
+        <el-table-column prop="email" label="邮箱" width="170" />
         <el-table-column prop="phone" label="手机" width="150" />
         <el-table-column prop="password" label="密码" width="150" />
         <el-table-column prop="avatar" label="头像" width="120">

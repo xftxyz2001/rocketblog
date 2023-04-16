@@ -46,9 +46,9 @@
           label="id"
           v-if="false"
         />
-        <el-table-column prop="blogTitle" label="标题" width="120" />
-        <el-table-column prop="userid" label="用户id" width="100" />
-        <el-table-column prop="blogStatus" label="状态" width="100">
+        <el-table-column prop="blogTitle" label="标题" width="160" />
+        <el-table-column prop="userid" label="用户id" width="70" />
+        <el-table-column prop="blogStatus" label="状态" width="90">
           <!-- 如果blogStatus为0显示为草稿，为1显示为已发布 -->
           <template v-slot="scope">
             <el-tag
@@ -66,8 +66,16 @@
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="更新时间" width="160" />
-        <el-table-column prop="coverImage" label="封面图片" width="150" />
-        <el-table-column prop="blogSummary" label="摘要" width="180" />
+        <el-table-column prop="coverImage" label="封面图片" width="150">
+          <template v-slot="scope">
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row.coverImage"
+              :fit="fit"
+            ></el-image>
+          </template>
+        </el-table-column>
+        <el-table-column prop="blogSummary" label="摘要" width="200" />
 
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">
