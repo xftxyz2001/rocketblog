@@ -41,7 +41,7 @@
   const blogs = ref([]);
   const page = ref(1);
   const pagesize = ref(5);
-  axios.get("/blog/my").then((res) => {
+  axios.get("/blog/others/"+route.params.userid).then((res) => {
     blogs.value = res.data.data.list;
     if (blogs.value.length == 0) {
       isempty.value = true;

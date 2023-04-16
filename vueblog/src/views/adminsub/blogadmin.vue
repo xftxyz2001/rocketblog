@@ -46,7 +46,7 @@
           label="id"
           v-if="false"
         />
-        <el-table-column prop="blogTitle" label="标题" width="160" />
+        <el-table-column prop="blogTitle" label="标题" width="180" />
         <el-table-column prop="userid" label="用户id" width="70" />
         <el-table-column prop="blogStatus" label="状态" width="90">
           <!-- 如果blogStatus为0显示为草稿，为1显示为已发布 -->
@@ -75,7 +75,7 @@
             ></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="blogSummary" label="摘要" width="200" />
+        <el-table-column prop="blogSummary" label="摘要" width="260" />
 
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">

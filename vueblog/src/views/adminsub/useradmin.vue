@@ -26,10 +26,10 @@
         <el-table-column class="idcolumn" prop="userid" label="id" v-if="false" />
         <el-table-column prop="username" label="昵称" width="120" />
         <el-table-column prop="userSex" label="性别" width="90" />
-        <el-table-column prop="email" label="邮箱" width="170" />
+        <el-table-column prop="email" label="邮箱" width="200" />
         <el-table-column prop="phone" label="手机" width="150" />
         <el-table-column prop="password" label="密码" width="150" />
-        <el-table-column prop="avatar" label="头像" width="120">
+        <el-table-column prop="avatar" label="头像" width="90">
           <!-- 展示头像 -->
           <template v-slot="scope">
             <el-avatar style="width: 50px; height: 50px" :src="scope.row.avatar"></el-avatar>
