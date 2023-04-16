@@ -182,9 +182,9 @@ export default {
     var route = useRoute();
     axios.get("/blog/detail/" + route.params.blogid).then((res) => {
       var result = res.data;
-      console.log(1);
+
       this.coverImage = result.data.coverImage;
-      console.log(2);
+
       this.blogTitle = result.data.blogTitle;
     });
   },
