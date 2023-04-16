@@ -101,6 +101,21 @@ public class MessageServer {
         sendMessage(user.getUsername() + "：" + content, toSession);
     }
 
+    // 通知
+    public void notice(Long to, String content) {
+        // 获取指定用户的连接
+        Session toSession = onlineMap.get(to);
+        // 发送推送
+        sendMessage(content, toSession);
+    }
+
+    // 广播
+    public void sendAll(String message) {
+        for (Session session : onlineMap.values()) {
+            sendMessage(message, session);
+        }
+    }
+
     // 发送消息
     private void sendMessage(String message, Session session) {
         try {
