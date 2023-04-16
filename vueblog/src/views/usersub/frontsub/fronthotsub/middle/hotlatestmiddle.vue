@@ -61,6 +61,7 @@
                     :src="blog.coverImage"
                     alt=""
                     style="width: 100px; height: 100px"
+                    v-if="blog.coverImage != ''"
                   />
                 </el-col>
                 <el-col :span="12">
