@@ -661,6 +661,7 @@ function logout() {
     // localStorage.removeItem("token");
     // localStorage.removeItem("token.email");
     // localStorage.removeItem("token.password");
+    isSuperuser.value = false;
   });
 }
 function judgesuper() {
