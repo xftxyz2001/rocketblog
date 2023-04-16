@@ -22,11 +22,7 @@
                           <img
                             :src="userdata.avatar"
                             alt=""
-                            style="
-                              width: 120px;
-                              height: 120px;
-                              border-radius: 75px;
-                            "
+                            style="width: 120px;height: 120px;border-radius: 75px;"
                         /></el-col>
                         <el-col :span="20"
                           ><div class="grid-content ep-bg-purple" />
@@ -116,7 +112,7 @@
                 >
                 <el-container>
                   <div class="nav" ref="left" style="margin: 20px 0 0 20px">
-                    <h3 class="mb-2" style="margin-left: 22px">我的</h3>
+                    <h3 class="mb-2" style="margin-left: 22px">TA的</h3>
                     <el-menu
                       active-text-color="#ffd04b"
                       background-color="#fff"
@@ -126,16 +122,17 @@
                       @close="handleClose"
                       style="--el-menu-border-color: #fff"
                     >
+                    <router-link :to="{ name: 'otherpersonblogs',params:{userid:userdata.userid} }">
                       <el-menu-item
-                        @click="tootherpersonblog"
                         index="1"
                         style="border-top: 1px #c8c9cc solid"
                       >
                         <span class="iconfont" style="margin-right: 5px"
                           >&#xe8bc;</span
                         >
-                        <span>我的博客</span>
+                        <span>TA的博客</span>
                       </el-menu-item>
+                    </router-link>
                     </el-menu>
                   </div>
                   <el-main><router-view></router-view></el-main>

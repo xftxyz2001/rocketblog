@@ -213,6 +213,11 @@ const routes = [{
           path: 'otherperson/:userid',
           name: 'otherperson',
           component: otherperson,
+          children: [{
+            path: '/otherpersonblog/:userid',
+            name: 'otherpersonblogs',
+            component: otherpersonblog
+          }]
         }
       ]
     }
