@@ -48,7 +48,23 @@
         />
         <el-table-column prop="blogTitle" label="标题" width="120" />
         <el-table-column prop="userid" label="用户id" width="120" />
-        <el-table-column prop="blogStatus" label="状态" width="150" />
+        <el-table-column prop="blogStatus" label="状态" width="150">
+          <!-- 如果blogStatus为0显示为草稿，为1显示为已发布 -->
+          <template v-slot="scope">
+            <el-tag
+              v-if="scope.row.blogStatus == 0"
+              type="success"
+              disable-transitions
+              >草稿</el-tag
+            >
+            <el-tag
+              v-else-if="scope.row.blogStatus == 1"
+              type="success"
+              disable-transitions
+              >已发布</el-tag
+            >
+          </template>
+        </el-table-column>
         <el-table-column prop="updateTime" label="更新时间" width="150" />
         <el-table-column prop="coverImage" label="封面图片" width="150" />
         <el-table-column prop="blogSummary" label="摘要" width="150" />

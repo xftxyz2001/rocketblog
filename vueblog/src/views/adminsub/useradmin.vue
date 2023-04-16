@@ -29,11 +29,7 @@
         <el-table-column prop="email" label="邮箱" width="150" />
         <el-table-column prop="phone" label="手机" width="150" />
         <el-table-column prop="password" label="密码" width="150" />
-        <el-table-column label="头像" width="120">
-          <template v-slot="scope">
-            <el-avatar :src="scope.raw.avatar" alt="" srcset="" />
-          </template>
-        </el-table-column>
+        <el-table-column prop="avatar" label="头像" width="120" />
         <el-table-column prop="lastLogin" label="上次登陆日期" width="200" />
 
         <el-table-column fixed="right" label="选项" width="120">
