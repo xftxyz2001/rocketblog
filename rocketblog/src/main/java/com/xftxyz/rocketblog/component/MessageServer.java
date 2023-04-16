@@ -59,9 +59,6 @@ public class MessageServer {
         Long userid = user.getUserid();
         // 将连接放入集合
         onlineMap.put(userid, session);
-        // 验证成功
-        sendMessage("欢迎", session);
-
     }
 
     // 关闭连接
