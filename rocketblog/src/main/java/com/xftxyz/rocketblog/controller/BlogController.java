@@ -71,8 +71,7 @@ public class BlogController {
     @PostMapping("/publish")
     public Integer publish(@RequestBody @Validated(ValidationGroups.BlogAdd.class) Blog blog, HttpSession session) {
         User user = Utils.currentUser(session);
-        int insert = blogService.publish(blog, user);
-        return insert;
+        return blogService.publish(blog, user);
     }
 
     /**
@@ -83,10 +82,10 @@ public class BlogController {
      * @return 返回一个整数值，表示博客插入的行数
      */
     @PostMapping("/reprint/{blogId}")
-    public Integer reprint(HttpSession session, @PathVariable("blogId") Long blogId) {
+    public Integer reprint(HttpSession session,
+            @PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId) {
         User user = Utils.currentUser(session);
-        int insert = blogService.reprint(blogId, user);
-        return insert;
+        return blogService.reprint(blogId, user);
     }
 
     /**
@@ -256,8 +255,7 @@ public class BlogController {
     @PutMapping("/update")
     public Integer update(@RequestBody @Validated(ValidationGroups.BlogUpdate.class) Blog blog, HttpSession session) {
         User user = Utils.currentUser(session);
-        int update = blogService.updateBlog(blog, user);
-        return update;
+        return blogService.updateBlog(blog, user);
     }
 
     /**
@@ -272,8 +270,7 @@ public class BlogController {
             @PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
-        int delete = blogService.remove(blogId, user.getUserid());
-        return delete;
+        return blogService.remove(blogId, user.getUserid());
     }
 
     /**
@@ -305,8 +302,7 @@ public class BlogController {
     public Long collect(@PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
-        long collect = blogService.collect(user.getUserid(), blogId);
-        return collect;
+        return blogService.collect(user.getUserid(), blogId);
     }
 
     /**
@@ -321,8 +317,7 @@ public class BlogController {
             @PathVariable("blogId") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long blogId,
             HttpSession session) {
         User user = Utils.currentUser(session);
-        long cancelCollect = blogService.cancelCollect(user.getUserid(), blogId);
-        return cancelCollect;
+        return blogService.cancelCollect(user.getUserid(), blogId);
     }
 
     /**
@@ -355,8 +350,7 @@ public class BlogController {
             HttpSession session) {
         // 获取当前登录用户信息，并进行点赞操作
         User user = Utils.currentUser(session);
-        long like = blogService.like(user.getUserid(), blogId);
-        return like;
+        return blogService.like(user.getUserid(), blogId);
     }
 
     /**
@@ -372,8 +366,7 @@ public class BlogController {
             HttpSession session) {
         // 获取当前登录用户信息，并进行取消点赞操作
         User user = Utils.currentUser(session);
-        long cancelLike = blogService.cancelLike(user.getUserid(), blogId);
-        return cancelLike;
+        return blogService.cancelLike(user.getUserid(), blogId);
     }
 
     /**
@@ -405,7 +398,7 @@ public class BlogController {
      * @return 返回一个 {@link VComment} 对象，表示评论的详细信息
      */
     @PostMapping("/comment")
-    public VComment comment(@RequestBody Comment comment, HttpSession session) {
+    public VComment comment(@RequestBody @Validated Comment comment, HttpSession session) {
         User user = Utils.currentUser(session);
         comment.setUserid(user.getUserid());
         blogService.addComment(comment);
@@ -423,8 +416,7 @@ public class BlogController {
     @DeleteMapping("/comment/{commentId}")
     public Integer deleteComment(@PathVariable("commentId") @Min(value = 1, message = "目标评论ID不合法") Long commentId,
             HttpSession session) {
-        int delete = blogService.deleteComment(commentId);
-        return delete;
+        return blogService.deleteComment(commentId);
     }
 
     /**

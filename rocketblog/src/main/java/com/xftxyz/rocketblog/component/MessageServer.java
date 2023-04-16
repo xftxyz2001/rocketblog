@@ -24,13 +24,15 @@ import jakarta.websocket.server.ServerEndpoint;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <b style="color: blue"> 自己给指定用户发送消息 </b>
- * 
+ * WebSocket 服务端
  */
 @Slf4j
 @Component
-@ServerEndpoint(value = "/chat/{token}")
+@ServerEndpoint(value = "/message/{token}")
 public class MessageServer {
+
+    // 用户连接集合
+    private static Map<Long, Session> onlineMap = new ConcurrentHashMap<>();
 
     private static UserService userService;
 
@@ -46,9 +48,6 @@ public class MessageServer {
         MessageServer.chatService = chatService;
     }
 
-    // 用户连接集合
-    private static Map<Long, Session> onlineMap = new ConcurrentHashMap<>();
-
     // 建立连接
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) {
@@ -60,9 +59,6 @@ public class MessageServer {
         Long userid = user.getUserid();
         // 将连接放入集合
         onlineMap.put(userid, session);
-        // 验证成功
-        sendMessage("身份验证成功", session);
-
     }
 
     // 关闭连接
@@ -88,10 +84,29 @@ public class MessageServer {
         // 解析出指定用户
         JSONObject jsonObj = JSONUtil.parseObj(chatMessageBody);
         ChatMessageBody chatMsg = jsonObj.toBean(ChatMessageBody.class);
+        chat(user, chatMsg);
 
+    }
+
+    // 通知
+    public void notice(Long to, String content) {
+        // 获取指定用户的连接
+        Session toSession = onlineMap.get(to);
+        // 发送推送
+        sendMessage("通知：" + content, toSession);
+    }
+
+    // 广播
+    public void sendAll(String message) {
+        for (Session session : onlineMap.values()) {
+            sendMessage("系统：" + message, session);
+        }
+    }
+
+    public void chat(User user, ChatMessageBody chatMessageBody) {
         Long from = user.getUserid();
-        Long to = chatMsg.getTo();
-        String content = chatMsg.getContent();
+        Long to = chatMessageBody.getTo();
+        String content = chatMessageBody.getContent();
 
         chatService.chat(from, to, content);
 
@@ -113,7 +128,7 @@ public class MessageServer {
     // 连接异常
     @OnError
     public void onError(Session session, Throwable error) {
-        log.error("连接异常：{}", error);
+        log.warn("连接异常：{}", error);
     }
 
 }

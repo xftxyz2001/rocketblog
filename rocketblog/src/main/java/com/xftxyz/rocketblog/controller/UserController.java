@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +25,7 @@ import com.xftxyz.rocketblog.parameter.LoginBody;
 import com.xftxyz.rocketblog.parameter.RegisterBody;
 import com.xftxyz.rocketblog.parameter.ResetPasswordBody;
 import com.xftxyz.rocketblog.parameter.UpdateEmailBody;
+import com.xftxyz.rocketblog.parameter.UpdateUserBody;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
 import com.xftxyz.rocketblog.pojo.UserInfo;
@@ -219,42 +219,16 @@ public class UserController {
      * @return 返回一个字符串，表示用户信息已经成功修改
      */
     @PostMapping("/update")
-    public String updateUserInfo(@RequestBody User newUserData, HttpSession session) {
+    public String updateUserInfo(@RequestBody UpdateUserBody newUserData, HttpSession session) {
         // 获取当前登录用户信息，并更新用户信息
         User user = Utils.currentUser(session);
-        updateAssign(user, newUserData);
-        userService.updateUser(user);
+        userService.updateUser(user, newUserData.getUsername(),
+                newUserData.getUserSex(),
+                newUserData.getPhone(),
+                newUserData.getAvatar());
 
         // 返回一个消息，指示用户信息已经成功修改
         return "用户信息修改成功";
-    }
-
-    /**
-     * 为要更改的用户信息赋值
-     * 
-     * @param user        要被更改的用户对象
-     * @param newUserData 新的用户信息
-     */
-    private void updateAssign(User user, User newUserData) {
-        // 获取参数
-        String username = newUserData.getUsername();
-        String userSex = newUserData.getUserSex();
-        String phone = newUserData.getPhone();
-        String avatar = newUserData.getAvatar();
-
-        // 更新用户信息
-        if (StringUtils.hasLength(username)) {
-            user.setUsername(username);
-        }
-        if (StringUtils.hasLength(userSex)) {
-            user.setUserSex(userSex);
-        }
-        if (StringUtils.hasLength(phone)) {
-            user.setPhone(phone);
-        }
-        if (StringUtils.hasLength(avatar)) {
-            user.setAvatar(avatar);
-        }
     }
 
     /**

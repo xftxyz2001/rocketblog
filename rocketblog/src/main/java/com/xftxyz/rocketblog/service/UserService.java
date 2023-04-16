@@ -76,6 +76,8 @@ public interface UserService {
 
     public void deleteUserToken(Long userid);
 
+    public void updateUser(User user, String username, String userSex, String phone, String avatar);
+
     // public void deleteUserTokens(Long userid);
 
 }

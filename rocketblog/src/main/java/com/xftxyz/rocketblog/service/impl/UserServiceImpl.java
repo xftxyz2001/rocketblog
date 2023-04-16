@@ -368,4 +368,23 @@ public class UserServiceImpl implements UserService {
     public void deleteUserToken(Long userid) {
         redisTemplate.delete(userid.toString());
     }
+
+    @Override
+    public void updateUser(User user, String username, String userSex, String phone, String avatar) {
+
+        // 更新用户信息
+        if (StringUtils.hasLength(username)) {
+            user.setUsername(username);
+        }
+        if (StringUtils.hasLength(userSex)) {
+            user.setUserSex(userSex);
+        }
+        if (StringUtils.hasLength(phone)) {
+            user.setPhone(phone);
+        }
+        if (StringUtils.hasLength(avatar)) {
+            user.setAvatar(avatar);
+        }
+        updateUser(user);
+    }
 }

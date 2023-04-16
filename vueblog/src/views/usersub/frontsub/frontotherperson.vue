@@ -194,11 +194,11 @@ function followthis() {
   }
 }
 function chatwith() {
-  axios.get("/user/chat/session/" + route.params.userid).then((res) => {
+  axios.get("/chat/session/" + route.params.userid).then((res) => {
     var result = res.data;
     if (result.code == 400) {
       var sendmessage = { to: route.params.userid, content: "" };
-      axios.post("user/chat", sendmessage).then((res) => {
+      axios.post("/chat/s", sendmessage).then((res) => {
         router.push({
           name: "messagedetail",
           params: { userid: route.params.userid },
