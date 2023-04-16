@@ -492,6 +492,12 @@ function commentthis() {
             });
           }
         });
+      } else {
+        ElMessage({
+          showClose: true,
+          message: res.data.message,
+          type: "warning",
+        });
       }
     });
   } else {
