@@ -11,7 +11,7 @@
     <el-col :span="10" style="position: fixed">
       <!-- 轮播图 -->
 
-      <div style="position: fixed; width: 100%; top: 50px; padding-left: 30px">
+      <div style="position: fixed; width: 100%; top: 50px">
         <div style="height: 15px"></div>
         <router-view></router-view>
       </div>
