@@ -744,7 +744,7 @@ function getToken() {
 
 // 判断当前浏览器是否支持WebSocket
 if ('WebSocket' in window) {
-    websocket = new WebSocket("ws://" + window.location.host + "/chat/" + getToken());
+    websocket = new WebSocket("ws://" + window.location.host + "/message/" + getToken());
 } else {
     alert("当前浏览器不支持WebSocket");
 }
