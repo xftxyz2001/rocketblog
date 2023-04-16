@@ -491,4 +491,14 @@ public class BlogServiceImpl implements BlogService {
 
     }
 
+    @Override
+    public List<BlogInfo> getOthersBlogs(Long userId) {
+        BlogInfoExample exBlog = new BlogInfoExample();
+        exBlog.createCriteria().andUseridEqualTo(userId).andBlogStatusEqualTo(BlogStatus.PUBLISH);
+        exBlog.setOrderByClause("update_time desc");
+        List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
+        blogEx(blogList, null);
+        return blogList;
+    }
+
 }

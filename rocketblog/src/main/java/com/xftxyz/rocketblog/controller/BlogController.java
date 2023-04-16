@@ -292,6 +292,24 @@ public class BlogController {
     }
 
     /**
+     * 获取别人发布的博客列表
+     *
+     * @param session  HttpSession对象，获取当前登录用户信息
+     * @param pageNum  分页页码
+     * @param pageSize 分页大小
+     * @return 返回一个 {@link PageInfo} 对象，包含指定userid发布的博客列表和分页信息
+     */
+    @GetMapping("/others/{userId}")
+    public PageInfo<BlogInfo> others(
+            @PathVariable("userId") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long userId,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<BlogInfo> othersBlogs = blogService.getOthersBlogs(userId);
+        return new PageInfo<>(othersBlogs);
+    }
+
+    /**
      * 收藏博客
      *
      * @param blogId  博客id

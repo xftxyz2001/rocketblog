@@ -9,6 +9,8 @@ import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.VComment;
 
+import jakarta.validation.constraints.Min;
+
 public interface BlogService {
     // add; remove; findById; modify; findByXXX; findXXXList
 
@@ -81,5 +83,7 @@ public interface BlogService {
     public List<BlogInfo> getDraftBlogs(User user);
 
     public Integer reprint(Long blogId, User user);
+
+    public List<BlogInfo> getOthersBlogs(@Min(value = 1, message = "目标用户ID不合法") Long userId);
 
 }
