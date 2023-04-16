@@ -27,9 +27,15 @@
           ></el-row>
           <el-row style="margin-bottom: 10px"
             >封面图片（可选）
+
+            <!-- <img
+              :src="this.coverImage"
+              alt=""
+              style="width: 100px; height: 100px"
+            /> -->
             <el-upload
-              class="upload-demo"
-              action="/images/upload"
+              class="avatar-uploader"
+              action="http://8.130.81.23:8080/images/upload"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :before-remove="beforeRemove"
@@ -39,12 +45,14 @@
               :on-success="handleAvatarSuccess"
               :file-list="fileList"
             >
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div class="el-upload__tip" style="margin-left: 5px">
-                只能上传jpg/png文件，且不超过500kb
-              </div>
-            </el-upload></el-row
-          >
+              <img
+                v-if="this.coverImage"
+                :src="this.coverImage"
+                class="avatar"
+              /><el-icon v-else class="avatar-uploader-icon"
+                ><Plus
+              /></el-icon> </el-upload
+          ></el-row>
           <QuillEditor
             v-model:content="content"
             :options="editorOption"
@@ -176,7 +184,7 @@ export default {
     var route = useRoute();
     axios.get("/blog/detail/" + route.params.blogid).then((res) => {
       var result = res.data;
-
+      this.coverImage = result.data.coverImage;
       this.blogTitle = result.data.blogTitle;
     });
   },
@@ -342,5 +350,32 @@ span.ql-size {
 .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
 .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
   content: "等宽字体";
+}
+.avatar-uploader .avatar {
+  width: 150px;
+  height: 150px;
+  display: block;
+}
+</style>
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 150px;
+  height: 150px;
+  text-align: center;
 }
 </style>

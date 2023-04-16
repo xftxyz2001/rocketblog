@@ -10,13 +10,18 @@
         indicator-position="outside"
         style="width: 100%; z-index: 1; padding-top: 10px"
       >
-        <el-carousel-item class="carousel-item" v-for="blog in hotblogs" :key="blog.id">
+        <el-carousel-item
+          class="carousel-item"
+          v-for="blog in hotblogs"
+          :key="blog.id"
+        >
           <img
             class="carousel-img"
             :src="blog.coverImage"
             alt=""
             srcset=""
             @click="clickImg(blog)"
+            v-if="blog.coverImage != ''"
           />
           <h3>{{ blog.blogTitle }}</h3>
         </el-carousel-item>
@@ -84,7 +89,10 @@
                 </el-col>
                 <el-col :span="12">
                   <div class="grid-content ep-bg-purple-light" />
-                  <div style="width: 100%; height: 100px; overflow: hidden" v-html="blog.blogSummary"></div>
+                  <div
+                    style="width: 100%; height: 100px; overflow: hidden"
+                    v-html="blog.blogSummary"
+                  ></div>
                 </el-col>
               </el-row>
             </div>
