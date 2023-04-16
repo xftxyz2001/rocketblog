@@ -89,20 +89,20 @@ const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
 axios.get("/admin/blogs").then((res) => {
-  tableData.value = res.data;
-  for (let index = 0; index < tableData.value.length; index++) {
-    console.log(res.data[index].blogStatus);
-    switch (res.data[index].blogStatus) {
-      case 0:
-        tableData.value[index].blogStatus = "草稿";
-        break;
-      case 1:
-        tableData.value[index].blogStatus = "已发布";
-        break;
-      default:
-        tableData.value[index].blogStatus = "未知";
-    }
-  }
+  tableData.value = res.data.data.list;
+  // for (let index = 0; index < tableData.value.length; index++) {
+  //   console.log(res.data[index].blogStatus);
+  //   switch (res.data[index].blogStatus) {
+  //     case 0:
+  //       tableData.value[index].blogStatus = "草稿";
+  //       break;
+  //     case 1:
+  //       tableData.value[index].blogStatus = "已发布";
+  //       break;
+  //     default:
+  //       tableData.value[index].blogStatus = "未知";
+  //   }
+  // }
   // if (res.data.userSex == "0") tableData.value.userSex = "男";
   // else tableData.value.userSex = "女";
 });

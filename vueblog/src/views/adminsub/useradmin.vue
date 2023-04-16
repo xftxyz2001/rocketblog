@@ -31,7 +31,7 @@
         <el-table-column prop="password" label="密码" width="150" />
         <el-table-column label="头像" width="120">
           <template v-slot="scope">
-            <el-avatar :src="scope.raw.image" alt="" srcset="" />
+            <el-avatar :src="scope.raw.avatar" alt="" srcset="" />
           </template>
         </el-table-column>
         <el-table-column prop="lastLogin" label="上次登陆日期" width="200" />
@@ -128,9 +128,9 @@ const dialogFormVisible = ref(false);
 const addFormVisible = ref(false);
 const formLabelWidth = "140px";
 const ins = getCurrentInstance();
-
+console.log(1);
 axios.get("/admin/users").then((res) => {
-  tableData.value = res.data;
+  tableData.value = res.data.data.list;
   // for (let index = 0; index < tableData.value.length; index++) {
   //   switch (res.data[index].userSex) {
   //     case "0":
@@ -257,25 +257,21 @@ function selectByName() {
     });
     return;
   }
-  axios
-    .get(
-      "/admin/search/username/" + formInline.value.name
-    )
-    .then((res) => {
-      tableData.value = res.data;
-      // for (let index = 0; index < tableData.value.length; index++) {
-      //   switch (res.data[index].userSex) {
-      //     case "0":
-      //       tableData.value[index].userSex = "女";
-      //       break;
-      //     case "1":
-      //       tableData.value[index].userSex = "男";
-      //       break;
-      //     default:
-      //       tableData.value[index].userSex = "未知";
-      //   }
-      // }
-    });
+  axios.get("/admin/search/username/" + formInline.value.name).then((res) => {
+    tableData.value = res.data;
+    // for (let index = 0; index < tableData.value.length; index++) {
+    //   switch (res.data[index].userSex) {
+    //     case "0":
+    //       tableData.value[index].userSex = "女";
+    //       break;
+    //     case "1":
+    //       tableData.value[index].userSex = "男";
+    //       break;
+    //     default:
+    //       tableData.value[index].userSex = "未知";
+    //   }
+    // }
+  });
 }
 function selectByEmail() {
   formInline.value.email = formInline.value.email.trim();
@@ -297,23 +293,21 @@ function selectByEmail() {
     });
     return;
   }
-  axios
-    .get("/admin/search/email/" + formInline.value.email)
-    .then((res) => {
-      tableData.value = res.data;
-      // for (let index = 0; index < tableData.value.length; index++) {
-      //   switch (res.data[index].userSex) {
-      //     case "0":
-      //       tableData.value[index].userSex = "女";
-      //       break;
-      //     case "1":
-      //       tableData.value[index].userSex = "男";
-      //       break;
-      //     default:
-      //       tableData.value[index].userSex = "未知";
-      //   }
-      // }
-    });
+  axios.get("/admin/search/email/" + formInline.value.email).then((res) => {
+    tableData.value = res.data;
+    // for (let index = 0; index < tableData.value.length; index++) {
+    //   switch (res.data[index].userSex) {
+    //     case "0":
+    //       tableData.value[index].userSex = "女";
+    //       break;
+    //     case "1":
+    //       tableData.value[index].userSex = "男";
+    //       break;
+    //     default:
+    //       tableData.value[index].userSex = "未知";
+    //   }
+    // }
+  });
 }
 </script>
 <script>
