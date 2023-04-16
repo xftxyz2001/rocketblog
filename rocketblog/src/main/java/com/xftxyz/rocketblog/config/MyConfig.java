@@ -20,10 +20,10 @@ public class MyConfig implements WebMvcConfigurer {
 
     // WebSocket配置
     @Bean
-	ServerEndpointExporter serverEndpointExporter() {
-		return new ServerEndpointExporter();
-	}
-    
+    ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
+
     // 跨域配置
     @Override
     public void addCorsMappings(CorsRegistry registry) {
