@@ -32,10 +32,7 @@
         <el-table-column prop="avatar" label="头像" width="120">
           <!-- 展示头像 -->
           <template v-slot="scope">
-            <el-avatar
-              style="width: 50px; height: 50px"
-              :src="scope.row.avatar"
-            ></el-avatar>
+            <el-avatar style="width: 50px; height: 50px" :src="scope.row.avatar"></el-avatar>
           </template>
         </el-table-column>
         <el-table-column prop="lastLogin" label="上次登陆日期" width="200" />
@@ -226,13 +223,6 @@ function selectByEmail() {
     tableData.value = res.data;
   });
 }
-function editclick(userid) {
-  console.log("edit" + userid);
-}
-
-function deleteclick(userid) {
-  console.log("delete" + userid);
-}
 
 </script>
 <script>
@@ -253,7 +243,14 @@ export default {
   data() { },
 
   methods: {
-    
+    editclick(userid) {
+      console.log("edit" + userid);
+    },
+
+    deleteclick(userid) {
+      console.log("delete" + userid);
+    }
+
   },
 
   // setup(props) {
