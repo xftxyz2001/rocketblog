@@ -14,6 +14,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * 登录拦截器
+ */
 public class LoginInterceptor implements HandlerInterceptor {
 
     @Autowired
@@ -24,8 +27,12 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        // TODO: 为方便测试，这里注入一个管理员账号
+        request.getSession().setAttribute(EnvironmentVariables.SESSION_USER,
+                userService.login("2581011320@qq.com", "[tongxiaoyuzhou]"));
+
         // 获取session中的user判断是否登录
-        if (request.getSession().getAttribute(EnvironmentVariables.COOKIE_TOKEN) != null) {
+        if (request.getSession().getAttribute(EnvironmentVariables.SESSION_USER) != null) {
             return true;
         }
         // 未在session中找到登录信息，尝试从cookie中获取
