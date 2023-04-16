@@ -347,7 +347,9 @@
     </el-dialog>
 
     <span class="text-large font-600 mr-3" style="margin: 19px 5px 0px 35px">
-      <a
+
+      <a v-if="isSuperuser" href="/#/admin" style="color: #fff">后台管理</a>
+      <a v-else
         href="https://github.com/xftxyz2001/rocketblog/issues/new"
         style="
           position: absolute;
@@ -507,6 +509,9 @@ const registerform = reactive({
   password: "",
   vertify: "",
 });
+
+const isSuperuser = ref(false);
+
 const Submitloginform = (formEl) => {
   if (!formEl) return;
   else {
@@ -546,6 +551,20 @@ const Submitloginform = (formEl) => {
             loginVisible.value = false;
             loginsuccess.value = true;
             userinfo.value = result.data;
+            axios.get("/user/i/detail").then((res) => {
+              var rd = res.data;
+              if (rd.code == 0) {
+                // result.data is the data you want
+                if (rd.data.isSuperuser == 1) {
+                  isSuperuser.value = true;
+                } else{
+                  isSuperuser.value = false;
+                }
+              } else {
+                // result.message is the error message
+                ElMessage.error(rd.message);
+              }
+            });
           } else {
             // result.message is the error message
             ElMessage.error(result.message);
