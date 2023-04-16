@@ -24,8 +24,7 @@ import jakarta.websocket.server.ServerEndpoint;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <b style="color: blue"> 自己给指定用户发送消息 </b>
- * 
+ * WebSocket 服务端
  */
 @Slf4j
 @Component
@@ -97,7 +96,7 @@ public class MessageServer {
         // 获取指定用户的连接
         Session toSession = onlineMap.get(to);
         // 发送推送
-        sendMessage(content, toSession);
+        sendMessage("通知：" + content, toSession);
     }
 
     // 广播
@@ -132,7 +131,7 @@ public class MessageServer {
     // 连接异常
     @OnError
     public void onError(Session session, Throwable error) {
-        log.error("连接异常：{}", error);
+        log.warn("连接异常：{}", error);
     }
 
 }
