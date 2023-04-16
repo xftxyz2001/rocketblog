@@ -5,7 +5,7 @@
     style="overflow: auto"
     infinite-scroll-distance="1"
   >
-    <div style="width: 35%; margin: 0 auto">
+    <div style="width: 35%; margin: 0 auto; padding-left: 53px">
       <el-carousel
         indicator-position="outside"
         style="width: 100%; padding-top: 10px"
@@ -26,7 +26,9 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <div style="width: 40%; margin: 0 auto; padding-top: 10px">
+    <div
+      style="width: 40%; margin: 0 auto; padding-top: 10px; padding-left: 50px"
+    >
       <el-empty description="快去关注你感兴趣的人吧！" v-if="isempty" />
       <el-card
         v-else
