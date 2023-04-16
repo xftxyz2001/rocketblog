@@ -32,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @ServerEndpoint(value = "/message/{token}")
 public class MessageServer {
 
+    // 用户连接集合
+    private static Map<Long, Session> onlineMap = new ConcurrentHashMap<>();
+
     private static UserService userService;
 
     private static ChatService chatService;
@@ -46,9 +49,6 @@ public class MessageServer {
         MessageServer.chatService = chatService;
     }
 
-    // 用户连接集合
-    private static Map<Long, Session> onlineMap = new ConcurrentHashMap<>();
-
     // 建立连接
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) {
@@ -61,7 +61,7 @@ public class MessageServer {
         // 将连接放入集合
         onlineMap.put(userid, session);
         // 验证成功
-        sendMessage("身份验证成功", session);
+        sendMessage("欢迎", session);
 
     }
 
@@ -88,17 +88,8 @@ public class MessageServer {
         // 解析出指定用户
         JSONObject jsonObj = JSONUtil.parseObj(chatMessageBody);
         ChatMessageBody chatMsg = jsonObj.toBean(ChatMessageBody.class);
+        chat(user, chatMsg);
 
-        Long from = user.getUserid();
-        Long to = chatMsg.getTo();
-        String content = chatMsg.getContent();
-
-        chatService.chat(from, to, content);
-
-        // 获取指定用户的连接
-        Session toSession = onlineMap.get(to);
-        // 发送推送
-        sendMessage(user.getUsername() + "：" + content, toSession);
     }
 
     // 通知
@@ -112,8 +103,21 @@ public class MessageServer {
     // 广播
     public void sendAll(String message) {
         for (Session session : onlineMap.values()) {
-            sendMessage(message, session);
+            sendMessage("系统：" + message, session);
         }
+    }
+
+    public void chat(User user, ChatMessageBody chatMessageBody) {
+        Long from = user.getUserid();
+        Long to = chatMessageBody.getTo();
+        String content = chatMessageBody.getContent();
+
+        chatService.chat(from, to, content);
+
+        // 获取指定用户的连接
+        Session toSession = onlineMap.get(to);
+        // 发送推送
+        sendMessage(user.getUsername() + "：" + content, toSession);
     }
 
     // 发送消息

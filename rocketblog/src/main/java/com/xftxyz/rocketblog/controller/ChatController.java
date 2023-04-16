@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xftxyz.rocketblog.component.MessageServer;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.parameter.ChatMessageBody;
 import com.xftxyz.rocketblog.pojo.ChatInfo;
@@ -38,6 +39,9 @@ public class ChatController {
     @Autowired
     ChatService chatService;
 
+    @Autowired
+    MessageServer messageServer;
+
     /**
      * 向指定的用户发送消息
      * 
@@ -49,11 +53,14 @@ public class ChatController {
     public String sendMessage(HttpSession session, @RequestBody @Validated ChatMessageBody chatMessage) {
         // 获取当前登录用户信息，并获取要发送的消息内容和目标用户ID
         User user = Utils.currentUser(session);
-        Long toUserid = chatMessage.getTo();
-        String content = chatMessage.getContent();
 
+        // Long toUserid = chatMessage.getTo();
+        // String content = chatMessage.getContent();
         // 向指定的用户发送消息
-        chatService.chat(user.getUserid(), toUserid, content);
+        // chatService.chat(user.getUserid(), toUserid, content);
+
+        // 调用 WebSocket 向指定的用户发送消息
+        messageServer.chat(user, chatMessage);
 
         // 返回一个消息，表示消息发送已成功
         return "消息发送成功";
