@@ -1,6 +1,5 @@
 package com.xftxyz.rocketblog.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -302,7 +301,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserInfo> findUserInfosByExample(User user) {
+    public List<User> findUsersByExample(User user) {
         UserExample exUser = new UserExample();
         UserExample.Criteria criteria = exUser.createCriteria();
         if (user != null) {
@@ -313,13 +312,7 @@ public class UserServiceImpl implements UserService {
                 criteria.andEmailLike("%" + user.getEmail() + "%");
             }
         }
-        List<User> users = userMapper.selectByExample(exUser);
-        List<UserInfo> userInfos = new ArrayList<>();
-        for (User u : users) {
-            UserInfo userInfo = getUserInfo(u);
-            userInfos.add(userInfo);
-        }
-        return userInfos;
+        return userMapper.selectByExample(exUser);
     }
 
     @Override

@@ -133,12 +133,12 @@ public class AdminController {
      * @return 返回一个 {@link PageInfo} 对象，包含查找到的用户信息列表 {@link UserInfo}
      */
     @PostMapping("/user/s")
-    public PageInfo<UserInfo> findUserInfosByExample(@RequestBody User user,
+    public PageInfo<User> findUsersByExample(@RequestBody User user,
             @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
-        List<UserInfo> userList = userService.findUserInfosByExample(user);
+        List<User> userList = userService.findUsersByExample(user);
         return new PageInfo<>(userList);
     }
 

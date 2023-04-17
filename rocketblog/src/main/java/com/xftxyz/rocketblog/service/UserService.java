@@ -66,7 +66,7 @@ public interface UserService {
 
     public UserInfo getUserInfoById(Long id);
 
-    public List<UserInfo> findUserInfosByExample(User user);
+    public List<User> findUsersByExample(User user);
 
     public boolean checkCaptcha(String email, String vertify);
 

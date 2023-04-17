@@ -98,6 +98,10 @@ function selectBlog() {
   });
 }
 
+function addblog() {
+  router.push({ name: "adminaddblog" })
+}
+
 function deleteblog(blogid) {
   axios.delete("/admin/blog/" + blogid);
 }
