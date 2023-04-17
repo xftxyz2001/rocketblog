@@ -49,7 +49,7 @@
           <template v-slot="scope">
             <el-button link type="primary" size="small"
               @click="lookclick(scope.row.userid, scope.row.blogId)">查看</el-button>
-            <el-button link type="warning" size="small" @click="editblog(scope.row.blogId)">编辑</el-button>
+            <!-- <el-button link type="warning" size="small" @click="editblog(scope.row.blogId)">编辑</el-button> -->
             <el-button link type="danger" size="small" @click="deleteblog(scope.row.blogId)">删除</el-button>
           </template>
         </el-table-column>
@@ -58,9 +58,9 @@
   </el-main>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
-import axios from "axios";
 import router from "@/router";
+import axios from "axios";
+import { ref } from "vue";
 const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
@@ -107,13 +107,8 @@ function selectBlog() {
   });
 }
 
-function editblog(blogid) {
-  console.log("editblog" + blogid);
-  // axios.put("/admin/blog/" + blogid);
-}
 function deleteblog(blogid) {
-  console.log("deleteblog" + blogid);
-  // axios.delete("/admin/blog/" + blogid);
+  axios.delete("/admin/blog/" + blogid);
 }
 
 function lookclick(userid, blogId) {

@@ -20,12 +20,20 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed prop="createtime" label="创建日期" width="180" />
         <el-table-column class="idcolumn" prop="commentId" label="id" v-if="false" />
-        <el-table-column prop="commentContent" label="评论内容" width="700" />
-        <el-table-column prop="blogId" label="博客id" width="90" />
-        <el-table-column prop="userid" label="用户id" width="90" />
+        <el-table-column prop="commentContent" label="评论内容" width="720" />
+        <el-table-column prop="blogId" label="博客id" width="90">
+          <template v-slot="scope">
+            <div @click="goblog(scope.row.userid, scope.row.blogId)">{{ scope.row.blogId }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="userid" label="用户id" width="90">
+          <template v-slot="scope">
+            <div @click="gouser(scope.row.userid)">{{ scope.row.userid }}</div>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">
-            <el-button link type="primary" size="small" @click="deletecomment(scope.row.commentId)">删除
+            <el-button link type="danger" size="small" @click="deletecomment(scope.row.commentId)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -34,6 +42,7 @@
   </el-main>
 </template>
 <script setup>
+import router from "@/router";
 import axios from "axios";
 import { ref } from "vue";
 const formLabelWidth = "140px";
@@ -51,9 +60,16 @@ function selectComment() {
     tableData.value = res.data.data.list;
   });
 }
+function goblog(userid, blogId) {
+  router.push({ name: "blogdetail", params: { userid: userid, blogid: blogId } });
+}
+function gouser(userid) {
+  router.push({ name: "otherperson", params: { userid: userid } });
+}
 function deletecomment(commentid) {
-  console.log("deletecomment" + commentid);
-  axios.delete("/admin/comment/" + commentid);
+  axios.delete("/admin/comment/" + commentid).then((res) => {
+    console.log("删除成功，刷新页面");
+  });
 }
 </script>
 <script>

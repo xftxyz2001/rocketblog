@@ -40,7 +40,7 @@
         <el-table-column fixed="right" label="选项" width="150">
           <template v-slot="scope">
             <el-button link type="primary" size="small" @click="lookclick(scope.row.userid)">查看</el-button>
-            <el-button link type="warning" size="small" @click="editclick(scope.row.userid)">编辑</el-button>
+            <!-- <el-button link type="warning" size="small" @click="editclick(scope.row.userid)">编辑</el-button> -->
             <el-button link type="danger" size="small" @click="deleteclick(scope.row.userid)">删除</el-button>
           </template>
         </el-table-column>
@@ -72,13 +72,13 @@
         <el-input v-model="addform.password" autocomplete="off" />
       </el-form-item>
       <el-form-item label="头像" :label-width="formLabelWidth">
-        <el-input v-model="addform.image" autocomplete="off" />
+        <el-input v-model="addform.avatar" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="addFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="addformSubmit"> Confirm </el-button>
+        <el-button @click="addFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="addformSubmit">添加</el-button>
       </span>
     </template>
   </el-dialog>
@@ -117,7 +117,7 @@
   </el-dialog>
 </template>
 <script setup >
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 
 const dialogFormVisible = ref(false);
 const addFormVisible = ref(false);
@@ -158,12 +158,7 @@ const addform = ref({
 
   lastLogin: "",
 });
-function editclick(id) {
-  dialogFormVisible.value = true;
-  axios.get("/admin/user/" + id).then((res) => {
-    form.value = res.data;
-  });
-}
+
 function deleteclick(id) {
   axios
     .delete("/admin/user/" + id)
@@ -197,24 +192,24 @@ function selectByName() {
   formInline.value.name = formInline.value.name.trim();
   if (formInline.value.name === "") {
     axios.get("/admin/users").then((res) => {
-      tableData.value = res.data;
+      tableData.value = res.data.data;
     });
     return;
   }
   axios.get("/admin/search/username/" + formInline.value.name).then((res) => {
-    tableData.value = res.data;
+    tableData.value = res.data.data;
   });
 }
 function selectByEmail() {
   formInline.value.email = formInline.value.email.trim();
   if (formInline.value.email === "") {
     axios.get("/admin/users").then((res) => {
-      tableData.value = res.data;
+      tableData.value = res.data.data;
     });
     return;
   }
   axios.get("/admin/search/email/" + formInline.value.email).then((res) => {
-    tableData.value = res.data;
+    tableData.value = res.data.data;
   });
 }
 
@@ -225,17 +220,11 @@ function lookclick(userid) {
 </script>
 <script>
 import {
-  onMounted,
-  onUpdated,
-  onRenderTriggered,
-  getCurrentInstance,
-  ref,
-  reactive,
+getCurrentInstance
 } from "vue";
 
-import axios from "axios";
-import { axiosinstance } from "@/main";
 import router from "@/router";
+import axios from "axios";
 
 export default {
   name: "useradmin",
