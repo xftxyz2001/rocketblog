@@ -75,7 +75,7 @@
             ></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="blogSummary" label="摘要" width="260" />
+        <el-table-column prop="blogSummary" label="摘要" width="300" />
 
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">

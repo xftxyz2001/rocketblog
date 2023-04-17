@@ -3,6 +3,9 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import admin from '@/views/admin'
 import useradmin from '@/views/adminsub/useradmin'
 import blogadmin from '@/views/adminsub/blogadmin'
+import commentadmin from '@/views/adminsub/commentadmin'
+import issueadmin from '@/views/adminsub/issueadmin'
+import systemadmin from '@/views/adminsub/systemadmin'
 import user from '@/views/user'
 import front from '@/views/usersub/front'
 import fronthomebody from '@/views/usersub/frontsub/fronthomebody'
@@ -60,6 +63,21 @@ const routes = [{
       path: 'blogadmin',
       name: 'blogadmin',
       component: blogadmin
+    },
+    {
+      path: 'commentadmin',
+      name: 'commentadmin',
+      component: commentadmin
+    },
+    {
+      path: 'issueadmin',
+      name: 'issueadmin',
+      component: issueadmin
+    },
+    {
+      path: 'systemadmin',
+      name: 'systemadmin',
+      component: systemadmin
     },
     {
       path: '',

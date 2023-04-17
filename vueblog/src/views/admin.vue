@@ -11,7 +11,7 @@
           </div>
           <div class="fenge"></div>
           <el-avatar class="profile" :src="user.avatar" />
-          <span class="name">{{ user.username }}</span>
+          <!-- <span class="name">{{ user.username }}</span> -->
         </div>
       </el-header>
       <div style="height: 2px; background-color: #337ecc"></div>
@@ -29,9 +29,22 @@
                   ><el-icon><Collection /></el-icon>博客管理</el-menu-item
                 >
               </router-link>
-              <el-menu-item index="3"
-                ><el-icon><message /></el-icon>Navigator One</el-menu-item
-              >
+              <router-link to="/admin/commentadmin">
+                <el-menu-item index="3"
+                  ><el-icon><Collection /></el-icon>评论管理</el-menu-item
+                >
+              </router-link>
+              <router-link to="/admin/issueadmin">
+                <el-menu-item index="4"
+                  ><el-icon><Collection /></el-icon>用户反馈</el-menu-item
+                >
+              </router-link>
+              <router-link to="/admin/systemadmin">
+                <el-menu-item index="5"
+                  ><el-icon><Collection /></el-icon>系统管理</el-menu-item
+                >
+              </router-link>
+
             </el-menu>
           </el-scrollbar>
         </el-aside>
