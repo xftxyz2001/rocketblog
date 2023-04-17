@@ -47,15 +47,10 @@
 
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">
-            <!-- <el-button @click="change(scope.row.ID)">修改</el-button> -->
-            <!-- <el-button type="danger" @click="del(scope.row.ID)">删除</el-button> -->
-
             <el-button link type="primary" size="small" @click="editblog(scope.row.blogId)">编辑</el-button>
             <el-button link type="primary" size="small" @click="deleteblog(scope.row.blogId)">删除</el-button>
-
-            <!-- <el-button text @click="dialogFormVisible = true">
-    open a Form nested Dialog
-  </el-button> -->
+            <el-button link type="primary" size="small"
+              @click="lookclick(scope.row.userid, scope.row.blogId)">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -65,6 +60,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import axios from "axios";
+import router from "@/router";
 const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
@@ -72,10 +68,6 @@ axios.get("/admin/blogs").then((res) => {
   tableData.value = res.data.data.list;
 });
 function selectBlog() {
-  // console.log(formInline.value.name.trim() === "");
-  // formInline.value.blogTitle = formInline.value.blogTitle.trim();
-  // formInline.value.userid = formInline.value.userid.trim();
-  // formInline.value.blogStatus = formInline.value.blogStatus.trim();
   var blogstatus;
   switch (formInline.value.blogStatus) {
     case "草稿":
@@ -122,6 +114,10 @@ function editblog(blogid) {
 function deleteblog(blogid) {
   console.log("deleteblog" + blogid);
   // axios.delete("/admin/blog/" + blogid);
+}
+
+function lookclick(userid, blogId) {
+  router.push({ name: "blogdetail", params: { userid: userid, blogid: blogId } });
 }
 </script>
 <script>

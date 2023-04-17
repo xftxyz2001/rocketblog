@@ -39,15 +39,9 @@
 
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">
-            <!-- <el-button @click="change(scope.row.ID)">修改</el-button> -->
-            <!-- <el-button type="danger" @click="del(scope.row.ID)">删除</el-button> -->
-
             <el-button link type="primary" size="small" @click="editclick(scope.row.userid)">编辑</el-button>
             <el-button link type="primary" size="small" @click="deleteclick(scope.row.userid)">删除</el-button>
-
-            <!-- <el-button text @click="dialogFormVisible = true">
-    open a Form nested Dialog
-  </el-button> -->
+            <el-button link type="primary" size="small" @click="lookclick(scope.row.userid)">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -224,6 +218,10 @@ function selectByEmail() {
   });
 }
 
+function lookclick(userid) {
+  router.push({ name: "otherperson", params: { userid: userid } });
+}
+
 </script>
 <script>
 import {
@@ -237,6 +235,7 @@ import {
 
 import axios from "axios";
 import { axiosinstance } from "@/main";
+import router from "@/router";
 
 export default {
   name: "useradmin",
