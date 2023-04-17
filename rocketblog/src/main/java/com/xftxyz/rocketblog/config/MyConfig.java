@@ -65,6 +65,8 @@ public class MyConfig implements WebMvcConfigurer {
                 "/blog/comment/*", // 获取评论
                 // 图片上传和访问
                 "/images/**",
+                // 连接
+                "/link",
                 // 静态资源
                 "/", "/css/**", "/js/**", "/img/**", "/json/**", "/fonts/**", "/*.html");
         registry.addInterceptor(loginInterceptor())

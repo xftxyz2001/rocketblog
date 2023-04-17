@@ -9,9 +9,9 @@
         <el-input v-model="formInline.userid" placeholder="请输入用户id" style="width: 200px" />
       </el-form-item>
       <el-form-item label="状态" :label-width="formLabelWidth">
-        <el-select v-model="formInline.blogStatus" placeholder="Please select a zone" style="width: 180px">
-          <el-option label="草稿" value="草稿" />
-          <el-option label="已发布" value="已发布" />
+        <el-select v-model="formInline.state" placeholder="Please select a zone" style="width: 180px">
+          <el-option label="OPEN" value="open"></el-option>
+          <el-option label="CLOSED" value="closed"></el-option>
         </el-select>
       </el-form-item>
 
@@ -51,28 +51,15 @@
 <script setup>
 import { reactive, ref } from "vue";
 import axios from "axios";
+import { ElMessage } from "element-plus";
 const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
-axios.get("/repos/xftxyz2001/rocketblog/issues", { baseURL: "https://api.github.com" }).then((res) => {
+axios.get("/link", { params: { url: "https://api.github.com/repos/xftxyz2001/rocketblog/issues" } }).then((res) => {
   tableData.value = res.data.data.list;
 });
 function selectissue() {
-
-  var req = {
-    blogTitle: formInline.value.blogTitle,
-    userid: formInline.value.userid,
-    blogStatus: blogstatus,
-  };
-
-  axios({
-    method: "POST",
-    url: "/admin/search/blog",
-    Headers: { "Content-Type": "application/json" },
-    data: req,
-  }).then((res) => {
-    tableData.value = res.data;
-  });
+  ElMessage.error("该功能暂未开放");
 }
 
 function look(html_url) {
