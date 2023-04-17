@@ -23,4 +23,6 @@ public interface ValidInfo {
     // 密码最大长度
     int MAX_PASSWORD_LENGTH = 16;
 
+    String COMMENT_ID_LESS_THAN_ONE = "评论ID不合法";
+
 }

@@ -37,6 +37,8 @@ import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.status.BlogStatus;
 import com.xftxyz.rocketblog.status.RoleStatus;
 
+import jakarta.validation.constraints.Min;
+
 @Service
 public class BlogServiceImpl implements BlogService {
 
@@ -499,6 +501,34 @@ public class BlogServiceImpl implements BlogService {
         List<BlogInfo> blogList = blogInfoMapper.selectByExample(exBlog);
         // blogEx(blogList, null);
         return blogList;
+    }
+
+    @Override
+    public List<Comment> getAllComments() {
+        CommentExample exComment = new CommentExample();
+        exComment.setOrderByClause("createtime desc");
+        List<Comment> comments = commentMapper.selectByExample(exComment);
+        return comments;
+    }
+
+    @Override
+    public List<Comment> findCommentsByExample(Comment comment) {
+        CommentExample exComment = new CommentExample();
+        if (comment.getBlogId() != null) {
+            exComment.createCriteria().andBlogIdEqualTo(comment.getBlogId());
+        }
+        if (comment.getUserid() != null) {
+            exComment.createCriteria().andUseridEqualTo(comment.getUserid());
+        }
+        exComment.setOrderByClause("createtime desc");
+        List<Comment> comments = commentMapper.selectByExample(exComment);
+        return comments;
+
+    }
+
+    @Override
+    public Integer removeComment(@Min(value = 1, message = "评论ID不合法") Long commentId) {
+        return commentMapper.deleteByPrimaryKey(commentId);
     }
 
 }

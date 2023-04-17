@@ -86,4 +86,10 @@ public interface BlogService {
 
     public List<BlogInfo> getOthersBlogs(@Min(value = 1, message = "目标用户ID不合法") Long userId);
 
+    public List<Comment> getAllComments();
+
+    public List<Comment> findCommentsByExample(Comment comment);
+
+    public Integer removeComment(@Min(value = 1, message = "评论ID不合法") Long commentId);
+
 }

@@ -21,6 +21,7 @@ import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogInfo;
+import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.service.BlogService;
@@ -51,7 +52,8 @@ public class AdminController {
      * @return 返回一个 {@link PageInfo} 对象，包含获取到的用户信息列表 {@link UserInfo}
      */
     @GetMapping("/users")
-    public PageInfo<User> getUsers(@RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
+    public PageInfo<User> getUsers(
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
@@ -66,7 +68,8 @@ public class AdminController {
      * @return 返回一个 {@link UserInfo} 对象，包含指定用户的信息
      */
     @GetMapping("/user/{id}")
-    public UserInfo getUserInfo(@PathVariable("id") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long id) {
+    public UserInfo getUserInfo(
+            @PathVariable("id") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long id) {
         return userService.getUserInfoById(id);
     }
 
@@ -143,7 +146,8 @@ public class AdminController {
      * @return 返回一个 {@link PageInfo} 对象，包含获取到的博客列表 {@link BlogInfo}
      */
     @GetMapping("/blogs")
-    public PageInfo<BlogInfo> getBlogs(@RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
+    public PageInfo<BlogInfo> getBlogs(
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<BlogInfo> blogs = blogService.getAllBlogs();
@@ -217,6 +221,51 @@ public class AdminController {
     @DeleteMapping("/blog/{id}")
     public Integer deleteBlog(@PathVariable("id") @Min(value = 1, message = ValidInfo.BLOG_ID_LESS_THAN_ONE) Long id) {
         return blogService.removeRF(id);
+    }
+
+    /**
+     * 获取所有评论
+     * 
+     * @param pageNum  分页页码，默认值为1
+     * @param pageSize 分页大小，默认值为{@link EnvironmentVariables#DEFAULT_PAGE_SIZE}
+     * @return 返回一个 {@link PageInfo} 对象，包含获取到的评论列表 {@link Comment}
+     */
+    @GetMapping("/comments")
+    public PageInfo<Comment> getComments(
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Comment> comments = blogService.getAllComments();
+        return new PageInfo<>(comments);
+    }
+
+    /**
+     * 查找指定博客或用户的评论
+     * 
+     * @param comment  评论对象，根据该对象的属性查找评论
+     * @param pageNum  分页页码，默认值为1
+     * @param pageSize 分页大小，默认值为{@link EnvironmentVariables#DEFAULT_PAGE_SIZE}
+     * @return 返回一个 {@link PageInfo} 对象，包含查找到的评论列表 {@link Comment}
+     */
+    @PostMapping("/search/comment")
+    public PageInfo<Comment> getComments(@RequestBody Comment comment,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Comment> comments = blogService.findCommentsByExample(comment);
+        return new PageInfo<>(comments);
+    }
+
+    /**
+     * 删除指定评论
+     * 
+     * @param commentId 评论ID
+     * @return 返回一个整数值，表示删除评论的行数
+     */
+    @DeleteMapping("/comment/{commentId}")
+    public Integer deleteComment(
+            @PathVariable("commentId") @Min(value = 1, message = ValidInfo.COMMENT_ID_LESS_THAN_ONE) Long commentId) {
+        return blogService.removeComment(commentId);
     }
 
 }
