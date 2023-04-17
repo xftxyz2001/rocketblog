@@ -1,5 +1,6 @@
 <template>
   <el-header style="text-align: right; font-size: 12px">
+    <!-- 
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-form-item label="标题">
         <el-input v-model="formInline.blogTitle" placeholder="请输入标题" style="width: 200px" />
@@ -19,6 +20,7 @@
         <el-button type="primary" @click="selectissue">查找</el-button>
       </el-form-item>
     </el-form>
+     -->
   </el-header>
   <div></div>
   <el-main>
@@ -30,7 +32,10 @@
         <el-table-column prop="title" label="标题" width="300" />
         <el-table-column prop="body" label="内容摘要" width="300" />
         <el-table-column prop="updateTime" label="更新时间" width="160" />
-        <el-table-column prop="state" label="状态" width="70">
+        <el-table-column prop="state" label="状态" width="70" :filters="[
+          { text: 'OPEN', value: 'open' },
+          { text: 'CLOSED', value: 'closed' },
+        ]" :filter-method="filterHandler">
           <template v-slot="scope">
             <el-tag v-if="scope.row.state == 'open'" type="danger" size="small">OPEN</el-tag>
             <el-tag v-else type="success" size="small">CLOSED</el-tag>
@@ -56,10 +61,15 @@ const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
 axios.get("/link", { params: { url: "https://api.github.com/repos/xftxyz2001/rocketblog/issues" } }).then((res) => {
-  tableData.value = res.data.data.list;
+  tableData.value = res.data;
 });
 function selectissue() {
   ElMessage.error("该功能暂未开放");
+}
+
+function filterHandler(value, row, column) {
+  const property = column["state"];
+  return row[property] === value;
 }
 
 function look(html_url) {
