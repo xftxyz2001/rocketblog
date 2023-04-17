@@ -5,7 +5,7 @@
         <el-table-column prop="option" label="操作" width="500" />
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">
-            <el-button link type="primary" size="small" @click="go(scope.row.url)">前往</el-button>
+            <el-button link type="primary" size="medium" @click="go(scope.row.url)">前往</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -20,6 +20,10 @@ const tableData = ref([]);
 axios.get("/admin/system").then((res) => {
   tableData.value = res.data.data;
 });
+
+function go(url) {
+  window.open(url);
+}
 
 </script>
 <script>
