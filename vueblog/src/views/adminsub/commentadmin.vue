@@ -20,7 +20,7 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed prop="createtime" label="创建日期" width="180" />
         <el-table-column class="idcolumn" prop="commentId" label="id" v-if="false" />
-        <el-table-column prop="commentContent" label="评论内容" width="400" />
+        <el-table-column prop="commentContent" label="评论内容" width="460" />
         <el-table-column prop="blogId" label="博客id" width="90" />
         <el-table-column prop="userid" label="用户id" width="90" />
         <el-table-column fixed="right" label="选项" width="120">
@@ -34,8 +34,8 @@
   </el-main>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
 import axios from "axios";
+import { ref } from "vue";
 const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);

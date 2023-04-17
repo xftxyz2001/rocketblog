@@ -1,38 +1,12 @@
 <template>
-  <el-header style="text-align: right; font-size: 12px">
-    <!-- 
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="标题">
-        <el-input v-model="formInline.blogTitle" placeholder="请输入标题" style="width: 200px" />
-      </el-form-item>
-
-      <el-form-item label="用户id">
-        <el-input v-model="formInline.userid" placeholder="请输入用户id" style="width: 200px" />
-      </el-form-item>
-      <el-form-item label="状态" :label-width="formLabelWidth">
-        <el-select v-model="formInline.state" placeholder="Please select a zone" style="width: 180px">
-          <el-option label="OPEN" value="open"></el-option>
-          <el-option label="CLOSED" value="closed"></el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" @click="selectissue">查找</el-button>
-      </el-form-item>
-    </el-form>
-     -->
-  </el-header>
-  <div></div>
   <el-main>
     <el-scrollbar>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="created_at" label="创建日期" width="160" />
         <el-table-column class="idcolumn" prop="id" label="id" v-if="false" />
-        <el-table-column prop="updated_at" label="更新日期" width="160" />
+        <el-table-column prop="updated_at" label="更新日期" width="180" />
         <el-table-column prop="title" label="标题" width="300" />
-        <el-table-column prop="body" label="内容摘要" width="300" />
-        <el-table-column prop="updateTime" label="更新时间" width="160" />
-        <el-table-column prop="state" label="状态" width="70" :filters="[
+        <el-table-column prop="body" label="内容摘要" width="560" />
+        <el-table-column prop="state" label="状态" width="90" :filters="[
           { text: 'OPEN', value: 'open' },
           { text: 'CLOSED', value: 'closed' },
         ]" :filter-method="filterHandler">
@@ -54,18 +28,14 @@
   </el-main>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
 import axios from "axios";
-import { ElMessage } from "element-plus";
+import { ref } from "vue";
 const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
 axios.get("/link", { params: { url: "https://api.github.com/repos/xftxyz2001/rocketblog/issues" } }).then((res) => {
   tableData.value = res.data;
 });
-function selectissue() {
-  ElMessage.error("该功能暂未开放");
-}
 
 function filterHandler(value, row, column) {
   const property = column["state"];
