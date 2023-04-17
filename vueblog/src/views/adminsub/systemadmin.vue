@@ -17,7 +17,7 @@ import axios from "axios";
 import { ref } from "vue";
 const tableData = ref([]);
 
-axios.get("/api/admin/system").then((res) => {
+axios.get("/admin/system").then((res) => {
   tableData.value = res.data.data;
 });
 

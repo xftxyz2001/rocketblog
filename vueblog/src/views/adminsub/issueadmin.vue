@@ -5,7 +5,7 @@
         <el-table-column class="idcolumn" prop="id" label="id" v-if="false" />
         <el-table-column prop="updated_at" label="更新日期" width="180" />
         <el-table-column prop="title" label="标题" width="300" />
-        <el-table-column prop="body" label="内容摘要" width="560" />
+        <el-table-column prop="body" label="内容摘要" width="600" />
         <el-table-column prop="state" label="状态" width="90" :filters="[
           { text: 'OPEN', value: 'open' },
           { text: 'CLOSED', value: 'closed' },
