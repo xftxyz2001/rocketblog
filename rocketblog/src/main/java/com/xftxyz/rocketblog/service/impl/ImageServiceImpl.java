@@ -13,13 +13,10 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
@@ -29,9 +26,6 @@ import com.xftxyz.rocketblog.util.Utils;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-
-    @Autowired
-    RestTemplate restTemplate;
 
     private String uploadDirectory = EnvironmentVariables.UPLOAD_DIRECTORY;
 
@@ -90,20 +84,9 @@ public class ImageServiceImpl implements ImageService {
 
         List<String> list = entry.getValue();
         int listSize = list.size();
+        int listIndex = Utils.random.nextInt(listSize);
+        String diyWords = list.get(listIndex);
 
-        String diyWords = null;
-        if (listSize > 0) {
-            int listIndex = Utils.random.nextInt(listSize);
-            diyWords = list.get(listIndex);
-        } else {
-            @SuppressWarnings("rawtypes")
-            ResponseEntity<Map> responseEntity = restTemplate.getForEntity("https://v1.hitokoto.cn/?encode=json",
-                    Map.class);
-            @SuppressWarnings("rawtypes")
-            Map map = responseEntity.getBody();
-
-            diyWords = map != null ? (String) map.get("hitokoto") : "欢迎";
-        }
         String encodeWords = null;
         try {
             encodeWords = Base64.getEncoder().encodeToString(URLEncoder.encode(diyWords, "UTF-8").getBytes());
