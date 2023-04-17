@@ -29,14 +29,8 @@
         <el-table-column prop="email" label="邮箱" width="200" />
         <el-table-column prop="phone" label="手机" width="130" />
         <el-table-column prop="password" label="密码" width="150">
-          <!-- 小眼睛效果，点击显示密码 -->
           <template v-slot="scope">
-            <el-popover placement="top" width="200" trigger="click">
-              <p>{{ scope.row.password }}</p>
-              <div slot="reference" class="name-wrapper">
-                <el-button type="text">查看密码</el-button>
-              </div>
-            </el-popover>
+            <div @click="toggleShow(scope.row)">{{ showPassword(scope.row) }}</div>
           </template>
         </el-table-column>
         <el-table-column prop="avatar" label="头像" width="90">
@@ -152,6 +146,18 @@ function getUsers() {
 }
 
 getUsers();
+
+function toggleShow(row){
+  row.show = !row.show
+}
+function showPassword(row){
+  // 如果row.show为true，就显示密码，否则就显示**点击查看密码**
+  if (row.show) {
+    return row.password
+  } else {
+    return '**点击查看密码**'
+  }
+}
 
 function deleteclick(id) {
   axios.delete("/admin/user/" + id).then((res) => {
