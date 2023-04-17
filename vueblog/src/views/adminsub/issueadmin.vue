@@ -11,8 +11,8 @@
           { text: 'CLOSED', value: 'closed' },
         ]" :filter-method="filterHandler">
           <template v-slot="scope">
-            <el-tag v-if="scope.row.state == 'open'" type="danger" size="small">OPEN</el-tag>
-            <el-tag v-else type="success" size="small">CLOSED</el-tag>
+            <el-tag v-if="scope.row.state == 'open'" type="success" size="small">OPEN</el-tag>
+            <el-tag v-else type="danger" size="small">CLOSED</el-tag>
           </template>
         </el-table-column>
 
