@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.xftxyz.rocketblog.pojo.SysOption;
+
 public interface EnvironmentVariables {
 
     // 默认分页大小
@@ -40,6 +42,11 @@ public interface EnvironmentVariables {
 
     // 密码掩码
     String PASSWORD_MASK = "********";
+
+    // 系统操作
+    List<SysOption> SYS_OPTIONS = List.of(
+            new SysOption("接口文档", "/doc/debug-all.html"),
+            new SysOption("数据库", "http://8.130.81.23:888/phpmyadmin_7b7e3539633d471f/index.php"));
 
     // 图片对应签名s
     Map<String, List<String>> IMAGE_SIGNATURE = new HashMap<>() {

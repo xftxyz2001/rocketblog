@@ -22,6 +22,7 @@ import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogInfo;
 import com.xftxyz.rocketblog.pojo.Comment;
+import com.xftxyz.rocketblog.pojo.SysOption;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.service.BlogService;
@@ -266,6 +267,16 @@ public class AdminController {
     public Integer deleteComment(
             @PathVariable("commentId") @Min(value = 1, message = ValidInfo.COMMENT_ID_LESS_THAN_ONE) Long commentId) {
         return blogService.removeComment(commentId);
+    }
+
+    /**
+     * 系统操作
+     * 
+     * @return 返回一个 {@link List} 对象，包含系统操作列表 {@link SysOption}
+     */
+    @GetMapping("/system")
+    public List<SysOption> getSystemOption() {
+        return EnvironmentVariables.SYS_OPTIONS;
     }
 
 }
