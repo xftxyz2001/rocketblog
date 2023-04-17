@@ -5,11 +5,7 @@ import java.util.List;
 import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogInfo;
-import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.User;
-import com.xftxyz.rocketblog.pojo.VComment;
-
-import jakarta.validation.constraints.Min;
 
 public interface BlogService {
     // add; remove; findById; modify; findByXXX; findXXXList
@@ -42,10 +38,6 @@ public interface BlogService {
 
     public Long cancelLike(Long userid, Long blogId);
 
-    public Integer addComment(Comment comment);
-
-    public Integer deleteComment(Long commentId);
-
     // 获取热门博客
     public List<BlogInfo> getHotBlogs(User user);
 
@@ -68,11 +60,7 @@ public interface BlogService {
 
     public BlogDetail getBlogDetail(Long blogId, User user);
 
-    public List<VComment> getCommentsByBlogId(Long blogId);
-
     public BlogInfo getBlogInfo(Long blogId, User user);
-
-    public VComment getCommentDetail(Comment comment);
 
     public List<BlogInfo> getMyBlogs(Long userid);
 
@@ -84,12 +72,6 @@ public interface BlogService {
 
     public Integer reprint(Long blogId, User user);
 
-    public List<BlogInfo> getOthersBlogs(@Min(value = 1, message = "目标用户ID不合法") Long userId);
-
-    public List<Comment> getAllComments();
-
-    public List<Comment> findCommentsByExample(Comment comment);
-
-    public Integer removeComment(@Min(value = 1, message = "评论ID不合法") Long commentId);
+    public List<BlogInfo> getOthersBlogs(Long userId);
 
 }

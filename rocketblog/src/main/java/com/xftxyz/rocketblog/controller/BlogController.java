@@ -24,6 +24,7 @@ import com.xftxyz.rocketblog.pojo.Comment;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.VComment;
 import com.xftxyz.rocketblog.service.BlogService;
+import com.xftxyz.rocketblog.service.CommentService;
 import com.xftxyz.rocketblog.util.Utils;
 import com.xftxyz.rocketblog.validation.ValidInfo;
 import com.xftxyz.rocketblog.validation.ValidationGroups;
@@ -40,6 +41,9 @@ import jakarta.validation.constraints.Min;
 public class BlogController {
     @Autowired
     BlogService blogService;
+
+    @Autowired
+    CommentService commentService;
 
     /**
      * 搜索博客
@@ -419,8 +423,8 @@ public class BlogController {
     public VComment comment(@RequestBody @Validated Comment comment, HttpSession session) {
         User user = Utils.currentUser(session);
         comment.setUserid(user.getUserid());
-        blogService.addComment(comment);
-        VComment commentDetail = blogService.getCommentDetail(comment);
+        commentService.addComment(comment);
+        VComment commentDetail = commentService.getCommentDetail(comment);
         return commentDetail;
     }
 
@@ -434,7 +438,7 @@ public class BlogController {
     @DeleteMapping("/comment/{commentId}")
     public Integer deleteComment(@PathVariable("commentId") @Min(value = 1, message = "目标评论ID不合法") Long commentId,
             HttpSession session) {
-        return blogService.deleteComment(commentId);
+        return commentService.deleteComment(commentId);
     }
 
     /**
@@ -451,7 +455,7 @@ public class BlogController {
             @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<VComment> comments = blogService.getCommentsByBlogId(blogId);
+        List<VComment> comments = commentService.getCommentsByBlogId(blogId);
         return new PageInfo<>(comments);
     }
 

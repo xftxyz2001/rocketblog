@@ -26,6 +26,7 @@ import com.xftxyz.rocketblog.pojo.SysOption;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.service.BlogService;
+import com.xftxyz.rocketblog.service.CommentService;
 import com.xftxyz.rocketblog.service.UserService;
 import com.xftxyz.rocketblog.validation.ValidInfo;
 
@@ -44,6 +45,9 @@ public class AdminController {
 
     @Autowired
     BlogService blogService;
+
+    @Autowired
+    CommentService commentService;
 
     /**
      * 获取所有用户信息
@@ -236,7 +240,7 @@ public class AdminController {
             @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Comment> comments = blogService.getAllComments();
+        List<Comment> comments = commentService.getAllComments();
         return new PageInfo<>(comments);
     }
 
@@ -253,7 +257,7 @@ public class AdminController {
             @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
             @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Comment> comments = blogService.findCommentsByExample(comment);
+        List<Comment> comments = commentService.findCommentsByExample(comment);
         return new PageInfo<>(comments);
     }
 
@@ -266,7 +270,7 @@ public class AdminController {
     @DeleteMapping("/comment/{commentId}")
     public Integer deleteComment(
             @PathVariable("commentId") @Min(value = 1, message = ValidInfo.COMMENT_ID_LESS_THAN_ONE) Long commentId) {
-        return blogService.removeComment(commentId);
+        return commentService.removeComment(commentId);
     }
 
     /**
