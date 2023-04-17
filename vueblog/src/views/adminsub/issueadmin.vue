@@ -49,7 +49,6 @@
           <el-table-column prop="blogTitle" label="标题" width="180" />
           <el-table-column prop="userid" label="用户id" width="70" />
           <el-table-column prop="blogStatus" label="状态" width="90">
-            <!-- 如果blogStatus为0显示为草稿，为1显示为已发布 -->
             <template v-slot="scope">
               <el-tag
                 v-if="scope.row.blogStatus == 0"
@@ -79,8 +78,6 @@
   
           <el-table-column fixed="right" label="选项" width="120">
             <template v-slot="scope">
-            <!-- <el-button @click="change(scope.row.ID)">修改</el-button> -->
-            <!-- <el-button type="danger" @click="del(scope.row.ID)">删除</el-button> -->
   
             <el-button
                 link
@@ -97,9 +94,6 @@
                 >删除</el-button
               >
   
-            <!-- <el-button text @click="dialogFormVisible = true">
-      open a Form nested Dialog
-    </el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -116,10 +110,6 @@
     tableData.value = res.data.data.list;
   });
   function selectBlog() {
-    // console.log(formInline.value.name.trim() === "");
-    // formInline.value.blogTitle = formInline.value.blogTitle.trim();
-    // formInline.value.userid = formInline.value.userid.trim();
-    // formInline.value.blogStatus = formInline.value.blogStatus.trim();
     var blogstatus;
     switch (formInline.value.blogStatus) {
       case "草稿":

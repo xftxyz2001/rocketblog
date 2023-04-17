@@ -3,7 +3,7 @@
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="博客id">
           <el-input
-            v-model="formInline.blogTitle"
+            v-model="formInline.blogId"
             placeholder="请输入博客id"
             style="width: 200px"
           />
@@ -26,67 +26,34 @@
     <el-main>
       <el-scrollbar>
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column fixed prop="createTime" label="创建日期" width="160" />
+          <el-table-column fixed prop="createtime" label="创建日期" width="160" />
           <el-table-column
             class="idcolumn"
-            prop="blogId"
+            prop="commentId"
             label="id"
             v-if="false"
           />
-          <el-table-column prop="blogTitle" label="标题" width="180" />
+          <el-table-column prop="commentContent" label="评论内容" width="300" />
+          <el-table-column prop="blogId" label="博客id" width="70" />
           <el-table-column prop="userid" label="用户id" width="70" />
-          <el-table-column prop="blogStatus" label="状态" width="90">
-            <!-- 如果blogStatus为0显示为草稿，为1显示为已发布 -->
-            <template v-slot="scope">
-              <el-tag
-                v-if="scope.row.blogStatus == 0"
-                type="success"
-                disable-transitions
-                >草稿</el-tag
-              >
-              <el-tag
-                v-else-if="scope.row.blogStatus == 1"
-                type="success"
-                disable-transitions
-                >已发布</el-tag
-              >
-            </template>
-          </el-table-column>
           <el-table-column prop="updateTime" label="更新时间" width="160" />
-          <el-table-column prop="coverImage" label="封面图片" width="150">
-            <template v-slot="scope">
-              <el-image
-                style="width: 100px; height: 100px"
-                :src="scope.row.coverImage"
-                :fit="fit"
-              ></el-image>
-            </template>
-          </el-table-column>
-          <el-table-column prop="blogSummary" label="摘要" width="300" />
-  
+
           <el-table-column fixed="right" label="选项" width="120">
             <template v-slot="scope">
-            <!-- <el-button @click="change(scope.row.ID)">修改</el-button> -->
-            <!-- <el-button type="danger" @click="del(scope.row.ID)">删除</el-button> -->
-  
             <el-button
                 link
                 type="primary"
                 size="small"
-                @click="editblog(scope.row.blogId)"
-                >编辑</el-button
-              >
-              <el-button
+                @click="editcomment(scope.row.commentId)"
+                >编辑
+            </el-button>
+            <el-button
                 link
                 type="primary"
                 size="small"
-                @click="deleteblog(scope.row.blogId)"
-                >删除</el-button
-              >
-  
-            <!-- <el-button text @click="dialogFormVisible = true">
-      open a Form nested Dialog
-    </el-button> -->
+                @click="deletecomment(scope.row.commentId)"
+                >删除
+            </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -99,60 +66,24 @@
   const formLabelWidth = "140px";
   const formInline = ref({});
   const tableData = ref([]);
-  axios.get("/admin/blogs").then((res) => {
+  axios.get("/admin/comments").then((res) => {
     tableData.value = res.data.data.list;
   });
   function selectComment() {
-    // console.log(formInline.value.name.trim() === "");
-    // formInline.value.blogTitle = formInline.value.blogTitle.trim();
-    // formInline.value.userid = formInline.value.userid.trim();
-    // formInline.value.blogStatus = formInline.value.blogStatus.trim();
-    var blogstatus;
-    switch (formInline.value.blogStatus) {
-      case "草稿":
-        blogstatus = 0;
-        break;
-      case "已发布":
-        blogstatus = 1;
-        break;
-    }
-  
     var req = {
-      blogTitle: formInline.value.blogTitle,
+      blogId: formInline.value.blogId,
       userid: formInline.value.userid,
-      blogStatus: blogstatus,
     };
-  
-    axios({
-      method: "POST",
-      url: "/admin/search/blog",
-      Headers: { "Content-Type": "application/json" },
-      data: req,
-    }).then((res) => {
+  axios.post("/admin/search/comment",req).then((res) => {
       tableData.value = res.data;
-      for (let index = 0; index < tableData.value.length; index++) {
-        console.log(res.data[index].blogStatus);
-        switch (res.data[index].blogStatus) {
-          case 0:
-            tableData.value[index].blogStatus = "草稿";
-            break;
-          case 1:
-            tableData.value[index].blogStatus = "已发布";
-            break;
-          default:
-            tableData.value[index].blogStatus = "未知";
-        }
-      }
     });
   }
   
-  function editblog(blogid) {
-    console.log("editblog" + blogid);
-    // axios.put("/admin/blog/" + blogid);
+  function editcomment(commentid) {
+    console.log("editcomment" + commentid);
   }
-  function deleteblog(blogid) {
-    console.log("deleteblog" + blogid);
-    // axios.delete("/admin/blog/" + blogid);
+  function deletecomment(commentid) {
+    console.log("deletecomment" + commentid);
   }
   </script>
   <script>
