@@ -5,14 +5,14 @@
         <el-input v-model="formInline.name" placeholder="请输入昵称" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="selectByName">昵称查找</el-button>
+        <el-button type="primary" @click="selectUser">昵称查找</el-button>
       </el-form-item>
       <el-form-item label="邮箱">
         <el-input v-model="formInline.email" placeholder="请输入邮箱" />
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="selectByEmail">邮箱查找</el-button>
+        <el-button type="primary" @click="selectUser">邮箱查找</el-button>
       </el-form-item>
     </el-form>
     <el-button type="primary" plain class="adduser" @click="adduser">
@@ -57,7 +57,7 @@
         <el-input v-model="addform.username" autocomplete="off" />
       </el-form-item>
       <el-form-item label="性别" :label-width="formLabelWidth">
-        <el-select v-model="addform.userSex" placeholder="Please select a zone">
+        <el-select v-model="addform.userSex" placeholder="请选择">
           <el-option label="男" value="男" />
           <el-option label="女" value="女" />
         </el-select>
@@ -82,6 +82,7 @@
       </span>
     </template>
   </el-dialog>
+  <!-- /添加表单 -->
   <!-- 编辑表单 -->
   <el-dialog ref="editform" v-model="dialogFormVisible" title="Shipping address">
     <el-form :model="form">
@@ -93,7 +94,7 @@
         <el-input v-model="form.username" autocomplete="off" />
       </el-form-item>
       <el-form-item label="性别" :label-width="formLabelWidth">
-        <el-select v-model="form.userSex" placeholder="Please select a zone">
+        <el-select v-model="form.userSex" placeholder="请选择">
           <el-option label="男" value="男" />
           <el-option label="女" value="女" />
         </el-select>
@@ -115,6 +116,7 @@
       </span>
     </template>
   </el-dialog>
+  <!-- /编辑表单 -->
 </template>
 <script setup >
 import { ref } from "vue";
@@ -123,93 +125,54 @@ const dialogFormVisible = ref(false);
 const addFormVisible = ref(false);
 const formLabelWidth = "140px";
 const ins = getCurrentInstance();
-console.log(1);
-axios.get("/admin/users").then((res) => {
-  tableData.value = res.data.data.list;
-});
+
 const formInline = ref({
   name: "",
   email: "",
 });
 const tableData = ref([]);
 
-const form = ref({
-  userRegisterTime: "",
-  userid: "",
-  username: "",
-  userSex: "",
-  email: "",
-  phone: "",
-  image: "",
-  //delivery: false,
+const form = ref({});
+const addform = ref({});
 
-  lastLogin: "",
-});
-const addform = ref({
-  userRegisterTime: "",
-  userid: "",
-  username: "",
-  userSex: "",
-  email: "",
-  phone: "",
-  image: "",
-  password: "",
-  //delivery: false,
+function getUsers() {
+  axios.get("/admin/users").then((res) => {
+    tableData.value = res.data.data.list;
+  });
+}
 
-  lastLogin: "",
-});
+getUsers();
 
 function deleteclick(id) {
-  axios
-    .delete("/admin/user/" + id)
-    .then((res) => {
-      console.log(res);
-    })
-    .then(() => {
-      axios.get("/admin/users").then((res) => {
-        tableData.value = res.data;
-      });
-    });
+  axios.delete("/admin/user/" + id).then((res) => {
+    getUsers();
+  });
 }
+
 function adduser() {
   addFormVisible.value = true;
 }
+
 function formSubmit() {
   dialogFormVisible.value = false;
 }
+
 function addformSubmit() {
   addFormVisible.value = false;
-  var sub = addform.value;
   axios.post("/admin/user", addform.value).then(() => {
-    axios.get("/admin/users").then((res) => {
-      tableData.value = res.data;
-    });
+    getUsers();
   });
 }
 
-function selectByName() {
-  // console.log(formInline.value.name.trim() === "");
+function selectUser() {
   formInline.value.name = formInline.value.name.trim();
-  if (formInline.value.name === "") {
-    axios.get("/admin/users").then((res) => {
-      tableData.value = res.data.data;
-    });
-    return;
-  }
-  axios.get("/admin/search/username/" + formInline.value.name).then((res) => {
-    tableData.value = res.data.data;
-  });
-}
-function selectByEmail() {
   formInline.value.email = formInline.value.email.trim();
-  if (formInline.value.email === "") {
-    axios.get("/admin/users").then((res) => {
-      tableData.value = res.data.data;
-    });
+  if (formInline.value.name === "" && formInline.value.email === "") {
+    getUsers();
     return;
   }
-  axios.get("/admin/search/email/" + formInline.value.email).then((res) => {
-    tableData.value = res.data.data;
+  axios.post("/admin/user/s", { email: formInline.value.email, name: formInline.value.name }).then((res) => {
+    tableData.value = res.data.data.list;
   });
 }
 
@@ -220,7 +183,7 @@ function lookclick(userid) {
 </script>
 <script>
 import {
-getCurrentInstance
+  getCurrentInstance
 } from "vue";
 
 import router from "@/router";

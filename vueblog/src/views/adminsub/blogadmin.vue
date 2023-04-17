@@ -29,7 +29,11 @@
         <el-table-column fixed prop="createTime" label="创建日期" width="160" />
         <el-table-column class="idcolumn" prop="blogId" label="id" v-if="false" />
         <el-table-column prop="blogTitle" label="标题" width="180" />
-        <el-table-column prop="userid" label="用户id" width="70" />
+        <el-table-column prop="userid" label="用户id" width="70">
+          <template v-slot="scope">
+            <div @click="gouser(scope.row.userid)">{{ scope.row.userid }}</div>
+          </template>
+        </el-table-column>
         <el-table-column prop="blogStatus" label="状态" width="90">
           <!-- 如果blogStatus为0显示为草稿，为1显示为已发布 -->
           <template v-slot="scope">
@@ -64,9 +68,14 @@ import { ref } from "vue";
 const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
-axios.get("/admin/blogs").then((res) => {
-  tableData.value = res.data.data.list;
-});
+function getBlog() {
+  axios.get("/admin/blogs").then((res) => {
+    tableData.value = res.data.data.list;
+  });
+}
+
+getBlog();
+
 function selectBlog() {
   var blogstatus;
   switch (formInline.value.blogStatus) {
@@ -84,26 +93,8 @@ function selectBlog() {
     blogStatus: blogstatus,
   };
 
-  axios({
-    method: "POST",
-    url: "/admin/search/blog",
-    Headers: { "Content-Type": "application/json" },
-    data: req,
-  }).then((res) => {
-    tableData.value = res.data;
-    for (let index = 0; index < tableData.value.length; index++) {
-      console.log(res.data[index].blogStatus);
-      switch (res.data[index].blogStatus) {
-        case 0:
-          tableData.value[index].blogStatus = "草稿";
-          break;
-        case 1:
-          tableData.value[index].blogStatus = "已发布";
-          break;
-        default:
-          tableData.value[index].blogStatus = "未知";
-      }
-    }
+  axios.post("/admin/blog/s", req).then((res) => {
+    tableData.value = res.data.data.list;
   });
 }
 
@@ -113,6 +104,10 @@ function deleteblog(blogid) {
 
 function lookclick(userid, blogId) {
   router.push({ name: "blogdetail", params: { userid: userid, blogid: blogId } });
+}
+
+function gouser(userid) {
+  router.push({ name: "otherperson", params: { userid: userid } });
 }
 </script>
 <script>
