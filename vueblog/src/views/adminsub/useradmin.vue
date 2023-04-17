@@ -28,7 +28,17 @@
         <el-table-column prop="userSex" label="性别" width="90" />
         <el-table-column prop="email" label="邮箱" width="200" />
         <el-table-column prop="phone" label="手机" width="130" />
-        <el-table-column prop="password" label="密码" width="150" />
+        <el-table-column prop="password" label="密码" width="150">
+          <!-- 小眼睛效果，点击显示密码 -->
+          <template v-slot="scope">
+            <el-popover placement="top" width="200" trigger="click">
+              <p>{{ scope.row.password }}</p>
+              <div slot="reference" class="name-wrapper">
+                <el-button type="text">查看密码</el-button>
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column prop="avatar" label="头像" width="90">
           <!-- 展示头像 -->
           <template v-slot="scope">
