@@ -31,17 +31,17 @@
               </router-link>
               <router-link to="/admin/commentadmin">
                 <el-menu-item index="3"
-                  ><el-icon><Collection /></el-icon>评论管理</el-menu-item
+                  ><el-icon><Postcard /></el-icon>评论管理</el-menu-item
                 >
               </router-link>
               <router-link to="/admin/issueadmin">
                 <el-menu-item index="4"
-                  ><el-icon><Collection /></el-icon>用户反馈</el-menu-item
+                  ><el-icon><Notification /></el-icon>用户反馈</el-menu-item
                 >
               </router-link>
               <router-link to="/admin/systemadmin">
                 <el-menu-item index="5"
-                  ><el-icon><Collection /></el-icon>系统管理</el-menu-item
+                  ><el-icon><Setting /></el-icon>系统管理</el-menu-item
                 >
               </router-link>
 

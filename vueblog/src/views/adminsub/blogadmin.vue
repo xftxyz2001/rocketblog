@@ -43,14 +43,14 @@
             <el-image style="width: 100px; height: 100px" :src="scope.row.coverImage" :fit="fit"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="blogSummary" label="摘要" width="350" />
+        <el-table-column prop="blogSummary" label="摘要" width="320" />
 
-        <el-table-column fixed="right" label="选项" width="120">
+        <el-table-column fixed="right" label="选项" width="150">
           <template v-slot="scope">
-            <el-button link type="primary" size="small" @click="editblog(scope.row.blogId)">编辑</el-button>
-            <el-button link type="primary" size="small" @click="deleteblog(scope.row.blogId)">删除</el-button>
             <el-button link type="primary" size="small"
               @click="lookclick(scope.row.userid, scope.row.blogId)">查看</el-button>
+            <el-button link type="warning" size="small" @click="editblog(scope.row.blogId)">编辑</el-button>
+            <el-button link type="danger" size="small" @click="deleteblog(scope.row.blogId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

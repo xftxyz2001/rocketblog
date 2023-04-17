@@ -27,7 +27,7 @@
         <el-table-column prop="username" label="昵称" width="120" />
         <el-table-column prop="userSex" label="性别" width="90" />
         <el-table-column prop="email" label="邮箱" width="200" />
-        <el-table-column prop="phone" label="手机" width="150" />
+        <el-table-column prop="phone" label="手机" width="130" />
         <el-table-column prop="password" label="密码" width="150" />
         <el-table-column prop="avatar" label="头像" width="90">
           <!-- 展示头像 -->
@@ -37,11 +37,11 @@
         </el-table-column>
         <el-table-column prop="lastLogin" label="上次登陆日期" width="200" />
 
-        <el-table-column fixed="right" label="选项" width="120">
+        <el-table-column fixed="right" label="选项" width="150">
           <template v-slot="scope">
-            <el-button link type="primary" size="small" @click="editclick(scope.row.userid)">编辑</el-button>
-            <el-button link type="primary" size="small" @click="deleteclick(scope.row.userid)">删除</el-button>
             <el-button link type="primary" size="small" @click="lookclick(scope.row.userid)">查看</el-button>
+            <el-button link type="warning" size="small" @click="editclick(scope.row.userid)">编辑</el-button>
+            <el-button link type="danger" size="small" @click="deleteclick(scope.row.userid)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
