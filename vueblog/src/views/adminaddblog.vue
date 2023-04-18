@@ -173,13 +173,13 @@ export default {
         });
         this.blogTitle = "";
         this.content = "";
-        router.push({ name: "hotlatest" });
+        router.push({ name: "blogadmin" });
       });
     },
     submit() {
       // 如果author为空，就是没有选择作者，就是自己发表
-      if (author.value.userid == null) {
-        author.value.userid = userdata.value.userid;
+      if (this.author.value.userid == null) {
+        this.author.value.userid = this.userdata.value.userid;
       }
       // 如果content为空，就是没有内容，添加[null]
       if (this.content == "") {
@@ -190,7 +190,7 @@ export default {
         coverImage: this.coverImage,
         blogTitle: this.blogTitle,
         blogContent: this.content,
-        userid: author.value.userid,
+        userid: this.author.value.userid,
       };
 
       axios.post("/admin/blog", blogdata).then((res) => {
@@ -201,7 +201,7 @@ export default {
         });
         this.blogTitle = "";
         this.content = "";
-        router.push({ name: "hotlatest" });
+        router.push({ name: "blogadmin" });
       });
     },
     handleRemove(file, fileList) {
