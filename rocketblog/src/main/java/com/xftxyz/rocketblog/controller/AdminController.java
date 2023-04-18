@@ -22,6 +22,7 @@ import com.xftxyz.rocketblog.pojo.Blog;
 import com.xftxyz.rocketblog.pojo.BlogDetail;
 import com.xftxyz.rocketblog.pojo.BlogInfo;
 import com.xftxyz.rocketblog.pojo.Comment;
+import com.xftxyz.rocketblog.pojo.FileInfo;
 import com.xftxyz.rocketblog.pojo.SysOption;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserInfo;
@@ -284,7 +285,7 @@ public class AdminController {
      * @return 返回一个 {@link List} 对象，包含所有图片文件名
      */
     @GetMapping("/images")
-    public List<String> getAllImageIds() {
+    public List<FileInfo> getAllImageIds() {
         return imageService.getAllImageFileInfo();
     }
 
