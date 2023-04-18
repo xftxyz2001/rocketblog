@@ -88,7 +88,7 @@ public class ImageServiceImpl implements ImageService {
                         try {
                             BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
                             return new FileInfo(
-                                    path.toString(),
+                                    path.getFileName().toString(),
                                     attr.size(),
                                     new Date(attr.lastModifiedTime().toMillis()));
                         } catch (IOException e) {
