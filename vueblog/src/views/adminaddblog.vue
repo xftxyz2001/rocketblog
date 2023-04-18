@@ -8,8 +8,7 @@
             </template>
             <template #extra>
               <div class="flex items-center">
-                <!-- <el-button @click="save">保存</el-button> -->
-                <el-button type="primary" class="ml-2" @click="submit">发布</el-button>
+                <el-button type="primary" class="ml-2" @click="submit">保存</el-button>
               </div>
             </template>
           </el-page-header></el-header>
@@ -50,22 +49,10 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import { ref } from "vue";
 const userdata = ref({});
-const author = ref({});
 
 axios.get("/user/i").then((res) => {
   userdata.value = res.data.data;
 });
-
-function getauthor() {
-  axios.get("/user/info/" + author.value.userid).then((res) => {
-    var res = res.data;
-    if (res.code == 0) {
-      author.value = res.data;
-    } else {
-      ElMessage.error(res.message);
-    }
-  });
-}
 
 function back() {
   router.push({ name: "blogadmin" });
@@ -97,6 +84,10 @@ export default {
   props: ["model"],
   data() {
     return {
+      author: {
+        userid: "",
+        avatar: "",
+      },
       blogTitle: "",
       content: "",
       coverImage: "",
@@ -126,22 +117,6 @@ export default {
               image: function (value) {
                 QuillWatch.emit(this.quill.id);
               },
-              // link: function (value) {
-              //   if (value) {
-              //     var href = prompt("请输入链接地址：");
-              //     this.quill.format("link", href);
-              //   } else {
-              //     this.quill.format("link", false);
-              //   }
-              // },
-              // video: function (value) {
-              //   if (value) {
-              //     var href = prompt("请输入视频链接：");
-              //     this.quill.format("video", href);
-              //   } else {
-              //     this.quill.format("video", false);
-              //   }
-              // },
             },
           },
           ImageResize: {
@@ -157,40 +132,35 @@ export default {
     };
   },
   methods: {
-    save() {
-      var blogdata = {
-        blogStatus: 0,
-        coverImage: this.coverImage,
-        blogTitle: this.blogTitle,
-        blogContent: this.content,
-      };
-
-      axios.post("/blog/publish", blogdata).then((res) => {
-        ElMessage({
-          showClose: true,
-          message: "保存成功",
-          type: "success",
-        });
-        this.blogTitle = "";
-        this.content = "";
-        router.push({ name: "blogadmin" });
+    getauthor() {
+      axios.get("/user/info/" + this.author.userid).then((res) => {
+        var res = res.data;
+        if (res.code == 0) {
+          this.author.avatar = res.data.avatar;
+        } else {
+          ElMessage.error(res.message);
+          this.author.userid = "";
+          this.author.avatar = "";
+        }
       });
     },
     submit() {
-      // 如果author为空，就是没有选择作者，就是自己发表
-      if (this.author.value.userid == null) {
-        this.author.value.userid = this.userdata.value.userid;
+      // 如果author为空，提示错误
+      if (this.author.userid == "") {
+        ElMessage.error("作者不能为空");
+        return;
       }
-      // 如果content为空，就是没有内容，添加[null]
+      // 如果content为空，提示错误
       if (this.content == "") {
-        this.content = "[null]";
+        ElMessage.error("内容不能为空");
+        return;
       }
 
       var blogdata = {
         coverImage: this.coverImage,
         blogTitle: this.blogTitle,
         blogContent: this.content,
-        userid: this.author.value.userid,
+        userid: this.author.userid,
       };
 
       axios.post("/admin/blog", blogdata).then((res) => {
