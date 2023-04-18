@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.exception.image.ImageException;
+import com.xftxyz.rocketblog.pojo.FileInfo;
 import com.xftxyz.rocketblog.service.ImageService;
 import com.xftxyz.rocketblog.util.Utils;
 
@@ -76,18 +79,29 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    public List<String> getAllImageName() {
+    @Override
+    public List<FileInfo> getAllImageFileInfo() {
         try {
-            return Files.list(Paths.get(uploadDirectory))
+            return Files.walk(Paths.get(uploadDirectory))
                     .filter(Files::isRegularFile)
-                    .map(Path::getFileName)
-                    .map(Path::toString)
+                    .map(path -> {
+                        try {
+                            BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
+                            return new FileInfo(
+                                    path.toString(),
+                                    attr.size(),
+                                    new Date(attr.lastModifiedTime().toMillis()));
+                        } catch (IOException e) {
+                            throw new ImageException("无法读取文件信息");
+                        }
+                    })
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new ImageException("无法获取所有图片ID");
+            throw new ImageException("无法读取文件列表");
         }
     }
 
+    @Override
     public void deleteImageByName(String filename) throws ImageException {
         Path filePath = Paths.get(uploadDirectory).resolve(filename);
         try {

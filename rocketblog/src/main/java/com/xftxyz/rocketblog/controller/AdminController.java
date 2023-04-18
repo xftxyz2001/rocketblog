@@ -285,7 +285,7 @@ public class AdminController {
      */
     @GetMapping("/images")
     public List<String> getAllImageIds() {
-        return imageService.getAllImageName();
+        return imageService.getAllImageFileInfo();
     }
 
     /**
