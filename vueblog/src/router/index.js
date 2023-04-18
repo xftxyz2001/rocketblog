@@ -63,13 +63,6 @@ const routes = [{
       path: 'blogadmin',
       name: 'blogadmin',
       component: blogadmin,
-      children: [
-        {
-          path: 'addblog',
-          name: 'adminaddblog',
-          component: addblog
-        }
-      ]
     },
     {
       path: 'commentadmin',
