@@ -1,5 +1,9 @@
 package com.xftxyz.rocketblog.service.impl;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -15,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -34,7 +40,7 @@ public class ImageServiceImpl implements ImageService {
     private String uploadDirectory = EnvironmentVariables.UPLOAD_DIRECTORY;
 
     @Override
-    public String uploadImage(MultipartFile file) throws ImageException {
+    public String uploadImage(MultipartFile file) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         // 后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
@@ -60,7 +66,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Resource downloadImage(String id) throws ImageException {
+    public Resource downloadImage(String id) {
         Path filePath = Paths.get(uploadDirectory).resolve(id);
         try {
             return new UrlResource(filePath.toUri());
@@ -70,10 +76,35 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public byte[] getImage(String id) throws ImageException {
+    public byte[] getImage(String id) {
         Path filePath = Paths.get(uploadDirectory).resolve(id);
         try {
             return Files.readAllBytes(filePath);
+        } catch (IOException e) {
+            throw new ImageException("无法读取文件: " + id);
+        }
+    }
+
+    @Override
+    public byte[] getLowResolutionImage(String id, int newWidth, int newHeight) {
+        try {
+            // 读取原始图像的字节数组
+            byte[] imageData = getImage(id);
+
+            // 解码成 BufferedImage 对象
+            BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(imageData));
+
+            // 创建缩略图
+            Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+
+            // 将缩略图转换为字节数组
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write((BufferedImage) scaledImage, "jpg", baos);
+            baos.flush();
+            byte[] lowResImageData = baos.toByteArray();
+            baos.close();
+
+            return lowResImageData;
         } catch (IOException e) {
             throw new ImageException("无法读取文件: " + id);
         }
@@ -102,7 +133,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void deleteImageByName(String filename) throws ImageException {
+    public void deleteImageByName(String filename) {
         Path filePath = Paths.get(uploadDirectory).resolve(filename);
         try {
             if (!Files.exists(filePath)) {

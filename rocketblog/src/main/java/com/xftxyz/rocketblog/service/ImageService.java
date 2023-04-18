@@ -5,19 +5,20 @@ import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.xftxyz.rocketblog.exception.image.ImageException;
 import com.xftxyz.rocketblog.pojo.FileInfo;
 
 public interface ImageService {
-    String uploadImage(MultipartFile file) throws ImageException;
+    String uploadImage(MultipartFile file);
 
-    Resource downloadImage(String id) throws ImageException;
+    Resource downloadImage(String id);
 
-    byte[] getImage(String id) throws ImageException;
+    byte[] getImage(String id);
 
     public String getIPSign();
 
     List<FileInfo> getAllImageFileInfo();
 
     void deleteImageByName(String filename);
+
+    public byte[] getLowResolutionImage(String id, int newWidth, int newHeight);
 }

@@ -69,6 +69,21 @@ public class ImageController {
     }
 
     /**
+     * 获取指定 id 的图片的字节数组（指定图片的分辨率）
+     *
+     * @param id 要获取的图片的 id
+     * @return 返回一个 ResponseEntity<byte[]> 对象，包含指定 id 的图片的字节数组
+     */
+    @GetMapping("/{id}/{width}/{height}")
+    public ResponseEntity<byte[]> getLowResolutionImage(@PathVariable("id") @NotBlank(message = "id不能为空") String id,
+            @PathVariable("width") int width, @PathVariable("height") int height) {
+        byte[] imageData = imageService.getLowResolutionImage(id, width, height);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
+    }
+
+    /**
      * 获取IP签名档图片的URL
      *
      * @return 返回一个字符串，表示IP签名档图片的URL
