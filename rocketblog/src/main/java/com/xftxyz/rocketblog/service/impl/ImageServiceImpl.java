@@ -12,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -29,6 +30,7 @@ public class ImageServiceImpl implements ImageService {
 
     private String uploadDirectory = EnvironmentVariables.UPLOAD_DIRECTORY;
 
+    @Override
     public String uploadImage(MultipartFile file) throws ImageException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         // 后缀名
@@ -54,6 +56,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    @Override
     public Resource downloadImage(String id) throws ImageException {
         Path filePath = Paths.get(uploadDirectory).resolve(id);
         try {
@@ -70,6 +73,30 @@ public class ImageServiceImpl implements ImageService {
             return Files.readAllBytes(filePath);
         } catch (IOException e) {
             throw new ImageException("无法读取文件: " + id);
+        }
+    }
+
+    public List<String> getAllImageIds() {
+        try {
+            return Files.list(Paths.get(uploadDirectory))
+                    .filter(Files::isRegularFile)
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException("无法获取所有图片ID", e);
+        }
+    }
+
+    public void deleteImage(String id) throws ImageException {
+        Path filePath = Paths.get(uploadDirectory).resolve(id);
+        try {
+            if (!Files.exists(filePath)) {
+                throw new ImageException("文件不存在: " + id);
+            }
+            Files.delete(filePath);
+        } catch (IOException e) {
+            throw new ImageException("删除文件失败: " + id, e);
         }
     }
 

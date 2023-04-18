@@ -1,11 +1,14 @@
 package com.xftxyz.rocketblog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +69,16 @@ public class ImageController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/admin")
+    public List<String> getAllImageIds() {
+        return imageService.getAllImageIds();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteImage(@PathVariable("id") @NotBlank(message = "id不能为空") String id) {
+        imageService.deleteImage(id);
     }
 
     /**
