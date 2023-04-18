@@ -20,29 +20,36 @@
           <el-scrollbar>
             <el-menu>
               <router-link to="/admin/useradmin">
-                <el-menu-item index="1"
-                  ><el-icon><UserFilled /></el-icon>用户管理</el-menu-item
-                >
+                <el-menu-item index="1">
+                  <el-icon>
+                    <UserFilled />
+                  </el-icon>用户管理
+                </el-menu-item>
               </router-link>
               <router-link to="/admin/blogadmin">
-                <el-menu-item index="2"
-                  ><el-icon><Collection /></el-icon>博客管理</el-menu-item
-                >
+                <el-menu-item index="2"><el-icon>
+                    <Collection />
+                  </el-icon>博客管理</el-menu-item>
               </router-link>
               <router-link to="/admin/commentadmin">
-                <el-menu-item index="3"
-                  ><el-icon><Postcard /></el-icon>评论管理</el-menu-item
-                >
+                <el-menu-item index="3"><el-icon>
+                    <Postcard />
+                  </el-icon>评论管理</el-menu-item>
+              </router-link>
+              <router-link to="/admin/imageadmin">
+                <el-menu-item index="4"><el-icon>
+                    <Picture />
+                  </el-icon>图片管理</el-menu-item>
               </router-link>
               <router-link to="/admin/issueadmin">
-                <el-menu-item index="4"
-                  ><el-icon><Notification /></el-icon>用户反馈</el-menu-item
-                >
+                <el-menu-item index="5"><el-icon>
+                    <Notification />
+                  </el-icon>用户反馈</el-menu-item>
               </router-link>
               <router-link to="/admin/systemadmin">
-                <el-menu-item index="5"
-                  ><el-icon><Setting /></el-icon>系统管理</el-menu-item
-                >
+                <el-menu-item index="6"><el-icon>
+                    <Setting />
+                  </el-icon>系统管理</el-menu-item>
               </router-link>
 
             </el-menu>
@@ -53,9 +60,9 @@
           <el-header style="text-align: right; font-size: 12px; display: none">
             <div class="toolbar">
               <el-dropdown>
-                <el-icon style="margin-right: 8px; margin-top: 1px"
-                  ><setting
-                /></el-icon>
+                <el-icon style="margin-right: 8px; margin-top: 1px">
+                  <setting />
+                </el-icon>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item>View</el-dropdown-item>
@@ -89,12 +96,12 @@ axios.get("/user/i").then((res) => {
 </script>
 
 <script>
-import { Menu as IconMenu, Message, Setting } from "@element-plus/icons-vue";
-import "./adminsub/blogadmin.vue";
-import "./adminsub/useradmin.vue";
+import { Setting } from "@element-plus/icons-vue";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
+import "./adminsub/blogadmin.vue";
+import "./adminsub/useradmin.vue";
 
 export default {
   name: "admin",
@@ -110,16 +117,20 @@ export default {
   background-color: var(--el-color-primary-light-7);
   color: var(--el-text-color-primary);
 }
+
 .layout-container-demo .el-aside {
   color: var(--el-text-color-primary);
   background: var(--el-color-primary-light-8);
 }
+
 .layout-container-demo .el-menu {
   border-right: none;
 }
+
 .layout-container-demo .el-main {
   padding: 0;
 }
+
 .layout-container-demo .toolbar {
   display: inline-flex;
   align-items: center;
@@ -127,6 +138,7 @@ export default {
   height: 100%;
   right: 20px;
 }
+
 .text-large {
   margin-left: 10px;
   height: 60px;
@@ -135,10 +147,12 @@ export default {
   font-size: 25px;
   font-family: 华文行楷, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu;
 }
+
 .el-header {
   overflow: hiden;
   position: relative;
 }
+
 .profile {
   display: inline-block;
   position: absolute;
@@ -149,12 +163,15 @@ export default {
   height: 30px;
   border-radius: 15px;
 }
+
 .el-link {
   margin-right: 8px;
 }
+
 .el-link .el-icon--right.el-icon {
   vertical-align: text-bottom;
 }
+
 .quite {
   display: inline;
   position: absolute;
@@ -162,6 +179,7 @@ export default {
   height: 60px;
   line-height: 60px;
 }
+
 .name {
   position: absolute;
   right: 35px;
@@ -169,6 +187,7 @@ export default {
   line-height: 60px;
   font-size: 13px;
 }
+
 .fenge {
   position: absolute;
   display: inline-block;

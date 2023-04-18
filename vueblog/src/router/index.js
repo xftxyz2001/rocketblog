@@ -4,6 +4,7 @@ import admin from '@/views/admin'
 import useradmin from '@/views/adminsub/useradmin'
 import blogadmin from '@/views/adminsub/blogadmin'
 import commentadmin from '@/views/adminsub/commentadmin'
+import imageadmin from '@/views/adminsub/imageadmin'
 import issueadmin from '@/views/adminsub/issueadmin'
 import systemadmin from '@/views/adminsub/systemadmin'
 import user from '@/views/user'
@@ -68,6 +69,11 @@ const routes = [{
       path: 'commentadmin',
       name: 'commentadmin',
       component: commentadmin
+    },
+    {
+      path: 'imageadmin',
+      name: 'imageadmin',
+      component: imageadmin
     },
     {
       path: 'issueadmin',
