@@ -19,7 +19,7 @@
             <sapn style="font-weight: 700; font-size: 20px; margin-right: 20px">标题</sapn>
             <el-input style="width: 60%" v-model="blogTitle"></el-input>
             <span>作者：</span>
-            <el-input v-model="author.userid" placeholder="" @blur="getauthor" />
+            <el-input style="width: 10%" v-model="author.userid" placeholder="" @blur="getauthor" />
             <el-avatar :size="32" class="mr-3" :src="author.avatar" />
           </el-row>
           <el-row style="margin-bottom: 10px">封面图片（可选）
@@ -57,9 +57,11 @@ axios.get("/user/i").then((res) => {
 });
 
 function getauthor(){
-  axios.get("/user/"+author.value.userid).then((res) => {
+  axios.get("/user/info/"+author.value.userid).then((res) => {
     if (res.data == 0){
       author.value = res.data.data;
+    }else{
+      ElMessage.error("用户不存在");
     }
   });
 }
