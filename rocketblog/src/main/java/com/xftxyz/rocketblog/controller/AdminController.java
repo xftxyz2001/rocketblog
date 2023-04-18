@@ -27,10 +27,12 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.service.CommentService;
+import com.xftxyz.rocketblog.service.ImageService;
 import com.xftxyz.rocketblog.service.UserService;
 import com.xftxyz.rocketblog.validation.ValidInfo;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 后台管理相关
@@ -48,6 +50,9 @@ public class AdminController {
 
     @Autowired
     CommentService commentService;
+
+    @Autowired
+    ImageService imageService;
 
     /**
      * 获取所有用户信息
@@ -271,6 +276,26 @@ public class AdminController {
     public Integer deleteComment(
             @PathVariable("commentId") @Min(value = 1, message = ValidInfo.COMMENT_ID_LESS_THAN_ONE) Long commentId) {
         return commentService.removeComment(commentId);
+    }
+
+    /**
+     * 获取所有图片文件名
+     * 
+     * @return 返回一个 {@link List} 对象，包含所有图片文件名
+     */
+    @GetMapping("/images")
+    public List<String> getAllImageIds() {
+        return imageService.getAllImageName();
+    }
+
+    /**
+     * 删除指定图片
+     * 
+     * @param filename 指定图片的文件名
+     */
+    @DeleteMapping("/image/{filename}")
+    public void deleteImage(@PathVariable("filename") @NotBlank(message = "文件名不能为空") String filename) {
+        imageService.deleteImageByName(filename);
     }
 
     /**

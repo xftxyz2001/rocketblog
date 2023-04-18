@@ -76,7 +76,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    public List<String> getAllImageIds() {
+    public List<String> getAllImageName() {
         try {
             return Files.list(Paths.get(uploadDirectory))
                     .filter(Files::isRegularFile)
@@ -84,19 +84,19 @@ public class ImageServiceImpl implements ImageService {
                     .map(Path::toString)
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new RuntimeException("无法获取所有图片ID", e);
+            throw new ImageException("无法获取所有图片ID");
         }
     }
 
-    public void deleteImage(String id) throws ImageException {
-        Path filePath = Paths.get(uploadDirectory).resolve(id);
+    public void deleteImageByName(String filename) throws ImageException {
+        Path filePath = Paths.get(uploadDirectory).resolve(filename);
         try {
             if (!Files.exists(filePath)) {
-                throw new ImageException("文件不存在: " + id);
+                throw new ImageException("文件不存在: " + filename);
             }
             Files.delete(filePath);
         } catch (IOException e) {
-            throw new ImageException("删除文件失败: " + id, e);
+            throw new ImageException("删除文件失败: " + filename);
         }
     }
 

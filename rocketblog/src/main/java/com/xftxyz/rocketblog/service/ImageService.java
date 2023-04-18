@@ -7,8 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.xftxyz.rocketblog.exception.image.ImageException;
 
-import jakarta.validation.constraints.NotBlank;
-
 public interface ImageService {
     String uploadImage(MultipartFile file) throws ImageException;
 
@@ -18,7 +16,7 @@ public interface ImageService {
 
     public String getIPSign();
 
-    List<String> getAllImageIds();
+    List<String> getAllImageName();
 
-    void deleteImage(@NotBlank(message = "id不能为空") String id);
+    void deleteImageByName(String filename);
 }
