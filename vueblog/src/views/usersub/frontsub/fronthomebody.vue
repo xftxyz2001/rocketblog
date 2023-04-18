@@ -40,7 +40,7 @@ axios.get("/blog/hot").then((res) => {
 function clickImg(blog) {
   router.push({
     name: "blogdetail",
-    params: { userid: blog.userid, blogid: blog.blogId },
+    params: { blogid: blog.blogId },
   });
 }
 </script>

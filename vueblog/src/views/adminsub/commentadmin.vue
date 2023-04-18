@@ -61,7 +61,7 @@ function selectComment() {
   });
 }
 function goblog(userid, blogId) {
-  router.push({ name: "blogdetail", params: { userid: userid, blogid: blogId } });
+  router.push({ name: "blogdetail", params: { blogid: blogId } });
 }
 function gouser(userid) {
   router.push({ name: "otherperson", params: { userid: userid } });

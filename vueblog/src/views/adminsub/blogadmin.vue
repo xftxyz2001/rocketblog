@@ -107,7 +107,7 @@ function deleteblog(blogid) {
 }
 
 function lookclick(userid, blogId) {
-  router.push({ name: "blogdetail", params: { userid: userid, blogid: blogId } });
+  router.push({ name: "blogdetail", params: { blogid: blogId } });
 }
 
 function gouser(userid) {

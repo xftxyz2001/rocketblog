@@ -67,12 +67,9 @@ function blogdetail(userid, blogid) {
   // const blogid = allconcern.value[index].blogId;
   router.push({
     name: "blogdetail",
-    params: { userid: userid, blogid: blogid },
+    params: { blogid: blogid },
   });
-  // Bus.emit("clickblog", { userid: userid, blogid: blogid });
-  // console.log(
-  //  e.target.parentElement.parentElement.parentElement.parentElement.dataset
-  //  );
+
 }
 </script>
 <script>

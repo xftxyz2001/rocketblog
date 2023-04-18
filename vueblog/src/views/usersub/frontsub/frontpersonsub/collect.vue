@@ -83,12 +83,9 @@ function collectdetail(userid, blogid) {
   // const collectid = allconcern.value[index].collectId;
   router.push({
     name: "blogdetail",
-    params: { userid: userid, blogid: blogid },
+    params: { blogid: blogid },
   });
-  // Bus.emit("clickcollect", { userid: userid, collectid: collectid });
-  // console.log(
-  //  e.target.parentElement.parentElement.parentElement.parentElement.dataset
-  //  );
+
 }
 </script>
 <script>

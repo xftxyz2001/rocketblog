@@ -118,7 +118,7 @@ const routes = [{
       component: ChangeBlog
     },
     {
-      path: 'blogdetail/:userid/:blogid',
+      path: 'blogdetail/:blogid',
       name: 'blogdetail',
       component: blogdetail
     },

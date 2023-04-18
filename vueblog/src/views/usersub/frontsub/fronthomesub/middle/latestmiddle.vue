@@ -144,7 +144,7 @@ axios.get("/blog/hot").then((res) => {
 function clickImg(blog) {
   router.push({
     name: "blogdetail",
-    params: { userid: blog.userid, blogid: blog.blogId },
+    params: { blogid: blog.blogId },
   });
 }
 // import bus from "@/utils/bus";
@@ -186,12 +186,9 @@ function clickblog(userid, blogid) {
   // const blogid = allconcern.value[index].blogId;
   router.push({
     name: "blogdetail",
-    params: { userid: userid, blogid: blogid },
+    params: { blogid: blogid },
   });
-  // Bus.emit("clickblog", { userid: userid, blogid: blogid });
-  // console.log(
-  //  e.target.parentElement.parentElement.parentElement.parentElement.dataset
-  //  );
+
 }
 function load() {
   page.value++;

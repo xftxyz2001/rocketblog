@@ -422,7 +422,7 @@ async function querySearch(queryString, cb) {
 function clickItem(blog) {
   router.push({
     name: "blogdetail",
-    params: { userid: blog.userid, blogid: blog.blogId },
+    params: { blogid: blog.blogId },
   });
 }
 

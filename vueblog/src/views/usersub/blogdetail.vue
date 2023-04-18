@@ -301,33 +301,7 @@ function gotootherperson(userid) {
     params: { userid: userid },
   });
 }
-// axios
-//   .get("/user/info/" + route.params.userid)
-//   .then((res) => {
-//     userdata.value = res.data.data;
-//     axios.get("/user/i").then((res) => {
-//       if (userdata.value.username != res.data.data.username) {
-//         isme.value = true;
-//       }
-//     });
-//   });
-// axios.get("/user/i").then((res) => {
-//   if (userdata.value.username == res.data.data.username) {
-//     isme.value = true;
-//   }
-// });
 
-// axios
-//   .get("/blog/detail/" + route.params.blogid)
-//   .then((res) => {
-//     blogdata.value = res.data.data;
-//   });
-
-// axios
-//   .get("/blog/comment/" + route.params.blogid)
-//   .then((res) => {
-//     comments.value = res.data.data;
-//   });
 function load() {
   page.value++;
   axios
@@ -507,7 +481,7 @@ function commentthis() {
 
 function dontfollowthis() {
   if (checkTokenInCookie()) {
-    axios.delete("/user/follow/" + route.params.userid).then((res) => {
+    axios.delete("/user/follow/" + blogdata.value.userid).then((res) => {
       userdata.value.followed = false;
     });
   } else {
@@ -516,7 +490,7 @@ function dontfollowthis() {
 }
 function followthis() {
   if (checkTokenInCookie()) {
-    axios.get("/user/follow/" + route.params.userid).then((res) => {
+    axios.get("/user/follow/" + blogdata.value.userid).then((res) => {
       userdata.value.followed = true;
     });
   } else {
@@ -583,20 +557,20 @@ function confirmdelete() {
 }
 
 function chatwith() {
-  axios.get("/chat/session/" + route.params.userid).then((res) => {
+  axios.get("/chat/session/" + blogdata.value.userid).then((res) => {
     var result = res.data;
     if (result.code == 400) {
-      var sendmessage = { to: route.params.userid, content: "" };
+      var sendmessage = { to: blogdata.value.userid, content: "" };
       axios.post("/chat/s", sendmessage).then((res) => {
         router.push({
           name: "messagedetail",
-          params: { userid: route.params.userid },
+          params: { userid: blogdata.value.userid },
         });
       });
     } else {
       router.push({
         name: "messagedetail",
-        params: { userid: route.params.userid },
+        params: { userid: blogdata.value.userid },
       });
     }
   });
