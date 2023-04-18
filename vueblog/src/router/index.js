@@ -31,7 +31,7 @@ import messagedetail from "@/views/usersub/frontsub/frontmessagedetail"
 import otherperson from "@/views/usersub/frontsub/frontotherperson.vue"
 import otherpersonblog from "@/views/usersub/frontsub/frontotherpersonsub/otherpersonblog"
 import test from "@/views/test"
-import test1 from "@/views/test1"
+import adminaddblog from "@/views/adminaddblog"
 import ChangeBlog from "@/views/usersub/changeblog"
 const routes = [{
   path: '/test',
@@ -39,9 +39,9 @@ const routes = [{
   component: test
 },
 {
-  path: '/test1',
-  name: 'test1',
-  component: test1,
+  path: '/adminaddblog',
+  name: 'adminaddblog',
+  component: adminaddblog,
   children: [{
     path: 'otherpersonblog',
     name: 'otherpersonblog',
