@@ -20,7 +20,7 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed prop="createtime" label="创建日期" width="180" />
         <el-table-column class="idcolumn" prop="commentId" label="id" v-if="false" />
-        <el-table-column prop="commentContent" label="评论内容" width="720" />
+        <el-table-column prop="commentContent" label="评论内容" width="800" />
         <el-table-column prop="blogId" label="博客id" width="90">
           <template v-slot="scope">
             <div @click="goblog(scope.row.userid, scope.row.blogId)">{{ scope.row.blogId }}</div>

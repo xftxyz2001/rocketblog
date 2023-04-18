@@ -47,7 +47,7 @@
             <el-image style="width: 100px; height: 100px" :src="scope.row.coverImage" :fit="fit"></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="blogSummary" label="摘要" width="320" />
+        <el-table-column prop="blogSummary" label="摘要" width="330" />
 
         <el-table-column fixed="right" label="选项" width="150">
           <template v-slot="scope">
