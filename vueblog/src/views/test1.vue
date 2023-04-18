@@ -56,12 +56,13 @@ axios.get("/user/i").then((res) => {
   userdata.value = res.data.data;
 });
 
-function getauthor(){
-  axios.get("/user/info/"+author.value.userid).then((res) => {
-    if (res.data == 0){
-      author.value = res.data.data;
-    }else{
-      ElMessage.error("用户不存在");
+function getauthor() {
+  axios.get("/user/info/" + author.value.userid).then((res) => {
+    var res = res.data;
+    if (res.code == 0) {
+      author.value = res.data;
+    } else {
+      ElMessage.error(res.message);
     }
   });
 }
@@ -176,6 +177,15 @@ export default {
       });
     },
     submit() {
+      // 如果author为空，就是没有选择作者，就是自己发表
+      if (author.value.userid == null) {
+        author.value.userid = userdata.value.userid;
+      }
+      // 如果content为空，就是没有内容，添加[null]
+      if (this.content == "") {
+        this.content = "[null]";
+      }
+
       var blogdata = {
         coverImage: this.coverImage,
         blogTitle: this.blogTitle,
