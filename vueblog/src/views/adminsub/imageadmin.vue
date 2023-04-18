@@ -3,7 +3,11 @@
         <el-scrollbar>
             <el-table :data="tableData" style="width: 100%">
                 <el-table-column prop="filePath" label="文件名" width="600" />
-                <el-table-column prop="fileSize" label="文件大小" width="200" />
+                <el-table-column prop="fileSize" label="文件大小(KB)" width="200">
+                    <template v-slot="scope">
+                        {{ scope.row.fileSize / 1024 }}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="lastModifiedTime" label="最后修改时间" width="200" />
                 <el-table-column fixed="right" label="选项" width="180">
                     <template v-slot="scope">
