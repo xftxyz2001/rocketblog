@@ -19,7 +19,7 @@
         <el-button type="primary" @click="selectBlog">查找</el-button>
       </el-form-item>
     </el-form>
-    <el-button type="primary" plain class="adduser" @click="addblog">
+    <el-button type="primary" plain class="adduser" @click="goaddblog">
       添加博客</el-button>
   </el-header>
   <div></div>
@@ -98,7 +98,7 @@ function selectBlog() {
   });
 }
 
-function addblog() {
+function goaddblog() {
   router.push({ name: "adminaddblog" })
 }
 
