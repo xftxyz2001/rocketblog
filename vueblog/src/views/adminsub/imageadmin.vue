@@ -2,19 +2,17 @@
     <el-main>
         <el-scrollbar>
             <el-table :data="tableData" style="width: 100%">
-                <el-table-column label="标题" width="600">
-                    <template v-slot="scope">
-                        <span>{{ scope.row }}</span>
-                    </template>
-                </el-table-column>
+                <el-table-column prop="filePath" label="文件名" width="600" />
+                <el-table-column prop="fileSize" label="文件大小" width="200" />
+                <el-table-column prop="lastModifiedTime" label="最后修改时间" width="200" />
                 <el-table-column fixed="right" label="选项" width="180">
                     <template v-slot="scope">
                         <!-- 下载 -->
-                        <el-button link type="primary" size="small" @click="download(scope.row)">下载</el-button>
+                        <el-button link type="primary" size="small" @click="download(scope.row.filePath)">下载</el-button>
                         <!-- 查看 -->
-                        <el-button link type="primary" size="small" @click="view(scope.row)">查看</el-button>
+                        <el-button link type="primary" size="small" @click="view(scope.row.filePath)">查看</el-button>
                         <!-- 删除 -->
-                        <el-button link type="danger" size="small" @click="delete_(scope.row)">删除</el-button>
+                        <el-button link type="danger" size="small" @click="delete_(scope.row.filePath)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -38,16 +36,16 @@ function getdata() {
 
 getdata();
 
-function download(row) {
-    window.open("/images/download/" + row);
+function download(filePath) {
+    window.open("/images/download/" + filePath);
 };
 
-function view(row) {
-    window.open("/images/" + row);
+function view(filePath) {
+    window.open("/images/" + filePath);
 };
 
-function delete_(row) {
-    axios.delete("/admin/image/" + row).then((res) => {
+function delete_(filePath) {
+    axios.delete("/admin/image/" + filePath).then((res) => {
         var res = res.data;
         if (res.code == 0) {
             ElMessage.success("删除成功");
