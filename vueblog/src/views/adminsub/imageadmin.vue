@@ -39,7 +39,7 @@ function getdata() {
     axios.get("/admin/images").then((res) => {
         var res = res.data;
         if (res.code == 0) {
-            tableData.value = res.data;
+            var ls = []
             // 遍历res.data，访问@GetMapping("/images/{id}/{width}/{height}")返回图片字节数组将其转换为base64
             for (var i = 0; i < res.data.length; i++) {
                 axios.get("/images/" + res.data[i].filePath + "/50/50" /*, { responseType: "arraybuffer" } */)
@@ -53,9 +53,15 @@ function getdata() {
                         );
                         const imageDataUrl = `data:${imageType};base64,${imageDataBase64}`;
                         // res.data[i].base64 = imageDataUrl;
-                        tableData.value[i].base64 = imageDataUrl;
+                        ls.push({
+                            filePath: res.data[i].filePath,
+                            fileSize: res.data[i].fileSize,
+                            lastModifiedTime: res.data[i].lastModifiedTime,
+                            base64: imageDataUrl
+                        });
                     });
             }
+            tableData.value = ls;
         }
     });
 }
