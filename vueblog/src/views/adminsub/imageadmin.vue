@@ -39,6 +39,7 @@ function getdata() {
     axios.get("/admin/images").then((res) => {
         var res = res.data;
         if (res.code == 0) {
+            tableData.value = res.data;
             // 遍历res.data，访问@GetMapping("/images/{id}/{width}/{height}")返回图片字节数组将其转换为base64
             for (var i = 0; i < res.data.length; i++) {
                 axios.get("/images/" + res.data[i].filePath + "/50/50" /*, { responseType: "arraybuffer" } */)
@@ -51,10 +52,10 @@ function getdata() {
                                 .reduce((data, byte) => data + String.fromCharCode(byte), '')
                         );
                         const imageDataUrl = `data:${imageType};base64,${imageDataBase64}`;
-                        res.data[i].base64 = imageDataUrl;
+                        // res.data[i].base64 = imageDataUrl;
+                        tableData.value[i].base64 = imageDataUrl;
                     });
             }
-            tableData.value = res.data;
         }
     });
 }
