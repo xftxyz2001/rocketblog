@@ -4,8 +4,7 @@
             <el-table :data="tableData" style="width: 100%">
                 <el-table-column label="缩略图" width="80">
                     <template v-slot="scope">
-                        <!-- 显示base64的图片 -->
-                        <img :src="scope.row.base64" width="50" height="50" />
+                        <img :src="'/images/' + scope.row.filePath + '/50/50'" alt="" />
                     </template>
                 </el-table-column>>
                 <el-table-column prop="filePath" label="文件名" width="600" />
@@ -39,28 +38,7 @@ function getdata() {
     axios.get("/admin/images").then((res) => {
         var res = res.data;
         if (res.code == 0) {
-            var ls = []
-            for (var i = 0; i < res.data.length; i++) {
-                var imageDataUrl = "";
-                axios.get("/images/" + res.data[i].filePath + "/50/50" /*, { responseType: "arraybuffer" } */)
-                    .then(res2 => {
-                        // 处理响应的字节数组
-                        const imageType = res2.headers['content-type']; // 图像类型
-                        // 将图像数据的字节数组转换成Base64编码字符串
-                        const imageDataBase64 = window.btoa(
-                            new Uint8Array(res2.data)
-                                .reduce((data, byte) => data + String.fromCharCode(byte), '')
-                        );
-                        imageDataUrl = `data:${imageType};base64,${imageDataBase64}`;
-                    });
-                ls.push({
-                    filePath: res.data[i].filePath,
-                    fileSize: res.data[i].fileSize,
-                    lastModifiedTime: res.data[i].lastModifiedTime,
-                    base64: imageDataUrl
-                });
-            }
-            tableData.value = ls;
+            tableData.value = res.data;
         }
     });
 }
