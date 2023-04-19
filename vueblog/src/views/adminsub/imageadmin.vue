@@ -37,22 +37,20 @@ const tableData = ref([]);
 
 function getdata() {
     axios.get("/admin/images").then((res) => {
-        var res = res.data;
+        const res = res.data;
         if (res.code == 0) {
-            var ls = []
-            // 遍历res.data，访问@GetMapping("/images/{id}/{width}/{height}")返回图片字节数组将其转换为base64
+            const ls = []
             for (var i = 0; i < res.data.length; i++) {
                 axios.get("/images/" + res.data[i].filePath + "/50/50" /*, { responseType: "arraybuffer" } */)
                     .then(res2 => {
                         // 处理响应的字节数组
                         const imageType = res2.headers['content-type']; // 图像类型
-                        // 将图像数据的字节数组转换成Base64编码字符串以便在<img>标签中显示
+                        // 将图像数据的字节数组转换成Base64编码字符串
                         const imageDataBase64 = window.btoa(
                             new Uint8Array(res2.data)
                                 .reduce((data, byte) => data + String.fromCharCode(byte), '')
                         );
                         const imageDataUrl = `data:${imageType};base64,${imageDataBase64}`;
-                        // res.data[i].base64 = imageDataUrl;
                         ls.push({
                             filePath: res.data[i].filePath,
                             fileSize: res.data[i].fileSize,
