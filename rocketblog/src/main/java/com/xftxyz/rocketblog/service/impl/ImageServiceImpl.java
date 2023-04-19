@@ -1,6 +1,7 @@
 package com.xftxyz.rocketblog.service.impl;
 
-import java.awt.Image;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -87,27 +88,27 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public byte[] getLowResolutionImage(String id, int newWidth, int newHeight) {
-        try {
-            // 读取原始图像的字节数组
-            byte[] imageData = getImage(id);
+        // 读取原始图像的字节数组
+        byte[] imageData = getImage(id);
 
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             // 解码成 BufferedImage 对象
-            BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(imageData));
-
+            BufferedImage originalImage = ImageIO.read(bais);
             // 创建缩略图
-            Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
-
+            BufferedImage scaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics2D = scaledImage.createGraphics();
+            graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            graphics2D.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+            graphics2D.dispose();
             // 将缩略图转换为字节数组
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write((BufferedImage) scaledImage, "jpg", baos);
-            baos.flush();
+            ImageIO.write(scaledImage, "jpg", baos);
             byte[] lowResImageData = baos.toByteArray();
-            baos.close();
-
             return lowResImageData;
         } catch (IOException e) {
             throw new ImageException("无法读取文件: " + id);
         }
+
     }
 
     @Override
