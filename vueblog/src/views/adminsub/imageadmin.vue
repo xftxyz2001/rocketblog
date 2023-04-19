@@ -2,10 +2,10 @@
     <el-main>
         <el-scrollbar>
             <el-table :data="tableData" style="width: 100%">
-                <el-table-column label="缩略图" width="100">
+                <el-table-column label="缩略图" width="60">
                     <template v-slot="scope">
                         <!-- 显示base64的图片 -->
-                        <img :src="scope.row.base64" width="100" height="100" />
+                        <img :src="scope.row.base64" width="50" height="50" />
                     </template>
                 </el-table-column>>
                 <el-table-column prop="filePath" label="文件名" width="600" />
@@ -41,7 +41,7 @@ function getdata() {
         if (res.code == 0) {
             // 遍历res.data，访问@GetMapping("/images/{id}/{width}/{height}")返回图片字节数组将其转换为base64
             for (var i = 0; i < res.data.length; i++) {
-                axios.get("/images/" + res.data[i].filePath + "/100/100" /*, { responseType: "arraybuffer" } */)
+                axios.get("/images/" + res.data[i].filePath + "/50/50" /*, { responseType: "arraybuffer" } */)
                     .then(res => {
                         // 处理响应的字节数组
                         const headers = res.headers;
