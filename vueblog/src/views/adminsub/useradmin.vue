@@ -147,10 +147,10 @@ function getUsers() {
 
 getUsers();
 
-function toggleShow(row){
+function toggleShow(row) {
   row.show = !row.show
 }
-function showPassword(row){
+function showPassword(row) {
   // 如果row.show为true，就显示密码，否则就显示**点击查看密码**
   if (row.show) {
     return row.password
@@ -161,6 +161,11 @@ function showPassword(row){
 
 function deleteclick(id) {
   axios.delete("/admin/user/" + id).then((res) => {
+    var res = res.data;
+    if (res.code == 0) {
+      // 提示成功
+      ElMessage.success(res.msg);
+    }
     getUsers();
   });
 }
@@ -204,6 +209,7 @@ import {
 
 import router from "@/router";
 import axios from "axios";
+import { ElMessage } from "element-plus";
 
 export default {
   name: "useradmin",

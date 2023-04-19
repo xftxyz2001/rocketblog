@@ -103,7 +103,14 @@ function goaddblog() {
 }
 
 function deleteblog(blogid) {
-  axios.delete("/admin/blog/" + blogid);
+  axios.delete("/admin/blog/" + blogid).then((res) => {
+    var res = res.data;
+    if (res.code == 0) {
+      // 提示成功
+      ElMessage.success(res.msg);
+    }
+    getBlog();
+  });
 }
 
 function lookclick(userid, blogId) {

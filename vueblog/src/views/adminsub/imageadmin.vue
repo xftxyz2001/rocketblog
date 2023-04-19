@@ -1,4 +1,15 @@
 <template>
+    <el-header style="text-align: right; font-size: 12px">
+        <!-- 批量上传图片 -->
+        <!-- <el-upload class="upload-demo" action="/images/uploads" :on-success="getdata" :on-error="getdata"
+            :on-preview="handlePreview" :on-remove="handleRemove" :limit="5" :on-exceed="handleExceed" :auto-upload="false"
+            :file-list="fileList" :on-change="handleChange" :multiple="true" :show-file-list="false"
+            :before-upload="beforeUpload">
+            <el-button type="primary" size="small">上传</el-button>
+        </el-upload> -->
+
+    </el-header>
+    <div></div>
     <el-main>
         <el-scrollbar>
             <el-table :data="tableData" style="width: 100%">
@@ -46,6 +57,8 @@ function getdata() {
 getdata();
 
 function download(filePath) {
+    // 提示下载开始
+    ElMessage.success("图片已开始下载");
     window.open("/images/download/" + filePath);
 };
 
