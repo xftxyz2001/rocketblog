@@ -42,19 +42,16 @@ function getdata() {
             // 遍历res.data，访问@GetMapping("/images/{id}/{width}/{height}")返回图片字节数组将其转换为base64
             for (var i = 0; i < res.data.length; i++) {
                 axios.get("/images/" + res.data[i].filePath + "/50/50" /*, { responseType: "arraybuffer" } */)
-                    .then(res => {
+                    .then(res2 => {
                         // 处理响应的字节数组
-                        const headers = res.headers;
-                        const imageType = headers['content-type']; // 图像类型
-                        const imageDataArrayBuffer = res.data; // 图像数据的字节数组
-
-                        // 转换成Base64编码字符串以便在<img>标签中显示
-                        const imageDataBase64 = window.btoa(imageDataArrayBuffer);
-                        console.log(imageDataBase64);
+                        const imageType = res2.headers['content-type']; // 图像类型
+                        // 将图像数据的字节数组转换成Base64编码字符串以便在<img>标签中显示
+                        const imageDataBase64 = window.btoa(
+                            new Uint8Array(res2.data)
+                                .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                        );
                         const imageDataUrl = `data:${imageType};base64,${imageDataBase64}`;
-                        console.log(imageDataUrl);
                         res.data[i].base64 = imageDataUrl;
-
                     });
             }
             tableData.value = res.data;
