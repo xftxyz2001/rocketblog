@@ -17,7 +17,8 @@ import com.xftxyz.rocketblog.exception.blog.EmailSendError;
 import com.xftxyz.rocketblog.exception.captcha.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.captcha.FrequentOperationException;
 import com.xftxyz.rocketblog.exception.chat.NoChatException;
-import com.xftxyz.rocketblog.exception.image.ImageException;
+import com.xftxyz.rocketblog.exception.file.FileException;
+import com.xftxyz.rocketblog.exception.file.ImageException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
@@ -36,6 +37,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class CustomerExceptionHandler {
+    // 文件处理异常
+    @ExceptionHandler(FileException.class)
+    public Result<Object> handleFileException(FileException e) {
+        return Result.error(ResultMessageEnum.FILE_ERROR.getCode(), e.getMessage());
+    }
+
     // 邮件发送失败
     @ExceptionHandler(EmailSendError.class)
     public Result<Object> handleEmailSendError(EmailSendError e) {

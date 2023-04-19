@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.xftxyz.rocketblog.exception.image.ImageException;
+import com.xftxyz.rocketblog.exception.file.ImageException;
 import com.xftxyz.rocketblog.service.ImageService;
 
 import jakarta.validation.constraints.NotBlank;

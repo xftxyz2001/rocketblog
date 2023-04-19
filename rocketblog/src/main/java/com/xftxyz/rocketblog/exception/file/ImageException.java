@@ -1,4 +1,4 @@
-package com.xftxyz.rocketblog.exception.image;
+package com.xftxyz.rocketblog.exception.file;
 
 public class ImageException extends RuntimeException {
 

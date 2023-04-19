@@ -47,7 +47,8 @@ public interface EnvironmentVariables {
     List<SysOption> SYS_OPTIONS = List.of(
             new SysOption("接口文档", "/doc/debug-all.html"),
             new SysOption("数据库", "http://8.130.81.23:888/phpmyadmin_7b7e3539633d471f/index.php"),
-            new SysOption("项目开源", "https://github.com/xftxyz2001/rocketblog"));
+            new SysOption("项目开源", "https://github.com/xftxyz2001/rocketblog"),
+            new SysOption("重置系统", "/admin/reset"));
 
     // 图片对应签名s
     Map<String, List<String>> IMAGE_SIGNATURE = new HashMap<>() {

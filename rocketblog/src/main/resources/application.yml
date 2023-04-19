@@ -31,14 +31,12 @@ spring:
     password: uzhblohhwmvwhfib
     default-encoding: UTF-8
     protocol: smtp
-    # smtp的指定端口 使用465要将protocol改为smtps
     port: 587
-    # 设置开启ssl
     properties:
       mail:
         stmp:
           ssl:
-            enable: true
+            enable: true # 设置开启ssl
 
 mybatis:
   mapper-locations: classpath:com/xftxyz/rocketblog/mapper/*.xml
@@ -47,3 +45,7 @@ mybatis:
 
 pagehelper:
   helper-dialect: mysql
+
+xftxyz:
+  sqlscript: rocketblog.sql # sql脚本文件
+  logfilepath: bloglog # 日志文件路径

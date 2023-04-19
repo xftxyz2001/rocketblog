@@ -30,7 +30,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
-import com.xftxyz.rocketblog.exception.image.ImageException;
+import com.xftxyz.rocketblog.exception.file.ImageException;
 import com.xftxyz.rocketblog.pojo.FileInfo;
 import com.xftxyz.rocketblog.service.ImageService;
 import com.xftxyz.rocketblog.util.Utils;

@@ -33,7 +33,8 @@ public enum ResultMessageEnum {
     // 其他错误
     PARAM_ERROR(500, "非法参数"),
     // 参数校验错误
-    PARAM_VALID_ERROR(501, "参数校验错误");
+    PARAM_VALID_ERROR(501, "参数校验错误"),
+    FILE_ERROR(502, "文件错误");
 
     private Integer code;
     private String message;

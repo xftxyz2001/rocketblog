@@ -26,12 +26,15 @@ import com.xftxyz.rocketblog.pojo.FileInfo;
 import com.xftxyz.rocketblog.pojo.SysOption;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserInfo;
+import com.xftxyz.rocketblog.service.AdminService;
 import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.service.CommentService;
 import com.xftxyz.rocketblog.service.ImageService;
 import com.xftxyz.rocketblog.service.UserService;
+import com.xftxyz.rocketblog.util.Utils;
 import com.xftxyz.rocketblog.validation.ValidInfo;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
@@ -54,6 +57,9 @@ public class AdminController {
 
     @Autowired
     ImageService imageService;
+
+    @Autowired
+    AdminService adminService;
 
     /**
      * 获取所有用户信息
@@ -321,6 +327,23 @@ public class AdminController {
     @GetMapping("/system")
     public List<SysOption> getSystemOption() {
         return EnvironmentVariables.SYS_OPTIONS;
+    }
+
+    /**
+     * 重置数据库，仅限管理员使用
+     * 
+     * @param password 管理员密码
+     * @param session  会话
+     * @return 返回一个字符串，表示重置数据库的结果
+     */
+    @PostMapping("/reset")
+    public String reset(@RequestParam String password, HttpSession session) {
+        User user = Utils.currentUser(session);
+        // 重置数据库
+        adminService.resetDatabase(user, password);
+        // 删除日志文件
+        adminService.deleteLogFiles();
+        return "重置成功";
     }
 
 }
