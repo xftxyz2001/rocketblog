@@ -2,7 +2,7 @@
     <el-main>
         <el-scrollbar>
             <el-table :data="tableData" style="width: 100%">
-                <el-table-column label="缩略图" width="60">
+                <el-table-column label="缩略图" width="80">
                     <template v-slot="scope">
                         <!-- 显示base64的图片 -->
                         <img :src="scope.row.base64" width="50" height="50" />
@@ -45,13 +45,19 @@ function getdata() {
                     .then(res => {
                         // 处理响应的字节数组
                         const headers = res.headers;
+                        console.log(headers);
                         const imageType = headers['content-type']; // 图像类型
+                        console.log(imageType);
                         const imageDataArrayBuffer = res.data; // 图像数据的字节数组
+                        console.log(imageDataArrayBuffer);
 
                         // 转换成Base64编码字符串以便在<img>标签中显示
-                        const imageDataBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(imageDataArrayBuffer)));
+                        const imageDataBase64 = windows.btoa(imageDataArrayBuffer);
+                        console.log(imageDataBase64);
                         const imageDataUrl = `data:${imageType};base64,${imageDataBase64}`;
+                        console.log(imageDataUrl);
                         res.data[i].base64 = imageDataUrl;
+
                     });
             }
             tableData.value = res.data;
