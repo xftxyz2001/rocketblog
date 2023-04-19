@@ -48,5 +48,5 @@ pagehelper:
 
 xftxyz:
   sqlscript: rocketblog.sql
-  logfilepath: bloglog
+  logfilepath: blog.log
   upload-directory: uploads

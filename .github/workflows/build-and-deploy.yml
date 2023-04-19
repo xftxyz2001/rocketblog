@@ -69,4 +69,4 @@ jobs:
               echo kill -9 $PID
               kill -9 $PID
             fi
-            nohup java -jar rocketblog/target/rocketblog-0.0.1-SNAPSHOT.jar >> bloglog &
+            nohup java -jar rocketblog/target/rocketblog-0.0.1-SNAPSHOT.jar >> blog.log &
