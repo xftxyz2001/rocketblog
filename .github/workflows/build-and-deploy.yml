@@ -49,6 +49,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          overwrite: true
           source: ./rocketblog/target/rocketblog-0.0.1-SNAPSHOT.jar
           target: /root/
 
