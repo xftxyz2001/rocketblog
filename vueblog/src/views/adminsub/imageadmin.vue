@@ -2,10 +2,16 @@
     <el-main>
         <el-scrollbar>
             <el-table :data="tableData" style="width: 100%">
+                <el-table-column label="缩略图" width="100">
+                    <template v-slot="scope">
+                        <!-- 显示base64的图片 -->
+                        <img :src="scope.row.base64" width="100" height="100" />
+                    </template>
+                </el-table-column>>
                 <el-table-column prop="filePath" label="文件名" width="600" />
                 <el-table-column prop="fileSize" label="文件大小(KB)" width="200">
                     <template v-slot="scope">
-                        {{ scope.row.fileSize / 1024 }}
+                        {{ (scope.row.fileSize / 1024).toFixed(2) }}
                     </template>
                 </el-table-column>
                 <el-table-column prop="lastModifiedTime" label="最后修改时间" width="200" />
@@ -33,6 +39,21 @@ function getdata() {
     axios.get("/admin/images").then((res) => {
         var res = res.data;
         if (res.code == 0) {
+            // 遍历res.data，访问@GetMapping("/images/{id}/{width}/{height}")返回图片字节数组将其转换为base64
+            for (var i = 0; i < res.data.length; i++) {
+                axios.get("/images/" + res.data[i].filePath + "/100/100" /*, { responseType: "arraybuffer" } */)
+                    .then(res => {
+                        // 处理响应的字节数组
+                        const headers = res.headers;
+                        const imageType = headers['content-type']; // 图像类型
+                        const imageDataArrayBuffer = res.data; // 图像数据的字节数组
+
+                        // 转换成Base64编码字符串以便在<img>标签中显示
+                        const imageDataBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(imageDataArrayBuffer)));
+                        const imageDataUrl = `data:${imageType};base64,${imageDataBase64}`;
+                        res.data.base64 = imageDataUrl;
+                    });
+            }
             tableData.value = res.data;
         }
     });
