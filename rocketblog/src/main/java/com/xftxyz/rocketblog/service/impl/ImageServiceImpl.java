@@ -108,14 +108,36 @@ public class ImageServiceImpl implements ImageService {
         } catch (IOException e) {
             throw new ImageException("无法读取文件: " + id);
         }
+        /*
+         * sun.awt.image.ToolkitImage and java.awt.image.BufferedImage are in module
+         * java.desktop of loader 'bootstrap'
+         * 
+         * fromChatGPT:
+         * 这个警告信息实际上并不是错误，而是Java 9及更高版本引入的模块化系统中的一部分。该警告消息表明 sun.awt.image.ToolkitImage
+         * 和 java.awt.image.BufferedImage 类分别位于 java.desktop 模块中，这些类在使用时可能会出现问题。
+         * 
+         * 在您的代码示例中，使用 ImageIO.read() 方法从字节数组中读取原始图像时，ToolkitImage 和 BufferedImage
+         * 都被用到了。这应该是没有问题的，因为 sun.awt.image.ToolkitImage 是 java.awt.Image 的子类，可以被
+         * ImageIO.read() 方法识别和处理。
+         * 
+         * 如果您确实想要消除这个警告消息，可以尝试将以下命令行参数添加到 javac 和 java 命令中：
+         * 
+         * --add-exports java.desktop/sun.awt=ALL-UNNAMED
+         * 这个命令会将 sun.awt
+         * 包导出给所有未命名的模块。这样做虽然可以消除警告，但并不是一个推荐的解决方法，因为它会暴露内部API，并且可能会引入安全风险。
+         * 
+         * 在大多数情况下，由于这个警告实际上不会引起程序故障，因此忽略它是最好的解决方案。
+         */
 
     }
 
     @Override
-    public List<FileInfo> getAllImageFileInfo() {
+    public List<FileInfo> getAllImageFileInfo(int pageNum, int pageSize) {
         try {
             return Files.walk(Paths.get(uploadDirectory))
                     .filter(Files::isRegularFile)
+                    .skip((long) (pageNum - 1) * pageSize) // 跳过前 (pageNum-1)*pageSize 个元素
+                    .limit(pageSize) // 取出接下来的 pageSize 个元素
                     .map(path -> {
                         try {
                             BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
@@ -124,7 +146,7 @@ public class ImageServiceImpl implements ImageService {
                                     attr.size(),
                                     new Date(attr.lastModifiedTime().toMillis()));
                         } catch (IOException e) {
-                            throw new ImageException("无法读取文件信息");
+                            return new FileInfo("无法获取文件名", 0L, new Date());
                         }
                     })
                     .collect(Collectors.toList());

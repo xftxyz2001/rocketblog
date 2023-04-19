@@ -285,8 +285,10 @@ public class AdminController {
      * @return 返回一个 {@link List} 对象，包含所有图片文件名
      */
     @GetMapping("/images")
-    public List<FileInfo> getAllImageIds() {
-        return imageService.getAllImageFileInfo();
+    public List<FileInfo> getAllImageIds(
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = ValidInfo.PAGE_LESS_THAN_ONE) Integer pageNum,
+            @RequestParam(defaultValue = EnvironmentVariables.DEFAULT_PAGE_SIZE) Integer pageSize) {
+        return imageService.getAllImageFileInfo(pageNum, pageSize);
     }
 
     /**

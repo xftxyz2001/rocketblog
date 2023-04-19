@@ -16,7 +16,7 @@ public interface ImageService {
 
     public String getIPSign();
 
-    List<FileInfo> getAllImageFileInfo();
+    List<FileInfo> getAllImageFileInfo(int pageNum, int pageSize);
 
     void deleteImageByName(String filename);
 
