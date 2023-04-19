@@ -14,8 +14,10 @@ import com.xftxyz.rocketblog.exception.captcha.CaptchaErrorException;
 import com.xftxyz.rocketblog.exception.user.AlreadyDoneException;
 import com.xftxyz.rocketblog.exception.user.EmailExistException;
 import com.xftxyz.rocketblog.exception.user.EmailOrPasswordErrorException;
+import com.xftxyz.rocketblog.exception.user.IllegalOperationException;
 import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
 import com.xftxyz.rocketblog.exception.user.SelfOperationException;
+import com.xftxyz.rocketblog.exception.user.UserNotExistException;
 import com.xftxyz.rocketblog.mapper.BlogMapper;
 import com.xftxyz.rocketblog.mapper.ChatMapper;
 import com.xftxyz.rocketblog.mapper.FollowMapper;
@@ -30,6 +32,9 @@ import com.xftxyz.rocketblog.pojo.UserExample;
 import com.xftxyz.rocketblog.pojo.UserInfo;
 import com.xftxyz.rocketblog.service.UserService;
 import com.xftxyz.rocketblog.status.BlogStatus;
+import com.xftxyz.rocketblog.status.RoleStatus;
+
+import jakarta.validation.constraints.Min;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -54,32 +59,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers() {
-        List<User> users = userMapper.selectByExample(null);
-        return users;
+        return userMapper.selectByExample(null);
     }
 
     @Override
     public User getUser(Long id) {
-        User user = userMapper.selectByPrimaryKey(id);
-        return user;
+        return userMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public Integer addUser(User user) {
-        int insert = userMapper.insert(user);
-        return insert;
+        return userMapper.insert(user);
     }
 
     @Override
     public Integer deleteUser(Long id) {
-        int delete = userMapper.deleteByPrimaryKey(id);
-        return delete;
+        // 检测被删除的用户是不是管理员
+        User user = userMapper.selectByPrimaryKey(id);
+        if (user.getIsSuperuser() == RoleStatus.ADMIN) {
+            throw new IllegalOperationException("不能删除管理员");
+        }
+        return userMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public Integer updateUser(User user) {
-        int update = userMapper.updateByPrimaryKey(user);
-        return update;
+        return userMapper.updateByPrimaryKey(user);
     }
 
     @Override
@@ -375,5 +380,18 @@ public class UserServiceImpl implements UserService {
             user.setAvatar(avatar);
         }
         updateUser(user);
+    }
+
+    @Override
+    public Integer addAdmin(@Min(value = 1, message = "目标用户ID不合法") Long userid) {
+        User user = getUser(userid);
+        if (user == null) {
+            throw new UserNotExistException("用户不存在");
+        }
+        if (user.getIsSuperuser() == RoleStatus.ADMIN) {
+            throw new IllegalOperationException("该用户已经是管理员");
+        }
+        user.setIsSuperuser(RoleStatus.ADMIN);
+        return updateUser(user);
     }
 }
