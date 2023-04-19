@@ -51,7 +51,7 @@ function getdata() {
                         // 转换成Base64编码字符串以便在<img>标签中显示
                         const imageDataBase64 = btoa(String.fromCharCode.apply(null, new Uint8Array(imageDataArrayBuffer)));
                         const imageDataUrl = `data:${imageType};base64,${imageDataBase64}`;
-                        res.data.base64 = imageDataUrl;
+                        res.data[i].base64 = imageDataUrl;
                     });
             }
             tableData.value = res.data;
