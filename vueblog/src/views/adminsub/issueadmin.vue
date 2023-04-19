@@ -1,5 +1,5 @@
 <template>
-  <el-header font-size: 25px>
+  <el-header style="font-size: 25px">
     <el-link type="primary" :underline="false" href="https://github.com/xftxyz2001/rocketblog/issues"
       target="_blank">前往Github查看</el-link>
   </el-header>
