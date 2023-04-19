@@ -154,36 +154,9 @@ axios.get("/blog/hot/comment?pageNum=1&pageSize=5").then((res) => {
 const loading = ref(false);
 const currentDate = new Date().toDateString();
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
-// function followthis() {
-//   if (checkTokenInCookie()) {
-//     //关注
-//   } else {
-//     Bus.emit("followneedlogin", {});
-//   }
-// }
-// function likethis() {
-//   if (checkTokenInCookie()) {
-//     //点赞
-//   } else {
-//     Bus.emit("likeneedlogin", {});
-//   }
-// }
-// function collectthis() {
-//   if (checkTokenInCookie()) {
-//     //收藏
-//   } else {
-//     Bus.emit("collectneedlogin", {});
-//   }
-// }
+
 function clickblog(userid, blogid) {
-  // var userid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.userid;
-  // var blogid = e.target.parentElement.parentElement.parentElement.parentElement.dataset.blogid;
-  // console.log(e);
-  // const index = Array.from(e.target.parentNode).indexOf(e.target.parentNode.children);
-  // console.log(index);
-  // console.log(allconcern.value);
-  // const userid = allconcern.value[index].userid;
-  // const blogid = allconcern.value[index].blogId;
+
   router.push({
     name: "blogdetail",
     params: { blogid: blogid },

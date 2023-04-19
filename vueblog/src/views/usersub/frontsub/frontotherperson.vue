@@ -110,13 +110,14 @@ axios.get("/user/info/" + route.params.userid).then((res) => {
   }
 });
 
-function checkTokenInCookie() {
-  var cookies = document.cookie;
-  return cookies.indexOf("token=") != -1;
+function checkLogin() {
+  axios.get("/user/i").then((res) => {
+    return res.data.code == 0;
+  });
 }
 
 function dontfollowthis() {
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.delete("/user/follow/" + route.params.userid).then((res) => {
       userdata.value.followed = false;
     });
@@ -125,7 +126,7 @@ function dontfollowthis() {
   }
 }
 function followthis() {
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.get("/user/follow/" + route.params.userid).then((res) => {
       userdata.value.followed = true;
     });

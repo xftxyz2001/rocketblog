@@ -379,23 +379,12 @@ const registerVisible = ref(false);
 const registerformRef = ref(null);
 const loginformRef = ref(null);
 
-function checkTokenInCookie() {
-  var cookies = document.cookie;
-  return cookies.indexOf("token=") != -1;
+function checkLogin() {
+  axios.get("/user/i").then((res) => {
+    return res.data.code == 0;
+  });
 }
 
-// //判断用户是否已登陆
-// if (checkTokenInCookie()) {
-//   axios
-//     .post("/user/login", {
-//       email: localStorage.getItem("token.email"),
-//       password: localStorage.getItem("token.password"),
-//     })
-//     .then(() => {
-
-//       loginsuccess.value = true;
-//     });
-// }
 // 尝试获取用户信息
 getuserinfo();
 
@@ -692,15 +681,14 @@ function getuserinfo() {
   });
 }
 function editbutton() {
-  if (checkTokenInCookie()) {
-    console.log(checkTokenInCookie());
+  if (checkLogin()) {
     router.push({ name: "editblog" });
   } else loginVisible.value = "true";
   // window.open({ name: "editblog" }, "_blank");
   router.push({ name: "editblog" });
 }
 function tohome() {
-  if (checkTokenInCookie()) router.push({ name: "allconcern" });
+  if (checkLogin()) router.push({ name: "allconcern" });
   else {
     loginVisible.value = "true";
     loginform.email = "";
@@ -709,7 +697,7 @@ function tohome() {
   //router.push({ name: "allconcern" });
 }
 function tomessage() {
-  if (checkTokenInCookie()) router.push({ name: "message" });
+  if (checkLogin()) router.push({ name: "message" });
   else {
     loginVisible.value = "true";
     loginform.email = "";
@@ -718,7 +706,7 @@ function tomessage() {
   // router.push({ name: "message" });
 }
 function toperson() {
-  if (checkTokenInCookie()) router.push({ name: "personuserinfo" });
+  if (checkLogin()) router.push({ name: "personuserinfo" });
   else {
     loginVisible.value = "true";
     loginform.email = "";

@@ -378,9 +378,10 @@ axios.get("/blog/detail/" + route.params.blogid).then((res) => {
   }
 });
 
-function checkTokenInCookie() {
-  var cookies = document.cookie;
-  return cookies.indexOf("token=") != -1;
+function checkLogin() {
+  axios.get("/user/i").then((res) => {
+    return res.data.code == 0;
+  });
 }
 function changeblog() {
   router.push({
@@ -394,7 +395,7 @@ function commentthis() {
   // console.log(comments.value);
   // console.log(commenttext.value);
 
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     var commentdata = {
       blogId: route.params.blogid,
       commentContent: commenttext.value,
@@ -480,7 +481,7 @@ function commentthis() {
 }
 
 function dontfollowthis() {
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.delete("/user/follow/" + blogdata.value.userid).then((res) => {
       userdata.value.followed = false;
     });
@@ -489,7 +490,7 @@ function dontfollowthis() {
   }
 }
 function followthis() {
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.get("/user/follow/" + blogdata.value.userid).then((res) => {
       userdata.value.followed = true;
     });
@@ -498,7 +499,7 @@ function followthis() {
   }
 }
 function likethis() {
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.get("/blog/like/" + route.params.blogid).then((res) => {
       blogdata.value.like = true;
       blogdata.value.likeCount = res.data.data;
@@ -508,7 +509,7 @@ function likethis() {
   }
 }
 function collectthis() {
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.get("/blog/collect/" + route.params.blogid).then((res) => {
       blogdata.value.collect = true;
       blogdata.value.bookmarkCount = res.data.data;
@@ -519,7 +520,7 @@ function collectthis() {
 }
 function dontcollectthis() {
   console.log(blogdata.value.collect);
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.delete("/blog/collect/" + route.params.blogid).then((res) => {
       blogdata.value.collect = false;
       blogdata.value.bookmarkCount = res.data.data;
@@ -529,7 +530,7 @@ function dontcollectthis() {
   }
 }
 function dontlikethis() {
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.delete("/blog/like/" + route.params.blogid).then((res) => {
       blogdata.value.like = false;
       blogdata.value.likeCount = res.data.data;
@@ -540,7 +541,7 @@ function dontlikethis() {
 }
 // 删除博客
 function confirmdelete() {
-  if (checkTokenInCookie()) {
+  if (checkLogin()) {
     axios.delete("/blog/delete/" + route.params.blogid).then((res) => {
       if (res.data.code == 0) {
         ElMessage({
