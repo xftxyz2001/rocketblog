@@ -1,4 +1,10 @@
 <template>
+  <el-header style="text-align: right; font-size: 12px">
+    <!-- 前往Github查看 -->
+    <el-link type="primary" :underline="false" href="https://github.com/xftxyz2001/rocketblog/issues"
+      target="_blank">前往Github查看</el-link>
+  </el-header>
+  <div></div>
   <el-main>
     <el-scrollbar>
       <el-table :data="tableData" style="width: 100%">

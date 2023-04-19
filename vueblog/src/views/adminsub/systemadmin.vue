@@ -1,4 +1,15 @@
 <template>
+  <el-header style="text-align: right; font-size: 12px">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+      <el-form-item label="用户id">
+        <el-input v-model="formInline.userid" placeholder="请输入用户id" style="width: 200px" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="addadmin">添加</el-button>
+      </el-form-item>
+    </el-form>
+  </el-header>
+  <div></div>
   <el-main>
     <el-scrollbar>
       <el-table :data="tableData" style="width: 100%">
@@ -14,8 +25,12 @@
 </template>
 <script setup>
 import axios from "axios";
+import { ElMessage } from "element-plus";
 import { ref } from "vue";
 const tableData = ref([]);
+const formInline = ref({
+  userid: "",
+});
 
 axios.get("/admin/system").then((res) => {
   tableData.value = res.data.data;
@@ -23,6 +38,17 @@ axios.get("/admin/system").then((res) => {
 
 function go(url) {
   window.open(url);
+}
+
+function addadmin() {
+  axios.pit("/admin/addadmin/" + formInline.value.userid).then((res) => {
+    var res = res.data;
+    if (res.code == 0) {
+      ElMessage.success(res.msg);
+    } else {
+      ElMessage.error(res.msg);
+    }
+  });
 }
 
 </script>
