@@ -27,11 +27,15 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     DataSource dataSource;
 
-    @Value("xftxyz.sqlscript")
+    @Value("${xftxyz.sqlscript}")
     String sqlScript;
 
+    // 图片文件路径
+    @Value("${xftxyz.upload-directory}")
+    String uploadDirectory;
+
     // 日志文件路径
-    @Value("xftxyz.logfilepath")
+    @Value("${xftxyz.logfilepath}")
     String logFilePath;
 
     @Override
@@ -48,6 +52,19 @@ public class AdminServiceImpl implements AdminService {
             throw new FileException("数据库重置脚本读取失败");
         } catch (SQLException e) {
             throw new FileException("数据库重置失败");
+        }
+    }
+
+    // 删除图片文件
+    @Override
+    public void deleteImageFiles() {
+        // 清空图片文件
+        File imageFile = new File(uploadDirectory);
+        if (imageFile.exists()) {
+            File[] files = imageFile.listFiles();
+            for (File file : files) {
+                file.delete();
+            }
         }
     }
 

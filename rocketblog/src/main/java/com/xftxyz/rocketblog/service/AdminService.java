@@ -4,6 +4,8 @@ public interface AdminService {
 
     void resetDatabase();
 
+    public void deleteImageFiles();
+
     void deleteLogFiles();
-    
+
 }

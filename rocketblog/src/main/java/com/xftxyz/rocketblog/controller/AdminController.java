@@ -338,6 +338,8 @@ public class AdminController {
     public String reset(HttpSession session) {
         // 重置数据库
         adminService.resetDatabase();
+        // 清空图片
+        adminService.deleteImageFiles();
         // 删除日志文件
         adminService.deleteLogFiles();
         return "重置成功";

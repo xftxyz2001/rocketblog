@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,8 @@ import com.xftxyz.rocketblog.util.Utils;
 @Service
 public class ImageServiceImpl implements ImageService {
 
-    private String uploadDirectory = EnvironmentVariables.UPLOAD_DIRECTORY;
+    @Value("${xftxyz.upload-directory}")
+    String uploadDirectory;
 
     @Override
     public String uploadImage(MultipartFile file) {
