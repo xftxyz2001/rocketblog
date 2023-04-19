@@ -67,6 +67,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public List<String> uploadImages(MultipartFile[] files) {
+        return List.of(files).stream().map(file -> uploadImage(file)).collect(Collectors.toList());
+    }
+
+    @Override
     public Resource downloadImage(String id) {
         Path filePath = Paths.get(uploadDirectory).resolve(id);
         try {

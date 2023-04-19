@@ -21,4 +21,6 @@ public interface ImageService {
     void deleteImageByName(String filename);
 
     public byte[] getLowResolutionImage(String id, int newWidth, int newHeight);
+
+    List<String> uploadImages(MultipartFile[] files);
 }

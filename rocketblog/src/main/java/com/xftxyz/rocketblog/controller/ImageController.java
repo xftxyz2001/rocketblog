@@ -1,5 +1,7 @@
 package com.xftxyz.rocketblog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +41,18 @@ public class ImageController {
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("file") MultipartFile file) {
         return imageService.uploadImage(file);
+    }
+
+    /**
+     * 批量上传图片
+     * 
+     * @param files 要上传的图片文件
+     * @return 返回一个字符串列表，表示图片上传成功后的 URL
+     * @throws ImageException 如果上传图片失败，则会抛出 ImageException 异常
+     */
+    @PostMapping("/uploads")
+    public List<String> uploadImages(@RequestParam("files") MultipartFile[] files) {
+        return imageService.uploadImages(files);
     }
 
     /**
