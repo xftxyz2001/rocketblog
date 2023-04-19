@@ -379,10 +379,13 @@ const registerVisible = ref(false);
 const registerformRef = ref(null);
 const loginformRef = ref(null);
 
-function checkLogin() {
-  axios.get("/user/i").then((res) => {
-    return res.data.code == 0;
-  });
+async function checkLogin() {
+  try {
+    const response = await axios.get('/user/i');
+    return response.data.code == 0;
+  } catch(error) {
+    return false;
+  }
 }
 
 // 尝试获取用户信息

@@ -378,11 +378,15 @@ axios.get("/blog/detail/" + route.params.blogid).then((res) => {
   }
 });
 
-function checkLogin() {
-  axios.get("/user/i").then((res) => {
-    return res.data.code == 0;
-  });
+async function checkLogin() {
+  try {
+    const response = await axios.get('/user/i');
+    return response.data.code == 0;
+  } catch(error) {
+    return false;
+  }
 }
+
 function changeblog() {
   router.push({
     name: "changeblog",
