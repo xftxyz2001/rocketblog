@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +36,6 @@ import com.xftxyz.rocketblog.service.ImageService;
 import com.xftxyz.rocketblog.service.UserService;
 import com.xftxyz.rocketblog.validation.ValidInfo;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
@@ -331,11 +333,10 @@ public class AdminController {
     /**
      * 重置数据库，仅限管理员使用
      * 
-     * @param session 会话
      * @return 返回一个字符串，表示重置数据库的结果
      */
     @GetMapping("/reset")
-    public String reset(HttpSession session) {
+    public String reset() {
         // 重置数据库
         adminService.resetDatabase();
         // 清空图片
@@ -343,6 +344,18 @@ public class AdminController {
         // 删除日志文件
         adminService.deleteLogFiles();
         return "重置成功";
+    }
+
+    /**
+     * 获取日志文件
+     * 
+     * @return 返回一个 {@link ResponseEntity} 对象，包含日志文件
+     */
+    @GetMapping("/log")
+    public ResponseEntity<Resource> downloadLog() {
+        Resource logResource = adminService.downloadLog();
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + logResource.getFilename() + "\"").body(logResource);
     }
 
 }

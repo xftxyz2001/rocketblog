@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -15,10 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
 import com.xftxyz.rocketblog.exception.file.FileException;
+import com.xftxyz.rocketblog.exception.file.ImageException;
 import com.xftxyz.rocketblog.service.AdminService;
 
 @Service
@@ -78,6 +83,17 @@ public class AdminServiceImpl implements AdminService {
             } catch (IOException e) {
                 throw new FileException("日志文件清空失败");
             }
+        }
+    }
+
+
+    @Override
+    public Resource downloadLog() {
+        Path filePath = Paths.get(logFilePath);
+        try {
+            return new UrlResource(filePath.toUri());
+        } catch (MalformedURLException e) {
+            throw new ImageException("无法读取文件: " + logFilePath);
         }
     }
 
