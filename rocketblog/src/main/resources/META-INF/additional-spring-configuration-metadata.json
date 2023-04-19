@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "xftxyz.sqlscript",
+      "type": "java.lang.String",
+      "description": "数据库重置用sql脚本文件路径"
+    },
+    {
+      "name": "xftxyz.logfilepath",
+      "type": "java.lang.String",
+      "description": "日志文件路径"
+    },
+    {
+      "name": "xftxyz.upload-directory",
+      "type": "java.lang.String",
+      "description": "用户上传图片的路径"
+    }
+  ]
+}

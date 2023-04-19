@@ -47,6 +47,6 @@ pagehelper:
   helper-dialect: mysql
 
 xftxyz:
-  sqlscript: rocketblog.sql # sql脚本文件
-  logfilepath: bloglog # 日志文件路径
-  upload-directory: uploads # 上传文件的目录
+  sqlscript: rocketblog.sql
+  logfilepath: bloglog
+  upload-directory: uploads

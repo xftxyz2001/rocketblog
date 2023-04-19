@@ -41,10 +41,13 @@ function go(url) {
 }
 
 function addadmin() {
-  axios.pit("/admin/addadmin/" + formInline.value.userid).then((res) => {
+  axios.put("/admin/addadmin/" + formInline.value.userid).then((res) => {
     var res = res.data;
     if (res.code == 0) {
-      ElMessage.success(res.msg);
+      // 查询出userid的信息
+      axios.get("/user/info/" + formInline.value.userid).then((res) => {
+        ElMessage.success("已将" + res.data.data.username + "赋予管理员权限");
+      });
     } else {
       ElMessage.error(res.msg);
     }
