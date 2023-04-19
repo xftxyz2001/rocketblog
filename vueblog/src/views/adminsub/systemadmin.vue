@@ -5,7 +5,7 @@
         <el-input v-model="formInline.userid" placeholder="请输入用户id" style="width: 200px" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addadmin">添加</el-button>
+        <el-button type="primary" @click="addadmin">赋予管理员权限</el-button>
       </el-form-item>
     </el-form>
   </el-header>

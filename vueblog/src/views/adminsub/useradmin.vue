@@ -128,7 +128,6 @@ import { ref } from "vue";
 const dialogFormVisible = ref(false);
 const addFormVisible = ref(false);
 const formLabelWidth = "140px";
-const ins = getCurrentInstance();
 
 const formInline = ref({
   name: "",

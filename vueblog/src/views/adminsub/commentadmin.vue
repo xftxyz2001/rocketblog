@@ -45,7 +45,6 @@
 import router from "@/router";
 import axios from "axios";
 import { ref } from "vue";
-const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
 axios.get("/admin/comments").then((res) => {

@@ -1,6 +1,5 @@
 <template>
-  <el-header style="text-align: right; font-size: 12px">
-    <!-- 前往Github查看 -->
+  <el-header font-size: 25px>
     <el-link type="primary" :underline="false" href="https://github.com/xftxyz2001/rocketblog/issues"
       target="_blank">前往Github查看</el-link>
   </el-header>
@@ -36,8 +35,6 @@
 <script setup>
 import axios from "axios";
 import { ref } from "vue";
-const formLabelWidth = "140px";
-const formInline = ref({});
 const tableData = ref([]);
 axios.get("/link", { params: { url: "https://api.github.com/repos/xftxyz2001/rocketblog/issues" } }).then((res) => {
   tableData.value = res.data;
