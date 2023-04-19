@@ -31,7 +31,6 @@ import com.xftxyz.rocketblog.service.BlogService;
 import com.xftxyz.rocketblog.service.CommentService;
 import com.xftxyz.rocketblog.service.ImageService;
 import com.xftxyz.rocketblog.service.UserService;
-import com.xftxyz.rocketblog.util.Utils;
 import com.xftxyz.rocketblog.validation.ValidInfo;
 
 import jakarta.servlet.http.HttpSession;
@@ -332,15 +331,13 @@ public class AdminController {
     /**
      * 重置数据库，仅限管理员使用
      * 
-     * @param password 管理员密码
-     * @param session  会话
+     * @param session 会话
      * @return 返回一个字符串，表示重置数据库的结果
      */
-    @PostMapping("/reset")
-    public String reset(@RequestParam String password, HttpSession session) {
-        User user = Utils.currentUser(session);
+    @GetMapping("/reset")
+    public String reset(HttpSession session) {
         // 重置数据库
-        adminService.resetDatabase(user, password);
+        adminService.resetDatabase();
         // 删除日志文件
         adminService.deleteLogFiles();
         return "重置成功";

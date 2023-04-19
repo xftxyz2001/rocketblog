@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
 import com.xftxyz.rocketblog.exception.file.FileException;
-import com.xftxyz.rocketblog.exception.user.PasswordErrorException;
-import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.AdminService;
 
 @Service
@@ -37,11 +35,7 @@ public class AdminServiceImpl implements AdminService {
     String logFilePath;
 
     @Override
-    public void resetDatabase(User user, String password) {
-        // 检查密码
-        if (!user.getPassword().equals(password)) {
-            throw new PasswordErrorException();
-        }
+    public void resetDatabase() {
         try (Connection connection = dataSource.getConnection()) {
             // 读取数据库重置脚本
             Resource resource = new ClassPathResource(sqlScript);
