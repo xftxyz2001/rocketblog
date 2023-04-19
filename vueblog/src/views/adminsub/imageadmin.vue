@@ -37,9 +37,9 @@ const tableData = ref([]);
 
 function getdata() {
     axios.get("/admin/images").then((res) => {
-        const res = res.data;
+        var res = res.data;
         if (res.code == 0) {
-            const ls = []
+            var ls = []
             for (var i = 0; i < res.data.length; i++) {
                 var imageDataUrl = "";
                 axios.get("/images/" + res.data[i].filePath + "/50/50" /*, { responseType: "arraybuffer" } */)
