@@ -318,8 +318,8 @@ const registerrules = reactive({
     },
   ],
 });
-const rulerigesterFormRef = ref < FormInstance > registerformRef;
-const ruleloginFormRef = ref < FormInstance > loginformRef;
+// const rulerigesterFormRef = ref < FormInstance > registerformRef;
+// const ruleloginFormRef = ref < FormInstance > loginformRef;
 const loginform = reactive({
   name: "",
   email: "",
