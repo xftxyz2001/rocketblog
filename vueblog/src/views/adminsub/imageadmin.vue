@@ -1,26 +1,15 @@
 <template>
     <el-header style="text-align: right; font-size: 12px">
 
-        <el-upload
-            class="upload-demo"
-            action="/images/uploads"
-            :on-change="handleChange"
-            :on-success="handleSuccess"
-            :before-upload="beforeUpload"
-            :on-progress="uploadProcess"
-            :on-exceed="handleExceed"
-            :before-remove="beforeRemove"
-            :file-list="fileList"
-            :multiple="true"
-            :data="{ 'files': fileList }"
-            id = "upload"
-            style="margin-left: 50px; margin-bottom: 40px"
-          >
+        <el-upload class="upload-demo" action="/images/uploads" :on-change="handleChange" :on-success="handleSuccess"
+            :before-upload="beforeUpload" :on-progress="uploadProcess" :on-exceed="handleExceed"
+            :before-remove="beforeRemove" :file-list="fileList" :multiple="true" :data="{ 'files': fileList }" id="upload"
+            style="margin-left: 50px; margin-bottom: 40px">
             <el-button type="primary">选择图片</el-button>
             <template #tip>
-              <div class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
+                <div class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
             </template>
-          </el-upload>
+        </el-upload>
 
     </el-header>
     <div></div>
@@ -93,10 +82,33 @@ function delete_(filePath) {
     });
 };
 
+function handleChange(file, fileList) {
+    console.log(file, fileList);
+}
 function beforeUpload(file) {
-    fileList.push(file);
-    return true;
-};
+    const isJPG = file.type === 'image/jpeg';
+    const isPNG = file.type === 'image/png';
+    const isLt2M = file.size / 1024 / 1024 < 2;
+
+    if (!isJPG && !isPNG) {
+        ElMessage.error('上传图片只能是 JPG/PNG 格式!');
+    }
+    if (!isLt2M) {
+        ElMessage.error('上传图片大小不能超过 2MB!');
+    }
+    return isJPG || isPNG && isLt2M;
+
+}
+function uploadProcess(event, file, fileList) {
+    console.log(event, file, fileList);
+}
+function handleExceed() {
+    ElMessage.error("最多上传5个文件");
+
+}
+function beforeRemove(file, fileList) {
+    console.log(file, fileList);
+}
 
 function handleSuccess(response, file, fileList) {
     ElMessage.success(response)
