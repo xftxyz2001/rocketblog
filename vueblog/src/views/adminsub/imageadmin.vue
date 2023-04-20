@@ -45,16 +45,6 @@ import { ref } from "vue";
 const tableData = ref([]);
 const fileList = ref([]);
 
-function beforeUpload(file) {
-    fileList.push(file);
-    return false; // 阻止自动上传
-};
-
-function handleSuccess(response, file, fileList) {
-    // 处理上传成功的回调逻辑
-    console.log('上传成功', response);
-};
-
 function getdata() {
     axios.get("/admin/images").then((res) => {
         var res = res.data;
@@ -86,6 +76,17 @@ function delete_(filePath) {
             ElMessage.error(res.message);
         }
     });
+};
+
+
+function beforeUpload(file) {
+    fileList.push(file);
+    return true;
+};
+
+function handleSuccess(response, file, fileList) {
+    ElMessage.success(response)
+    console.log(response);
 };
 
 </script>
