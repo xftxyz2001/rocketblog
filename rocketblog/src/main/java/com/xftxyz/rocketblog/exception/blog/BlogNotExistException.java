@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.blog;
 
-public class BlogNotExistException extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class BlogNotExistException extends RocketblogException {
 
     public BlogNotExistException() {
     }

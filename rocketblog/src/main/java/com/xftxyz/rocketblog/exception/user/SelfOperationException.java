@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.user;
 
-public class SelfOperationException extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class SelfOperationException extends RocketblogException {
 
     public SelfOperationException() {
     }

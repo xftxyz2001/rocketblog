@@ -1,6 +1,6 @@
 package com.xftxyz.rocketblog.result;
 
-public enum ResultMessageEnum {
+public enum ResultCode {
     // 未知错误
     UNKNOWN_ERROR(-1, "未知错误"),
     // 成功
@@ -39,7 +39,7 @@ public enum ResultMessageEnum {
     private Integer code;
     private String message;
 
-    ResultMessageEnum(Integer code, String message) {
+    ResultCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

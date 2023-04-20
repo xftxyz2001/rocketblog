@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.user;
 
-public class IllegalOperationException extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class IllegalOperationException extends RocketblogException {
 
     public IllegalOperationException() {
     }

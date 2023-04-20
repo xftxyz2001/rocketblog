@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.blog;
 
-public class EmailSendError extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class EmailSendError extends RocketblogException {
 
     public EmailSendError() {
     }

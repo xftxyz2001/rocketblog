@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.result.Result;
-import com.xftxyz.rocketblog.result.ResultMessageEnum;
+import com.xftxyz.rocketblog.result.ResultCode;
 import com.xftxyz.rocketblog.service.UserService;
 import com.xftxyz.rocketblog.util.Utils;
 
@@ -54,7 +54,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             // 返回未登录信息
             response.setContentType("application/json;charset=utf-8");
             response.getWriter().write(objectMapper.writeValueAsString(Result
-                    .error(ResultMessageEnum.USER_NOT_LOGIN.getCode(), ResultMessageEnum.USER_NOT_LOGIN.getMessage())));
+                    .error(ResultCode.USER_NOT_LOGIN.getCode(), ResultCode.USER_NOT_LOGIN.getMessage())));
 
             return false;
         }

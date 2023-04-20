@@ -21,8 +21,8 @@ public class Result<T> {
      */
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<T>();
-        result.setCode(ResultMessageEnum.SUCCESS.getCode());
-        result.setMessage(ResultMessageEnum.SUCCESS.getMessage());
+        result.setCode(ResultCode.SUCCESS.getCode());
+        result.setMessage(ResultCode.SUCCESS.getMessage());
         result.setData(data);
         return result;
     }

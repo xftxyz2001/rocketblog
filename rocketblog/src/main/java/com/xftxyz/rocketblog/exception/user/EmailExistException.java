@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.user;
 
-public class EmailExistException extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class EmailExistException extends RocketblogException {
 
     public EmailExistException() {
     }

@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.user;
 
-public class NotLoginException extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class NotLoginException extends RocketblogException {
     public NotLoginException() {
     }
 

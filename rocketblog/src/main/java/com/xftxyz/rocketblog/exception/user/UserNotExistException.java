@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.user;
 
-public class UserNotExistException extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class UserNotExistException extends RocketblogException {
 
     public UserNotExistException() {
     }

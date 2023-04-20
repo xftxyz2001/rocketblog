@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.captcha;
 
-public class CaptchaErrorException extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class CaptchaErrorException extends RocketblogException {
 
     public CaptchaErrorException() {
     }

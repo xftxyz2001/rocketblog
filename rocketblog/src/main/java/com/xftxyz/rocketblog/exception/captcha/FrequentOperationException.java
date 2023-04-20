@@ -1,6 +1,8 @@
 package com.xftxyz.rocketblog.exception.captcha;
 
-public class FrequentOperationException extends RuntimeException {
+import com.xftxyz.rocketblog.exception.RocketblogException;
+
+public class FrequentOperationException extends RocketblogException {
 
     public FrequentOperationException() {
     }

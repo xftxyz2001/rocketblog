@@ -8,7 +8,7 @@
     "dataDictionaries": [
         {
             "title": "状态码字典",
-            "enumClassName": "com.xftxyz.rocketblog.result.ResultMessageEnum",
+            "enumClassName": "com.xftxyz.rocketblog.result.ResultCode",
             "codeField": "code",
             "descField": "message"
         }
