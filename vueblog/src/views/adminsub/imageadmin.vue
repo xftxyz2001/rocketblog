@@ -1,12 +1,11 @@
 <template>
     <el-header style="text-align: right; font-size: 12px">
         <!-- 批量上传图片 -->
-        <!-- <el-upload class="upload-demo" action="/images/uploads" :on-success="getdata" :on-error="getdata"
-            :on-preview="handlePreview" :on-remove="handleRemove" :limit="5" :on-exceed="handleExceed" :auto-upload="false"
-            :file-list="fileList" :on-change="handleChange" :multiple="true" :show-file-list="false"
-            :before-upload="beforeUpload">
-            <el-button type="primary" size="small">上传</el-button>
-        </el-upload> -->
+
+        <el-upload ref="upload" :action="'/images/uploads'" :multiple="true" :data="{ 'files': fileList }"
+            :on-success="handleSuccess" :before-upload="beforeUpload">
+            <el-button size="small" type="primary">点击上传</el-button>
+        </el-upload>
 
     </el-header>
     <div></div>
@@ -44,6 +43,17 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
 const tableData = ref([]);
+const fileList = ref([]);
+
+function beforeUpload(file) {
+    fileList.push(file);
+    return false; // 阻止自动上传
+};
+
+function handleSuccess(response, file, fileList) {
+    // 处理上传成功的回调逻辑
+    console.log('上传成功', response);
+};
 
 function getdata() {
     axios.get("/admin/images").then((res) => {
