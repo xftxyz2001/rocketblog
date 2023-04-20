@@ -28,6 +28,9 @@ public interface UserService {
     // 删除用户
     public Integer deleteUser(Long id);
 
+    // 注销用户
+    public Integer cancellation(Long userid);
+
     // 更新用户
     public Integer updateUser(User user);
 

@@ -79,6 +79,11 @@ public class UserServiceImpl implements UserService {
         if (user.getIsSuperuser() == RoleStatus.ADMIN) {
             throw new IllegalOperationException("不能删除管理员");
         }
+        return cancellation(id);
+    }
+
+    @Override
+    public Integer cancellation(Long id) {
         return userMapper.deleteByPrimaryKey(id);
     }
 

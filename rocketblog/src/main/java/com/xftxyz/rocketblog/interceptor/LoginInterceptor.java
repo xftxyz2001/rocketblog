@@ -9,6 +9,7 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.result.Result;
 import com.xftxyz.rocketblog.result.ResultMessageEnum;
 import com.xftxyz.rocketblog.service.UserService;
+import com.xftxyz.rocketblog.util.Utils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (request.getSession().getAttribute(EnvironmentVariables.SESSION_USER) != null) {
             return true;
         }
-        
+
         // 未在session中找到登录信息，尝试从cookie中获取
         Cookie[] cookies = request.getCookies();
         String token = null;
@@ -49,10 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         // 未登录
         if (user == null) {
             // 清除cookie
-            Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+            Utils.clearLoginCookie(response);
             // 返回未登录信息
             response.setContentType("application/json;charset=utf-8");
             response.getWriter().write(objectMapper.writeValueAsString(Result

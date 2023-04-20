@@ -6,6 +6,8 @@ import java.util.UUID;
 import com.xftxyz.rocketblog.config.EnvironmentVariables;
 import com.xftxyz.rocketblog.pojo.User;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class Utils {
@@ -33,6 +35,14 @@ public class Utils {
             sb.append(str.charAt(number));
         }
         return sb.toString();
+    }
+
+    // 清除登录Cookie
+    public static void clearLoginCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
 }

@@ -164,10 +164,7 @@ public class UserController {
         // 使会话无效
         session.invalidate();
         // 删除Cookie
-        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        Utils.clearLoginCookie(response);
 
         // 返回一个消息，指示用户已经成功登出
         return "登出成功";
@@ -317,13 +314,10 @@ public class UserController {
         // 删除redis中的token
         userService.deleteUserToken(user.getUserid());
         // 删除用户账户
-        userService.deleteUser(user.getUserid());
+        userService.cancellation(user.getUserid());
 
         // 删除Cookie
-        Cookie cookie = new Cookie(EnvironmentVariables.COOKIE_TOKEN, null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        Utils.clearLoginCookie(response);
 
         // 使会话无效
         session.invalidate();
