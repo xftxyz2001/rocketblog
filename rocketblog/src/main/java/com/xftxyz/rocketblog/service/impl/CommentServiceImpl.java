@@ -110,11 +110,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> findCommentsByExample(Comment comment) {
         CommentExample exComment = new CommentExample();
+        CommentExample.Criteria criteria = exComment.createCriteria();
         if (comment.getBlogId() != null) {
-            exComment.createCriteria().andBlogIdEqualTo(comment.getBlogId());
+            criteria.andBlogIdEqualTo(comment.getBlogId());
         }
         if (comment.getUserid() != null) {
-            exComment.createCriteria().andUseridEqualTo(comment.getUserid());
+            criteria.andUseridEqualTo(comment.getUserid());
         }
         exComment.setOrderByClause("createtime desc");
         List<Comment> comments = commentMapper.selectByExample(exComment);

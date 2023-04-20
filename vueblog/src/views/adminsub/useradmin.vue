@@ -191,7 +191,7 @@ function selectUser() {
     getUsers();
     return;
   }
-  axios.post("/admin/user/s", { email: formInline.value.email, name: formInline.value.name }).then((res) => {
+  axios.post("/admin/user/s", { email: formInline.value.email, username: formInline.value.name }).then((res) => {
     tableData.value = res.data.data.list;
   });
 }
@@ -202,10 +202,6 @@ function lookclick(userid) {
 
 </script>
 <script>
-import {
-  getCurrentInstance
-} from "vue";
-
 import router from "@/router";
 import axios from "axios";
 import { ElMessage } from "element-plus";
@@ -225,31 +221,6 @@ export default {
 
   },
 
-  // setup(props) {
-  //   const ins = getCurrentInstance();
-  //   onMounted(() => {
-  //     console.log("cew");
-  //     axios.get("/admin/users").then((res) => {
-  //       console.log("cew");
-  //       ins.data.tableData = res.data;
-  //     });
-  //     console.log("gvsre");
-  //     // axios({
-  //     //   url: "/admin/users",
-  //     //   method: "GET",
-  //     // }).then((res) => {
-  //     //   console.log(res);
-  //     // });
-  //   });
-  // },
-
-  // created() {
-  //   console.log("cwae");
-  //   const data = axios.create({
-  //     baseURL: "http://43.139.75.129:8601/user/getList",
-  //   });
-  //   console.log(data);
-  // },
 };
 </script>
 
