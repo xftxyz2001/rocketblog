@@ -1,6 +1,10 @@
 package com.xftxyz.rocketblog.exception.user;
 
+import org.springframework.util.StringUtils;
+
 import com.xftxyz.rocketblog.exception.RocketblogException;
+import com.xftxyz.rocketblog.result.Result;
+import com.xftxyz.rocketblog.result.ResultCode;
 
 public class EmailOrPasswordErrorException extends RocketblogException {
 
@@ -22,6 +26,14 @@ public class EmailOrPasswordErrorException extends RocketblogException {
     public EmailOrPasswordErrorException(String message, Throwable cause, boolean enableSuppression,
             boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    @Override
+    public Result<Object> handle() {
+        Integer code = ResultCode.EMAIL_OR_PASSWORD_ERROR.getCode();
+        String message = StringUtils.hasLength(this.getMessage()) ? this.getMessage()
+                : ResultCode.EMAIL_OR_PASSWORD_ERROR.getMessage();
+        return Result.error(code, message);
     }
 
 }
