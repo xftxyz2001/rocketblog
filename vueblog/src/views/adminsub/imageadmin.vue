@@ -3,7 +3,7 @@
 
         <el-upload class="upload-demo" action="/images/uploads" :on-change="handleChange" :on-success="handleSuccess"
             :before-upload="beforeUpload" :on-progress="uploadProcess" :on-exceed="handleExceed"
-            :before-remove="beforeRemove" :file-list="fileList" :multiple="true" :data="{ 'files': fileList }" id="upload"
+            :before-remove="beforeRemove" :file-list="fileList" :multiple="true" :limit="1" id="upload"
             style="margin-left: 50px; margin-bottom: 40px">
             <el-button type="primary">选择图片</el-button>
             <template #tip>
@@ -82,38 +82,41 @@ function delete_(filePath) {
     });
 };
 
-function handleChange(file, fileList) {
-    console.log(file, fileList);
-}
-function beforeUpload(file) {
-    const isJPG = file.type === 'image/jpeg';
-    const isPNG = file.type === 'image/png';
-    const isLt2M = file.size / 1024 / 1024 < 2;
 
-    if (!isJPG && !isPNG) {
-        ElMessage.error('上传图片只能是 JPG/PNG 格式!');
-    }
-    if (!isLt2M) {
-        ElMessage.error('上传图片大小不能超过 2MB!');
-    }
-    return isJPG || isPNG && isLt2M;
-
-}
-function uploadProcess(event, file, fileList) {
-    console.log(event, file, fileList);
-}
-function handleExceed() {
-    ElMessage.error("最多上传5个文件");
-
-}
-function beforeRemove(file, fileList) {
-    console.log(file, fileList);
-}
-
-function handleSuccess(response, file, fileList) {
-    ElMessage.success(response)
-    console.log(response);
+// 上传前校验
+const beforeUpload = (file) => {
+    console.log("beforeUploadfile", file);
 };
+
+//上传成功回调
+const handleSuccess = (res, file) => {
+    console.log("handleSuccessres", res);
+    console.log("handleSuccessfile", file);
+
+};
+
+//上传文件
+const handleChange = (file, fileList) => {
+    console.log("handleChangefile", file);
+    console.log("handleChangefileList", fileList);
+};
+
+// 上传时候的钩子
+const uploadProcess = (event, file, fileList) => {
+    console.log("uploadProcessfile", file);
+    console.log("uploadProcessfileList", fileList);
+};
+
+// 删除
+const beforeRemove = (file, fileList) => {
+    console.log("beforeRemovefile", file);
+    console.log("beforeRemovefileList", fileList);
+};
+const handleExceed = (files, uploadFiles) => {
+    console.log("handleExceedfiles", files);
+    console.log("handleExceeduploadFiles", uploadFiles);
+};
+
 
 </script>
 <script>
