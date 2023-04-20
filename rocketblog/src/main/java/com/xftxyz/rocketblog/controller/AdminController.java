@@ -150,6 +150,18 @@ public class AdminController {
     }
 
     /**
+     * 移除指定用户的管理员权限
+     * 
+     * @param userid 指定用户的ID
+     * @return 返回一个整数值，表示修改用户信息的行数
+     */
+    @PutMapping("/removeadmin/{userid}")
+    public Integer removeAdmin(
+            @PathVariable("userid") @Min(value = 1, message = ValidInfo.USER_ID_LESS_THAN_ONE) Long userid) {
+        return userService.removeAdmin(userid);
+    }
+
+    /**
      * 根据用户对象的属性查找用户信息
      *
      * @param user     用户对象，根据该对象的属性查找用户信息

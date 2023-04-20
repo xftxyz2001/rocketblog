@@ -19,8 +19,6 @@ import com.xftxyz.rocketblog.pojo.VComment;
 import com.xftxyz.rocketblog.pojo.VCommentExample;
 import com.xftxyz.rocketblog.service.CommentService;
 
-import jakarta.validation.constraints.Min;
-
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -124,7 +122,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Integer removeComment(@Min(value = 1, message = "评论ID不合法") Long commentId) {
+    public Integer removeComment(Long commentId) {
         return commentMapper.deleteByPrimaryKey(commentId);
     }
 

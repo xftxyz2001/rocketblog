@@ -6,8 +6,6 @@ import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.pojo.UserBase;
 import com.xftxyz.rocketblog.pojo.UserInfo;
 
-import jakarta.validation.constraints.Min;
-
 public interface UserService {
 
     // 生成token
@@ -83,8 +81,8 @@ public interface UserService {
 
     public void updateUser(User user, String username, String userSex, String phone, String avatar);
 
-    public Integer addAdmin(@Min(value = 1, message = "目标用户ID不合法") Long userid);
+    public Integer addAdmin(Long userid);
 
-    // public void deleteUserTokens(Long userid);
+    public Integer removeAdmin(Long userid);
 
 }

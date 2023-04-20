@@ -34,8 +34,6 @@ import com.xftxyz.rocketblog.service.UserService;
 import com.xftxyz.rocketblog.status.BlogStatus;
 import com.xftxyz.rocketblog.status.RoleStatus;
 
-import jakarta.validation.constraints.Min;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -388,7 +386,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer addAdmin(@Min(value = 1, message = "目标用户ID不合法") Long userid) {
+    public Integer addAdmin(Long userid) {
         User user = getUser(userid);
         if (user == null) {
             throw new UserNotExistException("用户不存在");
@@ -397,6 +395,19 @@ public class UserServiceImpl implements UserService {
             throw new IllegalOperationException("该用户已经是管理员");
         }
         user.setIsSuperuser(RoleStatus.ADMIN);
+        return updateUser(user);
+    }
+
+    @Override
+    public Integer removeAdmin(Long userid) {
+        User user = getUser(userid);
+        if (user == null) {
+            throw new UserNotExistException("用户不存在");
+        }
+        if (user.getIsSuperuser() != RoleStatus.ADMIN) {
+            throw new IllegalOperationException("该用户不是管理员");
+        }
+        user.setIsSuperuser(RoleStatus.USER);
         return updateUser(user);
     }
 }
