@@ -193,13 +193,6 @@ const handleExceed = (files, uploadFiles) => {
   ElMessage.warning(`只能选择一张图片`);
 };
 
-// var form = {
-//   username: "",
-// };
-
-// 动态修改上传图片的action
-// document.getElementById("upload").setAttribute("action", axios.defaults.baseURL+"/images/upload")
-
 axios.get("/user/i/detail").then((res) => {
   userinfo.value = res.data.data;
 });
