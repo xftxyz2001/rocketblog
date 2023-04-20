@@ -7,13 +7,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xftxyz.rocketblog.parameter.ChatMessageBody;
 import com.xftxyz.rocketblog.pojo.User;
 import com.xftxyz.rocketblog.service.ChatService;
 import com.xftxyz.rocketblog.service.UserService;
 
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
@@ -38,6 +37,8 @@ public class MessageServer {
 
     private static ChatService chatService;
 
+    private static ObjectMapper objectMapper;
+
     @Autowired
     public void setUserService(UserService userService) {
         MessageServer.userService = userService;
@@ -46,6 +47,11 @@ public class MessageServer {
     @Autowired
     public void setChatService(ChatService chatService) {
         MessageServer.chatService = chatService;
+    }
+
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        MessageServer.objectMapper = objectMapper;
     }
 
     // 建立连接
@@ -76,14 +82,15 @@ public class MessageServer {
 
     // 接收消息
     @OnMessage
-    public void onMessage(String chatMessageBody, Session session, @PathParam("token") String token) {
+    public void onMessage(String sChatMessageBody, Session session, @PathParam("token") String token) {
         User user = userService.fromToken(token);
         if (user == null) {
             return;
         }
         // 解析出指定用户
-        JSONObject jsonObj = JSONUtil.parseObj(chatMessageBody);
-        ChatMessageBody chatMsg = jsonObj.toBean(ChatMessageBody.class);
+        ChatMessageBody chatMsg = objectMapper.convertValue(sChatMessageBody, ChatMessageBody.class);
+        // JSONObject jsonObj = JSONUtil.parseObj(sChatMessageBody);
+        // ChatMessageBody chatMsg = jsonObj.toBean(ChatMessageBody.class);
         chat(user, chatMsg);
 
     }
