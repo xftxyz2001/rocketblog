@@ -1,37 +1,15 @@
 <template>
-  <el-menu
-    :default-active="activeIndex"
-    class="el-menu-demo"
-    mode="horizontal"
-    :ellipsis="false"
-    @select="handleSelect"
-    background-color="#002EA6"
-    text-color="#fff"
-    active-text-color="#ffE78F"
-  >
+  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" @select="handleSelect"
+    background-color="#002EA6" text-color="#fff" active-text-color="#ffE78F">
     <el-menu-item index="0" style="margin-left: 30px; margin-right: 30px">
       <img src="../../assets/logo.png" style="width: 80px; margin-top: 5px" />
     </el-menu-item>
     <div class="flex-grow" />
 
-    <div
-      class="demo-input-size"
-      style="padding-top: 12px; padding-right: 12px; padding-left: 12px"
-    >
-      <el-autocomplete
-        class="w-50 m-2"
-        v-model="keyword"
-        :fetch-suggestions="querySearch"
-        placeholder="请输入搜索内容"
+    <div class="demo-input-size" style="padding-top: 12px; padding-right: 12px; padding-left: 12px">
+      <el-autocomplete class="w-50 m-2" v-model="keyword" :fetch-suggestions="querySearch" placeholder="请输入搜索内容"
         :trigger-on-focus="false"
-        style="
-          width: 230px;
-          border-radius: 20px;
-          overflow: hidden;
-          --el-input-focus-border-color: none;
-          --el-input-bg-color: #fbfaf6;
-        "
-      >
+        style=" width: 230px; border-radius: 20px; overflow: hidden; --el-input-focus-border-color: none; --el-input-bg-color: #fbfaf6;">
         <template #default="{ item }">
           <div class="demo-input-suggestion-item" @click="clickItem(item)">
             <div class="demo-input-suggestion-item__content">
@@ -50,39 +28,36 @@
       </el-autocomplete>
     </div>
     <div>
-      <el-menu-item
-        index="1"
-        style="padding: 0 30px; margin-left: 20px"
-        @click="tohome"
-      >
-        <el-icon> <HomeFilled /> </el-icon>首页
+      <el-menu-item index="1" style="padding: 0 30px; margin-left: 20px" @click="tohome">
+        <el-icon>
+          <HomeFilled />
+        </el-icon>首页
       </el-menu-item>
     </div>
 
     <router-link :to="{ name: 'hotlatest' }">
-      <el-menu-item index="2" style="padding: 0 30px"
-        ><span class="iconfont" style="margin-right: 5px">&#xe602;</span
-        >热门</el-menu-item
-      ></router-link
-    >
+      <el-menu-item index="2" style="padding: 0 30px"><span class="iconfont"
+          style="margin-right: 5px">&#xe602;</span>热门</el-menu-item></router-link>
     <div>
       <el-menu-item index="3" style="padding: 0 30px" @click="tomessage">
-        <el-icon> <ChatDotRound /> </el-icon>消息
+        <el-icon>
+          <ChatDotRound />
+        </el-icon>消息
       </el-menu-item>
     </div>
 
     <div>
       <el-menu-item index="4" style="padding: 0 30px" @click="toperson">
-        <el-icon> <UserFilled /> </el-icon>主页
+        <el-icon>
+          <UserFilled />
+        </el-icon>主页
       </el-menu-item>
     </div>
     <div>
-      <el-menu-item
-        index="5"
-        style="padding: 0 30px; margin-right: 70px"
-        @click="editbutton"
-      >
-        <el-icon> <Plus /> </el-icon>发布
+      <el-menu-item index="5" style="padding: 0 30px; margin-right: 70px" @click="editbutton">
+        <el-icon>
+          <Plus />
+        </el-icon>发布
       </el-menu-item>
     </div>
 
@@ -94,27 +69,15 @@
         src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         style=""
       /> -->
-      <el-popover
-        :width="250"
-        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
-      >
+      <el-popover :width="250"
+        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
         <template #reference>
-          <el-avatar
-            :size="32"
-            :src="userinfo.avatar"
-            @mouseenter="getuserinfo"
-          />
+          <el-avatar :size="32" :src="userinfo.avatar" @mouseenter="getuserinfo" />
         </template>
         <template #default>
-          <div
-            class="demo-rich-conent"
-            style="display: flex; gap: 16px; flex-direction: column"
-          >
+          <div class="demo-rich-conent" style="display: flex; gap: 16px; flex-direction: column">
             <div style="text-align: center">
-              <p
-                class="demo-rich-content__name"
-                style="margin: 0; font-weight: 700; font-size: 20px"
-              >
+              <p class="demo-rich-content__name" style="margin: 0; font-weight: 700; font-size: 20px">
                 {{ userinfo.username }}
               </p>
               <!-- <p
@@ -125,51 +88,40 @@
               </p> -->
             </div>
             <el-row gutter="4" justify="center">
-              <el-button link @click="router.push({ name: 'personguanzhu' })"
-                ><el-col>
+              <el-button link @click="router.push({ name: 'personguanzhu' })"><el-col>
                   <div class="grid-content ep-bg-purple" />
-                  <el-col
-                    ><el-row justify="center">
+                  <el-col><el-row justify="center">
                       <h3>关注</h3>
                     </el-row>
                     <el-row justify="center" style="margin-top: -25px">
                       <h5>{{ userinfo.followings }}</h5>
                     </el-row>
                   </el-col>
-                </el-col></el-button
-              >
+                </el-col></el-button>
 
-              <el-button link @click="router.push({ name: 'personfensi' })"
-                ><el-col>
+              <el-button link @click="router.push({ name: 'personfensi' })"><el-col>
                   <div class="grid-content ep-bg-purple" />
-                  <el-col
-                    ><el-row justify="center">
+                  <el-col><el-row justify="center">
                       <h3>粉丝</h3>
                     </el-row>
                     <el-row justify="center" style="margin-top: -25px">
                       <h5>{{ userinfo.followers }}</h5>
                     </el-row>
                   </el-col>
-                </el-col></el-button
-              >
-              <el-button link @click="router.push({ name: 'personblog' })"
-                ><el-col>
+                </el-col></el-button>
+              <el-button link @click="router.push({ name: 'personblog' })"><el-col>
                   <div class="grid-content ep-bg-purple" />
-                  <el-col
-                    ><el-row justify="center">
+                  <el-col><el-row justify="center">
                       <h3>博客</h3>
                     </el-row>
                     <el-row justify="center" style="margin-top: -25px">
                       <h5>{{ userinfo.blogs }}</h5>
                     </el-row>
                   </el-col>
-                </el-col></el-button
-              >
+                </el-col></el-button>
             </el-row>
             <el-button text style="margin-top: -20px" @click="logout">
-              <span class="iconfont" style="margin-right: 5px">&#xe60d;</span
-              >退出登录</el-button
-            >
+              <span class="iconfont" style="margin-right: 5px">&#xe60d;</span>退出登录</el-button>
           </div>
         </template>
       </el-popover>
@@ -182,178 +134,72 @@
       <!-- <el-button link style="color: #fff">注册</el-button> -->
     </div>
     <!-- 登陆表单 -->
-    <el-dialog
-      ref="editform"
-      v-model="loginVisible"
-      title="用户登录"
-      style="width: 400px"
-    >
-      <div
-        style="
-          border-bottom: 1px #000 solid;
-          width: 80px;
-          margin: -30px 0 20px 0;
-        "
-      ></div>
+    <el-dialog ref="editform" v-model="loginVisible" title="用户登录" style="width: 400px">
+      <div style="border-bottom: 1px #000 solid;width: 80px;margin: -30px 0 20px 0;"></div>
       <el-form :model="loginform" :rules="loginrules" ref="loginformRef">
         <el-form-item :label-width="formLabelWidth" prop="email">
-          <el-input
-            v-model="loginform.email"
-            autocomplete="off"
-            prefix-icon="Message"
-            placeholder="邮箱"
-          />
+          <el-input v-model="loginform.email" autocomplete="off" prefix-icon="Message" placeholder="邮箱" />
         </el-form-item>
 
         <el-form-item :label-width="formLabelWidth" prop="password">
-          <el-input
-            v-model="loginform.password"
-            type="password"
-            placeholder="密码"
-            show-password
-            prefix-icon="Key"
-          />
+          <el-input v-model="loginform.password" type="password" placeholder="密码" show-password prefix-icon="Key" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <span
-          class="dialog-footer"
-          style="position: absolute; left: 20px; bottom: 5px"
-        >
-          <el-button
-            type="primary"
-            @click="Submitloginform(loginformRef)"
-            style="width: 360px; display: block"
-          >
+        <span class="dialog-footer" style="position: absolute; left: 20px; bottom: 5px">
+          <el-button type="primary" @click="Submitloginform(loginformRef)" style="width: 360px; display: block">
             登录
           </el-button>
-          <span style="font-size: 10px; display: inline-block; margin-top: 5px"
-            >还没有账号？<el-button
-              link
-              style="color: #79bbff; font-size: 10px"
-              @click="changetoregister(registerformRef)"
-              >立即注册</el-button
-            ></span
-          >
+          <span style="font-size: 10px; display: inline-block; margin-top: 5px">还没有账号？<el-button link
+              style="color: #79bbff; font-size: 10px" @click="changetoregister(registerformRef)">立即注册</el-button></span>
         </span>
       </template>
     </el-dialog>
     <!-- 注册表单 -->
-    <el-dialog
-      ref="editform"
-      v-model="registerVisible"
-      title="用户注册"
-      style="width: 400px"
-    >
-      <div
-        style="
-          border-bottom: 1px #000 solid;
-          width: 80px;
-          margin: -30px 0 20px 0;
-        "
-      ></div>
-      <el-form
-        :model="registerform"
-        :rules="registerrules"
-        ref="registerformRef"
-      >
+    <el-dialog ref="editform" v-model="registerVisible" title="用户注册" style="width: 400px">
+      <div style="border-bottom: 1px #000 solid;width: 80px;margin: -30px 0 20px 0;"></div>
+      <el-form :model="registerform" :rules="registerrules" ref="registerformRef">
         <el-form-item :label-width="formLabelWidth" prop="name">
-          <el-input
-            v-model="registerform.name"
-            autocomplete="off"
-            prefix-icon="UserFilled"
-            placeholder="昵称"
-          />
+          <el-input v-model="registerform.name" autocomplete="off" prefix-icon="UserFilled" placeholder="昵称" />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" prop="email">
-          <el-input
-            v-model="registerform.email"
-            autocomplete="off"
-            prefix-icon="Message"
-            placeholder="邮箱"
-          />
+          <el-input v-model="registerform.email" autocomplete="off" prefix-icon="Message" placeholder="邮箱" />
         </el-form-item>
 
         <el-form-item :label-width="formLabelWidth" prop="password">
-          <el-input
-            v-model="registerform.password"
-            type="password"
-            placeholder="密码"
-            show-password
-            prefix-icon="Key"
-            autocomplete="off"
-          />
+          <el-input v-model="registerform.password" type="password" placeholder="密码" show-password prefix-icon="Key"
+            autocomplete="off" />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" prop="confirmpassword">
-          <el-input
-            v-model="registerform.confirmpassword"
-            autocomplete="off"
-            placeholder="确认密码"
-            prefix-icon="Key"
-            type="password"
-            show-password
-          />
+          <el-input v-model="registerform.confirmpassword" autocomplete="off" placeholder="确认密码" prefix-icon="Key"
+            type="password" show-password />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" prop="vertify">
-          <el-input
-            v-model="registerform.vertify"
-            autocomplete="off"
-            placeholder="验证码"
-            prefix-icon="Unlock"
-            style="width: 50%; margin-right: 12px"
-          />
-          <el-button @click="getverify($event, registerformRef)"
-            >获取验证码</el-button
-          >
+          <el-input v-model="registerform.vertify" autocomplete="off" placeholder="验证码" prefix-icon="Unlock"
+            style="width: 50%; margin-right: 12px" />
+          <el-button @click="getverify($event, registerformRef)">获取验证码</el-button>
         </el-form-item>
       </el-form>
       <template #footer>
-        <span
-          class="dialog-footer"
-          style="position: absolute; left: 20px; bottom: 5px"
-        >
-          <el-button
-            type="primary"
-            @click="submitregisterForm(registerformRef)"
-            style="width: 360px; display: block"
-          >
+        <span class="dialog-footer" style="position: absolute; left: 20px; bottom: 5px">
+          <el-button type="primary" @click="submitregisterForm(registerformRef)" style="width: 360px; display: block">
             注册
           </el-button>
-          <span style="font-size: 10px; display: inline-block; margin-top: 5px"
-            >已经有账号？<el-button
-              link
-              style="color: #79bbff; font-size: 10px"
-              @click="changetologin(loginformRef)"
-              >立即登录</el-button
-            ></span
-          >
+          <span style="font-size: 10px; display: inline-block; margin-top: 5px">已经有账号？<el-button link
+              style="color: #79bbff; font-size: 10px" @click="changetologin(loginformRef)">立即登录</el-button></span>
         </span>
       </template>
     </el-dialog>
 
     <span class="text-large font-600 mr-3" style="margin: 19px 5px 0px 35px">
-      <a
-        href="https://github.com/xftxyz2001/rocketblog/issues/new"
-        style="
-          position: absolute;
-          display: inline-block;
-          margin: -3px 0 0 4px;
-          color: #fff;
-        "
-        ><span class="iconfont" style="margin-right: 5px">&#xe738;</span>反馈</a
-      >
+      <a href="https://github.com/xftxyz2001/rocketblog/issues/new"
+        style="position: absolute;display: inline-block;margin: -3px 0 0 4px;color: #fff;"><span class="iconfont"
+          style="margin-right: 5px">&#xe738;</span>反馈</a>
       <router-link :to="{ name: 'useradmin' }" v-if="isSuperuser">
-        <div
-          style="
-            position: absolute;
-            display: inline-block;
-            right: 50px;
-            color: #fff;
-          "
-        >
-          后台管理<el-icon style="position: fixed; top: 22px; right: 28px"
-            ><Tools
-          /></el-icon>
+        <div style="position: absolute;display: inline-block;right: 50px;color: #fff;">
+          后台管理<el-icon style="position: fixed; top: 22px; right: 28px">
+            <Tools />
+          </el-icon>
         </div>
       </router-link>
     </span>
@@ -363,7 +209,6 @@
 import { useRouter } from "vue-router";
 // import bus from "@/utils/bus";
 import { ElMessage } from "element-plus";
-import { FormInstance, FormRules } from "element-plus";
 import { getCurrentInstance } from "vue";
 const userinfo = ref({
   followers: "",
@@ -379,19 +224,9 @@ const registerVisible = ref(false);
 const registerformRef = ref(null);
 const loginformRef = ref(null);
 
-async function checkLogin() {
-  try {
-    const response = await axios.get('/user/i');
-    return response.data.code == 0;
-  } catch(error) {
-    return false;
-  }
-}
-
 // 尝试获取用户信息
 getuserinfo();
 
-// const keyword = ref('');
 const searchResult = ref([]);
 
 async function querySearch(queryString, cb) {
@@ -582,7 +417,7 @@ const submitregisterForm = (formEl) => {
   }
 };
 const loginbutton = (formE1) => {
-  loginVisible.value = "true";
+  loginVisible.value = true;
 
   if (!formE1) return;
   else formE1.resetFields();
@@ -646,6 +481,7 @@ function getverify(e, formE1) {
     }
   }
 }
+
 function logout() {
   axios.get("/user/logout").then((res) => {
     loginsuccess.value = false;
@@ -656,6 +492,7 @@ function logout() {
     isSuperuser.value = false;
   });
 }
+
 function judgesuper() {
   axios.get("/user/i/detail").then((res) => {
     var rd = res.data;
@@ -672,6 +509,7 @@ function judgesuper() {
     }
   });
 }
+
 function getuserinfo() {
   axios.get("/user/i").then((res) => {
     if (res.data.code == 0) {
@@ -683,39 +521,53 @@ function getuserinfo() {
     }
   });
 }
+
 function editbutton() {
-  if (checkLogin()) {
-    router.push({ name: "editblog" });
-  } else loginVisible.value = "true";
-  // window.open({ name: "editblog" }, "_blank");
-  router.push({ name: "editblog" });
+  axios.get("/user/i").then((res) => {
+    if (res.data.code == 0) {
+      router.push({ name: "editblog" });
+    } else {
+      loginVisible.value = true;
+      loginform.email = "";
+      loginform.password = "";
+    }
+  });
 }
+
 function tohome() {
-  if (checkLogin()) router.push({ name: "allconcern" });
-  else {
-    loginVisible.value = "true";
-    loginform.email = "";
-    loginform.password = "";
-  }
-  //router.push({ name: "allconcern" });
+  axios.get("/user/i").then((res) => {
+    if (res.data.code == 0) {
+      router.push({ name: "allconcern" });
+    } else {
+      loginVisible.value = true;
+      loginform.email = "";
+      loginform.password = "";
+    }
+  });
 }
+
 function tomessage() {
-  if (checkLogin()) router.push({ name: "message" });
-  else {
-    loginVisible.value = "true";
-    loginform.email = "";
-    loginform.password = "";
-  }
-  // router.push({ name: "message" });
+  axios.get("/user/i").then((res) => {
+    if (res.data.code == 0) {
+      router.push({ name: "message" });
+    } else {
+      loginVisible.value = true;
+      loginform.email = "";
+      loginform.password = "";
+    }
+  });
 }
+
 function toperson() {
-  if (checkLogin()) router.push({ name: "personuserinfo" });
-  else {
-    loginVisible.value = "true";
-    loginform.email = "";
-    loginform.password = "";
-  }
-  // router.push({ name: "personuserinfo" });
+  axios.get("/user/i").then((res) => {
+    if (res.data.code == 0) {
+      router.push({ name: "personuserinfo" });
+    } else {
+      loginVisible.value = true;
+      loginform.email = "";
+      loginform.password = "";
+    }
+  });
 }
 
 /** websocket-start */
@@ -775,14 +627,12 @@ Bus.on("deleteaccount", () => {
 });
 </script>
 <script>
-import { FormInstance, FormRules } from "element-plus";
-import { defineComponent, getCurrentInstance, reactive } from "vue";
-import { Search } from "@element-plus/icons-vue";
+import { defineComponent, reactive } from "vue";
 export default defineComponent({
   name: "Header",
 });
-import { ref } from "vue";
 import axios from "axios";
+import { ref } from "vue";
 </script>
 
 <style scoped>
@@ -807,7 +657,7 @@ a {
   color: #ffe78f;
 }
 
-.el-menu--horizontal > .el-menu-item.is-active {
+.el-menu--horizontal>.el-menu-item.is-active {
   border-bottom: 0;
   color: #fff !important;
 }

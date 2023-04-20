@@ -1,5 +1,7 @@
 <template>
-  <el-header style="padding: 0; margin: 0"><Header></Header></el-header>
+  <el-header style="padding: 0; margin: 0">
+    <Header></Header>
+  </el-header>
   <div style="width: 100%; height: 700px; overflow: scroll">
     <el-row style="padding-top: 80px; margin-left: 30px">
       <el-col :span="5">
@@ -9,20 +11,8 @@
             <div class="card-header">
               <div style="margin-bottom: 20px">
                 <div
-                  style="
-                    overflow: hidden;
-                    width: 30px;
-                    display: inline-block;
-                    vertical-align: bottom;
-                    border-radius: 15px;
-                  "
-                >
-                  <img
-                    :src="userdata.avatar"
-                    alt=""
-                    style="width: 30px"
-                    @click="gotootherperson(userdata.userid)"
-                  />
+                  style="overflow: hidden;width: 30px;display: inline-block;vertical-align: bottom;border-radius: 15px;">
+                  <img :src="userdata.avatar" alt="" style="width: 30px" @click="gotootherperson(userdata.userid)" />
                 </div>
                 <span style="font-size: 5px">{{ userdata.username }}</span>
               </div>
@@ -32,8 +22,7 @@
                 <div class="grid-content ep-bg-purple" />
                 关注
               </el-col>
-              <el-col :span="8"
-                >粉丝
+              <el-col :span="8">粉丝
                 <div class="grid-content ep-bg-purple" />
               </el-col>
               <el-col :span="8">
@@ -46,8 +35,7 @@
                 <div class="grid-content ep-bg-purple" />
                 {{ userdata.followings }}
               </el-col>
-              <el-col :span="8"
-                >{{ userdata.followers }}
+              <el-col :span="8">{{ userdata.followers }}
                 <div class="grid-content ep-bg-purple" />
               </el-col>
               <el-col :span="8">
@@ -76,12 +64,8 @@
               </el-col>
               <el-col :span="10">
                 <div class="grid-content ep-bg-purple-light" />
-                <el-button v-if="userdata.followed" @click="dontfollowthis"
-                  >已关注</el-button
-                >
-                <el-button v-else type="primary" @click="followthis"
-                  >关注</el-button
-                >
+                <el-button v-if="userdata.followed" @click="dontfollowthis">已关注</el-button>
+                <el-button v-else type="primary" @click="followthis">关注</el-button>
               </el-col>
             </el-row>
           </div>
@@ -111,19 +95,8 @@
             <div class="card-header">
               <span>{{ blogdata.blogTitle }}</span>
               <div v-if="isme">
-                <el-button
-                  type="primary"
-                  :icon="Edit"
-                  circle
-                  title="编辑博客"
-                  @click="changeblog"
-                /><el-button
-                  type="danger"
-                  :icon="Delete"
-                  circle
-                  title="删除博客"
-                  @click="deleteaccountDialogVisible = true"
-                />
+                <el-button type="primary" :icon="Edit" circle title="编辑博客" @click="changeblog" /><el-button type="danger"
+                  :icon="Delete" circle title="删除博客" @click="deleteaccountDialogVisible = true" />
               </div>
             </div>
           </template>
@@ -132,39 +105,22 @@
           <el-row :gutter="10" style="width: 100%; text-align: center">
             <el-col v-if="blogdata.like" :span="7">
               <div class="grid-content ep-bg-purple" />
-              <span
-                class="iconfont"
-                style="margin-right: 10px; cursor: pointer"
-                @click="dontlikethis"
-                >&#xe60f;</span
-              >点赞 {{ blogdata.likeCount }}
+              <span class="iconfont" style="margin-right: 10px; cursor: pointer" @click="dontlikethis">&#xe60f;</span>点赞
+              {{ blogdata.likeCount }}
             </el-col>
             <el-col v-else :span="7">
               <div class="grid-content ep-bg-purple" />
-              <span
-                class="iconfont"
-                style="margin-right: 10px; cursor: pointer; color: black"
-                @click="likethis"
-                >&#xe600;</span
-              >点赞{{ blogdata.likeCount }}
+              <span class="iconfont" style="margin-right: 10px; cursor: pointer; color: black"
+                @click="likethis">&#xe600;</span>点赞{{ blogdata.likeCount }}
             </el-col>
             <el-col v-if="blogdata.collect" :span="7">
-              <span
-                class="iconfont"
-                style="margin-right: 5px; cursor: pointer"
-                @click="dontcollectthis"
-                >&#xe630;</span
-              >收藏 {{ blogdata.bookmarkCount }}
+              <span class="iconfont" style="margin-right: 5px; cursor: pointer" @click="dontcollectthis">&#xe630;</span>收藏
+              {{ blogdata.bookmarkCount }}
               <div class="grid-content ep-bg-purple" />
             </el-col>
             <el-col v-else :span="7">
-              <span
-                class="iconfont"
-                style="margin-right: 5px; cursor: pointer"
-                @click="collectthis"
-              >
-                &#xe603; </span
-              >收藏 {{ blogdata.bookmarkCount }}
+              <span class="iconfont" style="margin-right: 5px; cursor: pointer" @click="collectthis">
+                &#xe603; </span>收藏 {{ blogdata.bookmarkCount }}
               <div class="grid-content ep-bg-purple" />
             </el-col>
 
@@ -175,46 +131,17 @@
               评论 {{ blogdata.commentCount }}
               <div class="grid-content ep-bg-purple" />
             </el-col>
-            <el-input
-              v-model.trim="commenttext"
-              maxlength="100"
-              placeholder="请文明评论"
-              show-word-limit
-              type="textarea"
-              style="margin: 20px 0 0 5px"
-            />
-            <el-row style="margin: 10px 0 0 0; position: relative; width: 100%"
-              ><el-button
-                type="primary"
-                style="position: absolute; right: 0px"
-                @click="commentthis"
-                >发表</el-button
-              ></el-row
-            >
+            <el-input v-model.trim="commenttext" maxlength="100" placeholder="请文明评论" show-word-limit type="textarea"
+              style="margin: 20px 0 0 5px" />
+            <el-row style="margin: 10px 0 0 0; position: relative; width: 100%"><el-button type="primary"
+                style="position: absolute; right: 0px" @click="commentthis">发表</el-button></el-row>
           </el-row>
           <div style="height: 30px"></div>
           <el-divider border-style="dashed" />
-          <div
-            v-infinite-scroll="load"
-            class="infinite-list"
-            style="overflow: auto"
-            infinite-scroll-distance="1"
-          >
-            <div
-              v-for="comment in comments"
-              :key="comment.commentId"
-              style="padding: 10px 0 0 10px"
-            >
+          <div v-infinite-scroll="load" class="infinite-list" style="overflow: auto" infinite-scroll-distance="1">
+            <div v-for="comment in comments" :key="comment.commentId" style="padding: 10px 0 0 10px">
               <div style="">
-                <img
-                  :src="comment.avatar"
-                  alt=""
-                  style="
-                    width: 30px;
-                    border-radius: 15px;
-                    vertical-align: bottom;
-                  "
-                />
+                <img :src="comment.avatar" alt="" style="width: 30px;border-radius: 15px;vertical-align: bottom;" />
                 <div style="display: inline-block; padding: 0 0 0 7px">
                   <div>{{ comment.username }}</div>
                   <div style="font-size: 5px">{{ comment.createtime }}</div>
@@ -230,12 +157,7 @@
       </el-col>
     </el-row>
   </div>
-  <el-dialog
-    v-model="deleteaccountDialogVisible"
-    title="提示"
-    width="30%"
-    center
-  >
+  <el-dialog v-model="deleteaccountDialogVisible" title="提示" width="30%" center>
     <span style="display: inline-block; width: 100%; text-align: center">
       确定要删除博客吗？
     </span>
@@ -248,18 +170,14 @@
   </el-dialog>
 </template>
 <script setup >
+import {
+  Delete,
+  Edit
+} from "@element-plus/icons-vue";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import { getCurrentInstance, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import {
-  Check,
-  Delete,
-  Edit,
-  Message,
-  Search,
-  Star,
-} from "@element-plus/icons-vue";
 const { Bus } = getCurrentInstance().appContext.config.globalProperties;
 const deleteaccountDialogVisible = ref(false);
 const route = useRoute();
@@ -307,11 +225,11 @@ function load() {
   axios
     .get(
       "/blog/comment/" +
-        route.params.blogid +
-        "?pageNum=" +
-        page.value +
-        "&pageSize=" +
-        pagesize.value
+      route.params.blogid +
+      "?pageNum=" +
+      page.value +
+      "&pageSize=" +
+      pagesize.value
     )
     .then((res) => {
       var result = res.data;
@@ -378,15 +296,6 @@ axios.get("/blog/detail/" + route.params.blogid).then((res) => {
   }
 });
 
-async function checkLogin() {
-  try {
-    const response = await axios.get('/user/i');
-    return response.data.code == 0;
-  } catch(error) {
-    return false;
-  }
-}
-
 function changeblog() {
   router.push({
     name: "changeblog",
@@ -399,166 +308,176 @@ function commentthis() {
   // console.log(comments.value);
   // console.log(commenttext.value);
 
-  if (checkLogin()) {
-    var commentdata = {
-      blogId: route.params.blogid,
-      commentContent: commenttext.value,
-    };
-    axios.post("/blog/comment", commentdata).then((res) => {
-      if (res.data.code == 0) {
-        ElMessage({
-          showClose: true,
-          message: "发表成功",
-          type: "success",
-        });
+  var commentdata = {
+    blogId: route.params.blogid,
+    commentContent: commenttext.value,
+  };
+  axios.post("/blog/comment", commentdata).then((res) => {
+    if (res.data.code == 0) {
+      ElMessage({
+        showClose: true,
+        message: "发表成功",
+        type: "success",
+      });
 
-        comments.value.unshift(res.data.data);
+      comments.value.unshift(res.data.data);
 
-        commenttext.value = "";
-        axios.get("/blog/detail/" + route.params.blogid).then((res) => {
-          var resultBlogDetail = res.data;
-          if (resultBlogDetail.code == 0) {
-            blogdata.value = resultBlogDetail.data;
-            // 请求评论
-            axios.get("/blog/comment/" + route.params.blogid).then((res) => {
-              var resultComment = res.data;
-              if (resultComment.code == 0) {
-                // 评论分页数据
-                var commentPage = resultComment.data;
-                comments.value = commentPage.list;
-              } else {
-                // 获取评论失败
-                ElMessage({
-                  showClose: true,
-                  message: resultComment.message,
-                });
-              }
-            });
+      commenttext.value = "";
+      axios.get("/blog/detail/" + route.params.blogid).then((res) => {
+        var resultBlogDetail = res.data;
+        if (resultBlogDetail.code == 0) {
+          blogdata.value = resultBlogDetail.data;
+          // 请求评论
+          axios.get("/blog/comment/" + route.params.blogid).then((res) => {
+            var resultComment = res.data;
+            if (resultComment.code == 0) {
+              // 评论分页数据
+              var commentPage = resultComment.data;
+              comments.value = commentPage.list;
+            } else {
+              // 获取评论失败
+              ElMessage({
+                showClose: true,
+                message: resultComment.message,
+              });
+            }
+          });
 
-            // 请求作者信息
-            axios.get("/user/info/" + blogdata.value.userid).then((res) => {
-              var resultUserInfo = res.data;
-              if (resultUserInfo.code == 0) {
-                userdata.value = resultUserInfo.data;
-                // 判断是否是自己
-                axios.get("/user/i").then((res) => {
-                  var resultMyInfo = res.data;
-                  if (resultMyInfo.code == 0) {
-                    if (userdata.value.userid == resultMyInfo.data.userid) {
-                      isme.value = true;
-                    }
-                  } else {
-                    // 没登陆或获取个人信息失败
-                    // ElMessage({
-                    //   showClose: true,
-                    //   message: resultMyInfo.message,
-                    // });
+          // 请求作者信息
+          axios.get("/user/info/" + blogdata.value.userid).then((res) => {
+            var resultUserInfo = res.data;
+            if (resultUserInfo.code == 0) {
+              userdata.value = resultUserInfo.data;
+              // 判断是否是自己
+              axios.get("/user/i").then((res) => {
+                var resultMyInfo = res.data;
+                if (resultMyInfo.code == 0) {
+                  if (userdata.value.userid == resultMyInfo.data.userid) {
+                    isme.value = true;
                   }
-                });
-              } else {
-                // 获取作者信息失败
-                ElMessage({
-                  showClose: true,
-                  message: resultUserInfo.message,
-                });
-              }
-            });
-          } else {
-            // 获取博客详情失败
-            ElMessage({
-              showClose: true,
-              message: resultBlogDetail.message,
-            });
-          }
-        });
-      } else {
-        ElMessage({
-          showClose: true,
-          message: res.data.message,
-          type: "warning",
-        });
+                } else {
+                  // 没登陆或获取个人信息失败
+                  // ElMessage({
+                  //   showClose: true,
+                  //   message: resultMyInfo.message,
+                  // });
+                }
+              });
+            } else {
+              // 获取作者信息失败
+              ElMessage({
+                showClose: true,
+                message: resultUserInfo.message,
+              });
+            }
+          });
+        } else {
+          // 获取博客详情失败
+          ElMessage({
+            showClose: true,
+            message: resultBlogDetail.message,
+          });
+        }
+      });
+    } else {
+      ElMessage({
+        showClose: true,
+        message: res.data.message,
+        type: "warning",
+      });
+      if (res.data.code == 100) {
+        Bus.emit("commentneedlogin", {});
       }
-    });
-  } else {
-    Bus.emit("commentneedlogin", {});
-  }
+    }
+  });
+
 }
 
 function dontfollowthis() {
-  if (checkLogin()) {
-    axios.delete("/user/follow/" + blogdata.value.userid).then((res) => {
+
+  axios.delete("/user/follow/" + blogdata.value.userid).then((res) => {
+    if (res.data.code == 0) {
       userdata.value.followed = false;
-    });
-  } else {
-    Bus.emit("likeneedlogin", {});
-  }
+    } else if (res.data.code == 100) {
+      Bus.emit("likeneedlogin", {});
+    }
+  });
 }
+
 function followthis() {
-  if (checkLogin()) {
-    axios.get("/user/follow/" + blogdata.value.userid).then((res) => {
+
+  axios.get("/user/follow/" + blogdata.value.userid).then((res) => {
+    if (res.data.code == 0) {
       userdata.value.followed = true;
-    });
-  } else {
-    Bus.emit("likeneedlogin", {});
-  }
+    } else if (res.data.code == 100) {
+      Bus.emit("likeneedlogin", {});
+    }
+  });
 }
+
 function likethis() {
-  if (checkLogin()) {
-    axios.get("/blog/like/" + route.params.blogid).then((res) => {
+
+  axios.get("/blog/like/" + route.params.blogid).then((res) => {
+    if (res.data.code == 0) {
       blogdata.value.like = true;
       blogdata.value.likeCount = res.data.data;
-    });
-  } else {
-    Bus.emit("likeneedlogin", {});
-  }
+    } else {
+      Bus.emit("likeneedlogin", {});
+    }
+  });
 }
+
 function collectthis() {
-  if (checkLogin()) {
-    axios.get("/blog/collect/" + route.params.blogid).then((res) => {
+
+  axios.get("/blog/collect/" + route.params.blogid).then((res) => {
+    if (res.data.code == 0) {
       blogdata.value.collect = true;
       blogdata.value.bookmarkCount = res.data.data;
-    });
-  } else {
-    Bus.emit("collectneedlogin", {});
-  }
+    } else {
+      Bus.emit("collectneedlogin", {});
+    }
+  });
 }
+
 function dontcollectthis() {
   console.log(blogdata.value.collect);
-  if (checkLogin()) {
-    axios.delete("/blog/collect/" + route.params.blogid).then((res) => {
+
+  axios.delete("/blog/collect/" + route.params.blogid).then((res) => {
+    if (res.data.code == 0) {
       blogdata.value.collect = false;
       blogdata.value.bookmarkCount = res.data.data;
-    });
-  } else {
-    Bus.emit("collectneedlogin", {});
-  }
+    } else {
+      Bus.emit("collectneedlogin", {});
+    }
+  });
 }
+
 function dontlikethis() {
-  if (checkLogin()) {
-    axios.delete("/blog/like/" + route.params.blogid).then((res) => {
+
+  axios.delete("/blog/like/" + route.params.blogid).then((res) => {
+    if (res.data.code == 0) {
       blogdata.value.like = false;
       blogdata.value.likeCount = res.data.data;
-    });
-  } else {
-    Bus.emit("likeneedlogin", {});
-  }
+    } else {
+      Bus.emit("likeneedlogin", {});
+    }
+  });
 }
+
 // 删除博客
 function confirmdelete() {
-  if (checkLogin()) {
-    axios.delete("/blog/delete/" + route.params.blogid).then((res) => {
-      if (res.data.code == 0) {
-        ElMessage({
-          showClose: true,
-          message: "删除成功",
-          type: "success",
-        });
-        router.push({ name: "hotlatest" });
-      }
-    });
-  } else {
-    Bus.emit("likeneedlogin", {});
-  }
+  axios.delete("/blog/delete/" + route.params.blogid).then((res) => {
+    if (res.data.code == 0) {
+      ElMessage({
+        showClose: true,
+        message: "删除成功",
+        type: "success",
+      });
+      router.push({ name: "hotlatest" });
+    } else if (res.data.code == 100) {
+      Bus.emit("likeneedlogin", {});
+    }
+  });
 }
 
 function chatwith() {
@@ -610,6 +529,7 @@ export default defineComponent({
   border-radius: 4px;
   background: var(--el-color-primary-light-9);
 }
+
 .el-header {
   position: fixed;
   z-index: 100;
@@ -620,6 +540,7 @@ export default defineComponent({
 
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
+
 .el-main {
   position: absolute;
   left: 0px;
@@ -629,6 +550,7 @@ export default defineComponent({
   background-color: #f1f2f5;
   height: 2000px;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -646,12 +568,14 @@ export default defineComponent({
 .box-card {
   width: 480px;
 }
+
 .infinite-list {
   height: 250px;
   padding: 0;
   margin: 0;
   list-style: none;
 }
+
 .infinite-list .infinite-list-item {
   display: flex;
   align-items: center;
@@ -661,9 +585,11 @@ export default defineComponent({
   margin: 10px;
   color: var(--el-color-primary);
 }
-.infinite-list .infinite-list-item + .list-item {
+
+.infinite-list .infinite-list-item+.list-item {
   margin-top: 10px;
 }
+
 .infinite-list ::-webkit-scrollbar {
   display: none;
 }

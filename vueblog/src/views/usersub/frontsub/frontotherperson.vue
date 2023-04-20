@@ -110,33 +110,26 @@ axios.get("/user/info/" + route.params.userid).then((res) => {
   }
 });
 
-async function checkLogin() {
-  try {
-    const response = await axios.get('/user/i');
-    return response.data.code == 0;
-  } catch(error) {
-    return false;
-  }
+function dontfollowthis() {
+  axios.delete("/user/follow/" + route.params.userid).then((res) => {
+    if (res.data.code == 0) {
+      userdata.value.followed = false;
+    } else if (res.data.code == 100) {
+      Bus.emit("likeneedlogin", {});
+    }
+  });
 }
 
-function dontfollowthis() {
-  if (checkLogin()) {
-    axios.delete("/user/follow/" + route.params.userid).then((res) => {
-      userdata.value.followed = false;
-    });
-  } else {
-    Bus.emit("likeneedlogin", {});
-  }
-}
 function followthis() {
-  if (checkLogin()) {
-    axios.get("/user/follow/" + route.params.userid).then((res) => {
+  axios.get("/user/follow/" + route.params.userid).then((res) => {
+    if (res.data.code == 0) {
       userdata.value.followed = true;
-    });
-  } else {
-    Bus.emit("likeneedlogin", {});
-  }
+    } else if (res.data.code == 100) {
+      Bus.emit("likeneedlogin", {});
+    }
+  });
 }
+
 function chatwith() {
   axios.get("/chat/session/" + route.params.userid).then((res) => {
     var result = res.data;
