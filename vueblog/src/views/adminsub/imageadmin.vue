@@ -1,18 +1,14 @@
 <template>
     <el-header style="text-align: right; font-size: 12px">
 
-        <el-upload class="upload-demo" action="/images/uploads" :on-change="handleChange" :on-success="handleSuccess"
-            :before-upload="beforeUpload" :on-progress="uploadProcess" :on-exceed="handleExceed"
-            :before-remove="beforeRemove" :file-list="fileList" :multiple="true" :limit="1" id="upload"
-            style="margin-left: 50px; margin-bottom: 40px">
-            <el-button type="primary">选择图片</el-button>
-            <template #tip>
-                <div class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
-            </template>
+        <el-upload class="upload-demo" :action="uploadUrl" :auto-upload="false" :on-change="handleChange" :headers="headers"
+            :multiple="true" :limit="limit" :before-upload="beforeUpload" :on-exceed="handleExceed" :file-list="fileList"
+            list-type="picture-card" :on-remove="handleRemove">
         </el-upload>
+        <el-button @click="uploadFiles">上传</el-button>
 
     </el-header>
-    <div></div>
+    <div style="clear: both;"></div>
     <el-main>
         <el-scrollbar>
             <el-table :data="tableData" style="width: 100%">
@@ -47,7 +43,11 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
 const tableData = ref([]);
-const fileList = ref([]);
+const fileList = ref([]) // 文件列表
+const limit = ref(10) // 上传图片的数量限制
+const uploadUrl = '/images/uploads' // 后端接口地址
+const headers = { 'Content-Type': 'multipart/form-data' } // 请求头设置
+
 
 function getdata() {
     axios.get("/admin/images").then((res) => {
@@ -82,42 +82,62 @@ function delete_(filePath) {
     });
 };
 
+// 文件上传前的验证，返回false代表不上传
+function beforeUpload(file) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+    const isLt2M = file.size / 1024 / 1024 < 2
 
-// 上传前校验
-const beforeUpload = (file) => {
-    console.log("beforeUploadfile", file);
-};
+    if (!isJpgOrPng) {
+        ElMessage.error('上传图片只能是 JPG/PNG 格式!')
+    }
+    if (!isLt2M) {
+        ElMessage.error('上传图片大小不能超过 2MB!')
+    }
 
-//上传成功回调
-const handleSuccess = (res, file) => {
-    console.log("handleSuccessres", res);
-    console.log("handleSuccessfile", file);
+    return isJpgOrPng && isLt2M
+}
 
-};
+// 文件数量超出限制的回调函数
+function handleExceed(files, fl) {
+    ElMessage.warning('上传图片数量不能超过10个')
+}
 
-//上传文件
-const handleChange = (file, fileList) => {
-    console.log("handleChangefile", file);
-    console.log("handleChangefileList", fileList);
-};
+// 文件列表变化时的回调函数
+function handleChange(file, fl) {
+    fileList.value = fl
+}
 
-// 上传时候的钩子
-const uploadProcess = (event, file, fileList) => {
-    console.log("uploadProcessfile", file);
-    console.log("uploadProcessfileList", fileList);
-};
+// 文件移除时的回调函数
+function handleRemove(file, fl) {
+    console.log(file, fl)
+}
 
-// 删除
-const beforeRemove = (file, fileList) => {
-    console.log("beforeRemovefile", file);
-    console.log("beforeRemovefileList", fileList);
-};
-const handleExceed = (files, uploadFiles) => {
-    console.log("handleExceedfiles", files);
-    console.log("handleExceeduploadFiles", uploadFiles);
-};
+// 发送请求时，将参数名设置为files
+function buildFormData() {
+    const formData = new FormData()
+    fileList.value.forEach((file, index) => {
+        formData.append('files', file.raw)
+    })
+    return formData
+}
 
-
+function uploadFiles() {
+    const formData = buildFormData()
+    axios.post(uploadUrl, formData, { headers: headers })
+        .then(response => {
+            if (response.data.code == 0) {
+                ElMessage.success('上传成功')
+                getdata()
+                // 上传成功后清空文件列表
+                fileList.value = []
+            } else {
+                ElMessage.error(response.data.message)
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
 </script>
 <script>
 export default {
