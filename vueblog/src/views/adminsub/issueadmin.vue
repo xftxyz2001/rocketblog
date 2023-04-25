@@ -1,7 +1,12 @@
 <template>
   <el-header style="font-size: 50px">
-    <el-link type="primary" :underline="false" href="https://github.com/xftxyz2001/rocketblog/issues"
-      target="_blank">前往Github查看</el-link>
+    <el-link
+      type="primary"
+      :underline="false"
+      href="https://github.com/xftxyz2001/rocketblog/issues"
+      target="_blank"
+      >前往Github查看</el-link
+    >
   </el-header>
   <div></div>
   <el-main>
@@ -11,21 +16,33 @@
         <el-table-column prop="updated_at" label="更新日期" width="180" />
         <el-table-column prop="title" label="标题" width="300" />
         <el-table-column prop="body" label="内容摘要" width="600" />
-        <el-table-column prop="state" label="状态" width="90" :filters="[
-          { text: 'OPEN', value: 'open' },
-          { text: 'CLOSED', value: 'closed' },
-        ]" :filter-method="filterHandler">
+        <el-table-column
+          prop="state"
+          label="状态"
+          width="90"
+          :filters="[
+            { text: 'OPEN', value: 'open' },
+            { text: 'CLOSED', value: 'closed' },
+          ]"
+          :filter-method="filterHandler"
+        >
           <template v-slot="scope">
-            <el-tag v-if="scope.row.state == 'open'" type="success" size="small">OPEN</el-tag>
+            <el-tag v-if="scope.row.state == 'open'" type="success" size="small"
+              >OPEN</el-tag
+            >
             <el-tag v-else type="danger" size="small">CLOSED</el-tag>
           </template>
         </el-table-column>
 
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">
-
-            <el-button link type="primary" size="small" @click="look(scope.row.html_url)">查看</el-button>
-
+            <el-button
+              link
+              type="primary"
+              size="small"
+              @click="look(scope.row.html_url)"
+              >查看</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -36,9 +53,15 @@
 import axios from "axios";
 import { ref } from "vue";
 const tableData = ref([]);
-axios.get("/link", { params: { url: "https://api.github.com/repos/xftxyz2001/rocketblog/issues" } }).then((res) => {
-  tableData.value = res.data;
-});
+axios
+  .get("/link", {
+    params: {
+      url: "https://api.github.com/repos/xftxyz2001/rocketblog/issues",
+    },
+  })
+  .then((res) => {
+    tableData.value = res.data;
+  });
 
 function filterHandler(value, row, column) {
   const property = column["state"];

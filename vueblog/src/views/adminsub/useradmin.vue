@@ -16,40 +16,73 @@
       </el-form-item>
     </el-form>
     <el-button type="primary" plain class="adduser" @click="adduser">
-      添加用户</el-button>
+      添加用户</el-button
+    >
   </el-header>
   <div></div>
   <el-main>
-    <el-scrollbar>
+    <div
+      v-infinite-scroll="load"
+      class="infinite-list"
+      style="overflow: auto"
+      infinite-scroll-distance="1"
+    >
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="userRegisterTime" label="注册日期" width="160" />
-        <el-table-column class="idcolumn" prop="userid" label="id" v-if="false" />
+        <el-table-column
+          fixed
+          prop="userRegisterTime"
+          label="注册日期"
+          width="160"
+        />
+        <el-table-column
+          class="idcolumn"
+          prop="userid"
+          label="id"
+          v-if="false"
+        />
         <el-table-column prop="username" label="昵称" width="120" />
         <el-table-column prop="userSex" label="性别" width="90" />
         <el-table-column prop="email" label="邮箱" width="200" />
         <el-table-column prop="phone" label="手机" width="130" />
         <el-table-column prop="password" label="密码" width="150">
           <template v-slot="scope">
-            <div @click="toggleShow(scope.row)">{{ showPassword(scope.row) }}</div>
+            <div @click="toggleShow(scope.row)">
+              {{ showPassword(scope.row) }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="avatar" label="头像" width="90">
           <!-- 展示头像 -->
           <template v-slot="scope">
-            <el-avatar style="width: 50px; height: 50px" :src="scope.row.avatar"></el-avatar>
+            <el-avatar
+              style="width: 50px; height: 50px"
+              :src="scope.row.avatar"
+            ></el-avatar>
           </template>
         </el-table-column>
         <el-table-column prop="lastLogin" label="上次登陆日期" width="200" />
 
         <el-table-column fixed="right" label="选项" width="150">
           <template v-slot="scope">
-            <el-button link type="primary" size="small" @click="lookclick(scope.row.userid)">查看</el-button>
+            <el-button
+              link
+              type="primary"
+              size="small"
+              @click="lookclick(scope.row.userid)"
+              >查看</el-button
+            >
             <!-- <el-button link type="warning" size="small" @click="editclick(scope.row.userid)">编辑</el-button> -->
-            <el-button link type="danger" size="small" @click="deleteclick(scope.row.userid)">删除</el-button>
+            <el-button
+              link
+              type="danger"
+              size="small"
+              @click="deleteclick(scope.row.userid)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
-    </el-scrollbar>
+    </div>
   </el-main>
   <!-- 添加表单 -->
   <el-dialog ref="editform" v-model="addFormVisible" title="Shipping address">
@@ -88,7 +121,11 @@
   </el-dialog>
   <!-- /添加表单 -->
   <!-- 编辑表单 -->
-  <el-dialog ref="editform" v-model="dialogFormVisible" title="Shipping address">
+  <el-dialog
+    ref="editform"
+    v-model="dialogFormVisible"
+    title="Shipping address"
+  >
     <el-form :model="form">
       <el-form-item label="id" :label-width="formLabelWidth">
         <!-- 不可编辑 -->
@@ -137,24 +174,35 @@ const tableData = ref([]);
 
 const form = ref({});
 const addform = ref({});
-
+const page = ref(1);
+const pagesize = ref(5);
 function getUsers() {
-  axios.get("/admin/users").then((res) => {
+  axios.get("/admin/users?pageNum=1&pageSize=5").then((res) => {
     tableData.value = res.data.data.list;
   });
 }
 
 getUsers();
-
+function load() {
+  page.value++;
+  axios
+    .get("/admin/users?pageNum=" + page.value + "&pageSize=" + pagesize.value)
+    .then((res) => {
+      var result = res.data;
+      for (let index = 0; index < result.data.list.length; index++) {
+        tableData.value.push(result.data.list[index]);
+      }
+    });
+}
 function toggleShow(row) {
-  row.show = !row.show
+  row.show = !row.show;
 }
 function showPassword(row) {
   // 如果row.show为true，就显示密码，否则就显示**点击查看密码**
   if (row.show) {
-    return row.password
+    return row.password;
   } else {
-    return '**点击查看密码**'
+    return "**点击查看密码**";
   }
 }
 
@@ -191,15 +239,19 @@ function selectUser() {
     getUsers();
     return;
   }
-  axios.post("/admin/user/s", { email: formInline.value.email, username: formInline.value.name }).then((res) => {
-    tableData.value = res.data.data.list;
-  });
+  axios
+    .post("/admin/user/s", {
+      email: formInline.value.email,
+      username: formInline.value.name,
+    })
+    .then((res) => {
+      tableData.value = res.data.data.list;
+    });
 }
 
 function lookclick(userid) {
   router.push({ name: "otherperson", params: { userid: userid } });
 }
-
 </script>
 <script>
 import router from "@/router";
@@ -208,7 +260,7 @@ import { ElMessage } from "element-plus";
 
 export default {
   name: "useradmin",
-  data() { },
+  data() {},
 
   methods: {
     editclick(userid) {
@@ -217,10 +269,8 @@ export default {
 
     deleteclick(userid) {
       console.log("delete" + userid);
-    }
-
+    },
   },
-
 };
 </script>
 
@@ -242,6 +292,7 @@ export default {
 
 .layout-container-demo .el-main {
   padding: 0;
+  overflow: hidden;
 }
 
 .layout-container-demo .toolbar {
@@ -314,5 +365,23 @@ export default {
 
 .dialog-footer button:first-child {
   margin-right: 10px;
+}
+.infinite-list {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
 }
 </style>

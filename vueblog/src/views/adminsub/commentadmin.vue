@@ -2,11 +2,19 @@
   <el-header style="text-align: right; font-size: 12px">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-form-item label="博客id">
-        <el-input v-model="formInline.blogId" placeholder="请输入博客id" style="width: 200px" />
+        <el-input
+          v-model="formInline.blogId"
+          placeholder="请输入博客id"
+          style="width: 200px"
+        />
       </el-form-item>
 
       <el-form-item label="用户id">
-        <el-input v-model="formInline.userid" placeholder="请输入用户id" style="width: 200px" />
+        <el-input
+          v-model="formInline.userid"
+          placeholder="请输入用户id"
+          style="width: 200px"
+        />
       </el-form-item>
 
       <el-form-item>
@@ -16,14 +24,26 @@
   </el-header>
   <div></div>
   <el-main>
-    <el-scrollbar>
+    <div
+      v-infinite-scroll="load"
+      class="infinite-list"
+      style="overflow: auto"
+      infinite-scroll-distance="1"
+    >
       <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed prop="createtime" label="创建日期" width="180" />
-        <el-table-column class="idcolumn" prop="commentId" label="id" v-if="false" />
+        <el-table-column
+          class="idcolumn"
+          prop="commentId"
+          label="id"
+          v-if="false"
+        />
         <el-table-column prop="commentContent" label="评论内容" width="800" />
         <el-table-column prop="blogId" label="博客id" width="90">
           <template v-slot="scope">
-            <div @click="goblog(scope.row.userid, scope.row.blogId)">{{ scope.row.blogId }}</div>
+            <div @click="goblog(scope.row.userid, scope.row.blogId)">
+              {{ scope.row.blogId }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="userid" label="用户id" width="90">
@@ -33,12 +53,17 @@
         </el-table-column>
         <el-table-column fixed="right" label="选项" width="120">
           <template v-slot="scope">
-            <el-button link type="danger" size="small" @click="deletecomment(scope.row.commentId)">删除
+            <el-button
+              link
+              type="danger"
+              size="small"
+              @click="deletecomment(scope.row.commentId)"
+              >删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-    </el-scrollbar>
+    </div>
   </el-main>
 </template>
 <script setup>
@@ -47,7 +72,9 @@ import axios from "axios";
 import { ref } from "vue";
 const formInline = ref({});
 const tableData = ref([]);
-axios.get("/admin/comments").then((res) => {
+const page = ref(1);
+const pagesize = ref(5);
+axios.get("/admin/comments?pageNum=1&pageSize=5").then((res) => {
   tableData.value = res.data.data.list;
 });
 function selectComment() {
@@ -58,6 +85,19 @@ function selectComment() {
   axios.post("/admin/search/comment", req).then((res) => {
     tableData.value = res.data.data.list;
   });
+}
+function load() {
+  page.value++;
+  axios
+    .get(
+      "/admin/comments?pageNum=" + page.value + "&pageSize=" + pagesize.value
+    )
+    .then((res) => {
+      var result = res.data;
+      for (let index = 0; index < result.data.list.length; index++) {
+        tableData.value.push(result.data.list[index]);
+      }
+    });
 }
 function goblog(userid, blogId) {
   router.push({ name: "blogdetail", params: { blogid: blogId } });
@@ -96,6 +136,7 @@ export default {
 
 .layout-container-demo .el-main {
   padding: 0;
+  overflow: hidden;
 }
 
 .layout-container-demo .toolbar {
@@ -168,5 +209,23 @@ export default {
 
 .dialog-footer button:first-child {
   margin-right: 10px;
+}
+.infinite-list {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
 }
 </style>

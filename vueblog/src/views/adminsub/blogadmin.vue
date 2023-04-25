@@ -208,6 +208,7 @@ export default {
 
 .layout-container-demo .el-main {
   padding: 0;
+  overflow: hidden;
 }
 
 .layout-container-demo .toolbar {
@@ -282,7 +283,7 @@ export default {
   margin-right: 10px;
 }
 .infinite-list {
-  height: calc(100vh);
+  height: 100%;
   padding: 0;
   margin: 0;
   list-style: none;
