@@ -2,14 +2,26 @@
   <el-header style="text-align: right; font-size: 12px">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-form-item label="标题">
-        <el-input v-model="formInline.blogTitle" placeholder="请输入标题" style="width: 200px" />
+        <el-input
+          v-model="formInline.blogTitle"
+          placeholder="请输入标题"
+          style="width: 200px"
+        />
       </el-form-item>
 
       <el-form-item label="用户id">
-        <el-input v-model="formInline.userid" placeholder="请输入用户id" style="width: 200px" />
+        <el-input
+          v-model="formInline.userid"
+          placeholder="请输入用户id"
+          style="width: 200px"
+        />
       </el-form-item>
       <el-form-item label="状态" :label-width="formLabelWidth">
-        <el-select v-model="formInline.blogStatus" placeholder="Please select a zone" style="width: 180px">
+        <el-select
+          v-model="formInline.blogStatus"
+          placeholder="Please select a zone"
+          style="width: 180px"
+        >
           <el-option label="草稿" value="草稿" />
           <el-option label="已发布" value="已发布" />
         </el-select>
@@ -20,45 +32,83 @@
       </el-form-item>
     </el-form>
     <el-button type="primary" plain class="adduser" @click="goaddblog">
-      添加博客</el-button>
+      添加博客</el-button
+    >
   </el-header>
   <div></div>
   <el-main>
-    <el-scrollbar>
+    <div
+      v-infinite-scroll="load"
+      class="infinite-list"
+      style="overflow: auto"
+      infinite-scroll-distance="1"
+    >
       <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed prop="createTime" label="创建日期" width="160" />
-        <el-table-column class="idcolumn" prop="blogId" label="id" v-if="false" />
+        <el-table-column
+          class="idcolumn"
+          prop="blogId"
+          label="id"
+          v-if="false"
+        />
         <el-table-column prop="blogTitle" label="标题" width="180" />
         <el-table-column prop="userid" label="用户id" width="70">
           <template v-slot="scope">
-            <div @click="gouser(scope.row.userid)">{{ scope.row.userid }}</div>
+            <div @click="gouser(scope.row.userid)">
+              {{ scope.row.userid }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="blogStatus" label="状态" width="90">
           <!-- 如果blogStatus为0显示为草稿，为1显示为已发布 -->
           <template v-slot="scope">
-            <el-tag v-if="scope.row.blogStatus == 0" type="success" disable-transitions>草稿</el-tag>
-            <el-tag v-else-if="scope.row.blogStatus == 1" type="success" disable-transitions>已发布</el-tag>
+            <el-tag
+              v-if="scope.row.blogStatus == 0"
+              type="success"
+              disable-transitions
+              >草稿</el-tag
+            >
+            <el-tag
+              v-else-if="scope.row.blogStatus == 1"
+              type="success"
+              disable-transitions
+              >已发布</el-tag
+            >
           </template>
         </el-table-column>
         <el-table-column prop="updateTime" label="更新时间" width="160" />
         <el-table-column prop="coverImage" label="封面图片" width="150">
           <template v-slot="scope">
-            <el-image style="width: 100px; height: 100px" :src="scope.row.coverImage" :fit="fit"></el-image>
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row.coverImage"
+              :fit="fit"
+            ></el-image>
           </template>
         </el-table-column>
         <el-table-column prop="blogSummary" label="摘要" width="330" />
 
         <el-table-column fixed="right" label="选项" width="150">
           <template v-slot="scope">
-            <el-button link type="primary" size="small"
-              @click="lookclick(scope.row.userid, scope.row.blogId)">查看</el-button>
+            <el-button
+              link
+              type="primary"
+              size="small"
+              @click="lookclick(scope.row.userid, scope.row.blogId)"
+              >查看</el-button
+            >
             <!-- <el-button link type="warning" size="small" @click="editblog(scope.row.blogId)">编辑</el-button> -->
-            <el-button link type="danger" size="small" @click="deleteblog(scope.row.blogId)">删除</el-button>
+            <el-button
+              link
+              type="danger"
+              size="small"
+              @click="deleteblog(scope.row.blogId)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
-    </el-scrollbar>
+    </div>
   </el-main>
 </template>
 <script setup>
@@ -69,12 +119,24 @@ const formLabelWidth = "140px";
 const formInline = ref({});
 const tableData = ref([]);
 function getBlog() {
-  axios.get("/admin/blogs").then((res) => {
+  axios.get("/admin/blogs?pageNum=1&pageSize=5").then((res) => {
     tableData.value = res.data.data.list;
   });
 }
-
 getBlog();
+const page = ref(1);
+const pagesize = ref(5);
+function load() {
+  page.value++;
+  axios
+    .get("/admin/blogs?pageNum=" + page.value + "&pageSize=" + pagesize.value)
+    .then((res) => {
+      var result = res.data;
+      for (let index = 0; index < result.data.list.length; index++) {
+        tableData.value.push(result.data.list[index]);
+      }
+    });
+}
 
 function selectBlog() {
   var blogstatus;
@@ -99,7 +161,7 @@ function selectBlog() {
 }
 
 function goaddblog() {
-  router.push({ name: "adminaddblog" })
+  router.push({ name: "adminaddblog" });
 }
 
 function deleteblog(blogid) {
@@ -218,5 +280,23 @@ export default {
 
 .dialog-footer button:first-child {
   margin-right: 10px;
+}
+.infinite-list {
+  height: calc(100vh);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
 }
 </style>
