@@ -40,6 +40,7 @@
           label="id"
           v-if="false"
         />
+
         <el-table-column prop="username" label="昵称" width="120" />
         <el-table-column prop="userSex" label="性别" width="90" />
         <el-table-column prop="email" label="邮箱" width="200" />
@@ -107,9 +108,6 @@
       </el-form-item>
       <el-form-item label="密码" :label-width="formLabelWidth">
         <el-input v-model="addform.password" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="头像" :label-width="formLabelWidth">
-        <el-input v-model="addform.avatar" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
