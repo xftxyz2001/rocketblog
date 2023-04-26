@@ -221,16 +221,14 @@ function formSubmit() {
 function addformSubmit() {
   addFormVisible.value = false;
   axios.post("/admin/user", addform.value).then((res) => {
-    var result=res.data;
+    var result = res.data;
     if (result.code == 0) {
       // 提示成功
-      ElMessage.success('添加成功');
-    }
-    else{
-      ElMessage.error('添加失败');
+      ElMessage.success("添加成功");
+    } else {
+      ElMessage.error("添加失败");
     }
     getUsers();
-    if()
   });
 }
 
