@@ -13,6 +13,7 @@
       :file-list="fileList"
       :on-remove="handleRemove"
     >
+      <el-button>选择图片</el-button>
     </el-upload>
     <el-button @click="uploadFiles">上传</el-button>
   </el-header>
