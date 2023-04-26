@@ -11,7 +11,6 @@
       :before-upload="beforeUpload"
       :on-exceed="handleExceed"
       :file-list="fileList"
-      list-type="picture-card"
       :on-remove="handleRemove"
     >
     </el-upload>
