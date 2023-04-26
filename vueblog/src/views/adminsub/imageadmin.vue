@@ -29,8 +29,8 @@
         <el-table-column label="缩略图" width="80">
           <template v-slot="scope">
             <img :src="'/images/' + scope.row.filePath + '/50/50'" alt="" />
-          </template> </el-table-column
-        >>
+          </template>
+        </el-table-column>
         <el-table-column prop="filePath" label="文件名" width="600" />
         <el-table-column prop="fileSize" label="文件大小(KB)" width="200">
           <template v-slot="scope">
