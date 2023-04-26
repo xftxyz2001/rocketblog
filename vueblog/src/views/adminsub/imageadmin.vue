@@ -90,7 +90,7 @@ function load() {
     .get("/admin/images?pageNum=" + page.value + "&pageSize=" + pagesize.value)
     .then((res) => {
       var result = res.data;
-      for (let index = 0; index < result.data.list.length; index++) {
+      for (let index = 0; index < result.data.length; index++) {
         tableData.value.push(result.data[index]);
       }
     });
