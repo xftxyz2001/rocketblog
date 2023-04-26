@@ -1,5 +1,6 @@
 <template>
   <el-header style="text-align: right; font-size: 12px">
+    <el-button @click="uploadFiles" style="float: right">上传</el-button>
     <el-upload
       class="upload-demo"
       :action="uploadUrl"
@@ -12,9 +13,10 @@
       :on-exceed="handleExceed"
       :file-list="fileList"
       :on-remove="handleRemove"
+      style="float: right"
     >
+      <el-button>选择图片</el-button>
     </el-upload>
-    <el-button @click="uploadFiles">上传</el-button>
   </el-header>
   <div style="clear: both"></div>
   <el-main>
@@ -90,7 +92,7 @@ function load() {
     .get("/admin/images?pageNum=" + page.value + "&pageSize=" + pagesize.value)
     .then((res) => {
       var result = res.data;
-      for (let index = 0; index < result.data.list.length; index++) {
+      for (let index = 0; index < result.data.length; index++) {
         tableData.value.push(result.data[index]);
       }
     });
