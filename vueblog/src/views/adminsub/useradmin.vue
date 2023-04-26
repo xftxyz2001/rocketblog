@@ -34,12 +34,7 @@
           label="注册日期"
           width="160"
         />
-        <el-table-column
-          class="idcolumn"
-          prop="userid"
-          label="id"
-          v-if="false"
-        />
+        <el-table-column class="idcolumn" prop="userid" label="id" />
 
         <el-table-column prop="username" label="昵称" width="120" />
         <el-table-column prop="userSex" label="性别" width="90" />
