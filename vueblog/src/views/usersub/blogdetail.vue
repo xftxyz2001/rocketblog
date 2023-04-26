@@ -11,8 +11,20 @@
             <div class="card-header">
               <div style="margin-bottom: 20px">
                 <div
-                  style="overflow: hidden;width: 30px;display: inline-block;vertical-align: bottom;border-radius: 15px;">
-                  <img :src="userdata.avatar" alt="" style="width: 30px" @click="gotootherperson(userdata.userid)" />
+                  style="
+                    overflow: hidden;
+                    width: 30px;
+                    display: inline-block;
+                    vertical-align: bottom;
+                    border-radius: 15px;
+                  "
+                >
+                  <img
+                    :src="userdata.avatar"
+                    alt=""
+                    style="width: 30px"
+                    @click="gotootherperson(userdata.userid)"
+                  />
                 </div>
                 <span style="font-size: 5px">{{ userdata.username }}</span>
               </div>
@@ -22,7 +34,8 @@
                 <div class="grid-content ep-bg-purple" />
                 关注
               </el-col>
-              <el-col :span="8">粉丝
+              <el-col :span="8"
+                >粉丝
                 <div class="grid-content ep-bg-purple" />
               </el-col>
               <el-col :span="8">
@@ -35,7 +48,8 @@
                 <div class="grid-content ep-bg-purple" />
                 {{ userdata.followings }}
               </el-col>
-              <el-col :span="8">{{ userdata.followers }}
+              <el-col :span="8"
+                >{{ userdata.followers }}
                 <div class="grid-content ep-bg-purple" />
               </el-col>
               <el-col :span="8">
@@ -64,8 +78,12 @@
               </el-col>
               <el-col :span="10">
                 <div class="grid-content ep-bg-purple-light" />
-                <el-button v-if="userdata.followed" @click="dontfollowthis">已关注</el-button>
-                <el-button v-else type="primary" @click="followthis">关注</el-button>
+                <el-button v-if="userdata.followed" @click="dontfollowthis"
+                  >已关注</el-button
+                >
+                <el-button v-else type="primary" @click="followthis"
+                  >关注</el-button
+                >
               </el-col>
             </el-row>
           </div>
@@ -95,8 +113,19 @@
             <div class="card-header">
               <span>{{ blogdata.blogTitle }}</span>
               <div v-if="isme">
-                <el-button type="primary" :icon="Edit" circle title="编辑博客" @click="changeblog" /><el-button type="danger"
-                  :icon="Delete" circle title="删除博客" @click="deleteaccountDialogVisible = true" />
+                <el-button
+                  type="primary"
+                  :icon="Edit"
+                  circle
+                  title="编辑博客"
+                  @click="changeblog"
+                /><el-button
+                  type="danger"
+                  :icon="Delete"
+                  circle
+                  title="删除博客"
+                  @click="deleteaccountDialogVisible = true"
+                />
               </div>
             </div>
           </template>
@@ -105,22 +134,41 @@
           <el-row :gutter="10" style="width: 100%; text-align: center">
             <el-col v-if="blogdata.like" :span="7">
               <div class="grid-content ep-bg-purple" />
-              <span class="iconfont" style="margin-right: 10px; cursor: pointer" @click="dontlikethis">&#xe60f;</span>点赞
+              <span
+                class="iconfont"
+                style="margin-right: 10px; cursor: pointer"
+                @click="dontlikethis"
+                >&#xe60f;</span
+              >点赞
               {{ blogdata.likeCount }}
             </el-col>
             <el-col v-else :span="7">
               <div class="grid-content ep-bg-purple" />
-              <span class="iconfont" style="margin-right: 10px; cursor: pointer; color: black"
-                @click="likethis">&#xe600;</span>点赞{{ blogdata.likeCount }}
+              <span
+                class="iconfont"
+                style="margin-right: 10px; cursor: pointer; color: black"
+                @click="likethis"
+                >&#xe600;</span
+              >点赞{{ blogdata.likeCount }}
             </el-col>
             <el-col v-if="blogdata.collect" :span="7">
-              <span class="iconfont" style="margin-right: 5px; cursor: pointer" @click="dontcollectthis">&#xe630;</span>收藏
+              <span
+                class="iconfont"
+                style="margin-right: 5px; cursor: pointer"
+                @click="dontcollectthis"
+                >&#xe630;</span
+              >收藏
               {{ blogdata.bookmarkCount }}
               <div class="grid-content ep-bg-purple" />
             </el-col>
             <el-col v-else :span="7">
-              <span class="iconfont" style="margin-right: 5px; cursor: pointer" @click="collectthis">
-                &#xe603; </span>收藏 {{ blogdata.bookmarkCount }}
+              <span
+                class="iconfont"
+                style="margin-right: 5px; cursor: pointer"
+                @click="collectthis"
+              >
+                &#xe603; </span
+              >收藏 {{ blogdata.bookmarkCount }}
               <div class="grid-content ep-bg-purple" />
             </el-col>
 
@@ -131,17 +179,46 @@
               评论 {{ blogdata.commentCount }}
               <div class="grid-content ep-bg-purple" />
             </el-col>
-            <el-input v-model.trim="commenttext" maxlength="100" placeholder="请文明评论" show-word-limit type="textarea"
-              style="margin: 20px 0 0 5px" />
-            <el-row style="margin: 10px 0 0 0; position: relative; width: 100%"><el-button type="primary"
-                style="position: absolute; right: 0px" @click="commentthis">发表</el-button></el-row>
+            <el-input
+              v-model.trim="commenttext"
+              maxlength="100"
+              placeholder="请文明评论"
+              show-word-limit
+              type="textarea"
+              style="margin: 20px 0 0 5px"
+            />
+            <el-row style="margin: 10px 0 0 0; position: relative; width: 100%"
+              ><el-button
+                type="primary"
+                style="position: absolute; right: 0px"
+                @click="commentthis"
+                >发表</el-button
+              ></el-row
+            >
           </el-row>
           <div style="height: 30px"></div>
           <el-divider border-style="dashed" />
-          <div v-infinite-scroll="load" class="infinite-list" style="overflow: auto" infinite-scroll-distance="1">
-            <div v-for="comment in comments" :key="comment.commentId" style="padding: 10px 0 0 10px">
+          <div
+            v-infinite-scroll="load"
+            class="infinite-list"
+            style="overflow: auto"
+            infinite-scroll-distance="1"
+          >
+            <div
+              v-for="comment in comments"
+              :key="comment.commentId"
+              style="padding: 10px 0 0 10px"
+            >
               <div style="">
-                <img :src="comment.avatar" alt="" style="width: 30px;border-radius: 15px;vertical-align: bottom;" />
+                <img
+                  :src="comment.avatar"
+                  alt=""
+                  style="
+                    width: 30px;
+                    border-radius: 15px;
+                    vertical-align: bottom;
+                  "
+                />
                 <div style="display: inline-block; padding: 0 0 0 7px">
                   <div>{{ comment.username }}</div>
                   <div style="font-size: 5px">{{ comment.createtime }}</div>
@@ -157,7 +234,12 @@
       </el-col>
     </el-row>
   </div>
-  <el-dialog v-model="deleteaccountDialogVisible" title="提示" width="30%" center>
+  <el-dialog
+    v-model="deleteaccountDialogVisible"
+    title="提示"
+    width="30%"
+    center
+  >
     <span style="display: inline-block; width: 100%; text-align: center">
       确定要删除博客吗？
     </span>
@@ -170,10 +252,7 @@
   </el-dialog>
 </template>
 <script setup >
-import {
-  Delete,
-  Edit
-} from "@element-plus/icons-vue";
+import { Delete, Edit } from "@element-plus/icons-vue";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import { getCurrentInstance, ref } from "vue";
@@ -225,11 +304,11 @@ function load() {
   axios
     .get(
       "/blog/comment/" +
-      route.params.blogid +
-      "?pageNum=" +
-      page.value +
-      "&pageSize=" +
-      pagesize.value
+        route.params.blogid +
+        "?pageNum=" +
+        page.value +
+        "&pageSize=" +
+        pagesize.value
     )
     .then((res) => {
       var result = res.data;
@@ -390,11 +469,9 @@ function commentthis() {
       }
     }
   });
-
 }
 
 function dontfollowthis() {
-
   axios.delete("/user/follow/" + blogdata.value.userid).then((res) => {
     if (res.data.code == 0) {
       userdata.value.followed = false;
@@ -405,7 +482,6 @@ function dontfollowthis() {
 }
 
 function followthis() {
-
   axios.get("/user/follow/" + blogdata.value.userid).then((res) => {
     if (res.data.code == 0) {
       userdata.value.followed = true;
@@ -416,7 +492,6 @@ function followthis() {
 }
 
 function likethis() {
-
   axios.get("/blog/like/" + route.params.blogid).then((res) => {
     if (res.data.code == 0) {
       blogdata.value.like = true;
@@ -428,7 +503,6 @@ function likethis() {
 }
 
 function collectthis() {
-
   axios.get("/blog/collect/" + route.params.blogid).then((res) => {
     if (res.data.code == 0) {
       blogdata.value.collect = true;
@@ -453,7 +527,6 @@ function dontcollectthis() {
 }
 
 function dontlikethis() {
-
   axios.delete("/blog/like/" + route.params.blogid).then((res) => {
     if (res.data.code == 0) {
       blogdata.value.like = false;
@@ -491,6 +564,8 @@ function chatwith() {
           params: { userid: blogdata.value.userid },
         });
       });
+    } else if (result.code == 100) {
+      Bus.emit("likeneedlogin", {});
     } else {
       router.push({
         name: "messagedetail",
@@ -586,7 +661,7 @@ export default defineComponent({
   color: var(--el-color-primary);
 }
 
-.infinite-list .infinite-list-item+.list-item {
+.infinite-list .infinite-list-item + .list-item {
   margin-top: 10px;
 }
 
