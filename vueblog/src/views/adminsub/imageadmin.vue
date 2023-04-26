@@ -92,7 +92,7 @@ function load() {
     .then((res) => {
       var result = res.data;
       for (let index = 0; index < result.data.list.length; index++) {
-        tableData.value.push(result.data.list[index]);
+        tableData.value.push(result.data[index]);
       }
     });
 }
