@@ -13,6 +13,8 @@
             v-for="pageInfo in pageInfos"
             :key="pageInfo.userid"
             class="text item messagelist"
+            :class="{ 'messagelist--active': String(pageInfo.userid) === selectedUserId }"
+            :aria-current="String(pageInfo.userid) === selectedUserId ? 'true' : undefined"
           >
             <el-row @click="chatdetail(pageInfo.userid)" style="cursor: pointer"
               ><el-col :span="5"
@@ -59,11 +61,12 @@
 <script setup>
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 // const myuserid = ref(105);
 const pageInfos = ref([]);
 const route = useRoute();
+const selectedUserId = computed(() => String(route.params.userid ?? ""));
 const selectchat = ref(false);
 // const msglist = ref([]);
 
@@ -141,10 +144,12 @@ axios.get("/chat/sessions").then((res) => {
     if (pageInfos.value.length == 0) {
       selectchat.value = true;
     } else {
-      router.push({
-        name: "messagedetail",
-        params: { userid: pageInfos.value[0].userid },
-      });
+      if (!selectedUserId.value) {
+        router.replace({
+          name: "messagedetail",
+          params: { userid: pageInfos.value[0].userid },
+        });
+      }
       selectchat.value = false;
     }
   } else {
@@ -184,6 +189,19 @@ export default {};
 
 .item {
   margin-bottom: 18px;
+}
+
+.messagelist {
+  border-radius: 4px;
+}
+
+.messagelist:hover {
+  background-color: #f5f7fa;
+}
+
+.messagelist--active,
+.messagelist--active:hover {
+  background-color: #e5e7eb;
 }
 
 .box-card {

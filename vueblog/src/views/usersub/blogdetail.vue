@@ -9,7 +9,7 @@
         <el-card class="box-card" style="width: 100%">
           <template #header>
             <div class="card-header">
-              <div style="margin-bottom: 20px">
+              <div class="author-info">
                 <div
                   style="
                     overflow: hidden;
@@ -17,6 +17,7 @@
                     display: inline-block;
                     vertical-align: bottom;
                     border-radius: 15px;
+                    flex-shrink: 0;
                   "
                 >
                   <img
@@ -26,7 +27,7 @@
                     @click="gotootherperson(userdata.userid)"
                   />
                 </div>
-                <span style="font-size: 5px">{{ userdata.username }}</span>
+                <span class="author-name">{{ userdata.username }}</span>
               </div>
             </div>
             <el-row :gutter="15" style="width: 100%; text-align: center">
@@ -129,7 +130,7 @@
               </div>
             </div>
           </template>
-          <div v-html="blogdata.blogContent"></div>
+          <div class="blog-content" v-html="blogdata.blogContent"></div>
           <el-divider border-style="dashed" />
           <el-row :gutter="10" style="width: 100%; text-align: center">
             <el-col v-if="blogdata.like" :span="7">
@@ -594,6 +595,32 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-bottom: 20px;
+}
+
+.author-name {
+  min-width: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.blog-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.blog-content :deep(img) {
+  max-width: 100%;
+  /* 编辑器可能保存行内高度，缩小图片时仍需保持原始比例。 */
+  height: auto !important;
+}
+
 /* * {
   padding: 0;
   margin: 0;
